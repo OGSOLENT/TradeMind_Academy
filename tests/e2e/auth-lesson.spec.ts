@@ -44,6 +44,15 @@ test.describe("auth → consent → lesson journey", () => {
     await expect(page.getByRole("button", { name: "Decline" })).toBeEnabled();
     await page.getByRole("button", { name: "I consent — start learning" }).click();
 
+    // Placement offer comes first (Phase 4); skipping starts at the prior.
+    await expect(
+      page.getByRole("heading", { name: /map what you already know/i }),
+    ).toBeVisible({ timeout: 20_000 });
+    await page.getByRole("button", { name: /Skip — start from scratch/ }).click();
+    await page.waitForURL(/dashboard/);
+
+    await page.goto("/lesson/kc-candlestick-anatomy-lesson");
+
     // Lesson view: title, reading progress, figure describe-toggle, video placeholder.
     await expect(
       page.getByRole("heading", { level: 1, name: "Candlestick anatomy" }),

@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp } from "firebase/firestore";
-import type { Item } from "@/lib/content/types";
+import type { Item, Kc } from "@/lib/content/types";
 import { DEFAULT_PARAMS } from "@/lib/bkt";
+import { unlockedKcIds } from "@/lib/routing";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { useQuizSession } from "@/lib/quiz/session-store";
@@ -14,15 +15,14 @@ const COURSE_ID = "trading-foundations";
 const SESSION_LENGTH = 10;
 
 /**
- * Practice launcher: assembles a 10-question mixed-type session and hands
- * off to /quiz/[sessionId]. Phase 3 uses a simple type-diverse picker;
- * Phase 4's routing engine (lowest-mastery KC, difficulty ladder) replaces
- * the selection strategy.
+ * Practice launcher: the adaptive loop's entry point. Routing decides every
+ * question — the pool is restricted to UNLOCKED KCs, then /lib/routing picks
+ * lowest-mastery KC + difficulty ladder per answer.
  */
 export default function PracticePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const start = useQuizSession((s) => s.start);
+  const startAdaptive = useQuizSession((s) => s.startAdaptive);
   const startedRef = useRef(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,48 +33,47 @@ export default function PracticePage() {
     const run = async () => {
       const { db } = getFirebase();
 
-      const itemsSnap = await getDocs(collection(db, "items"));
-      const all = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
+      const [kcsSnap, itemsSnap, masterySnap] = await Promise.all([
+        getDocs(collection(db, "kcs")),
+        getDocs(collection(db, "items")),
+        getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID)),
+      ]);
 
-      // Type-diverse pick: round-robin across question types.
-      const byType = new Map<string, Item[]>();
-      for (const it of all) {
-        const bucket = byType.get(it.type) ?? [];
-        bucket.push(it);
-        byType.set(it.type, bucket);
-      }
-      const picked: Item[] = [];
-      const types = [...byType.keys()];
-      let ti = 0;
-      while (picked.length < SESSION_LENGTH && byType.size > 0) {
-        const type = types[ti % types.length]!;
-        const bucket = byType.get(type);
-        ti++;
-        if (!bucket || bucket.length === 0) continue;
-        picked.push(bucket.shift()!);
-      }
+      const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
+      const allItems = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
+      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<
+        string,
+        { pL: number; attempts: number }
+      >;
 
-      const masterySnap = await getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID));
-      const kcs = (masterySnap.data()?.kcs ?? {}) as Record<string, { pL: number }>;
       const mastery: Record<string, number> = {};
-      for (const it of picked) mastery[it.kcId] = kcs[it.kcId]?.pL ?? DEFAULT_PARAMS.pL0;
+      for (const kc of kcs) mastery[kc.id] = kcStates[kc.id]?.pL ?? DEFAULT_PARAMS.pL0;
+
+      const unlocked = new Set(
+        unlockedKcIds(
+          kcs,
+          Object.fromEntries(kcs.map((kc) => [kc.id, kcStates[kc.id] ?? { pL: mastery[kc.id]!, attempts: 0 }])),
+        ),
+      );
+      const pool = allItems.filter((it) => unlocked.has(it.kcId));
+      const unlockedKcs = kcs.filter((kc) => unlocked.has(kc.id));
 
       const sessionId = `practice-${Date.now()}`;
       await setDoc(doc(db, "users", user.uid, "sessions", sessionId), {
         type: "topic-test",
         startedAt: serverTimestamp(),
         endedAt: null,
-        kcIds: [...new Set(picked.map((i) => i.kcId))],
+        kcIds: unlockedKcs.map((k) => k.id),
       });
 
-      start(user.uid, sessionId, "topic-test", picked, mastery);
+      startAdaptive(user.uid, sessionId, pool, unlockedKcs, mastery, SESSION_LENGTH);
       router.replace(`/quiz/${sessionId}`);
     };
 
     run().catch((err) => {
       setError(err instanceof Error ? `${err.name}: ${err.message}` : String(err));
     });
-  }, [loading, user, start, router]);
+  }, [loading, user, startAdaptive, router]);
 
   if (error) {
     return (

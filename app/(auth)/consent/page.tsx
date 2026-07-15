@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
 
-const FIRST_LESSON = "/lesson/kc-candlestick-anatomy-lesson";
+const AFTER_CONSENT = "/placement";
 
 export default function ConsentPage() {
   const router = useRouter();
@@ -54,7 +54,7 @@ export default function ConsentPage() {
         isAdult: true,
         consent: { agreedAt: new Date(), version: CONSENT_VERSION },
       }));
-      router.push(FIRST_LESSON);
+      router.push(AFTER_CONSENT);
     } catch {
       toast({ title: "Could not save your consent", description: "Please try again.", variant: "danger" });
       setBusy(false);

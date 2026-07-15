@@ -2,16 +2,20 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Item } from "@/lib/content/types";
+import type { Item, Kc } from "@/lib/content/types";
 import { DEFAULT_PARAMS, updateMastery } from "@/lib/bkt";
+import { nextItem, targetKcId, type SelectionReason } from "@/lib/routing";
 import { grade, type LearnerAnswer } from "./grade";
 import { getLogger } from "@/lib/logging";
 
 /**
- * Ephemeral quiz-session state (Zustand + localStorage persistence so a
- * refresh resumes mid-session — BUILD_PROMPT §6 Phase 3). Mastery numbers
- * here are the session-local view; the Firestore mastery doc is written by
- * the session page on completion (single-doc transaction per §4).
+ * Quiz-session state (Zustand + localStorage persistence: refresh resumes,
+ * offline keeps working — the full item pool is local).
+ *
+ * Adaptive sessions select each next item live through /lib/routing:
+ * lowest-mastery unlocked KC → difficulty ladder → never-repeat, with two
+ * consecutive wrongs forcing remediation. Every selection's reason is kept
+ * for the "Why this question?" popover.
  */
 
 export interface AnswerRecord {
@@ -31,21 +35,68 @@ interface QuizSessionState {
   uid: string | null;
   sessionId: string | null;
   sessionType: SessionType;
-  /** Full items persisted locally so the session survives offline + refresh. */
+  /** Items asked so far, in order (grows adaptively). */
   items: Item[];
+  /** Candidate pool for adaptive selection (empty for fixed sessions). */
+  pool: Item[];
+  kcs: Kc[];
+  targetLength: number;
   currentIndex: number;
   answers: Record<string, AnswerRecord>;
-  mastery: Record<string, number>; // session-local pL per KC
-  shownAt: number; // when the current question appeared (latency basis)
-  /** UI phase: answering vs. reading feedback for the just-answered item. */
+  reasons: Record<string, SelectionReason>;
+  mastery: Record<string, number>;
+  masteryAtStart: Record<string, number>;
+  consecutiveWrong: Record<string, number>;
+  shownAt: number;
   phase: "answering" | "feedback" | "complete";
   direction: 1 | -1;
 
-  start(uid: string, sessionId: string, type: SessionType, items: Item[], mastery: Record<string, number>): void;
+  /** Fixed sequence (placement). */
+  startFixed(
+    uid: string,
+    sessionId: string,
+    type: SessionType,
+    items: Item[],
+    mastery: Record<string, number>,
+  ): void;
+  /** Adaptive session: routing picks every item. */
+  startAdaptive(
+    uid: string,
+    sessionId: string,
+    pool: Item[],
+    kcs: Kc[],
+    mastery: Record<string, number>,
+    targetLength: number,
+  ): void;
   submit(item: Item, answer: LearnerAnswer): void;
   next(): void;
   markShown(): void;
   reset(): void;
+}
+
+function selectNext(s: QuizSessionState): { item: Item; reason: SelectionReason } | null {
+  const kcId = targetKcId(
+    s.kcs,
+    Object.fromEntries(
+      s.kcs.map((kc) => [kc.id, { pL: s.mastery[kc.id] ?? 0, attempts: 1 }]),
+    ),
+  );
+  const askIn = kcId ?? s.kcs[0]?.id;
+  if (!askIn) return null;
+  const sel = nextItem(s.pool, askIn, s.mastery[askIn] ?? DEFAULT_PARAMS.pL0, {
+    usedItemIds: s.items.map((i) => i.id),
+    consecutiveWrong: s.consecutiveWrong[askIn] ?? 0,
+  });
+  if (sel) return sel;
+  // Target KC exhausted: fall back to any KC with items left.
+  for (const kc of s.kcs) {
+    const alt = nextItem(s.pool, kc.id, s.mastery[kc.id] ?? DEFAULT_PARAMS.pL0, {
+      usedItemIds: s.items.map((i) => i.id),
+      consecutiveWrong: s.consecutiveWrong[kc.id] ?? 0,
+    });
+    if (alt) return alt;
+  }
+  return null;
 }
 
 export const useQuizSession = create<QuizSessionState>()(
@@ -55,26 +106,64 @@ export const useQuizSession = create<QuizSessionState>()(
       sessionId: null,
       sessionType: "topic-test",
       items: [],
+      pool: [],
+      kcs: [],
+      targetLength: 10,
       currentIndex: 0,
       answers: {},
+      reasons: {},
       mastery: {},
+      masteryAtStart: {},
+      consecutiveWrong: {},
       shownAt: Date.now(),
       phase: "answering",
       direction: 1,
 
-      start: (uid, sessionId, sessionType, items, mastery) =>
+      startFixed: (uid, sessionId, sessionType, items, mastery) =>
         set({
           uid,
           sessionId,
           sessionType,
           items,
+          pool: [],
+          kcs: [],
+          targetLength: items.length,
           mastery,
+          masteryAtStart: { ...mastery },
           currentIndex: 0,
           answers: {},
+          reasons: {},
+          consecutiveWrong: {},
           shownAt: Date.now(),
           phase: "answering",
           direction: 1,
         }),
+
+      startAdaptive: (uid, sessionId, pool, kcs, mastery, targetLength) => {
+        const base: Partial<QuizSessionState> = {
+          uid,
+          sessionId,
+          sessionType: "topic-test",
+          pool,
+          kcs,
+          targetLength,
+          mastery,
+          masteryAtStart: { ...mastery },
+          items: [],
+          currentIndex: 0,
+          answers: {},
+          reasons: {},
+          consecutiveWrong: {},
+          shownAt: Date.now(),
+          phase: "answering",
+          direction: 1,
+        };
+        set(base as QuizSessionState);
+        const sel = selectNext(get());
+        if (sel) {
+          set({ items: [sel.item], reasons: { [sel.item.id]: sel.reason } });
+        }
+      },
 
       markShown: () => set({ shownAt: Date.now() }),
 
@@ -84,24 +173,10 @@ export const useQuizSession = create<QuizSessionState>()(
 
         const pLBefore = s.mastery[item.kcId] ?? DEFAULT_PARAMS.pL0;
         const correct = grade(answer, item.answerKey);
-        // Placement sessions gather evidence for initialisation; regular
-        // sessions run the live BKT update.
         const pLAfter =
           s.sessionType === "placement" ? pLBefore : updateMastery(pLBefore, correct).pL;
         const latencyMs = Math.max(0, Date.now() - s.shownAt);
 
-        const record: AnswerRecord = {
-          itemId: item.id,
-          kcId: item.kcId,
-          questionType: item.type,
-          answer,
-          correct,
-          latencyMs,
-          pLBefore,
-          pLAfter,
-        };
-
-        // Guardrail §7.2: EVERY submit logs, with pLBefore/pLAfter.
         getLogger().enqueue({
           uid: s.uid,
           sessionId: s.sessionId,
@@ -117,24 +192,52 @@ export const useQuizSession = create<QuizSessionState>()(
         });
 
         set({
-          answers: { ...s.answers, [item.id]: record },
+          answers: {
+            ...s.answers,
+            [item.id]: {
+              itemId: item.id,
+              kcId: item.kcId,
+              questionType: item.type,
+              answer,
+              correct,
+              latencyMs,
+              pLBefore,
+              pLAfter,
+            },
+          },
           mastery: { ...s.mastery, [item.kcId]: pLAfter },
+          consecutiveWrong: {
+            ...s.consecutiveWrong,
+            [item.kcId]: correct ? 0 : (s.consecutiveWrong[item.kcId] ?? 0) + 1,
+          },
           phase: "feedback",
         });
       },
 
       next: () => {
         const s = get();
-        if (s.currentIndex + 1 >= s.items.length) {
+        if (s.items.length >= s.targetLength && s.currentIndex + 1 >= s.items.length) {
           set({ phase: "complete" });
-        } else {
-          set({
-            currentIndex: s.currentIndex + 1,
-            phase: "answering",
-            direction: 1,
-            shownAt: Date.now(),
-          });
+          return;
         }
+        if (s.currentIndex + 1 < s.items.length) {
+          set({ currentIndex: s.currentIndex + 1, phase: "answering", direction: 1, shownAt: Date.now() });
+          return;
+        }
+        // Adaptive: choose the next item now.
+        const sel = selectNext(s);
+        if (!sel) {
+          set({ phase: "complete" });
+          return;
+        }
+        set({
+          items: [...s.items, sel.item],
+          reasons: { ...s.reasons, [sel.item.id]: sel.reason },
+          currentIndex: s.currentIndex + 1,
+          phase: "answering",
+          direction: 1,
+          shownAt: Date.now(),
+        });
       },
 
       reset: () =>
@@ -142,9 +245,14 @@ export const useQuizSession = create<QuizSessionState>()(
           uid: null,
           sessionId: null,
           items: [],
+          pool: [],
+          kcs: [],
           currentIndex: 0,
           answers: {},
+          reasons: {},
           mastery: {},
+          masteryAtStart: {},
+          consecutiveWrong: {},
           phase: "answering",
         }),
     }),

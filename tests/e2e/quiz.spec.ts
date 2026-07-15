@@ -26,8 +26,10 @@ async function signUpAndConsent(page: Page): Promise<void> {
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("button", { name: "I consent — start learning" }).click();
   await expect(
-    page.getByRole("heading", { level: 1, name: "Candlestick anatomy" }),
+    page.getByRole("heading", { name: /map what you already know/i }),
   ).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: /Skip — start from scratch/ }).click();
+  await page.waitForURL(/dashboard/, { timeout: 20_000 });
 }
 
 /** Answer whatever question type is on screen; correctness not required. */
@@ -76,7 +78,7 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
     test.skip(!(await emulatorUp()), "Firebase emulators not running");
   });
 
-  test("completes 10 mixed questions with a mid-session network kill; all events flush", async ({
+  test("completes a mixed-type session with a mid-session network kill; all events flush", async ({
     page,
     context,
     request,
@@ -108,18 +110,26 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
       { timeout: 30_000 },
     );
 
-    // Finish the remaining 3 questions.
-    for (let i = 0; i < 3; i++) await answerCurrent(page);
-    await expect(page.getByText("Session complete")).toBeVisible();
-    await expect(page.getByText("/10")).toBeVisible();
+    // Finish the session — adaptive selection ends when the unlocked pool is
+    // exhausted (one unlocked KC × 8 items after a skipped placement).
+    for (let i = 0; i < 8; i++) {
+      if (await page.getByText("Session complete").isVisible()) break;
+      await answerCurrent(page);
+    }
+    await expect(page.getByText("Session complete")).toBeVisible({ timeout: 15_000 });
 
-    // Verify ALL 10 responses landed in Firestore (append-only research log).
-    const { uid, sessionId } = await page.evaluate(() => {
+    // Verify EVERY answer landed in Firestore (append-only research log).
+    const { uid, sessionId, answered } = await page.evaluate(() => {
       const raw = JSON.parse(localStorage.getItem("tm-quiz-session") ?? "{}");
-      return { uid: raw.state?.uid, sessionId: raw.state?.sessionId };
+      return {
+        uid: raw.state?.uid,
+        sessionId: raw.state?.sessionId,
+        answered: Object.keys(raw.state?.answers ?? {}).length,
+      };
     });
     expect(uid).toBeTruthy();
     expect(sessionId).toBeTruthy();
+    expect(answered).toBeGreaterThanOrEqual(7);
 
     await expect
       .poll(
@@ -133,7 +143,7 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
         },
         { timeout: 20_000 },
       )
-      .toBe(10);
+      .toBe(answered);
 
     // Every logged response carries the model state (guardrail §7.2).
     const res = await request.get(
