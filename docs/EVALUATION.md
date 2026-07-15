@@ -29,3 +29,25 @@ Screenshots (also the report figures): `docs/screenshots/kitchen-sink-desktop.pn
 Environment: Node 22.22, npm 10.9, Next 14.2.25, React 18.3, Tailwind 3.4,
 Framer Motion 12, Playwright 1.x (Chromium + WebKit), Lighthouse 12 (latest via npx)
 against headless Chrome 150.
+
+## Phase 2 — Auth, data layer, content layer (2026-07-15, tag `v0.2-phase2`)
+
+All checks run locally: dev server on :3000, Firebase Emulator Suite
+(auth :9099, firestore :8080), curriculum seeded via `npm run seed`.
+
+| Check | Result |
+| --- | --- |
+| `npm run lint` / `npm run typecheck` | ✅ clean |
+| `npm run test` (Vitest unit) | ✅ 6/6 |
+| `npm run test:rules` (rules-unit-testing in Firestore emulator) | ✅ **14/14** — owner-only subtree, 18+ create gate, create-only responses (no update/delete even by owner), authed-read/admin-write content |
+| `npm run test:e2e` (kitchen sink + auth journey, desktop + mobile) | ✅ 8/8 |
+| Done-criterion journey | ✅ sign up (18+ hard gate verified) → GDPR consent (Decline verified: signs out, learn area bounces to sign-in) → full seeded lesson (video placeholder, describe-this-chart toggle, inline check → ✓ chip) |
+| Seed | ✅ 1 course, 8 KCs, 8 lessons, 64 items into the emulator |
+
+Defects caught by the E2E journey during development (fixed, not waived):
+stale React Query profile cache bounced freshly-consented users back to the
+consent screen; the Decline flow raced the auth guard's sign-in redirect;
+parallel test workers could mint colliding signup emails.
+
+Screenshots: `docs/screenshots/sign-up.png`, `consent.png`, `lesson-top.png`,
+`lesson-full.png`.

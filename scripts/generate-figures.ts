@@ -1,0 +1,45 @@
+/**
+ * Generate placeholder figure + poster SVGs for the Level-1 lessons.
+ * Simple branded frames with simulated candle glyphs — replaced by real
+ * figures when the author supplies copy. Run: npx tsx scripts/generate-figures.ts
+ */
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import type { Level1Content } from "../lib/content/types";
+
+const content: Level1Content = JSON.parse(readFileSync("content/level1.json", "utf8"));
+
+function candleGlyphs(seed: number): string {
+  let out = "";
+  for (let i = 0; i < 14; i++) {
+    const x = 80 + i * 76;
+    const mid = 260 + Math.sin(seed + i * 0.8) * 90;
+    const h = 50 + ((seed * 7 + i * 13) % 60);
+    const up = Math.sin(seed * 1.7 + i) > 0;
+    const color = up ? "#2DD4BF" : "#FFB4AB";
+    out += `<line x1="${x + 14}" y1="${mid - h / 2 - 24}" x2="${x + 14}" y2="${mid + h / 2 + 24}" stroke="${color}" stroke-width="3" opacity="0.7"/>`;
+    out += `<rect x="${x}" y="${mid - h / 2}" width="28" height="${h}" rx="4" fill="${color}" opacity="0.85"/>`;
+  }
+  return out;
+}
+
+function svg(title: string, subtitle: string, seed: number): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <rect width="1200" height="520" fill="#0A0A0F"/>
+  <rect x="1" y="1" width="1198" height="518" rx="16" fill="none" stroke="rgba(255,255,255,0.08)"/>
+  ${candleGlyphs(seed)}
+  <rect x="0" y="400" width="1200" height="120" fill="#050507" opacity="0.85"/>
+  <text x="48" y="452" font-family="Menlo, monospace" font-size="26" fill="#E4E1ED">${title}</text>
+  <text x="48" y="486" font-family="Menlo, monospace" font-size="16" fill="#908F9E">${subtitle}</text>
+  <text x="1152" y="452" text-anchor="end" font-family="Menlo, monospace" font-size="14" fill="#FFB955">SIMULATED DATA · EDUCATION ONLY</text>
+</svg>\n`;
+}
+
+mkdirSync("public/figures", { recursive: true });
+mkdirSync("public/posters", { recursive: true });
+
+content.kcs.forEach((kc, i) => {
+  writeFileSync(`public/figures/${kc.id}.svg`, svg(kc.title, "Placeholder figure — final artwork lands with author copy", i + 1));
+  writeFileSync(`public/posters/${kc.id}.svg`, svg(kc.title, "Video lesson poster — NotebookLM video slots in later", i + 5));
+});
+
+console.log(`Wrote ${content.kcs.length} figures + ${content.kcs.length} posters to public/`);

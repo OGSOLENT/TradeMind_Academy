@@ -1,0 +1,2413 @@
+{
+  "course": {
+    "id": "trading-foundations",
+    "title": "Trading Foundations",
+    "levels": [
+      1
+    ]
+  },
+  "kcs": [
+    {
+      "id": "kc-candlestick-anatomy",
+      "title": "Candlestick anatomy",
+      "courseId": "trading-foundations",
+      "prereqIds": [],
+      "level": 1,
+      "description": "Placeholder description for candlestick anatomy — replaced by author copy later."
+    },
+    {
+      "id": "kc-market-structure",
+      "title": "Market structure",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-candlestick-anatomy"
+      ],
+      "level": 1,
+      "description": "Placeholder description for market structure — replaced by author copy later."
+    },
+    {
+      "id": "kc-support-resistance",
+      "title": "Support & resistance",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-market-structure"
+      ],
+      "level": 1,
+      "description": "Placeholder description for support & resistance — replaced by author copy later."
+    },
+    {
+      "id": "kc-liquidity-basics",
+      "title": "Liquidity basics",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-support-resistance"
+      ],
+      "level": 1,
+      "description": "Placeholder description for liquidity basics — replaced by author copy later."
+    },
+    {
+      "id": "kc-fair-value-gaps",
+      "title": "Fair value gaps",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-liquidity-basics"
+      ],
+      "level": 1,
+      "description": "Placeholder description for fair value gaps — replaced by author copy later."
+    },
+    {
+      "id": "kc-kill-zones",
+      "title": "Kill zones",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-fair-value-gaps"
+      ],
+      "level": 1,
+      "description": "Placeholder description for kill zones — replaced by author copy later."
+    },
+    {
+      "id": "kc-risk-management",
+      "title": "Risk management",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-kill-zones"
+      ],
+      "level": 1,
+      "description": "Placeholder description for risk management — replaced by author copy later."
+    },
+    {
+      "id": "kc-position-sizing",
+      "title": "Position sizing",
+      "courseId": "trading-foundations",
+      "prereqIds": [
+        "kc-risk-management"
+      ],
+      "level": 1,
+      "description": "Placeholder description for position sizing — replaced by author copy later."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "kc-candlestick-anatomy-lesson",
+      "kcId": "kc-candlestick-anatomy",
+      "title": "Candlestick anatomy",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Candlestick anatomy\n\nPlaceholder introduction to **candlestick anatomy**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-candlestick-anatomy.svg",
+          "caption": "Fig 1: placeholder candlestick anatomy illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating candlestick anatomy. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-candlestick-anatomy.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-candlestick-anatomy-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-market-structure-lesson",
+      "kcId": "kc-market-structure",
+      "title": "Market structure",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Market structure\n\nPlaceholder introduction to **market structure**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-market-structure.svg",
+          "caption": "Fig 1: placeholder market structure illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating market structure. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-market-structure.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-market-structure-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-support-resistance-lesson",
+      "kcId": "kc-support-resistance",
+      "title": "Support & resistance",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Support & resistance\n\nPlaceholder introduction to **support & resistance**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-support-resistance.svg",
+          "caption": "Fig 1: placeholder support & resistance illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating support & resistance. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-support-resistance.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-support-resistance-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-liquidity-basics-lesson",
+      "kcId": "kc-liquidity-basics",
+      "title": "Liquidity basics",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Liquidity basics\n\nPlaceholder introduction to **liquidity basics**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-liquidity-basics.svg",
+          "caption": "Fig 1: placeholder liquidity basics illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating liquidity basics. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-liquidity-basics.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-liquidity-basics-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-fair-value-gaps-lesson",
+      "kcId": "kc-fair-value-gaps",
+      "title": "Fair value gaps",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Fair value gaps\n\nPlaceholder introduction to **fair value gaps**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-fair-value-gaps.svg",
+          "caption": "Fig 1: placeholder fair value gaps illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating fair value gaps. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-fair-value-gaps.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-fair-value-gaps-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-kill-zones-lesson",
+      "kcId": "kc-kill-zones",
+      "title": "Kill zones",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Kill zones\n\nPlaceholder introduction to **kill zones**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-kill-zones.svg",
+          "caption": "Fig 1: placeholder kill zones illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating kill zones. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-kill-zones.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-kill-zones-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-risk-management-lesson",
+      "kcId": "kc-risk-management",
+      "title": "Risk management",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Risk management\n\nPlaceholder introduction to **risk management**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-risk-management.svg",
+          "caption": "Fig 1: placeholder risk management illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating risk management. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-risk-management.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-risk-management-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "kc-position-sizing-lesson",
+      "kcId": "kc-position-sizing",
+      "title": "Position sizing",
+      "blocks": [
+        {
+          "kind": "markdown",
+          "md": "## Position sizing\n\nPlaceholder introduction to **position sizing**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice."
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-position-sizing.svg",
+          "caption": "Fig 1: placeholder position sizing illustration (simulated data).",
+          "describe": "Text alternative: a simulated chart illustrating position sizing. Placeholder description to be replaced with the final figure copy."
+        },
+        {
+          "kind": "video",
+          "poster": "/posters/kc-position-sizing.svg"
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-position-sizing-item-1"
+        }
+      ],
+      "videoUrl": null,
+      "videoFallbackUrl": null
+    }
+  ],
+  "items": [
+    {
+      "id": "kc-candlestick-anatomy-item-1",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about candlestick anatomy is correct? (placeholder)",
+        "options": [
+          "Candlestick anatomy — option A (placeholder)",
+          "Candlestick anatomy — option B (placeholder, correct)",
+          "Candlestick anatomy — option C (placeholder)",
+          "Candlestick anatomy — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-2",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does candlestick anatomy apply? (placeholder)",
+        "options": [
+          "Candlestick anatomy — option A (placeholder)",
+          "Candlestick anatomy — option B (placeholder, correct)",
+          "Candlestick anatomy — option C (placeholder)",
+          "Candlestick anatomy — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-3",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the candlestick anatomy principle? (placeholder)",
+        "options": [
+          "Candlestick anatomy — option A (placeholder)",
+          "Candlestick anatomy — option B (placeholder, correct)",
+          "Candlestick anatomy — option C (placeholder)",
+          "Candlestick anatomy — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-4",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about candlestick anatomy. (placeholder)",
+        "options": [
+          "Candlestick anatomy — option A (placeholder)",
+          "Candlestick anatomy — option B (placeholder, correct)",
+          "Candlestick anatomy — option C (placeholder)",
+          "Candlestick anatomy — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-5",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder candlestick anatomy value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-6",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the candlestick anatomy checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-7",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where candlestick anatomy is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 100,
+            "high": 100.8,
+            "low": 99.2,
+            "close": 100
+          },
+          {
+            "time": "2024-01-02",
+            "open": 100,
+            "high": 102.37,
+            "low": 99.2,
+            "close": 101.57
+          },
+          {
+            "time": "2024-01-03",
+            "open": 101.57,
+            "high": 104.31,
+            "low": 100.77,
+            "close": 103.51
+          },
+          {
+            "time": "2024-01-04",
+            "open": 103.51,
+            "high": 105.17,
+            "low": 102.71,
+            "close": 104.37
+          },
+          {
+            "time": "2024-01-05",
+            "open": 104.37,
+            "high": 105.17,
+            "low": 102.68,
+            "close": 103.48
+          },
+          {
+            "time": "2024-01-06",
+            "open": 103.48,
+            "high": 104.28,
+            "low": 100.73,
+            "close": 101.53
+          },
+          {
+            "time": "2024-01-07",
+            "open": 101.53,
+            "high": 102.33,
+            "low": 99.18,
+            "close": 99.98
+          },
+          {
+            "time": "2024-01-08",
+            "open": 99.98,
+            "high": 100.82,
+            "low": 99.18,
+            "close": 100.02
+          },
+          {
+            "time": "2024-01-09",
+            "open": 100.02,
+            "high": 102.4,
+            "low": 99.22,
+            "close": 101.6
+          },
+          {
+            "time": "2024-01-10",
+            "open": 101.6,
+            "high": 104.34,
+            "low": 100.8,
+            "close": 103.54
+          },
+          {
+            "time": "2024-01-11",
+            "open": 103.54,
+            "high": 105.17,
+            "low": 102.74,
+            "close": 104.37
+          },
+          {
+            "time": "2024-01-12",
+            "open": 104.37,
+            "high": 105.17,
+            "low": 102.65,
+            "close": 103.45
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the candlestick anatomy exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-candlestick-anatomy-item-8",
+      "kcId": "kc-candlestick-anatomy",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of candlestick anatomy holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for candlestick anatomy item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-market-structure-item-1",
+      "kcId": "kc-market-structure",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about market structure is correct? (placeholder)",
+        "options": [
+          "Market structure — option A (placeholder)",
+          "Market structure — option B (placeholder, correct)",
+          "Market structure — option C (placeholder)",
+          "Market structure — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for market structure item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-market-structure-item-2",
+      "kcId": "kc-market-structure",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does market structure apply? (placeholder)",
+        "options": [
+          "Market structure — option A (placeholder)",
+          "Market structure — option B (placeholder, correct)",
+          "Market structure — option C (placeholder)",
+          "Market structure — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for market structure item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-market-structure-item-3",
+      "kcId": "kc-market-structure",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the market structure principle? (placeholder)",
+        "options": [
+          "Market structure — option A (placeholder)",
+          "Market structure — option B (placeholder, correct)",
+          "Market structure — option C (placeholder)",
+          "Market structure — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for market structure item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-market-structure-item-4",
+      "kcId": "kc-market-structure",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about market structure. (placeholder)",
+        "options": [
+          "Market structure — option A (placeholder)",
+          "Market structure — option B (placeholder, correct)",
+          "Market structure — option C (placeholder)",
+          "Market structure — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for market structure item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-market-structure-item-5",
+      "kcId": "kc-market-structure",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder market structure value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for market structure item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-market-structure-item-6",
+      "kcId": "kc-market-structure",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the market structure checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for market structure item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-market-structure-item-7",
+      "kcId": "kc-market-structure",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where market structure is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 103,
+            "high": 105.48,
+            "low": 102.2,
+            "close": 104.68
+          },
+          {
+            "time": "2024-01-02",
+            "open": 104.68,
+            "high": 107.38,
+            "low": 103.88,
+            "close": 106.58
+          },
+          {
+            "time": "2024-01-03",
+            "open": 106.58,
+            "high": 108.05,
+            "low": 105.78,
+            "close": 107.25
+          },
+          {
+            "time": "2024-01-04",
+            "open": 107.25,
+            "high": 108.05,
+            "low": 105.39,
+            "close": 106.19
+          },
+          {
+            "time": "2024-01-05",
+            "open": 106.19,
+            "high": 106.99,
+            "low": 103.4,
+            "close": 104.2
+          },
+          {
+            "time": "2024-01-06",
+            "open": 104.2,
+            "high": 105,
+            "low": 101.99,
+            "close": 102.79
+          },
+          {
+            "time": "2024-01-07",
+            "open": 102.79,
+            "high": 103.82,
+            "low": 101.99,
+            "close": 103.02
+          },
+          {
+            "time": "2024-01-08",
+            "open": 103.02,
+            "high": 105.52,
+            "low": 102.22,
+            "close": 104.72
+          },
+          {
+            "time": "2024-01-09",
+            "open": 104.72,
+            "high": 107.4,
+            "low": 103.92,
+            "close": 106.6
+          },
+          {
+            "time": "2024-01-10",
+            "open": 106.6,
+            "high": 108.04,
+            "low": 105.8,
+            "close": 107.24
+          },
+          {
+            "time": "2024-01-11",
+            "open": 107.24,
+            "high": 108.04,
+            "low": 105.35,
+            "close": 106.15
+          },
+          {
+            "time": "2024-01-12",
+            "open": 106.15,
+            "high": 106.95,
+            "low": 103.36,
+            "close": 104.16
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the market structure exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for market structure item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-market-structure-item-8",
+      "kcId": "kc-market-structure",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of market structure holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for market structure item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-support-resistance-item-1",
+      "kcId": "kc-support-resistance",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about support & resistance is correct? (placeholder)",
+        "options": [
+          "Support & resistance — option A (placeholder)",
+          "Support & resistance — option B (placeholder, correct)",
+          "Support & resistance — option C (placeholder)",
+          "Support & resistance — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for support & resistance item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-support-resistance-item-2",
+      "kcId": "kc-support-resistance",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does support & resistance apply? (placeholder)",
+        "options": [
+          "Support & resistance — option A (placeholder)",
+          "Support & resistance — option B (placeholder, correct)",
+          "Support & resistance — option C (placeholder)",
+          "Support & resistance — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for support & resistance item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-support-resistance-item-3",
+      "kcId": "kc-support-resistance",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the support & resistance principle? (placeholder)",
+        "options": [
+          "Support & resistance — option A (placeholder)",
+          "Support & resistance — option B (placeholder, correct)",
+          "Support & resistance — option C (placeholder)",
+          "Support & resistance — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for support & resistance item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-support-resistance-item-4",
+      "kcId": "kc-support-resistance",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about support & resistance. (placeholder)",
+        "options": [
+          "Support & resistance — option A (placeholder)",
+          "Support & resistance — option B (placeholder, correct)",
+          "Support & resistance — option C (placeholder)",
+          "Support & resistance — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for support & resistance item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-support-resistance-item-5",
+      "kcId": "kc-support-resistance",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder support & resistance value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for support & resistance item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-support-resistance-item-6",
+      "kcId": "kc-support-resistance",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the support & resistance checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for support & resistance item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-support-resistance-item-7",
+      "kcId": "kc-support-resistance",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where support & resistance is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 106,
+            "high": 108.62,
+            "low": 105.2,
+            "close": 107.82
+          },
+          {
+            "time": "2024-01-02",
+            "open": 107.82,
+            "high": 109.1,
+            "low": 107.02,
+            "close": 108.3
+          },
+          {
+            "time": "2024-01-03",
+            "open": 108.3,
+            "high": 109.1,
+            "low": 106.27,
+            "close": 107.07
+          },
+          {
+            "time": "2024-01-04",
+            "open": 107.07,
+            "high": 107.87,
+            "low": 104.27,
+            "close": 105.07
+          },
+          {
+            "time": "2024-01-05",
+            "open": 105.07,
+            "high": 105.87,
+            "low": 103.01,
+            "close": 103.81
+          },
+          {
+            "time": "2024-01-06",
+            "open": 103.81,
+            "high": 105.04,
+            "low": 103.01,
+            "close": 104.24
+          },
+          {
+            "time": "2024-01-07",
+            "open": 104.24,
+            "high": 106.84,
+            "low": 103.44,
+            "close": 106.04
+          },
+          {
+            "time": "2024-01-08",
+            "open": 106.04,
+            "high": 108.64,
+            "low": 105.24,
+            "close": 107.84
+          },
+          {
+            "time": "2024-01-09",
+            "open": 107.84,
+            "high": 109.09,
+            "low": 107.04,
+            "close": 108.29
+          },
+          {
+            "time": "2024-01-10",
+            "open": 108.29,
+            "high": 109.09,
+            "low": 106.24,
+            "close": 107.04
+          },
+          {
+            "time": "2024-01-11",
+            "open": 107.04,
+            "high": 107.84,
+            "low": 104.24,
+            "close": 105.04
+          },
+          {
+            "time": "2024-01-12",
+            "open": 105.04,
+            "high": 105.84,
+            "low": 103,
+            "close": 103.8
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the support & resistance exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for support & resistance item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-support-resistance-item-8",
+      "kcId": "kc-support-resistance",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of support & resistance holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for support & resistance item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-liquidity-basics-item-1",
+      "kcId": "kc-liquidity-basics",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about liquidity basics is correct? (placeholder)",
+        "options": [
+          "Liquidity basics — option A (placeholder)",
+          "Liquidity basics — option B (placeholder, correct)",
+          "Liquidity basics — option C (placeholder)",
+          "Liquidity basics — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-liquidity-basics-item-2",
+      "kcId": "kc-liquidity-basics",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does liquidity basics apply? (placeholder)",
+        "options": [
+          "Liquidity basics — option A (placeholder)",
+          "Liquidity basics — option B (placeholder, correct)",
+          "Liquidity basics — option C (placeholder)",
+          "Liquidity basics — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-liquidity-basics-item-3",
+      "kcId": "kc-liquidity-basics",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the liquidity basics principle? (placeholder)",
+        "options": [
+          "Liquidity basics — option A (placeholder)",
+          "Liquidity basics — option B (placeholder, correct)",
+          "Liquidity basics — option C (placeholder)",
+          "Liquidity basics — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-liquidity-basics-item-4",
+      "kcId": "kc-liquidity-basics",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about liquidity basics. (placeholder)",
+        "options": [
+          "Liquidity basics — option A (placeholder)",
+          "Liquidity basics — option B (placeholder, correct)",
+          "Liquidity basics — option C (placeholder)",
+          "Liquidity basics — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-liquidity-basics-item-5",
+      "kcId": "kc-liquidity-basics",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder liquidity basics value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-liquidity-basics-item-6",
+      "kcId": "kc-liquidity-basics",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the liquidity basics checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-liquidity-basics-item-7",
+      "kcId": "kc-liquidity-basics",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where liquidity basics is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 109,
+            "high": 110.08,
+            "low": 108.2,
+            "close": 109.28
+          },
+          {
+            "time": "2024-01-02",
+            "open": 109.28,
+            "high": 110.08,
+            "low": 107.11,
+            "close": 107.91
+          },
+          {
+            "time": "2024-01-03",
+            "open": 107.91,
+            "high": 108.71,
+            "low": 105.11,
+            "close": 105.91
+          },
+          {
+            "time": "2024-01-04",
+            "open": 105.91,
+            "high": 106.71,
+            "low": 104.01,
+            "close": 104.81
+          },
+          {
+            "time": "2024-01-05",
+            "open": 104.81,
+            "high": 106.24,
+            "low": 104.01,
+            "close": 105.44
+          },
+          {
+            "time": "2024-01-06",
+            "open": 105.44,
+            "high": 108.11,
+            "low": 104.64,
+            "close": 107.31
+          },
+          {
+            "time": "2024-01-07",
+            "open": 107.31,
+            "high": 109.82,
+            "low": 106.51,
+            "close": 109.02
+          },
+          {
+            "time": "2024-01-08",
+            "open": 109.02,
+            "high": 110.07,
+            "low": 108.22,
+            "close": 109.27
+          },
+          {
+            "time": "2024-01-09",
+            "open": 109.27,
+            "high": 110.07,
+            "low": 107.07,
+            "close": 107.87
+          },
+          {
+            "time": "2024-01-10",
+            "open": 107.87,
+            "high": 108.67,
+            "low": 105.08,
+            "close": 105.88
+          },
+          {
+            "time": "2024-01-11",
+            "open": 105.88,
+            "high": 106.68,
+            "low": 104.01,
+            "close": 104.81
+          },
+          {
+            "time": "2024-01-12",
+            "open": 104.81,
+            "high": 106.26,
+            "low": 104.01,
+            "close": 105.46
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the liquidity basics exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-liquidity-basics-item-8",
+      "kcId": "kc-liquidity-basics",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of liquidity basics holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for liquidity basics item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-fair-value-gaps-item-1",
+      "kcId": "kc-fair-value-gaps",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about fair value gaps is correct? (placeholder)",
+        "options": [
+          "Fair value gaps — option A (placeholder)",
+          "Fair value gaps — option B (placeholder, correct)",
+          "Fair value gaps — option C (placeholder)",
+          "Fair value gaps — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-fair-value-gaps-item-2",
+      "kcId": "kc-fair-value-gaps",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does fair value gaps apply? (placeholder)",
+        "options": [
+          "Fair value gaps — option A (placeholder)",
+          "Fair value gaps — option B (placeholder, correct)",
+          "Fair value gaps — option C (placeholder)",
+          "Fair value gaps — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-fair-value-gaps-item-3",
+      "kcId": "kc-fair-value-gaps",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the fair value gaps principle? (placeholder)",
+        "options": [
+          "Fair value gaps — option A (placeholder)",
+          "Fair value gaps — option B (placeholder, correct)",
+          "Fair value gaps — option C (placeholder)",
+          "Fair value gaps — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-fair-value-gaps-item-4",
+      "kcId": "kc-fair-value-gaps",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about fair value gaps. (placeholder)",
+        "options": [
+          "Fair value gaps — option A (placeholder)",
+          "Fair value gaps — option B (placeholder, correct)",
+          "Fair value gaps — option C (placeholder)",
+          "Fair value gaps — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-fair-value-gaps-item-5",
+      "kcId": "kc-fair-value-gaps",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder fair value gaps value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-fair-value-gaps-item-6",
+      "kcId": "kc-fair-value-gaps",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the fair value gaps checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-fair-value-gaps-item-7",
+      "kcId": "kc-fair-value-gaps",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where fair value gaps is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 112,
+            "high": 112.8,
+            "low": 109.69,
+            "close": 110.49
+          },
+          {
+            "time": "2024-01-02",
+            "open": 110.49,
+            "high": 111.29,
+            "low": 107.72,
+            "close": 108.52
+          },
+          {
+            "time": "2024-01-03",
+            "open": 108.52,
+            "high": 109.32,
+            "low": 106.79,
+            "close": 107.59
+          },
+          {
+            "time": "2024-01-04",
+            "open": 107.59,
+            "high": 109.2,
+            "low": 106.79,
+            "close": 108.4
+          },
+          {
+            "time": "2024-01-05",
+            "open": 108.4,
+            "high": 111.14,
+            "low": 107.6,
+            "close": 110.34
+          },
+          {
+            "time": "2024-01-06",
+            "open": 110.34,
+            "high": 112.73,
+            "low": 109.54,
+            "close": 111.93
+          },
+          {
+            "time": "2024-01-07",
+            "open": 111.93,
+            "high": 112.78,
+            "low": 111.13,
+            "close": 111.98
+          },
+          {
+            "time": "2024-01-08",
+            "open": 111.98,
+            "high": 112.78,
+            "low": 109.65,
+            "close": 110.45
+          },
+          {
+            "time": "2024-01-09",
+            "open": 110.45,
+            "high": 111.25,
+            "low": 107.69,
+            "close": 108.49
+          },
+          {
+            "time": "2024-01-10",
+            "open": 108.49,
+            "high": 109.29,
+            "low": 106.79,
+            "close": 107.59
+          },
+          {
+            "time": "2024-01-11",
+            "open": 107.59,
+            "high": 109.23,
+            "low": 106.79,
+            "close": 108.43
+          },
+          {
+            "time": "2024-01-12",
+            "open": 108.43,
+            "high": 111.18,
+            "low": 107.63,
+            "close": 110.38
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the fair value gaps exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-fair-value-gaps-item-8",
+      "kcId": "kc-fair-value-gaps",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of fair value gaps holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for fair value gaps item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-kill-zones-item-1",
+      "kcId": "kc-kill-zones",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about kill zones is correct? (placeholder)",
+        "options": [
+          "Kill zones — option A (placeholder)",
+          "Kill zones — option B (placeholder, correct)",
+          "Kill zones — option C (placeholder)",
+          "Kill zones — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for kill zones item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-kill-zones-item-2",
+      "kcId": "kc-kill-zones",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does kill zones apply? (placeholder)",
+        "options": [
+          "Kill zones — option A (placeholder)",
+          "Kill zones — option B (placeholder, correct)",
+          "Kill zones — option C (placeholder)",
+          "Kill zones — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for kill zones item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-kill-zones-item-3",
+      "kcId": "kc-kill-zones",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the kill zones principle? (placeholder)",
+        "options": [
+          "Kill zones — option A (placeholder)",
+          "Kill zones — option B (placeholder, correct)",
+          "Kill zones — option C (placeholder)",
+          "Kill zones — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for kill zones item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-kill-zones-item-4",
+      "kcId": "kc-kill-zones",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about kill zones. (placeholder)",
+        "options": [
+          "Kill zones — option A (placeholder)",
+          "Kill zones — option B (placeholder, correct)",
+          "Kill zones — option C (placeholder)",
+          "Kill zones — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for kill zones item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-kill-zones-item-5",
+      "kcId": "kc-kill-zones",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder kill zones value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for kill zones item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-kill-zones-item-6",
+      "kcId": "kc-kill-zones",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the kill zones checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for kill zones item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-kill-zones-item-7",
+      "kcId": "kc-kill-zones",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where kill zones is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 115,
+            "high": 115.8,
+            "low": 112.28,
+            "close": 113.08
+          },
+          {
+            "time": "2024-01-02",
+            "open": 113.08,
+            "high": 113.88,
+            "low": 111.53,
+            "close": 112.33
+          },
+          {
+            "time": "2024-01-03",
+            "open": 112.33,
+            "high": 114.12,
+            "low": 111.53,
+            "close": 113.32
+          },
+          {
+            "time": "2024-01-04",
+            "open": 113.32,
+            "high": 116.1,
+            "low": 112.52,
+            "close": 115.3
+          },
+          {
+            "time": "2024-01-05",
+            "open": 115.3,
+            "high": 117.57,
+            "low": 114.5,
+            "close": 116.77
+          },
+          {
+            "time": "2024-01-06",
+            "open": 116.77,
+            "high": 117.57,
+            "low": 115.82,
+            "close": 116.62
+          },
+          {
+            "time": "2024-01-07",
+            "open": 116.62,
+            "high": 117.42,
+            "low": 114.16,
+            "close": 114.96
+          },
+          {
+            "time": "2024-01-08",
+            "open": 114.96,
+            "high": 115.76,
+            "low": 112.25,
+            "close": 113.05
+          },
+          {
+            "time": "2024-01-09",
+            "open": 113.05,
+            "high": 113.85,
+            "low": 111.54,
+            "close": 112.34
+          },
+          {
+            "time": "2024-01-10",
+            "open": 112.34,
+            "high": 114.15,
+            "low": 111.54,
+            "close": 113.35
+          },
+          {
+            "time": "2024-01-11",
+            "open": 113.35,
+            "high": 116.14,
+            "low": 112.55,
+            "close": 115.34
+          },
+          {
+            "time": "2024-01-12",
+            "open": 115.34,
+            "high": 117.58,
+            "low": 114.54,
+            "close": 116.78
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the kill zones exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for kill zones item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-kill-zones-item-8",
+      "kcId": "kc-kill-zones",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of kill zones holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for kill zones item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-management-item-1",
+      "kcId": "kc-risk-management",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about risk management is correct? (placeholder)",
+        "options": [
+          "Risk management — option A (placeholder)",
+          "Risk management — option B (placeholder, correct)",
+          "Risk management — option C (placeholder)",
+          "Risk management — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for risk management item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-management-item-2",
+      "kcId": "kc-risk-management",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does risk management apply? (placeholder)",
+        "options": [
+          "Risk management — option A (placeholder)",
+          "Risk management — option B (placeholder, correct)",
+          "Risk management — option C (placeholder)",
+          "Risk management — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for risk management item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-management-item-3",
+      "kcId": "kc-risk-management",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the risk management principle? (placeholder)",
+        "options": [
+          "Risk management — option A (placeholder)",
+          "Risk management — option B (placeholder, correct)",
+          "Risk management — option C (placeholder)",
+          "Risk management — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for risk management item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-management-item-4",
+      "kcId": "kc-risk-management",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about risk management. (placeholder)",
+        "options": [
+          "Risk management — option A (placeholder)",
+          "Risk management — option B (placeholder, correct)",
+          "Risk management — option C (placeholder)",
+          "Risk management — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for risk management item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-management-item-5",
+      "kcId": "kc-risk-management",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder risk management value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for risk management item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-management-item-6",
+      "kcId": "kc-risk-management",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the risk management checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for risk management item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-management-item-7",
+      "kcId": "kc-risk-management",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where risk management is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 118,
+            "high": 118.8,
+            "low": 116.64,
+            "close": 117.44
+          },
+          {
+            "time": "2024-01-02",
+            "open": 117.44,
+            "high": 119.4,
+            "low": 116.64,
+            "close": 118.6
+          },
+          {
+            "time": "2024-01-03",
+            "open": 118.6,
+            "high": 121.4,
+            "low": 117.8,
+            "close": 120.6
+          },
+          {
+            "time": "2024-01-04",
+            "open": 120.6,
+            "high": 122.72,
+            "low": 119.8,
+            "close": 121.92
+          },
+          {
+            "time": "2024-01-05",
+            "open": 121.92,
+            "high": 122.72,
+            "low": 120.77,
+            "close": 121.57
+          },
+          {
+            "time": "2024-01-06",
+            "open": 121.57,
+            "high": 122.37,
+            "low": 119.01,
+            "close": 119.81
+          },
+          {
+            "time": "2024-01-07",
+            "open": 119.81,
+            "high": 120.61,
+            "low": 117.17,
+            "close": 117.97
+          },
+          {
+            "time": "2024-01-08",
+            "open": 117.97,
+            "high": 118.77,
+            "low": 116.65,
+            "close": 117.45
+          },
+          {
+            "time": "2024-01-09",
+            "open": 117.45,
+            "high": 119.43,
+            "low": 116.65,
+            "close": 118.63
+          },
+          {
+            "time": "2024-01-10",
+            "open": 118.63,
+            "high": 121.43,
+            "low": 117.83,
+            "close": 120.63
+          },
+          {
+            "time": "2024-01-11",
+            "open": 120.63,
+            "high": 122.73,
+            "low": 119.83,
+            "close": 121.93
+          },
+          {
+            "time": "2024-01-12",
+            "open": 121.93,
+            "high": 122.73,
+            "low": 120.75,
+            "close": 121.55
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the risk management exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for risk management item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-management-item-8",
+      "kcId": "kc-risk-management",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of risk management holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for risk management item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-position-sizing-item-1",
+      "kcId": "kc-position-sizing",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Which statement about position sizing is correct? (placeholder)",
+        "options": [
+          "Position sizing — option A (placeholder)",
+          "Position sizing — option B (placeholder, correct)",
+          "Position sizing — option C (placeholder)",
+          "Position sizing — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for position sizing item 1: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-position-sizing-item-2",
+      "kcId": "kc-position-sizing",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "In the scenario described, how does position sizing apply? (placeholder)",
+        "options": [
+          "Position sizing — option A (placeholder)",
+          "Position sizing — option B (placeholder, correct)",
+          "Position sizing — option C (placeholder)",
+          "Position sizing — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for position sizing item 2: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-position-sizing-item-3",
+      "kcId": "kc-position-sizing",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "Which subtle case violates the position sizing principle? (placeholder)",
+        "options": [
+          "Position sizing — option A (placeholder)",
+          "Position sizing — option B (placeholder, correct)",
+          "Position sizing — option C (placeholder)",
+          "Position sizing — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Placeholder explanation for position sizing item 3: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-position-sizing-item-4",
+      "kcId": "kc-position-sizing",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Select every true statement about position sizing. (placeholder)",
+        "options": [
+          "Position sizing — option A (placeholder)",
+          "Position sizing — option B (placeholder, correct)",
+          "Position sizing — option C (placeholder)",
+          "Position sizing — option D (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          1,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for position sizing item 4: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-position-sizing-item-5",
+      "kcId": "kc-position-sizing",
+      "type": "numeric",
+      "difficulty": "easy",
+      "payload": {
+        "type": "numeric",
+        "question": "Compute the placeholder position sizing value.",
+        "unit": "pts",
+        "min": 0,
+        "max": 100,
+        "step": 0.5
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 42,
+        "tolerance": 0.5
+      },
+      "explanation": "Placeholder explanation for position sizing item 5: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-position-sizing-item-6",
+      "kcId": "kc-position-sizing",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps of the position sizing checklist. (placeholder)",
+        "entries": [
+          "Step one (placeholder)",
+          "Step two (placeholder)",
+          "Step three (placeholder)",
+          "Step four (placeholder)"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Placeholder explanation for position sizing item 6: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-position-sizing-item-7",
+      "kcId": "kc-position-sizing",
+      "type": "annotation",
+      "difficulty": "hard",
+      "payload": {
+        "type": "annotation",
+        "question": "Mark the zone on this simulated chart where position sizing is in play. (placeholder)",
+        "candles": [
+          {
+            "time": "2024-01-01",
+            "open": 121,
+            "high": 123.11,
+            "low": 120.2,
+            "close": 122.31
+          },
+          {
+            "time": "2024-01-02",
+            "open": 122.31,
+            "high": 125.11,
+            "low": 121.51,
+            "close": 124.31
+          },
+          {
+            "time": "2024-01-03",
+            "open": 124.31,
+            "high": 126.28,
+            "low": 123.51,
+            "close": 125.48
+          },
+          {
+            "time": "2024-01-04",
+            "open": 125.48,
+            "high": 126.28,
+            "low": 124.14,
+            "close": 124.94
+          },
+          {
+            "time": "2024-01-05",
+            "open": 124.94,
+            "high": 125.74,
+            "low": 122.29,
+            "close": 123.09
+          },
+          {
+            "time": "2024-01-06",
+            "open": 123.09,
+            "high": 123.89,
+            "low": 120.54,
+            "close": 121.34
+          },
+          {
+            "time": "2024-01-07",
+            "open": 121.34,
+            "high": 122.14,
+            "low": 120.21,
+            "close": 121.01
+          },
+          {
+            "time": "2024-01-08",
+            "open": 121.01,
+            "high": 123.15,
+            "low": 120.21,
+            "close": 122.35
+          },
+          {
+            "time": "2024-01-09",
+            "open": 122.35,
+            "high": 125.15,
+            "low": 121.55,
+            "close": 124.35
+          },
+          {
+            "time": "2024-01-10",
+            "open": 124.35,
+            "high": 126.29,
+            "low": 123.55,
+            "close": 125.49
+          },
+          {
+            "time": "2024-01-11",
+            "open": 125.49,
+            "high": 126.29,
+            "low": 124.11,
+            "close": 124.91
+          },
+          {
+            "time": "2024-01-12",
+            "open": 124.91,
+            "high": 125.71,
+            "low": 122.25,
+            "close": 123.05
+          }
+        ],
+        "describe": "A simulated 12-candle daily series used for the position sizing exercise; prices drift in a gentle sine pattern between roughly 96 and 108."
+      },
+      "answerKey": {
+        "type": "annotation",
+        "zone": {
+          "from": "2024-01-04",
+          "to": "2024-01-07",
+          "priceLow": 98,
+          "priceHigh": 104
+        }
+      },
+      "explanation": "Placeholder explanation for position sizing item 7: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-position-sizing-item-8",
+      "kcId": "kc-position-sizing",
+      "type": "tf-confidence",
+      "difficulty": "easy",
+      "payload": {
+        "type": "tf-confidence",
+        "statement": "True or false: the placeholder definition of position sizing holds. (placeholder)"
+      },
+      "answerKey": {
+        "type": "tf-confidence",
+        "value": true
+      },
+      "explanation": "Placeholder explanation for position sizing item 8: the correct response follows from the definition introduced in the lesson.",
+      "isPretestEligible": true
+    }
+  ]
+}

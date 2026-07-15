@@ -13,7 +13,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "emulators": "firebase emulators:start",
+    "test:rules": "npx -y firebase-tools emulators:exec --only firestore --project demo-trademind \"vitest run --config vitest.rules.config.ts\"",
+    "seed": "tsx scripts/seed.ts",
+    "emulators": "npx -y firebase-tools emulators:start --project demo-trademind",
     "prepare": "husky"
   },
   "dependencies": {
@@ -42,12 +44,14 @@
     "@vitejs/plugin-react": "^6.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.25",
+    "firebase-admin": "^14.1.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "postcss": "^8",
     "prettier": "^3.9.5",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.23.1",
     "typescript": "^5",
     "vitest": "^4.1.10"
   }
