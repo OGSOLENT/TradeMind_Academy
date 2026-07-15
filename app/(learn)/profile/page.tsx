@@ -1,0 +1,191 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { MASTERY_THRESHOLD } from "@/lib/bkt";
+import { getFirebase } from "@/lib/firebase/client";
+import { getUserProfile } from "@/lib/firebase/repos";
+import { useAuth } from "@/lib/firebase/auth-context";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+
+const COURSE_ID = "trading-foundations";
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+interface Badge {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  earned: boolean;
+}
+
+export default function ProfilePage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+
+  const { data, isPending } = useQuery({
+    queryKey: ["profile-page", user?.uid],
+    enabled: !!user,
+    queryFn: async () => {
+      const { db } = getFirebase();
+      const [profile, masterySnap, sessionsSnap] = await Promise.all([
+        getUserProfile(db, user!.uid),
+        getDoc(doc(db, "users", user!.uid, "mastery", COURSE_ID)),
+        getDocs(collection(db, "users", user!.uid, "sessions")),
+      ]);
+      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<
+        string,
+        { pL: number; attempts: number }
+      >;
+      const sessions = sessionsSnap.docs.map((d) => ({
+        type: d.data().type as string,
+        startedAt: (d.data().startedAt?.toMillis?.() as number | undefined) ?? 0,
+        ended: d.data().endedAt !== null,
+      }));
+      return { profile, kcStates, sessions };
+    },
+  });
+
+  if (isPending || !data?.profile) {
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 pt-4">
+        <Skeleton className="h-24 w-full rounded-card" />
+        <Skeleton className="h-40 w-full rounded-card" />
+      </div>
+    );
+  }
+
+  const { profile, kcStates, sessions } = data;
+  const mastered = Object.values(kcStates).filter((s) => s.pL >= MASTERY_THRESHOLD).length;
+  const attempts = Object.values(kcStates).reduce((n, s) => n + s.attempts, 0);
+  const activeDays = new Set(
+    sessions.filter((s) => Date.now() - s.startedAt < 7 * DAY_MS).map((s) => Math.floor(s.startedAt / DAY_MS)),
+  ).size;
+
+  const badges: Badge[] = [
+    {
+      id: "calibrated",
+      icon: "◉",
+      title: "Calibrated",
+      description: "Completed the placement test",
+      earned: sessions.some((s) => s.type === "placement" && s.ended),
+    },
+    {
+      id: "first-session",
+      icon: "▶",
+      title: "First steps",
+      description: "Finished a practice session",
+      earned: sessions.some((s) => s.type === "topic-test" && s.ended),
+    },
+    {
+      id: "first-mastery",
+      icon: "✦",
+      title: "First mastery",
+      description: "Took a topic past 80%",
+      earned: mastered >= 1,
+    },
+    {
+      id: "half-way",
+      icon: "◈",
+      title: "Halfway there",
+      description: "Mastered 4 Level-1 topics",
+      earned: mastered >= 4,
+    },
+    {
+      id: "hundred",
+      icon: "Σ",
+      title: "Century",
+      description: "100 questions answered",
+      earned: attempts >= 100,
+    },
+    {
+      id: "streak",
+      icon: "⚡",
+      title: "In rhythm",
+      description: "Active 3 days this week",
+      earned: activeDays >= 3,
+    },
+  ];
+
+  async function onSignOut() {
+    const { auth } = getFirebase();
+    await signOut(auth);
+    queryClient.clear();
+    router.push("/");
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl space-y-6">
+      <Card level="elevated" className="flex items-center gap-5 p-6">
+        <div
+          aria-hidden="true"
+          className="flex h-16 w-16 items-center justify-center rounded-pill bg-accent/15 text-2xl font-semibold text-accent-bright"
+        >
+          {profile.displayName.slice(0, 1).toUpperCase()}
+        </div>
+        <div className="min-w-0 flex-1">
+          <h1 className="text-headline-md text-fg-primary">{profile.displayName}</h1>
+          <p className="mt-0.5 text-sm text-fg-secondary">
+            Learning since{" "}
+            {profile.createdAt?.toDate?.().toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }) ?? "recently"}
+          </p>
+        </div>
+        <Button variant="ghost" size="sm" onClick={onSignOut}>
+          Sign out
+        </Button>
+      </Card>
+
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: "Sessions", value: sessions.filter((s) => s.ended).length },
+          { label: "Answers", value: attempts },
+          { label: "Mastered", value: mastered },
+        ].map(({ label, value }) => (
+          <Card key={label} level="base" className="p-5 text-center">
+            <p className="num text-3xl text-fg-primary">{value}</p>
+            <p className="mt-1 text-label-caps uppercase tracking-wider text-fg-secondary">{label}</p>
+          </Card>
+        ))}
+      </div>
+
+      <Card level="elevated" className="p-6">
+        <h2 className="text-body-base font-medium text-fg-primary">Badges</h2>
+        <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {badges.map((badge) => (
+            <li
+              key={badge.id}
+              className={cn(
+                "rounded-control p-4 text-center shadow-hairline",
+                badge.earned ? "bg-mastery/5" : "opacity-40",
+              )}
+            >
+              <p aria-hidden="true" className={cn("text-2xl", badge.earned ? "text-mastery-bright" : "text-fg-muted")}>
+                {badge.icon}
+              </p>
+              <p className="mt-2 text-sm font-medium text-fg-primary">{badge.title}</p>
+              <p className="mt-0.5 text-xs text-fg-secondary">{badge.description}</p>
+              <span className="sr-only">{badge.earned ? "Earned" : "Not yet earned"}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+
+      <p className="text-center text-sm text-fg-secondary">
+        <Link href="/settings" className="text-accent-bright hover:underline">
+          Settings — accessibility, your data, account
+        </Link>
+      </p>
+    </div>
+  );
+}

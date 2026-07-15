@@ -44,3 +44,4 @@ emulator-data/
 
 # source zip (extracted copy lives in design/prototype)
 stitch_trademind_intelligent_tutor.zip
+export/
