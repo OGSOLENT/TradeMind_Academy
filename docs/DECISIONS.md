@@ -8,3 +8,7 @@ One line per significant decision: date · decision · why.
 - 2026-07-15 · Two glass tokens: `surface-glass rgba(255,255,255,0.04)` (build prompt, cards/overlays) and `glass-nav rgba(19,19,27,0.4)` (landing prototype nav) — both always paired with blur(20px).
 - 2026-07-15 · Next.js 14.2 + React 18 + Tailwind 3.4 (not Next 15/Tailwind 4) — build prompt mandates `tailwind.config.ts` token config (Tailwind 3 idiom) and this is the stable, battle-tested combo for Framer Motion/r3f; "Next.js 14+" satisfied.
 - 2026-07-15 · Phase approval gates skipped at user's explicit instruction ("GO FULL AGENT MODE", 2026-07-15) — plans and verification evidence are still presented per phase in the summary instead.
+- 2026-07-15 · `fg-primary` = `#E4E1ED`, not the build prompt's `#EDEDF2` — the prototype uses #E4E1ED uniformly (DESIGN.md `on-surface` + body colour of every sampled screen); prototype wins on conflict per §3.
+- 2026-07-15 · `fg-muted #5B5B6B` reserved for decorative/large text only — it fails WCAG AA small-text contrast on `bg-deep` (≈3:1); hints and captions use `fg-secondary` instead (Lighthouse contrast audit, Phase 1).
+- 2026-07-15 · r3f pinned to `@react-three/fiber@8` + `drei@9` — v9/v10 require React 19; project is React 18 (Next 14.2).
+- 2026-07-15 · `firebase-tools` not vendored as a devDependency (300MB+); emulator config committed (firebase.json, deny-all rules) and the suite is exercised from Phase 2 via `npx firebase-tools`.
