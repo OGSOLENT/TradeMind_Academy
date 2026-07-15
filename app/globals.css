@@ -107,3 +107,13 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* In-app reduced-motion setting (users/{uid}.settings.reducedMotion) */
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 150ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 150ms !important;
+  scroll-behavior: auto !important;
+}

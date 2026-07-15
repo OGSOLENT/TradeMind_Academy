@@ -76,6 +76,25 @@ Engineering notes for the report:
 
 Screenshots: `docs/screenshots/quiz-question.png`, `quiz-feedback.png`.
 
+## Phase 5 — Learner-support features (2026-07-15, tag `v0.5-phase5`)
+
+| Check | Result |
+| --- | --- |
+| `npm run lint` / `npm run typecheck` / build | ✅ clean (16 routes) |
+| `npm run test` | ✅ 54/54 |
+| `npm run test:e2e` | ✅ **18/18** (adds learner-support spec) |
+| Answer review | ✅ per-item verdicts, learner answer vs key, explanations; annotation charts re-render with the learner's marker + correct zone overlay |
+| Settings | ✅ colour-blind candles flip `--bull/--bear` live (asserted via `data-candles`), font scale 100/115/130% on the root, in-app reduced motion, **Download-my-data** produces a CSV (download event asserted), **Delete account** gated by typing DELETE with a working 5-second Undo |
+| Mistake bank | ✅ missed items grouped by KC with re-drill (fixed `review`-type session) |
+| Review queue | ✅ amber "fading skills" card stack (3+ days unseen, unmastered), swipe-to-defer fly-off; empty state verified |
+| Profile | ✅ stats + six computed badges + sign out |
+| `scripts/export.ts` | ✅ 164 responses exported to tidy CSV from live emulator data — `pLBefore`/`pLAfter` chains match the hand-computed BKT fixtures (0.25 → 0.648 → 0.905…) |
+
+Note: account deletion removes the auth user + profile immediately; purging
+the (rules-protected, create-only) response log requires the admin tooling —
+by design, so learner data can't be silently destroyed client-side. Recorded
+in DECISIONS.md.
+
 ## Phase 4 — BKT + routing + the visible mind (2026-07-15, tag `v0.4-phase4`)
 
 The dissertation core. All checks with emulators + seed running.

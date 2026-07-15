@@ -502,6 +502,9 @@ function SessionSummary() {
       )}
 
       <div className="flex flex-wrap justify-center gap-3">
+        <Link href={`/quiz/${s.sessionId}/review`}>
+          <Button variant="ghost">Review answers</Button>
+        </Link>
         <Link href={unlocked.length > 0 ? `/skill-tree?unlocked=${unlocked.join(",")}` : "/skill-tree"}>
           <Button variant="secondary">See your map</Button>
         </Link>
