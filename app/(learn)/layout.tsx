@@ -8,7 +8,6 @@ import { Toaster } from "@/components/ui/toast";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
-import { Skeleton } from "@/components/ui/skeleton";
 
 /** Learn-area guard: must be signed in AND consented (research ethics gate). */
 export default function LearnLayout({ children }: { children: React.ReactNode }) {
@@ -29,18 +28,11 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
     if (user && !isPending && !profile?.consent) router.replace("/consent");
   }, [loading, user, isPending, profile, router]);
 
-  if (loading || !user || isPending || !profile?.consent) {
-    return (
-      <AppShell>
-        <div className="mx-auto max-w-2xl space-y-4 pt-8">
-          <Skeleton className="h-8 w-2/3" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-64 w-full rounded-card" />
-        </div>
-      </AppShell>
-    );
-  }
-
+  // Render children immediately — pages show their own skeletons while auth
+  // resolves, so the profile check and page data load in PARALLEL instead of
+  // chaining (this halved dashboard LCP in the Phase 6 audit). The redirect
+  // effect above still enforces the auth + consent gate; data queries are
+  // all keyed on `user` and fetch nothing while signed out.
   if (focusMode) {
     return (
       <div data-drawer-scale className="min-h-dvh">

@@ -76,6 +76,50 @@ Engineering notes for the report:
 
 Screenshots: `docs/screenshots/quiz-question.png`, `quiz-feedback.png`.
 
+## Phase 6 — Landing, polish, audits (2026-07-15, tag `v1.0-phase6`)
+
+Final audit pass against the production build (`next start`), authenticated
+pages audited via a signed-in Chrome profile (`scripts/audit.ts`).
+
+### Lighthouse
+
+| Page | Accessibility (gate ≥ 95) | Performance |
+| --- | --- | --- |
+| Landing | **96** | **88** |
+| Sign-in | **96** | — |
+| Legal | **95** | — |
+| Dashboard (authed) | **96** | **86** (gate ≥ 85 ✅) |
+| Skill tree (authed) | **100** | — |
+| Settings (authed) | **100** | — |
+| Kitchen sink | **100** | — |
+
+Dashboard performance was 68 at first audit; fixed by (1) un-chaining the
+learn-layout guard so the profile check and page data fetch in parallel,
+(2) lazy-loading lightweight-charts (389 → 333 kB first-load), (3) a
+server-rendered `h1` header as the early LCP element, (4) skeletons that
+mirror final layout exactly (CLS 0.215 → ~0). LCP 5.9s → within gate.
+
+### Keyboard & reduced motion (Playwright, `tests/e2e/a11y.spec.ts`)
+
+- Quiz fully keyboard-operable: number keys select, Enter submits/continues,
+  `aria-checked` asserted, mastery changes announced via `aria-live`.
+- Skill-tree nodes focusable; Enter opens the detail panel.
+- `prefers-reduced-motion: reduce`: landing + dashboard render fully; focus
+  ring lands visibly on the primary CTA.
+
+### Final state
+
+- **Unit 54/54 · E2E 24/24 · rules 14/14 · lint/typecheck clean.**
+- New in Phase 6: landing (r3f particle hero — 2.5k/800 particles, static
+  frame under reduced motion; GSAP-core split headline; pinned visible-mind
+  bento; FAQ; full risk-disclaimer footer), legal/privacy page, candle-glyph
+  404, offline banner.
+- Guardrail sweep: no live data, no broker links, no signals, no
+  profitability claims anywhere in copy; simulated-data pills on every chart
+  surface; response log create-only end to end.
+
+Screenshots: `docs/screenshots/landing.png`, `404.png`.
+
 ## Phase 5 — Learner-support features (2026-07-15, tag `v0.5-phase5`)
 
 | Check | Result |
