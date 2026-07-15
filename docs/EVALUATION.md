@@ -75,3 +75,49 @@ Engineering notes for the report:
   Pixel 7 emulation (see DECISIONS.md).
 
 Screenshots: `docs/screenshots/quiz-question.png`, `quiz-feedback.png`.
+
+## Phase 4 — BKT + routing + the visible mind (2026-07-15, tag `v0.4-phase4`)
+
+The dissertation core. All checks with emulators + seed running.
+
+| Check | Result |
+| --- | --- |
+| `npm run lint` / `npm run typecheck` | ✅ clean |
+| `npm run test` (Vitest unit) | ✅ **54/54** — adds routing decision table, prereq unlock gating (boundary at exactly 0.8), difficulty ladder, non-repetition, remediation trigger (2 consecutive wrongs → easy item), `newlyUnlocked` ceremony trigger |
+| `npm run test:e2e` | ✅ **14/14** (kitchen sink, auth, quiz offline, adaptive journey — desktop + mobile) |
+| Done-criterion journey | ✅ **placement (8 questions) → model-initialization moment ("Your starting map.") → dashboard routes to lowest-mastery KC → lesson → adaptive topic test (mastery HUD live, "Why this question?" shows real model values) → mastery celebration at pL ≥ 0.8 → summary "65% → 100%" → skill tree: mastered ✓ / newly available / locked states all asserted** |
+| Simulated learners | ✅ table below — 3/3 sanity behaviours, parameter-recovery RMSE reported |
+
+Behaviour notes for the report:
+- Adaptive sessions may end before the nominal 10 questions when the unlocked
+  item pool is exhausted (one unlocked KC × 8 items after a skipped
+  placement) — correct routing behaviour, asserted in the offline E2E by
+  matching the Firestore response count to the actual answers given.
+- Placement responses are logged with `pLBefore == pLAfter` (no learning step
+  during measurement); `initialiseFromPlacement` then seeds each KC's prior —
+  placement evidence is analysable separately in the dataset.
+- pL0 recovery (RMSE ≈ 0.23) is expectedly weak at 40 binary observations —
+  the prior is only weakly identified once pT lifts pL; pT recovers well
+  (RMSE ≈ 0.11). Honest limitation to discuss in the evaluation chapter.
+
+Screenshots: `docs/screenshots/placement-intro.png`, `init-moment.png`,
+`dashboard.png`, `quiz-hud-why.png`, `skill-tree.png`.
+
+<!-- SIMULATION:START -->
+
+### Simulated-learner harness (BKT validation)
+
+Generated 2026-07-15 by `scripts/simulate.ts` (seeded, reproducible).
+
+| Metric | Value |
+| --- | --- |
+| Learners (N) | 200 |
+| Opportunities per learner | 40 |
+| Sanity 1 — correct streak crosses 0.8 | 2 items ✅ |
+| Sanity 2 — wrong streak stays < 0.4 | max pL 0.1552 ✅ |
+| Sanity 3 — improving learners climb | 99.0% of cohort ✅ |
+| RMSE(pL0) — recovery vs ground truth | 0.2348 (bias -0.1023) |
+| RMSE(pT) — recovery vs ground truth | 0.1139 (bias 0.0609) |
+| Ground-truth priors | pL0 ~ U(0.05, 0.45) · pT ~ U(0.05, 0.25) · pG=0.2 · pS=0.1 fixed |
+
+<!-- SIMULATION:END -->
