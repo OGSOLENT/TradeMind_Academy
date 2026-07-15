@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * TradeMind "Void-Plus" palette.
+ * Extracted from design/prototype: trademind_design_system/DESIGN.md (canonical prose),
+ * trademind_landing_page/code.html and trademind_dashboard/code.html (usage evidence).
+ * The prototype wins on conflict with the build prompt — see docs/DECISIONS.md.
+ */
+:root {
+  --bg-deep: #050507; /* Level 0 — document body. Never pure #000. */
+  --bg-base: #0a0a0f; /* Level 1 — primary workspace containers */
+  --bg-elevated: #101018; /* Level 2 — floating panels, interactive cards */
+  --surface-glass: rgba(255, 255, 255, 0.04); /* always pair with blur(20px) */
+  --glass-nav: rgba(19, 19, 27, 0.4); /* landing nav glass, blur(20px) */
+
+  --border-hair: rgba(255, 255, 255, 0.08);
+  --border-edge: rgba(255, 255, 255, 0.05); /* top-edge inner highlight */
+
+  --fg-primary: #e4e1ed;
+  --fg-secondary: #908f9e;
+  --fg-muted: #5b5b6b;
+
+  --accent: #5e6ad2; /* indigo — actions, focus, active paths */
+  --accent-bright: #bdc2ff; /* indigo tone for text/links on dark */
+  --accent-glow: rgba(94, 106, 210, 0.25);
+
+  --mastery: #2dd4bf; /* teal — progress, correct, mastered */
+  --mastery-bright: #44e2cd; /* teal tone for data text on dark */
+  --mastery-glow: rgba(45, 212, 191, 0.25);
+
+  --warning: #ffb955; /* amber — remediation, fading skills, soft losses */
+  --danger: #ffb4ab; /* soft red — never harsh, never flashed */
+  --danger-deep: #93000a; /* ghost backgrounds behind danger text */
+
+  /* Candle semantics — swapped by colour-blind mode, so charts must
+     reference these vars, never the raw mastery/danger tokens. */
+  --bull: #2dd4bf;
+  --bear: #ffb4ab;
+}
+
+[data-candles='colorblind'] {
+  --bull: #3b82f6;
+  --bear: #f59e0b;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--bg-deep);
+    color: var(--fg-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--accent-glow);
+    color: var(--fg-primary);
+  }
+
+  /* Accessibility exception to the 1px-hairline rule: focus is always 2px. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  /* All numerals in the UI: JetBrains Mono, tabular. */
+  .num {
+    font-family: var(--font-jetbrains), monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .surface-glass {
+    background-color: var(--surface-glass);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .glass-nav {
+    background-color: var(--glass-nav);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Level 2 "internal illumination": top-edge catches light from above. */
+  .edge-lit {
+    box-shadow:
+      inset 0 1px 0 0 var(--border-edge),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}
