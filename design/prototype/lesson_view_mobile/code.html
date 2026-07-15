@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Lesson View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@500;600&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#0d0d15",
+                      "surface-container": "#1f1f27",
+                      "surface-container-high": "#292932",
+                      "primary-fixed": "#dfe0ff",
+                      "on-tertiary-container": "#fffaf9",
+                      "inverse-surface": "#e4e1ed",
+                      "surface-tint": "#bdc2ff",
+                      "surface-container-highest": "#34343d",
+                      "outline-variant": "#454652",
+                      "inverse-on-surface": "#302f38",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#34343d",
+                      "on-primary-container": "#fdfaff",
+                      "on-tertiary-fixed": "#291800",
+                      "tertiary-fixed-dim": "#ffb955",
+                      "surface-container-low": "#1b1b23",
+                      "tertiary": "#ffb955",
+                      "on-primary": "#121f8b",
+                      "surface-bright": "#393841",
+                      "inverse-primary": "#4854bb",
+                      "on-secondary-container": "#004d44",
+                      "on-secondary": "#003731",
+                      "on-surface-variant": "#c6c5d5",
+                      "on-primary-fixed": "#000965",
+                      "on-secondary-fixed-variant": "#005047",
+                      "on-secondary-fixed": "#00201c",
+                      "on-error-container": "#ffdad6",
+                      "surface": "#13131b",
+                      "secondary": "#44e2cd",
+                      "primary-container": "#5e6ad2",
+                      "secondary-fixed-dim": "#3cddc7",
+                      "on-tertiary-fixed-variant": "#633f00",
+                      "outline": "#908f9e",
+                      "on-background": "#e4e1ed",
+                      "tertiary-fixed": "#ffddb4",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "on-tertiary": "#452b00",
+                      "background": "#13131b",
+                      "surface-dim": "#13131b",
+                      "primary": "#bdc2ff",
+                      "on-primary-fixed-variant": "#2e3aa2",
+                      "secondary-fixed": "#62fae3",
+                      "on-surface": "#e4e1ed",
+                      "secondary-container": "#03c6b2",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "tertiary-container": "#a06800"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "40px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "20px",
+                      "margin-safe": "32px"
+              },
+              "fontFamily": {
+                      "data-tabular": [
+                              "Geist Mono"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Geist Mono"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "data-tabular": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base atmospheric effects */
+        body {
+            background-color: #0d0d15;
+            background-image: radial-gradient(circle at 50% 0%, rgba(94, 106, 210, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+        
+        /* Spring physics transition helper */
+        .spring-transition {
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-duration: 400ms;
+        }
+        
+        /* Hide scrollbar for clean aesthetic */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen flex flex-col relative pb-[100px]">
+<!-- Contextual Header (Suppresses Global Nav for Learning Intent) -->
+<header class="sticky top-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md flex flex-col">
+<div class="flex justify-between items-center h-16 px-md w-full">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">close</span>
+</button>
+<div class="font-label-caps text-label-caps text-on-surface-variant tracking-widest uppercase">
+                Lesson 4.2
+            </div>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+<!-- Reading Progress Bar (Mastery Teal) -->
+<div class="w-full h-[2px] bg-surface-container">
+<div class="h-full bg-secondary w-[68%] shadow-[0_0_10px_rgba(68,226,205,0.5)]"></div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-md pt-lg flex flex-col gap-lg w-full max-w-3xl mx-auto">
+<!-- Header Section -->
+<section class="flex flex-col gap-sm">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface font-bold tracking-tight">Mean Reversion Dynamics</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Analyzing standard deviation bands to identify overextended price action before the elastic snap-back.</p>
+</section>
+<!-- Technical Text Block 1 -->
+<section class="font-body-base text-body-base text-on-surface leading-relaxed space-y-md">
+<p>
+                When an asset's price moves dramatically away from its historical mean, mathematical probability suggests an eventual return to that average. This is the core principle of mean reversion.
+            </p>
+<p>
+                However, executing trades purely on deviation is hazardous. We utilize <span class="text-primary-container font-medium">Bollinger Bands</span> alongside volume profile to distinguish between a genuine trend breakdown and a temporary statistical anomaly.
+            </p>
+</section>
+<!-- Data Density Block -->
+<section class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-sm flex flex-col justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Z-Score Threshold</span>
+<span class="font-data-tabular text-data-tabular text-on-surface">+2.5σ</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-sm flex flex-col justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-xs">Expected Return Rate</span>
+<span class="font-data-tabular text-data-tabular text-secondary">68.2%</span>
+</div>
+</section>
+<!-- Interactive Chart Placeholder (CSS Driven) -->
+<section class="relative w-full h-64 bg-[#0A0A0F] border border-outline-variant/20 rounded-lg overflow-hidden flex flex-col shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+<!-- Terminal Header -->
+<div class="flex justify-between items-center px-sm py-xs border-b border-outline-variant/20 bg-surface-container-low/50">
+<span class="font-label-caps text-label-caps text-on-surface-variant">BTC/USD • 15M</span>
+<div class="flex gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary/50"></span>
+<span class="w-2 h-2 rounded-full bg-error/50"></span>
+</div>
+</div>
+<!-- Grid Background -->
+<div class="absolute inset-0 top-8 bg-[linear-gradient(to_right,#454652_1px,transparent_1px),linear-gradient(to_bottom,#454652_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-[0.15]"></div>
+<!-- Candlestick representation (abstract) -->
+<div class="relative flex-1 flex items-end justify-between px-md pb-md z-10 w-full">
+<!-- Trend line -->
+<svg class="absolute inset-0 w-full h-full pb-md" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="opacity-50" d="M0,80 Q25,60 50,70 T100,20" fill="none" stroke="#5e6ad2" stroke-width="0.5"></path>
+<!-- Upper Band -->
+<path class="opacity-50" d="M0,60 Q25,40 50,50 T100,5" fill="none" stroke="#454652" stroke-dasharray="1,1" stroke-width="0.5"></path>
+</svg>
+<!-- Candles -->
+<div class="flex flex-col items-center justify-end h-full w-[8%]"><div class="w-px h-[40%] bg-on-surface-variant"><div class="w-full h-[60%] bg-secondary mt-[20%]"></div></div></div>
+<div class="flex flex-col items-center justify-end h-full w-[8%]"><div class="w-px h-[50%] bg-on-surface-variant"><div class="w-full h-[70%] bg-secondary mt-[10%]"></div></div></div>
+<div class="flex flex-col items-center justify-end h-full w-[8%]"><div class="w-px h-[65%] bg-on-surface-variant"><div class="w-full h-[40%] bg-error mt-[30%]"></div></div></div>
+<div class="flex flex-col items-center justify-end h-full w-[8%]"><div class="w-px h-[80%] bg-secondary/80 relative"><div class="w-[3px] -ml-[1px] h-[30%] bg-secondary absolute top-[10%] shadow-[0_0_8px_rgba(68,226,205,0.8)]"></div></div></div> <!-- Breakout -->
+<div class="flex flex-col items-center justify-end h-full w-[8%]"><div class="w-px h-[70%] bg-on-surface-variant"><div class="w-full h-[80%] bg-error mt-[10%]"></div></div></div>
+</div>
+</section>
+<!-- Technical Text Block 2 -->
+<section class="font-body-base text-body-base text-on-surface leading-relaxed">
+<p>
+                Notice the fourth interval in the chart above. The price pierces the upper standard deviation band (+2σ). In isolation, retail traders might perceive this as a breakout. However, without expanding volume, it is statistically more probable to snap back to the mean.
+            </p>
+</section>
+<!-- Inline Knowledge Check (Glassmorphism) -->
+<section class="relative mt-md p-md rounded-xl bg-surface-container-high/40 backdrop-blur-[20px] border border-outline-variant/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] overflow-hidden">
+<!-- Aurora Blob Background -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center gap-sm mb-md relative z-10">
+<span class="material-symbols-outlined text-secondary text-[18px]">psychology</span>
+<span class="font-label-caps text-label-caps text-secondary tracking-wider">Knowledge Check</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg relative z-10 leading-tight">
+                If price touches the +2σ upper band, what is the required secondary confirmation for a mean-reversion short entry?
+            </h3>
+<div class="flex flex-col gap-sm relative z-10">
+<!-- Option A -->
+<label class="group relative flex items-center p-md rounded-lg border border-outline-variant/40 bg-surface-container/50 cursor-pointer hover:bg-surface-container-highest transition-colors duration-200">
+<input class="hidden" name="knowledge-check" type="radio"/>
+<div class="w-4 h-4 rounded-full border border-outline-variant mr-md group-hover:border-primary-container flex items-center justify-center transition-colors"></div>
+<span class="font-body-base text-body-base text-on-surface">Immediate cross of the moving average.</span>
+</label>
+<!-- Option B (Correct State visual) -->
+<label class="group relative flex items-center p-md rounded-lg border border-secondary/50 bg-secondary/10 cursor-pointer transition-colors duration-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+<input checked="" class="hidden" name="knowledge-check" type="radio"/>
+<div class="w-4 h-4 rounded-full bg-secondary mr-md flex items-center justify-center shadow-[0_0_8px_rgba(68,226,205,0.5)]">
+<div class="w-1.5 h-1.5 bg-surface-container-lowest rounded-full"></div>
+</div>
+<span class="font-body-base text-body-base text-secondary font-medium">Declining volume profile on the upward thrust.</span>
+<span class="material-symbols-outlined text-secondary ml-auto text-[20px]">check_circle</span>
+</label>
+<!-- Option C -->
+<label class="group relative flex items-center p-md rounded-lg border border-outline-variant/40 bg-surface-container/50 cursor-pointer hover:bg-surface-container-highest transition-colors duration-200">
+<input class="hidden" name="knowledge-check" type="radio"/>
+<div class="w-4 h-4 rounded-full border border-outline-variant mr-md group-hover:border-primary-container flex items-center justify-center transition-colors"></div>
+<span class="font-body-base text-body-base text-on-surface">A corresponding drop in implied volatility.</span>
+</label>
+</div>
+</section>
+<div class="h-8"></div> <!-- Spacer before footer -->
+</main>
+<!-- Bottom Floating CTA -->
+<div class="fixed bottom-0 left-0 w-full p-md bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/90 to-transparent pb-margin-safe z-40 backdrop-blur-sm pointer-events-none">
+<button class="pointer-events-auto w-full bg-primary-container text-on-primary-container font-body-base text-body-base font-semibold py-lg rounded-[10px] shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_20px_rgba(94,106,210,0.3)] hover:brightness-110 spring-transition flex justify-center items-center gap-sm active:scale-[0.98]">
+            Test this skill
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</body></html>

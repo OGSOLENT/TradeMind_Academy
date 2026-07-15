@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#908f9e",
+                        "on-secondary-container": "#004d44",
+                        "surface-container": "#1f1f27",
+                        "inverse-on-surface": "#302f38",
+                        "on-primary-fixed": "#000965",
+                        "surface-tint": "#bdc2ff",
+                        "primary-container": "#5e6ad2",
+                        "tertiary": "#ffb955",
+                        "on-primary": "#121f8b",
+                        "on-primary-container": "#fdfaff",
+                        "secondary": "#44e2cd",
+                        "on-tertiary": "#452b00",
+                        "primary": "#bdc2ff",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "primary-fixed": "#dfe0ff",
+                        "inverse-primary": "#4854bb",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#34343d",
+                        "secondary-container": "#03c6b2",
+                        "on-tertiary-container": "#fffaf9",
+                        "surface-container-high": "#292932",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "outline-variant": "#454652",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-secondary": "#003731",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#62fae3",
+                        "surface-container-highest": "#34343d",
+                        "surface-dim": "#13131b",
+                        "tertiary-container": "#a06800",
+                        "on-tertiary-fixed": "#291800",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b23",
+                        "surface-bright": "#393841",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-background": "#e4e1ed",
+                        "background": "#13131b",
+                        "on-surface-variant": "#c6c5d5",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-surface": "#e4e1ed",
+                        "inverse-surface": "#e4e1ed",
+                        "surface": "#13131b",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-secondary-fixed-variant": "#005047"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-safe": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #050507; color: #e4e1ed; }
+        .border-hairline { border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-panel { background-color: #101018; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+        
+        /* Custom Scrollbar for DOM */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+        
+        .ask-row:hover { background-color: rgba(255, 180, 171, 0.05); }
+        .bid-row:hover { background-color: rgba(68, 226, 205, 0.05); }
+        
+        .depth-bar-ask { background-color: rgba(255, 180, 171, 0.1); }
+        .depth-bar-bid { background-color: rgba(68, 226, 205, 0.1); }
+        
+        .btn-buy { background-color: rgba(68, 226, 205, 0.1); color: #44e2cd; border: 1px solid rgba(68, 226, 205, 0.2); transition: all 0.2s; }
+        .btn-buy:hover { background-color: rgba(68, 226, 205, 0.2); box-shadow: inset 0 0 10px rgba(68, 226, 205, 0.1); }
+        
+        .btn-sell { background-color: rgba(255, 180, 171, 0.1); color: #ffb4ab; border: 1px solid rgba(255, 180, 171, 0.2); transition: all 0.2s; }
+        .btn-sell:hover { background-color: rgba(255, 180, 171, 0.2); box-shadow: inset 0 0 10px rgba(255, 180, 171, 0.1); }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col font-body-base text-body-base bg-[#050507]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-gutter w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shrink-0">
+<div class="flex items-center gap-md">
+<span class="font-display-lg text-display-lg font-bold text-primary dark:text-primary tracking-tighter" style="font-size: 24px; line-height: 32px;">TradeMind</span>
+<div class="h-6 w-px bg-white/10 mx-sm"></div>
+<nav class="hidden md:flex gap-lg">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 pt-1 font-label-caps text-label-caps uppercase" href="#">Terminal</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 py-1 font-label-caps text-label-caps uppercase" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 py-1 font-label-caps text-label-caps uppercase" href="#">Strategy</a>
+</nav>
+</div>
+<!-- Terminal HUD -->
+<div class="flex items-center gap-lg">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Net Liquidity</span>
+<span class="font-data-tabular text-data-tabular text-on-surface">$124,500.00</span>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Daily PnL</span>
+<span class="font-data-tabular text-data-tabular text-secondary">+$420.50</span>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="schedule">schedule</span>
+<span class="font-data-tabular text-data-tabular text-on-surface">14:23:45 EST</span>
+</div>
+<div class="flex gap-sm ml-md">
+<button class="p-2 rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 flex overflow-hidden p-xs gap-xs">
+<!-- SideNavBar (Icon Only) -->
+<nav class="fixed left-0 top-16 bottom-8 z-40 flex flex-col bg-surface-container dark:bg-surface-container border-r border-white/5 w-16 hidden md:flex shrink-0 pt-md">
+<a class="flex justify-center p-md text-secondary border-r-4 border-secondary bg-secondary/5 hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="terminal" data-weight="fill" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</a>
+<a class="flex justify-center p-md text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</a>
+<a class="flex justify-center p-md text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</a>
+<div class="mt-auto flex flex-col mb-md">
+<a class="flex justify-center p-md text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</a>
+</div>
+</nav>
+<div class="flex-1 flex flex-col gap-xs md:ml-16 w-full h-full">
+<!-- Top Row: DOM | Chart | Execution -->
+<div class="flex-1 flex gap-xs h-[70%]">
+<!-- Left Sidebar: Order Book (DOM) -->
+<aside class="glass-panel rounded-lg w-72 flex flex-col overflow-hidden shrink-0">
+<div class="p-sm border-b border-white/10 flex justify-between items-center bg-surface-container-low">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Order Book</span>
+<div class="flex gap-xs">
+<span class="material-symbols-outlined text-[14px] text-outline cursor-pointer hover:text-primary" data-icon="format_list_numbered">format_list_numbered</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto flex flex-col">
+<!-- Table Header -->
+<div class="flex justify-between px-sm py-xs border-b border-white/5 bg-[#050507]/50 sticky top-0 z-10 font-label-caps text-label-caps text-outline-variant">
+<span>Price</span>
+<span>Size</span>
+<span>Total</span>
+</div>
+<!-- Asks (Red) -->
+<div class="flex flex-col-reverse justify-end flex-1">
+<!-- Loop asks -->
+<div class="ask-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-ask z-0" style="width: 80%;"></div>
+<span class="font-data-tabular text-data-tabular text-error z-10 text-[13px]">64,250.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">1.25</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">15.40</span>
+</div>
+<div class="ask-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-ask z-0" style="width: 60%;"></div>
+<span class="font-data-tabular text-data-tabular text-error z-10 text-[13px]">64,245.50</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">0.50</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">14.15</span>
+</div>
+<div class="ask-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-ask z-0" style="width: 30%;"></div>
+<span class="font-data-tabular text-data-tabular text-error z-10 text-[13px]">64,240.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">2.10</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">13.65</span>
+</div>
+<div class="ask-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-ask z-0" style="width: 15%;"></div>
+<span class="font-data-tabular text-data-tabular text-error z-10 text-[13px]">64,235.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">0.80</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">11.55</span>
+</div>
+<!-- Liquidity Void -->
+<div class="flex justify-center py-xs opacity-50 bg-[#050507]">
+<span class="font-label-caps text-label-caps text-outline-variant text-[10px] tracking-widest uppercase">Spread: $15.00</span>
+</div>
+</div>
+<!-- Current Price -->
+<div class="flex items-center justify-between px-sm py-sm border-y border-white/10 bg-surface-container my-1">
+<span class="font-data-tabular text-data-tabular text-secondary text-lg font-bold">64,220.00</span>
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="arrow_upward">arrow_upward</span>
+</div>
+<!-- Bids (Teal) -->
+<div class="flex flex-col flex-1">
+<div class="bid-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-bid z-0" style="width: 45%;"></div>
+<span class="font-data-tabular text-data-tabular text-secondary z-10 text-[13px]">64,220.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">3.50</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">3.50</span>
+</div>
+<div class="bid-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-bid z-0" style="width: 25%;"></div>
+<span class="font-data-tabular text-data-tabular text-secondary z-10 text-[13px]">64,215.50</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">1.20</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">4.70</span>
+</div>
+<div class="bid-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-bid z-0" style="width: 70%;"></div>
+<span class="font-data-tabular text-data-tabular text-secondary z-10 text-[13px]">64,210.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">5.00</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">9.70</span>
+</div>
+<div class="bid-row flex justify-between px-sm py-[2px] relative cursor-pointer group">
+<div class="absolute right-0 top-0 bottom-0 depth-bar-bid z-0" style="width: 90%;"></div>
+<span class="font-data-tabular text-data-tabular text-secondary z-10 text-[13px]">64,200.00</span>
+<span class="font-data-tabular text-data-tabular text-on-surface z-10 text-[13px]">8.25</span>
+<span class="font-data-tabular text-data-tabular text-outline z-10 text-[13px]">17.95</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center: Chart -->
+<section class="glass-panel rounded-lg flex-1 flex flex-col relative overflow-hidden min-w-0">
+<!-- Chart Header -->
+<div class="flex items-center justify-between p-sm border-b border-white/10 bg-surface-container-low">
+<div class="flex items-center gap-md">
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">BTC/USD</h2>
+<div class="flex gap-sm">
+<span class="font-data-tabular text-data-tabular text-secondary">64,220.00</span>
+<span class="font-data-tabular text-data-tabular text-secondary text-[12px]">+2.4%</span>
+</div>
+</div>
+<div class="flex gap-xs">
+<button class="px-2 py-1 bg-white/5 rounded text-xs font-label-caps text-on-surface hover:bg-white/10">1m</button>
+<button class="px-2 py-1 bg-primary/20 rounded text-xs font-label-caps text-primary border border-primary/30">5m</button>
+<button class="px-2 py-1 bg-white/5 rounded text-xs font-label-caps text-on-surface hover:bg-white/10">15m</button>
+<button class="px-2 py-1 bg-white/5 rounded text-xs font-label-caps text-on-surface hover:bg-white/10">1h</button>
+<button class="px-2 py-1 bg-white/5 rounded text-xs font-label-caps text-on-surface hover:bg-white/10">1D</button>
+</div>
+</div>
+<!-- Chart Area Placeholder (Simulated) -->
+<div class="flex-1 relative bg-[#0a0a0f] overflow-hidden group">
+<!-- Simulated Chart Grid -->
+<div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>
+<!-- Center Placeholder text to simulate chart rendering -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+<span class="material-symbols-outlined text-[120px] text-primary/30" data-icon="show_chart">show_chart</span>
+</div>
+<!-- Y-Axis (Prices) -->
+<div class="absolute right-0 top-0 bottom-0 w-16 border-l border-white/10 bg-[#050507]/80 flex flex-col justify-between py-md font-data-tabular text-[11px] text-outline-variant items-end pr-sm">
+<span>64,500</span>
+<span>64,400</span>
+<span>64,300</span>
+<span class="text-secondary bg-secondary/10 px-1 rounded">64,220</span>
+<span>64,100</span>
+<span>64,000</span>
+<span>63,900</span>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Execution Panel -->
+<aside class="glass-panel rounded-lg w-80 flex flex-col shrink-0">
+<!-- Tabs -->
+<div class="flex border-b border-white/10 font-label-caps text-label-caps uppercase bg-surface-container-low">
+<button class="flex-1 py-3 text-secondary border-b-2 border-secondary font-bold bg-secondary/5">Market</button>
+<button class="flex-1 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5">Limit</button>
+<button class="flex-1 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5">Advanced</button>
+</div>
+<div class="p-md flex-1 flex flex-col gap-lg">
+<!-- Inputs -->
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between font-label-caps text-label-caps text-outline-variant uppercase">
+<span>Amount</span>
+<span>BTC</span>
+</div>
+<div class="relative">
+<input class="w-full bg-[#050507] border border-white/10 rounded-md py-2 px-3 font-data-tabular text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" type="text" value="0.5"/>
+<div class="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
+<button class="px-2 py-1 bg-white/5 rounded text-[10px] hover:bg-white/10 font-data-tabular">MAX</button>
+</div>
+</div>
+</div>
+<!-- Risk Slider (Simulated) -->
+<div class="flex flex-col gap-sm">
+<div class="flex justify-between font-label-caps text-label-caps text-outline-variant uppercase">
+<span>Risk % of Nav</span>
+<span class="font-data-tabular">2.5%</span>
+</div>
+<div class="h-2 bg-[#050507] rounded-full overflow-hidden border border-white/10 relative">
+<div class="absolute top-0 bottom-0 left-0 bg-secondary" style="width: 25%;"></div>
+</div>
+<div class="flex justify-between text-[10px] font-data-tabular text-outline-variant">
+<span>1%</span>
+<span>5%</span>
+<span>10%</span>
+<span>25%</span>
+</div>
+</div>
+<!-- Order Details -->
+<div class="mt-auto bg-[#050507] rounded border border-white/5 p-sm flex flex-col gap-2">
+<div class="flex justify-between font-label-caps text-label-caps text-outline-variant uppercase">
+<span>Est. Value</span>
+<span class="font-data-tabular text-on-surface">~ $32,110.00</span>
+</div>
+<div class="flex justify-between font-label-caps text-label-caps text-outline-variant uppercase">
+<span>Fee</span>
+<span class="font-data-tabular text-on-surface">$16.05</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex gap-md mt-sm">
+<button class="flex-1 btn-buy py-3 rounded-lg font-label-caps text-label-caps uppercase font-bold tracking-widest flex items-center justify-center gap-2">
+                                Buy
+                                <span class="material-symbols-outlined text-[16px]" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="flex-1 btn-sell py-3 rounded-lg font-label-caps text-label-caps uppercase font-bold tracking-widest flex items-center justify-center gap-2">
+                                Sell
+                                <span class="material-symbols-outlined text-[16px]" data-icon="remove_shopping_cart">remove_shopping_cart</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Panel: Positions & History -->
+<div class="glass-panel rounded-lg flex-1 flex flex-col overflow-hidden min-h-[200px]">
+<!-- Tabs -->
+<div class="flex border-b border-white/10 font-label-caps text-label-caps uppercase bg-surface-container-low px-md pt-2">
+<button class="px-md py-2 text-secondary border-b-2 border-secondary font-bold">Open Positions (1)</button>
+<button class="px-md py-2 text-on-surface-variant hover:text-on-surface hover:bg-white/5">Order History</button>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-[#050507]/50 sticky top-0 z-10">
+<tr class="font-label-caps text-label-caps text-outline-variant uppercase border-b border-white/5">
+<th class="py-2 px-md font-normal">Symbol</th>
+<th class="py-2 px-md font-normal">Side</th>
+<th class="py-2 px-md font-normal">Size</th>
+<th class="py-2 px-md font-normal">Entry Price</th>
+<th class="py-2 px-md font-normal">Mark Price</th>
+<th class="py-2 px-md font-normal text-right">Unrealized PnL</th>
+<th class="py-2 px-md font-normal text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-data-tabular text-data-tabular text-on-surface text-[13px]">
+<tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+<td class="py-3 px-md font-bold">BTC/USD</td>
+<td class="py-3 px-md"><span class="text-secondary bg-secondary/10 px-2 py-1 rounded text-xs uppercase font-label-caps">Long</span></td>
+<td class="py-3 px-md">2.00</td>
+<td class="py-3 px-md">64,010.50</td>
+<td class="py-3 px-md">64,220.00</td>
+<td class="py-3 px-md text-right text-secondary font-bold">+$419.00</td>
+<td class="py-3 px-md text-right">
+<button class="text-error hover:bg-error/10 p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="close">close</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex items-center justify-between px-md py-1 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 h-8 font-data-tabular text-data-tabular text-[11px]">
+<div class="text-on-surface-variant flex gap-md">
+<span>TradeMind Engine v4.2.0</span>
+<span class="hidden sm:inline opacity-50">|</span>
+<span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-secondary"></div> Market: Open</span>
+</div>
+<div class="flex gap-md text-outline-variant">
+<span>Latency: 14ms</span>
+<span>Security: SSL-E2E</span>
+</div>
+</footer>
+</body></html>

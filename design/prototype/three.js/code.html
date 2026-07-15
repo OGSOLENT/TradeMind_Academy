@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_4 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_4" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_4');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Particle Geometry - Arranged as abstract candlestick heights
+const particlesCount = 2500;
+const positions = new Float32Array(particlesCount * 3);
+const colors = new Float32Array(particlesCount * 3);
+
+const colorAccent = new THREE.Color("#5E6AD2");
+const colorMastery = new THREE.Color("#2DD4BF");
+
+for (let i = 0; i < particlesCount; i++) {
+    const x = (Math.random() - 0.5) * 20;
+    const z = (Math.random() - 0.5) * 20;
+    // Create a terrain/price-action-like wave
+    const y = Math.sin(x * 0.5) * Math.cos(z * 0.5) * 2 + (Math.random() - 0.5) * 0.5;
+    
+    positions[i * 3] = x;
+    positions[i * 3 + 1] = y;
+    positions[i * 3 + 2] = z;
+    
+    const mixedColor = Math.random() > 0.5 ? colorAccent : colorMastery;
+    colors[i * 3] = mixedColor.r;
+    colors[i * 3 + 1] = mixedColor.g;
+    colors[i * 3 + 2] = mixedColor.b;
+}
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+const material = new THREE.PointsMaterial({
+    size: 0.04,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    additiveBlending: true
+});
+
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+camera.position.z = 10;
+camera.position.y = 2;
+camera.lookAt(0, 0, 0);
+
+// Interaction
+let mouseX = 0, mouseY = 0;
+window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    points.rotation.y += 0.001;
+    
+    // Gentle parallax
+    camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY * 2 + 2 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, 0);
+    
+    renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_4 -->
+</body>
+</html>

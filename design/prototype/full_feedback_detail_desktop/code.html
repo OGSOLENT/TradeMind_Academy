@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quant Academy - Feedback Detail</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#fdfaff",
+                    "background": "#13131b",
+                    "surface-bright": "#393841",
+                    "tertiary": "#ffb955",
+                    "on-error": "#690005",
+                    "tertiary-container": "#a06800",
+                    "surface-dim": "#13131b",
+                    "on-surface-variant": "#c6c5d5",
+                    "inverse-surface": "#e4e1ed",
+                    "surface-container-high": "#292932",
+                    "on-secondary-fixed-variant": "#005047",
+                    "surface": "#13131b",
+                    "secondary-container": "#03c6b2",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "on-primary-fixed": "#000965",
+                    "on-background": "#e4e1ed",
+                    "surface-tint": "#bdc2ff",
+                    "on-secondary-fixed": "#00201c",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#1b1b23",
+                    "secondary-fixed": "#62fae3",
+                    "primary": "#bdc2ff",
+                    "surface-variant": "#34343d",
+                    "surface-container-highest": "#34343d",
+                    "tertiary-fixed-dim": "#ffb955",
+                    "error-container": "#93000a",
+                    "outline": "#908f9e",
+                    "tertiary-fixed": "#ffddb4",
+                    "on-primary": "#121f8b",
+                    "on-primary-fixed-variant": "#2e3aa2",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#454652",
+                    "on-secondary-container": "#004d44",
+                    "inverse-primary": "#4854bb",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "inverse-on-surface": "#302f38",
+                    "primary-fixed": "#dfe0ff",
+                    "secondary-fixed-dim": "#3cddc7",
+                    "secondary": "#44e2cd",
+                    "on-secondary": "#003731",
+                    "on-tertiary": "#452b00",
+                    "on-surface": "#e4e1ed",
+                    "surface-container-lowest": "#0d0d15",
+                    "surface-container": "#1f1f27",
+                    "primary-container": "#5e6ad2",
+                    "on-tertiary-fixed": "#291800",
+                    "on-tertiary-container": "#fffaf9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "lg": "24px",
+                    "margin-safe": "32px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "xl": "40px",
+                    "base": "4px",
+                    "gutter": "20px"
+            },
+            "fontFamily": {
+                    "label-caps": [
+                            "Geist Mono"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "body-base": [
+                            "Inter"
+                    ],
+                    "display-lg-mobile": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "data-tabular": [
+                            "Geist Mono"
+                    ]
+            },
+            "fontSize": {
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-base": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "data-tabular": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle glow animation for the chart background */
+        @keyframes subtlePulse {
+            0% { opacity: 0.03; }
+            50% { opacity: 0.08; }
+            100% { opacity: 0.03; }
+        }
+        .aurora-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--tw-colors-primary-container) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: subtlePulse 8s ease-in-out infinite;
+            filter: blur(80px);
+        }
+        
+        /* Candlestick animations */
+        @keyframes wickGrow {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+        .animate-wick {
+            transform-origin: center;
+            animation: wickGrow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base h-screen overflow-hidden flex antialiased selection:bg-secondary/30 selection:text-secondary">
+<!-- JSON: TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30">
+<!-- Logo Area -->
+<div class="flex items-center gap-sm">
+<div class="w-6 h-6 flex items-center justify-center relative">
+<!-- Candlestick Glyph -->
+<div class="w-[2px] h-full bg-primary animate-wick absolute rounded-full"></div>
+<div class="w-3 h-3 bg-primary rounded-sm z-10"></div>
+</div>
+<span class="text-headline-md font-headline-md font-bold text-primary tracking-tight">Quant Academy</span>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-lg h-full">
+<a class="h-full flex items-center text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-bright/10 transition-all duration-200 px-md text-label-caps font-label-caps" href="#">Dashboard</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-bright/10 transition-all duration-200 px-md text-label-caps font-label-caps" href="#">Curriculum</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-bright/10 transition-all duration-200 px-md text-label-caps font-label-caps" href="#">Live Markets</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-bright/10 transition-all duration-200 px-md text-label-caps font-label-caps" href="#">Portfolio</a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-sm">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/10 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/10 rounded-full transition-all duration-200 mr-sm">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30 ml-xs">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of a serious, young professional financial analyst in a dark, softly lit modern office setting. The lighting is moody with cool blue and stark white accents, reflecting an intellectual, high-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvAPSRYvr4YVghcQdbXcQP8jnKdj4mWe4B76wpHGomge7lSs_iZ3i5Qj-BM4_WhmQW-cVkmllv_xKsh-o5GB24Rzklf7tRwPqN1nUtevC4u5J9bmD6UgARd8jcs_3RTP50Gi-c9AzouMY3aO1jMyShtkrGhLonbWwLeI_6orU-3Teo1N0KS2Xlr4Gve5C-l63f4JkfiKZ4hQe-CkuQezTeNfgfLSHP1MFg7c-0vHl21Ey2Htk8sJqTDwVtrUZo9M5ldmejOx0ET0rX"/>
+</div>
+</div>
+</header>
+<!-- JSON: SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col py-md bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant/20 z-40 hidden md:flex">
+<!-- SideNav Header (from JSON) -->
+<div class="px-lg pb-lg mb-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md mb-xs">
+<div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant/30 flex-shrink-0">
+<img alt="Mentor profile" class="w-full h-full object-cover" data-alt="A detailed, professional headshot of an experienced trading mentor, an Asian woman with a calm, authoritative expression, set against a dark grey studio background with a subtle rim light, embodying precision and expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlgdP3udkUBqCnSocTunbxoCHa0mRRvY46ZyfUZqwYmrFobbxOOjQ6no4of_H8hhCqMieD-cFCtq-029FNOKiCL4IKhhmO4F66SIfarqQEfM7qgex8HZRiabydHZeKOXFLuIApJoTYMkF3pyyuSlGfBqfhm986xls0Lu1t-zMmkBnHQCg0Me3ASphTFrLIpbPsdWe1MJh7p3lPu7rO6xzH5KOOjUwhIkTpIuL5RitBZywkZXugmlZuRI0VwMgs3i4Xyj8MRjQrBrXN"/>
+</div>
+<div>
+<h3 class="text-body-base font-body-base font-medium text-on-surface leading-tight">Session Feedback</h3>
+<p class="text-label-caps font-label-caps text-on-surface-variant opacity-70">ID: #TR-942-QA</p>
+</div>
+</div>
+<button class="mt-md w-full bg-inverse-surface/10 hover:bg-inverse-surface/20 text-on-surface border border-outline-variant/30 py-2 rounded-lg text-label-caps font-label-caps transition-all flex justify-center items-center gap-2">
+                Resubmit Session
+            </button>
+</div>
+<!-- Main Tabs -->
+<nav class="flex-1 overflow-y-auto py-sm flex flex-col gap-1 px-sm">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">analytics</span>
+<span class="text-label-caps font-label-caps">Market Analysis</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">menu_book</span>
+<span class="text-label-caps font-label-caps">Trade Journal</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-md px-md py-3 text-secondary font-bold bg-secondary-container/10 border-r-2 border-secondary translate-x-1 transition-transform group" href="#">
+<span class="material-symbols-outlined text-[20px] fill-icon">psychology</span>
+<span class="text-label-caps font-label-caps">Mentor Feedback</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">query_stats</span>
+<span class="text-label-caps font-label-caps">Performance Metrics</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">tune</span>
+<span class="text-label-caps font-label-caps">Settings</span>
+</a>
+</nav>
+<!-- Footer Tabs -->
+<div class="px-sm pt-sm border-t border-outline-variant/10">
+<a class="flex items-center gap-md px-md py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">help_outline</span>
+<span class="text-label-caps font-label-caps">Help Center</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 mt-16 flex flex-col h-[calc(100vh-64px)] relative z-0">
+<!-- Feedback Specific Header -->
+<div class="h-16 flex-shrink-0 border-b border-outline-variant/20 bg-surface flex items-center justify-between px-lg z-10 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm bg-surface-container py-1 px-3 rounded-full border border-outline-variant/30">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(68,226,205,0.6)]"></div>
+<span class="text-label-caps font-label-caps text-on-surface">BTC/USD (15m)</span>
+</div>
+<h1 class="text-headline-md font-headline-md text-on-surface flex items-center gap-sm">
+                    Feedback Detail
+                    <span class="text-on-surface-variant text-body-base font-body-base font-normal">#TR-942</span>
+</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="text-label-caps font-label-caps">Mentor:</span>
+<div class="flex items-center gap-xs bg-surface-container py-1 px-2 rounded-lg border border-outline-variant/20">
+<div class="w-5 h-5 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar of an Asian female trading mentor, dimly lit studio lighting, serious expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTxHvzASXE6lH9IILSKvTkkc6rNWFG2JvhHVfuzHCyf-6LXUUSgyy5K_443dkMbe8XhGian_oVKgG4F_3ei2PkmKCWtWrjhlTHW-fA6xOdG6dcxSBNBguhFiLWig5XYmKB7mm_3uaxXBZUJW7nVoi03EVOUZHe3QKR2wBeqLefOKNF7rGNQ1MYt2ms_BtKyymTgs7KwlrXXgskchGJAFTjURMGTLvOMmDgBzma3spEWqVduGhWRBlpmSRQJtkpg-VN1pKhzQj5xH38"/>
+</div>
+<span class="text-data-tabular font-data-tabular text-on-surface text-sm">Sarah Chen</span>
+</div>
+</div>
+<button class="bg-surface-container hover:bg-surface-bright/20 border border-outline-variant/30 text-on-surface py-1.5 px-4 rounded-lg text-label-caps font-label-caps transition-all">
+                    Export PDF
+                </button>
+</div>
+</div>
+<!-- Split Workspace -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Central Chart Area -->
+<div class="flex-1 relative bg-surface-container-lowest overflow-hidden flex flex-col">
+<div class="aurora-glow"></div>
+<!-- Chart Toolbar (Internal) -->
+<div class="h-10 border-b border-outline-variant/10 flex items-center px-md gap-md z-10 bg-surface-container-lowest/80 backdrop-blur-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] hover:text-on-surface cursor-pointer">zoom_in</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] hover:text-on-surface cursor-pointer">zoom_out</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] hover:text-on-surface cursor-pointer">pan_tool</span>
+<div class="w-[1px] h-4 bg-outline-variant/30"></div>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-xs">O: 64,210.50</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-xs">H: 64,800.00</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-xs">L: 63,950.25</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-xs">C: 64,550.00</span>
+</div>
+<!-- Fake Chart Canvas -->
+<div class="flex-1 relative p-lg grid grid-cols-[1fr_50px] grid-rows-[1fr_30px]">
+<!-- Grid Lines & Background -->
+<div class="col-start-1 row-start-1 relative border-r border-b border-outline-variant/10">
+<!-- Horizontal Grid Lines -->
+<div class="absolute w-full h-[1px] bg-outline-variant/5 top-[20%]"></div>
+<div class="absolute w-full h-[1px] bg-outline-variant/5 top-[40%]"></div>
+<div class="absolute w-full h-[1px] bg-outline-variant/5 top-[60%]"></div>
+<div class="absolute w-full h-[1px] bg-outline-variant/5 top-[80%]"></div>
+<!-- Vertical Grid Lines -->
+<div class="absolute h-full w-[1px] bg-outline-variant/5 left-[25%]"></div>
+<div class="absolute h-full w-[1px] bg-outline-variant/5 left-[50%]"></div>
+<div class="absolute h-full w-[1px] bg-outline-variant/5 left-[75%]"></div>
+<!-- Candlesticks (Mocked via Divs) -->
+<div class="absolute bottom-0 left-0 w-full h-full flex items-end pb-[20%] px-10 gap-2 justify-center">
+<!-- Candle 1 (Red) -->
+<div class="relative w-4 h-[30%] flex flex-col items-center justify-center">
+<div class="w-[1px] h-full bg-error absolute"></div>
+<div class="w-full h-[60%] bg-error rounded-[1px] relative z-10 border border-error/50 shadow-[0_0_10px_rgba(255,180,171,0.1)]"></div>
+</div>
+<!-- Candle 2 (Teal - Entry) -->
+<div class="relative w-4 h-[45%] flex flex-col items-center justify-end mb-[5%]">
+<div class="w-[1px] h-full bg-secondary absolute"></div>
+<div class="w-full h-[70%] bg-secondary/90 rounded-[1px] relative z-10 border border-secondary/50 shadow-[0_0_10px_rgba(68,226,205,0.2)]"></div>
+<!-- ANNOTATION: Teal Circle "Solid Entry" -->
+<div class="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-secondary rounded-full flex items-center justify-center z-20 pointer-events-none">
+<div class="absolute -right-24 top-0 w-24 h-[1px] bg-secondary"></div>
+<div class="absolute -right-48 -top-3 bg-surface-container-high border border-secondary text-secondary text-label-caps font-label-caps px-2 py-1 rounded shadow-lg backdrop-blur-md">
+                                        Solid Entry
+                                    </div>
+</div>
+</div>
+<!-- Candle 3 (Teal) -->
+<div class="relative w-4 h-[60%] flex flex-col items-center justify-end mb-[15%]">
+<div class="w-[1px] h-full bg-secondary absolute"></div>
+<div class="w-full h-[80%] bg-secondary/90 rounded-[1px] relative z-10 border border-secondary/50"></div>
+</div>
+<!-- Candle 4 (Red - Pulled back) -->
+<div class="relative w-4 h-[50%] flex flex-col items-center justify-start mb-[25%]">
+<div class="w-[1px] h-full bg-error absolute"></div>
+<div class="w-full h-[40%] bg-error rounded-[1px] relative z-10 border border-error/50"></div>
+</div>
+<!-- Candle 5 (Red) -->
+<div class="relative w-4 h-[35%] flex flex-col items-center justify-start mb-[20%]">
+<div class="w-[1px] h-full bg-error absolute"></div>
+<div class="w-full h-[60%] bg-error rounded-[1px] relative z-10 border border-error/50"></div>
+</div>
+</div>
+<!-- ANNOTATION: Red Dashed Line "Suggested Stop" -->
+<div class="absolute top-[75%] left-0 w-full flex items-center z-20 opacity-80 group hover:opacity-100 transition-opacity">
+<div class="w-full border-t-2 border-dashed border-error shadow-[0_0_8px_rgba(255,180,171,0.3)]"></div>
+<div class="absolute right-4 bg-surface-container-high border border-error text-error text-label-caps font-label-caps px-2 py-1 rounded shadow-lg backdrop-blur-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                Suggested Stop Adj.
+                            </div>
+</div>
+</div>
+<!-- Y-Axis (Price) -->
+<div class="col-start-2 row-start-1 relative flex flex-col justify-between py-[20%] items-end pl-2">
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">65k</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">64.5k</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">64k</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">63.5k</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">63k</span>
+</div>
+<!-- X-Axis (Time) -->
+<div class="col-start-1 row-start-2 relative flex justify-around items-end pt-2 px-10">
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">09:00</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">09:15</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">09:30</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">09:45</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-[10px]">10:00</span>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Mentor Feedback -->
+<div class="w-96 flex-shrink-0 bg-surface border-l border-outline-variant/20 flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.2)] z-10 relative">
+<div class="p-lg flex-1 overflow-y-auto flex flex-col gap-xl">
+<!-- Section: Mentor's Voice Note -->
+<div class="flex flex-col gap-md">
+<h2 class="text-label-caps font-label-caps text-on-surface-variant tracking-wider uppercase">Mentor's Voice Note</h2>
+<!-- Glassmorphism Player -->
+<div class="bg-[#101018]/80 backdrop-blur-xl rounded-xl p-md border border-white/5 relative overflow-hidden group">
+<!-- Inner top edge highlight -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+<div class="flex items-center gap-md">
+<button class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center hover:scale-105 transition-transform shadow-[inset_0_2px_4px_rgba(255,255,255,0.1),_0_4px_12px_rgba(94,106,210,0.3)]">
+<span class="material-symbols-outlined fill-icon text-[28px]">play_arrow</span>
+</button>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex items-end justify-between">
+<span class="text-data-tabular font-data-tabular text-on-surface font-medium text-sm">0:45</span>
+<span class="text-data-tabular font-data-tabular text-on-surface-variant text-xs">2:14</span>
+</div>
+<!-- Fake Waveform -->
+<div class="flex items-center gap-[2px] h-6 w-full">
+<div class="w-1 h-3 bg-secondary rounded-full opacity-50"></div>
+<div class="w-1 h-5 bg-secondary rounded-full opacity-50"></div>
+<div class="w-1 h-2 bg-secondary rounded-full opacity-50"></div>
+<div class="w-1 h-6 bg-secondary rounded-full"></div>
+<div class="w-1 h-4 bg-secondary rounded-full"></div>
+<div class="w-1 h-3 bg-secondary rounded-full"></div>
+<div class="w-1 h-5 bg-secondary rounded-full"></div>
+<!-- Unplayed portion -->
+<div class="w-1 h-2 bg-outline-variant/40 rounded-full ml-1"></div>
+<div class="w-1 h-4 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-1 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-3 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-5 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-2 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-4 bg-outline-variant/40 rounded-full"></div>
+<div class="w-1 h-2 bg-outline-variant/40 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full h-[1px] bg-gradient-to-r from-transparent via-outline-variant/20 to-transparent"></div>
+<!-- Section: Tactical Adjustments -->
+<div class="flex flex-col gap-md">
+<h2 class="text-label-caps font-label-caps text-on-surface-variant tracking-wider uppercase">Tactical Adjustments</h2>
+<div class="flex flex-col gap-sm">
+<!-- Adjustment Item 1 -->
+<div class="bg-[#101018] rounded-lg p-md border border-white/5 relative overflow-hidden flex gap-md items-start group hover:bg-surface-container-high transition-colors">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<div class="w-8 h-8 rounded-full bg-error-container/20 flex items-center justify-center flex-shrink-0 text-error">
+<span class="material-symbols-outlined text-[18px]">laps</span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-body-base font-body-base text-on-surface font-medium leading-tight">Widening Stop to 1.5x ATR</h4>
+<p class="text-data-tabular font-data-tabular text-on-surface-variant text-xs opacity-80 leading-relaxed">
+                                        Your stop was too tight at the local low. Volatility profile suggests 1.5x ATR to avoid wicks.
+                                    </p>
+</div>
+</div>
+<!-- Adjustment Item 2 -->
+<div class="bg-[#101018] rounded-lg p-md border border-white/5 relative overflow-hidden flex gap-md items-start group hover:bg-surface-container-high transition-colors">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="w-8 h-8 rounded-full bg-tertiary-container/20 flex items-center justify-center flex-shrink-0 text-tertiary">
+<span class="material-symbols-outlined text-[18px]">hourglass_empty</span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="text-body-base font-body-base text-on-surface font-medium leading-tight">Delay Entry for Volume</h4>
+<p class="text-data-tabular font-data-tabular text-on-surface-variant text-xs opacity-80 leading-relaxed">
+                                        Price broke out, but volume delta was lagging. Wait for 5m candle close confirmation next time.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-lg border-t border-outline-variant/10 bg-surface-container-lowest">
+<button class="w-full bg-primary-container hover:bg-primary-container/90 text-on-primary-container font-label-caps text-label-caps py-3 rounded-xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">task_alt</span>
+                        Acknowledge Feedback
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Mastery Celebration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#291800",
+                        "tertiary-container": "#a06800",
+                        "surface-dim": "#13131b",
+                        "surface-container-highest": "#34343d",
+                        "secondary-fixed": "#62fae3",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface": "#13131b",
+                        "on-surface": "#e4e1ed",
+                        "inverse-surface": "#e4e1ed",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-surface-variant": "#c6c5d5",
+                        "background": "#13131b",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-background": "#e4e1ed",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "surface-bright": "#393841",
+                        "surface-container-low": "#1b1b23",
+                        "primary-fixed": "#dfe0ff",
+                        "inverse-primary": "#4854bb",
+                        "primary": "#bdc2ff",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "secondary": "#44e2cd",
+                        "on-tertiary": "#452b00",
+                        "on-primary-container": "#fdfaff",
+                        "tertiary": "#ffb955",
+                        "on-primary": "#121f8b",
+                        "surface-tint": "#bdc2ff",
+                        "primary-container": "#5e6ad2",
+                        "on-primary-fixed": "#000965",
+                        "surface-container": "#1f1f27",
+                        "inverse-on-surface": "#302f38",
+                        "outline": "#908f9e",
+                        "on-secondary-container": "#004d44",
+                        "error-container": "#93000a",
+                        "on-secondary": "#003731",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "surface-container-high": "#292932",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "outline-variant": "#454652",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary-container": "#fffaf9",
+                        "secondary-container": "#03c6b2",
+                        "surface-variant": "#34343d",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "base": "4px",
+                        "margin-safe": "32px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"],
+                        "display-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .aurora-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(94, 106, 210, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(68, 226, 205, 0.05) 0%, transparent 50%);
+            animation: aurora 20s infinite alternate;
+        }
+
+        @keyframes aurora {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .glass-card {
+            background: rgba(16, 16, 24, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .level-1-surface {
+            background-color: #0A0A0F;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sparkline-svg {
+            stroke: #44e2cd;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .btn-primary {
+            background-color: #5e6ad2;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.2);
+            transform: scale(1.02);
+        }
+
+        .nav-item-active {
+            color: #44e2cd;
+            border-bottom: 2px solid #44e2cd;
+            padding-bottom: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base min-h-screen overflow-x-hidden flex selection:bg-primary-container selection:text-white">
+<!-- Global Navigation: SideNavBar -->
+<nav class="hidden lg:flex flex-col fixed left-0 top-0 h-full p-md bg-surface-container-lowest docked left-0 h-full w-64 border-r border-white/5 transition-all duration-300 ease-out z-40">
+<div class="mb-lg">
+<div class="font-display-lg text-display-lg text-on-surface mb-md">TradeMind</div>
+<div class="flex items-center gap-md p-sm bg-surface-container-low rounded-lg border border-white/5">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A small, professional avatar of a young financial analyst in a dark suit against a dark background, serious expression, high-contrast cinematic lighting. Deep blacks and subtle teal highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwQ5cI5AeAwEDgEA2KMJpq2-yreDzG_elrpOtd5kiXyxi25D6kl-aDpFV_OkIxgPv6Duqk2fE6d56PnHf_vha-BMv4Ivyoz3g0dBTNVzRhbVXe-rm5VRHWTrUf5UMUcLOthiCTu7vMILz9-SX4eIx7RcjU_hYq1iD21mtzfYgd5s8iD0IFkSyz9HemC8abRK80RB-F2qrfoch9RCaBuxIAKdaIa39W9Rqv-uloD7S1V3r314mBRrStTV6C-apCGZe84t5lIemRjRxn"/>
+<div>
+<div class="font-data-tabular text-data-tabular text-on-surface">Mastery Level 4</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">Quantitative Analyst</div>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-sm">
+<a class="flex items-center gap-md p-sm rounded-md text-on-surface-variant hover:bg-white/5 hover:text-on-surface font-label-caps text-label-caps transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-sm rounded-md text-secondary bg-secondary-container/10 border-r-2 border-secondary font-label-caps text-label-caps transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Skill Tree</span>
+</a>
+<a class="flex items-center gap-md p-sm rounded-md text-on-surface-variant hover:bg-white/5 hover:text-on-surface font-label-caps text-label-caps transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Portfolio</span>
+</a>
+<a class="flex items-center gap-md p-sm rounded-md text-on-surface-variant hover:bg-white/5 hover:text-on-surface font-label-caps text-label-caps transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span>Case Studies</span>
+</a>
+<a class="flex items-center gap-md p-sm rounded-md text-on-surface-variant hover:bg-white/5 hover:text-on-surface font-label-caps text-label-caps transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span>Community</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-sm pt-md border-t border-white/5">
+<button class="btn-primary w-full py-sm rounded-lg font-data-tabular text-data-tabular text-center mb-sm">New Session</button>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Docs</span>
+</a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 lg:ml-64 relative min-h-screen aurora-bg">
+<!-- Global Navigation: TopNavBar -->
+<header class="fixed top-0 w-full lg:w-[calc(100%-256px)] z-50 flex justify-between items-center px-lg h-16 bg-surface/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
+<div class="flex items-center gap-lg">
+<div class="lg:hidden font-display-lg-mobile text-display-lg-mobile font-bold text-on-surface tracking-tight">TradeMind</div>
+<nav class="hidden md:flex gap-lg font-body-base text-body-base">
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Market Data</a>
+<a class="text-secondary border-b-2 border-secondary pb-1" href="#">Theory</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Practice</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Performance</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<img class="w-8 h-8 rounded-full border border-white/10 md:hidden object-cover" data-alt="A small circular avatar showing a dark, minimalist abstract geometric pattern in shades of deep blue and grey." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjzAz8kROyuc7zK2Kuwy67lQ_cBlfBG1p4LTua2XzTdOHwJVzUYuU4nqZvHhHj6seWN-4GVATISfIH-WzeBnsX20WAcVcbe77kOi28AMpopYQ6HcN6VI0TmpI2UfEBxZuuBi2BUHWkGdmTQPhnctCqR1itt28DSYQsq5gQJbcz0jI8BMeRKvpBmk7jHl5ClMsJtctzxffqpbFIOowVpE6_O3kr2uTQEbl5w2G4R6ukZs0X8iPB0LZiQYg7GUv3Ky5OHQJ9JVr2D0K"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 px-md md:px-lg lg:px-xl pb-xl max-w-7xl mx-auto w-full">
+<!-- Learning Progress Float -->
+<div class="fixed top-0 left-0 w-full h-[2px] bg-surface z-[60]">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_10px_rgba(68,226,205,0.5)]"></div>
+</div>
+<!-- Hero Section -->
+<section class="mb-xl text-center flex flex-col items-center justify-center min-h-[409px]">
+<div class="inline-flex items-center gap-sm px-md py-xs rounded-full glass-card mb-md text-secondary font-data-tabular text-data-tabular border border-secondary/20">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+                    Session Complete
+                </div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-lg">
+                    Mastery Achieved:<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">Order Book Dynamics</span>
+</h1>
+<div class="flex gap-md justify-center">
+<div class="level-1-surface px-lg py-sm rounded-lg flex items-center gap-sm">
+<span class="text-primary-container font-data-tabular">+450 XP</span>
+</div>
+<div class="level-1-surface px-lg py-sm rounded-lg flex items-center gap-sm">
+<span class="text-secondary font-data-tabular">96% Accuracy</span>
+</div>
+</div>
+</section>
+<!-- Visual Centerpiece: Constellation Map Placeholder -->
+<section class="mb-xl relative h-96 rounded-xl overflow-hidden glass-card flex items-center justify-center">
+<!-- Using a stylized background to represent the map instead of raw svg/shader as instructed to keep simple if no specific animation ID provided, though an abstract rep is good. -->
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at center, #5e6ad2 1px, transparent 1px); background-size: 40px 40px;"></div>
+<div class="relative z-10 flex items-center justify-center">
+<div class="w-32 h-32 rounded-full border-2 border-secondary bg-secondary/10 flex items-center justify-center shadow-[0_0_40px_rgba(68,226,205,0.3)] animate-pulse">
+<span class="material-symbols-outlined text-[48px] text-secondary" data-icon="account_tree">account_tree</span>
+</div>
+<!-- Connector Lines (Simplified CSS representation) -->
+<div class="absolute left-1/2 top-1/2 w-48 h-px bg-gradient-to-r from-secondary to-transparent -translate-y-1/2 origin-left rotate-45"></div>
+<div class="absolute left-1/2 top-1/2 w-48 h-px bg-gradient-to-r from-secondary to-transparent -translate-y-1/2 origin-left -rotate-12"></div>
+</div>
+</section>
+<!-- Analytics Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl">
+<!-- Left: Mastery Growth -->
+<div class="glass-card rounded-xl p-lg flex flex-col h-full">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">Mastery Growth</h3>
+<p class="font-body-base text-body-base text-on-surface-variant mb-lg">Trailing 30 Days</p>
+<div class="flex-1 flex items-end relative min-h-[150px]">
+<!-- Simple SVG Sparkline -->
+<svg class="w-full h-full absolute inset-0" preserveaspectratio="none" viewbox="0 0 100 50">
+<path class="sparkline-svg" d="M0,45 Q10,40 20,42 T40,30 T60,25 T80,10 T100,5"></path>
+<path d="M0,45 Q10,40 20,42 T40,30 T60,25 T80,10 T100,5 L100,50 L0,50 Z" fill="rgba(68, 226, 205, 0.05)"></path>
+</svg>
+</div>
+</div>
+<!-- Right: Analysis Breakdown -->
+<div class="glass-card rounded-xl p-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg">Analysis Breakdown</h3>
+<div class="space-y-md">
+<div class="flex justify-between items-center pb-sm border-b border-white/5">
+<span class="font-body-base text-on-surface">Imbalance Detection</span>
+<span class="font-data-tabular text-secondary">100%</span>
+</div>
+<div class="flex justify-between items-center pb-sm border-b border-white/5">
+<span class="font-body-base text-on-surface">Spread Analysis</span>
+<span class="font-data-tabular text-secondary">92%</span>
+</div>
+<div class="flex justify-between items-center pb-sm border-b border-white/5">
+<span class="font-body-base text-on-surface">Liquidity Voids</span>
+<span class="font-data-tabular text-tertiary">82%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-base text-on-surface">Spoofing Patterns</span>
+<span class="font-data-tabular text-error">65%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Upcoming Review -->
+<section class="mb-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary" data-icon="update">update</span>
+                    Skills Requiring Review
+                </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Card 1 -->
+<div class="level-1-surface rounded-xl p-md flex flex-col justify-between">
+<div>
+<div class="font-label-caps text-label-caps text-tertiary mb-xs">Decaying</div>
+<h4 class="font-body-base text-on-surface font-semibold mb-sm">Market Microstructure</h4>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant mb-md">Last review: 14d ago</p>
+</div>
+<button class="w-full py-sm rounded border border-white/10 text-on-surface hover:bg-white/5 transition-colors font-data-tabular">Review Now</button>
+</div>
+<!-- Card 2 -->
+<div class="level-1-surface rounded-xl p-md flex flex-col justify-between">
+<div>
+<div class="font-label-caps text-label-caps text-tertiary mb-xs">Decaying</div>
+<h4 class="font-body-base text-on-surface font-semibold mb-sm">Limit Order Books</h4>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant mb-md">Last review: 21d ago</p>
+</div>
+<button class="w-full py-sm rounded border border-white/10 text-on-surface hover:bg-white/5 transition-colors font-data-tabular">Review Now</button>
+</div>
+<!-- Card 3 -->
+<div class="level-1-surface rounded-xl p-md flex flex-col justify-between">
+<div>
+<div class="font-label-caps text-label-caps text-tertiary mb-xs">Decaying</div>
+<h4 class="font-body-base text-on-surface font-semibold mb-sm">VWAP Strategies</h4>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant mb-md">Last review: 30d ago</p>
+</div>
+<button class="w-full py-sm rounded border border-white/10 text-on-surface hover:bg-white/5 transition-colors font-data-tabular">Review Now</button>
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<section class="flex flex-col sm:flex-row gap-md justify-center items-center mt-xl border-t border-white/5 pt-xl">
+<button class="btn-primary px-xl py-md rounded-lg font-body-base font-semibold w-full sm:w-auto flex items-center justify-center gap-sm">
+                    Continue Journey
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="px-xl py-md rounded-lg font-body-base border border-white/10 text-on-surface hover:bg-white/5 transition-colors w-full sm:w-auto">
+                    Review Mistakes
+                </button>
+</section>
+</main>
+</div>
+</body></html>

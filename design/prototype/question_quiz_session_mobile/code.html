@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind Question Session</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#000965",
+                        "surface-container-high": "#292932",
+                        "surface-container": "#1f1f27",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#393841",
+                        "inverse-surface": "#e4e1ed",
+                        "surface": "#13131b",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "tertiary-fixed": "#ffddb4",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "surface-tint": "#bdc2ff",
+                        "surface-container-highest": "#34343d",
+                        "tertiary": "#ffb955",
+                        "secondary": "#44e2cd",
+                        "primary": "#bdc2ff",
+                        "tertiary-container": "#a06800",
+                        "secondary-fixed": "#62fae3",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c6c5d5",
+                        "on-secondary": "#003731",
+                        "on-tertiary-fixed": "#291800",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "surface-dim": "#13131b",
+                        "primary-fixed": "#dfe0ff",
+                        "on-primary": "#121f8b",
+                        "on-error": "#690005",
+                        "outline-variant": "#454652",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "primary-container": "#5e6ad2",
+                        "inverse-on-surface": "#302f38",
+                        "on-background": "#e4e1ed",
+                        "secondary-container": "#03c6b2",
+                        "on-secondary-container": "#004d44",
+                        "surface-container-lowest": "#0d0d15",
+                        "background": "#13131b",
+                        "on-surface": "#e4e1ed",
+                        "on-primary-container": "#fdfaff",
+                        "surface-container-low": "#1b1b23",
+                        "on-tertiary-container": "#fffaf9",
+                        "on-tertiary": "#452b00",
+                        "inverse-primary": "#4854bb",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface-variant": "#34343d",
+                        "outline": "#908f9e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin-safe": "32px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Geist Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "data-tabular": ["Geist Mono", "monospace"],
+                        "body-base": ["Inter", "sans-serif"],
+                        "display-lg-mobile": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #050507;
+            color: #e4e1ed;
+        }
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% -20%, rgba(94, 106, 210, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glass-panel {
+            background-color: #101018;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .progress-bar {
+            height: 2px;
+            background-color: #44e2cd; /* Mastery Teal */
+            width: 40%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 60;
+        }
+        .option-button:active {
+            transform: scale(0.98);
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(68, 226, 205, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col font-body-base pb-24 md:hidden">
+<div class="progress-bar"></div>
+<div class="aurora-bg"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-md h-16 border-b border-white/5 bg-surface-dim/80 backdrop-blur-xl">
+<button class="text-on-surface hover:opacity-80 transition-transform active:scale-95 duration-200 p-2 -ml-2 rounded-full">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<div class="font-headline-md text-headline-md-mobile text-on-surface">
+            Session Mastery
+        </div>
+<div class="flex items-center gap-1 text-tertiary-fixed-dim bg-surface-container/50 px-2 py-1 rounded-full border border-white/10">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-data-tabular text-data-tabular font-bold">14</span>
+</div>
+</header>
+<main class="flex-grow pt-20 px-md flex flex-col gap-xl">
+<!-- Question Header -->
+<div class="flex flex-col gap-sm mt-md">
+<div class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">
+                Question 4 of 10
+            </div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface leading-tight">
+                What defines a 'Stacked Imbalance' in footprint analysis?
+            </h1>
+</div>
+<!-- Technical Diagram / Mini-table -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center border-b border-white/10 pb-sm mb-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Price</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Bid x Ask</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Delta</span>
+</div>
+<div class="flex justify-between items-center font-data-tabular text-data-tabular">
+<span class="text-on-surface">4125.75</span>
+<span class="text-on-surface-variant">12 x <span class="text-secondary font-bold">150</span></span>
+<span class="text-secondary bg-secondary/10 px-2 py-0.5 rounded">+138</span>
+</div>
+<div class="flex justify-between items-center font-data-tabular text-data-tabular">
+<span class="text-on-surface">4125.50</span>
+<span class="text-on-surface-variant">4 x <span class="text-secondary font-bold">210</span></span>
+<span class="text-secondary bg-secondary/10 px-2 py-0.5 rounded">+206</span>
+</div>
+<div class="flex justify-between items-center font-data-tabular text-data-tabular">
+<span class="text-on-surface">4125.25</span>
+<span class="text-on-surface-variant">25 x <span class="text-secondary font-bold">185</span></span>
+<span class="text-secondary bg-secondary/10 px-2 py-0.5 rounded">+160</span>
+</div>
+</div>
+<!-- Options -->
+<div class="flex flex-col gap-sm">
+<button class="option-button glass-panel rounded-xl p-md text-left flex items-start gap-md transition-all duration-300 hover:bg-surface-container focus:bg-surface-container focus:border-secondary/50 outline-none">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center shrink-0 mt-0.5">
+<span class="text-xs font-data-tabular text-outline">A</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface">
+                    A single price level where aggressive buying volume exceeds selling volume by 300%.
+                </span>
+</button>
+<button class="option-button glass-panel rounded-xl p-md text-left flex items-start gap-md transition-all duration-300 hover:bg-surface-container focus:bg-surface-container focus:border-secondary/50 outline-none">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center shrink-0 mt-0.5">
+<span class="text-xs font-data-tabular text-outline">B</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface">
+                    Three or more consecutive price levels showing significant diagonal buying or selling imbalances.
+                </span>
+</button>
+<button class="option-button glass-panel rounded-xl p-md text-left flex items-start gap-md transition-all duration-300 hover:bg-surface-container focus:bg-surface-container focus:border-secondary/50 outline-none">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center shrink-0 mt-0.5">
+<span class="text-xs font-data-tabular text-outline">C</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface">
+                    When the cumulative delta of the entire session turns positive after a prolonged downtrend.
+                </span>
+</button>
+<button class="option-button glass-panel rounded-xl p-md text-left flex items-start gap-md transition-all duration-300 hover:bg-surface-container focus:bg-surface-container focus:border-secondary/50 outline-none">
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center shrink-0 mt-0.5">
+<span class="text-xs font-data-tabular text-outline">D</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface">
+                    A high volume node developing exactly at the Point of Control (POC).
+                </span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-between items-center px-lg py-md pb-safe bg-surface-container-high/90 backdrop-blur-md border-t border-white/10 shadow-xl rounded-t-xl gap-4">
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-primary-container/20 rounded-xl px-4 py-2 transition-all duration-300">
+<span class="material-symbols-outlined mb-1">lightbulb</span>
+<span class="font-label-caps text-label-caps">Hint</span>
+</button>
+<button class="flex-grow flex items-center justify-center gap-2 bg-secondary text-on-secondary rounded-xl px-lg py-3 font-bold hover:opacity-90 active:scale-95 transition-all duration-300 ease-out glow-button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-headline-md text-sm">Check Answer</span>
+</button>
+</footer>
+<script>
+        // Simple script to handle option selection visual state
+        document.querySelectorAll('.option-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active state from all
+                document.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('bg-surface-container', 'border-secondary/50', 'ring-1', 'ring-secondary/50');
+                    const indicator = btn.querySelector('div');
+                    indicator.classList.remove('bg-secondary', 'border-secondary', 'text-on-secondary');
+                    indicator.classList.add('border-outline');
+                    indicator.querySelector('span').classList.remove('text-on-secondary');
+                    indicator.querySelector('span').classList.add('text-outline');
+                });
+                
+                // Add active state to clicked
+                this.classList.add('bg-surface-container', 'border-secondary/50', 'ring-1', 'ring-secondary/50');
+                const indicator = this.querySelector('div');
+                indicator.classList.remove('border-outline');
+                indicator.classList.add('bg-secondary', 'border-secondary');
+                indicator.querySelector('span').classList.remove('text-outline');
+                indicator.querySelector('span').classList.add('text-on-secondary');
+            });
+        });
+    </script>
+</body></html>
