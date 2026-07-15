@@ -14,8 +14,15 @@ import { Card } from "@/components/ui/card";
 import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MasteryChart, type HistoryPoint } from "@/components/learn/mastery-chart";
+import dynamic from "next/dynamic";
+import type { HistoryPoint } from "@/components/learn/mastery-chart";
 import { cn } from "@/lib/utils";
+
+// lightweight-charts is heavy and below the fold — load it lazily.
+const MasteryChart = dynamic(
+  () => import("@/components/learn/mastery-chart").then((m) => m.MasteryChart),
+  { ssr: false, loading: () => <Skeleton className="h-[200px] w-full rounded-card" /> },
+);
 
 const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -79,14 +86,28 @@ export default function DashboardPage() {
     [data],
   );
 
+  // Static header is server-rendered: it's the page's LCP element and its h1.
+  const header = (
+    <header>
+      <h1 className="text-display-lg-mobile text-fg-primary">Your dashboard</h1>
+      <p className="mt-1 text-body-base text-fg-secondary">
+        Live estimates from your knowledge model — simulated markets, real learning.
+      </p>
+    </header>
+  );
+
   if (isPending || !data) {
+    // Skeleton dimensions mirror the loaded layout exactly — CLS gate.
     return (
-      <div className="mx-auto max-w-4xl space-y-6 pt-4">
-        <Skeleton className="h-40 w-full rounded-card" />
-        <div className="grid gap-4 md:grid-cols-2">
-          <Skeleton className="h-32 rounded-card" />
-          <Skeleton className="h-32 rounded-card" />
+      <div className="mx-auto max-w-4xl space-y-6">
+        {header}
+        <Skeleton className="min-h-[240px] w-full rounded-card" />
+        <div className="grid gap-4 md:grid-cols-3">
+          <Skeleton className="min-h-[168px] rounded-card" />
+          <Skeleton className="min-h-[168px] rounded-card" />
+          <Skeleton className="min-h-[168px] rounded-card" />
         </div>
+        <Skeleton className="min-h-[320px] w-full rounded-card" />
       </div>
     );
   }
@@ -120,8 +141,9 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
+      {header}
       {/* Continue-learning hero */}
-      <Card level="elevated" className="flex flex-col items-center gap-6 p-8 sm:flex-row">
+      <Card level="elevated" className="flex min-h-[240px] flex-col items-center gap-6 p-8 sm:flex-row">
         {noModel ? (
           <>
             <div className="flex-1">
@@ -171,7 +193,7 @@ export default function DashboardPage() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card level="base" className="p-5">
+        <Card level="base" className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Review due</p>
           <p className="num mt-2 text-3xl text-fg-primary">{reviewDue.length}</p>
           <p className="mt-1 text-sm text-fg-secondary">
@@ -184,7 +206,7 @@ export default function DashboardPage() {
           )}
         </Card>
 
-        <Card level="base" className="p-5">
+        <Card level="base" className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Mastered</p>
           <p className="num mt-2 text-3xl text-mastery-bright">
             {masteredCount}
@@ -196,7 +218,7 @@ export default function DashboardPage() {
           </Link>
         </Card>
 
-        <Card level="base" className="p-5">
+        <Card level="base" className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
             Activity · 7 days
           </p>

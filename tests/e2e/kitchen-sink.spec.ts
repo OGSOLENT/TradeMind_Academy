@@ -39,9 +39,10 @@ test.describe("kitchen sink — design system smoke", () => {
     await expect(page.getByRole("img", { name: "Mastery 71 percent" })).toHaveCount(3);
   });
 
-  test("home page shows the ethics banner", async ({ page }) => {
+  test("landing shows the ethics strip and full disclaimer", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Educational simulation only")).toBeVisible();
-    await expect(page.getByText(/no live trading, no signals/)).toBeVisible();
+    await expect(page.getByText("simulation only · no signals · no live money")).toBeVisible();
+    await expect(page.getByText(/Risk & purpose disclaimer/)).toBeVisible();
+    await expect(page.getByText(/Nothing here is financial advice/)).toBeVisible();
   });
 });
