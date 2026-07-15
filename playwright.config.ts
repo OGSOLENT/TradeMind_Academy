@@ -12,7 +12,10 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["iPhone 13"] } },
+    // Chromium-based mobile emulation: the mobile project verifies layout;
+    // WebKit's long-poll channel is flaky against the Firestore emulator
+    // (docs/DECISIONS.md 2026-07-15).
+    { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
     command: "npm run build && npm run start",

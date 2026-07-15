@@ -1,6 +1,11 @@
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, type Auth } from "firebase/auth";
-import { connectFirestoreEmulator, getFirestore, type Firestore } from "firebase/firestore";
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  initializeFirestore,
+  type Firestore,
+} from "firebase/firestore";
 import { connectStorageEmulator, getStorage, type FirebaseStorage } from "firebase/storage";
 
 /**
@@ -29,7 +34,14 @@ let connected = false;
 export function getFirebase(): { app: FirebaseApp; auth: Auth; db: Firestore; storage: FirebaseStorage } {
   const app = createApp();
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  // Safari/WebKit hangs on Firestore's fetch-stream transport against the
+  // emulator for larger result sets — auto-detect falls back to long-polling.
+  let db: Firestore;
+  try {
+    db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+  } catch {
+    db = getFirestore(app); // already initialised (HMR)
+  }
   const storage = getStorage(app);
 
   if (useEmulators && !connected && typeof window !== "undefined") {
