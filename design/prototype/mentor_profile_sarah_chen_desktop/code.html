@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Mentor Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b23",
+                        "secondary-fixed": "#62fae3",
+                        "primary": "#bdc2ff",
+                        "surface": "#13131b",
+                        "secondary-container": "#03c6b2",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-primary-fixed": "#000965",
+                        "on-background": "#e4e1ed",
+                        "surface-tint": "#bdc2ff",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary": "#ffb955",
+                        "on-error": "#690005",
+                        "tertiary-container": "#a06800",
+                        "surface-dim": "#13131b",
+                        "on-surface-variant": "#c6c5d5",
+                        "inverse-surface": "#e4e1ed",
+                        "surface-container-high": "#292932",
+                        "on-secondary-fixed-variant": "#005047",
+                        "on-primary-container": "#fdfaff",
+                        "background": "#13131b",
+                        "surface-bright": "#393841",
+                        "primary-fixed": "#dfe0ff",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "secondary": "#44e2cd",
+                        "on-secondary": "#003731",
+                        "on-tertiary": "#452b00",
+                        "on-surface": "#e4e1ed",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-container": "#1f1f27",
+                        "primary-container": "#5e6ad2",
+                        "on-tertiary-fixed": "#291800",
+                        "on-tertiary-container": "#fffaf9",
+                        "on-secondary-container": "#004d44",
+                        "inverse-primary": "#4854bb",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "inverse-on-surface": "#302f38",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-primary": "#121f8b",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#454652",
+                        "surface-variant": "#34343d",
+                        "surface-container-highest": "#34343d",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "error-container": "#93000a",
+                        "outline": "#908f9e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "40px",
+                        "base": "4px",
+                        "gutter": "20px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin-safe": "32px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "label-caps": ["Geist Mono"],
+                        "display-lg": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #050507; /* Level 0 Base */
+            color: #e4e1ed;
+        }
+        
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .data-cell {
+            background: rgba(3, 198, 178, 0.05); /* subtle teal */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .aurora-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.05;
+            background: #5E6AD2;
+            animation: float 20s infinite alternate ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, -50px) scale(1.1); }
+        }
+
+        /* Top Progress Bar */
+        .mastery-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background-color: #44e2cd;
+            width: 35%; /* example progress */
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="font-body-base antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+<div class="mastery-progress"></div>
+<div class="aurora-blob w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
+<div class="aurora-blob w-[600px] h-[600px] bottom-[-200px] right-[-100px]" style="background: #03c6b2; animation-delay: -10s;"></div>
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm flex justify-between items-center h-16 px-gutter w-full max-w-full">
+<div class="flex items-center gap-md">
+<!-- Candlestick Glyph + Brand -->
+<div class="flex items-end gap-1">
+<div class="w-1 bg-secondary h-6 animate-pulse" style="animation: grow 2s ease-out forwards; transform-origin: bottom;"></div>
+<span class="font-display-lg text-display-lg-mobile text-primary tracking-tighter">TradeMind</span>
+</div>
+<div class="hidden md:flex gap-lg ml-lg">
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-secondary transition-colors duration-200 active:scale-95 transition-transform" href="#">Market</a>
+<a class="font-body-base text-body-base text-secondary font-bold border-b-2 border-secondary pb-1 hover:text-secondary transition-colors duration-200 active:scale-95 transition-transform" href="#">Academy</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-secondary transition-colors duration-200 active:scale-95 transition-transform" href="#">Portfolio</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-secondary transition-colors duration-200 active:scale-95 transition-transform" href="#">Signals</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User profile" class="w-8 h-8 rounded-full border border-outline-variant/30 object-cover" data-alt="A minimalist, futuristic avatar of a user in a dark mode trading interface, high contrast, clean lines, subtle teal accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASb8g9LV1dWZ42sbw7WNJG3wgjjCOnOgmBRzoBk8dN08DL8lmAoCp0mdCEz-EonPYVLNljpiWPyD6_wjRfL3vlpOexcFXqPUDZNfDGK343cQyTgf64XARCqC4ZwWiuNBiX2ke33Apw3G35JI3nnOD3M8gXofqre_JLUnyDzanwU68tdgnDGxg-hZgRACs78zQ5VoPvcy1Q6ok_br35lTt7ZhT06tpoNN21prSc08sypfo7p7pftqo-Pa6C3AKPqt-YetjGhJ54WVe7"/>
+</div>
+</nav>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar (Shared Component) - Desktop Only -->
+<aside class="hidden xl:flex flex-col py-md space-y-sm bg-surface-container-lowest fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-outline-variant/30 z-40">
+<div class="px-md mb-md">
+<div class="flex items-center gap-sm mb-1">
+<img alt="Mastery Level Icon" class="w-6 h-6" data-alt="A highly geometric, dark-mode icon representing mastery level 42, with neon teal glowing edges, technical and precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4F0uPmgnpvglZXYJRvaz2pDT-JKSqPMQPEMkJ3oWJ6HXFOQodFHlBs0IrKDro4iamBt-D3Hx80sfdXp9syHObp_ZHkwy4iX8KFWww2_hPga-MQ_j_0xmDd5xlBC8ztzlytXCZ9NCzudWdjHfImqYc_ZX0scQmr_DWMRb_A2Eqd3OLs8rF_m6nUfU-64YhQr4SkbubKlOCRcEOHzTdvJkwvWWh1FkvL1QX_-fbiamqHSwz-l5LssI-H4wD5GVAqiep9wgMB0zex7v5"/>
+<span class="font-headline-md text-headline-md text-on-surface">Mastery HUD</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary">Quant Level 42</span>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-sm">
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">terminal</span> Terminal
+                </a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">insights</span> Analytics
+                </a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">psychology</span> Strategy
+                </a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT bg-secondary-container/10 text-secondary-fixed border-r-4 border-secondary-fixed transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">school</span> Education
+                </a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">groups</span> Community
+                </a>
+</nav>
+<div class="px-md mt-auto mb-md">
+<button class="w-full py-2 bg-primary-container text-on-primary-container rounded-lg font-label-caps text-label-caps hover:brightness-110 transition-all duration-300">Upgrade to Pro</button>
+</div>
+<div class="flex flex-col gap-1 px-sm border-t border-outline-variant/30 pt-sm">
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">help</span> Help
+                </a>
+<a class="flex items-center gap-sm px-sm py-2 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-300 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">sensors</span> Status
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 xl:ml-64 p-gutter md:p-lg xl:p-xl relative z-10 max-w-7xl mx-auto w-full">
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Hero Section (Spans full on mobile, 8 cols on desktop) -->
+<div class="md:col-span-8 glass-card rounded-xl p-lg flex flex-col justify-between">
+<div class="flex flex-col md:flex-row gap-lg items-start">
+<img alt="Sarah Chen" class="w-32 h-32 rounded-xl object-cover border border-outline-variant/30 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A cinematic, high-contrast portrait of a female quantitative trader in a sleek, dark trading floor environment, lit by soft teal screen glows, professional and sharp." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG0goSe4geHSqw8xFVY31_xxoQjYheWt-cj3JLFRqUKnpuZ3ifbCb7wp-rB5SK_z6GzWzdMoyFZs2uGCZ2CKEnLvQo4YUha7FE7wnSPsw7mlCYJ1ZwFXzwBjaof_NSbj9MtQ8NrjeC3LNO3pPFzpy5E1LDWUD7dw3XQaROwKBWF6kvuWp_r8d_bo7aqIGW8in88H3-za50PxYFVoy9GHRatpxxpzFPIqAvc1u3G-ng4mHPfqHub4NC9Q6dibReV3Dbu-v1O3s-evtL"/>
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Sarah 'The Algo' Chen</h1>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary mb-md">HFT Microstructure &amp; Order Flow</p>
+<!-- Verified Stats -->
+<div class="flex gap-md flex-wrap">
+<div class="data-cell p-sm rounded-lg flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Profit Factor</span>
+<span class="font-data-tabular text-data-tabular text-secondary text-lg">3.2</span>
+</div>
+<div class="data-cell p-sm rounded-lg flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Win Rate</span>
+<span class="font-data-tabular text-data-tabular text-secondary text-lg">84%</span>
+</div>
+<div class="data-cell p-sm rounded-lg flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Verified PnL</span>
+<span class="font-data-tabular text-data-tabular text-secondary text-lg">$2.4M</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg flex gap-sm">
+<button class="bg-primary-container text-on-primary-container px-lg py-sm rounded-lg font-label-caps text-label-caps hover:bg-inverse-primary transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">Book 1-on-1 Review</button>
+<button class="border border-secondary text-secondary px-lg py-sm rounded-lg font-label-caps text-label-caps hover:bg-secondary/10 transition-all duration-300">Follow Signals</button>
+</div>
+</div>
+<!-- Mentorship Stats (Spans 4 cols on desktop) -->
+<div class="md:col-span-4 glass-card rounded-xl p-lg flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">monitoring</span> Mentorship Stats
+                    </h2>
+<div class="space-y-sm flex-1">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Active Mentees</span>
+<span class="font-data-tabular text-data-tabular text-on-surface">14</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Successful Graduates</span>
+<span class="font-data-tabular text-data-tabular text-on-surface">128</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Avg. Sharpe Improvement</span>
+<span class="font-data-tabular text-data-tabular text-secondary">+0.8</span>
+</div>
+</div>
+</div>
+<!-- Strategy Library (Spans 6 cols) -->
+<div class="md:col-span-6 glass-card rounded-xl p-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">library_books</span> Strategy Library
+                    </h2>
+<div class="space-y-md">
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-secondary/50 transition-colors cursor-pointer group">
+<h3 class="font-body-base text-body-base text-on-surface group-hover:text-secondary transition-colors">Interpreting Liquidity Voids</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Advanced Order Book Dynamics</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30 hover:border-secondary/50 transition-colors cursor-pointer group">
+<h3 class="font-body-base text-body-base text-on-surface group-hover:text-secondary transition-colors">Latency Arbitrage Basics</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Infrastructure &amp; Execution Speed</p>
+</div>
+</div>
+</div>
+<!-- Direct Signal Feed (Spans 6 cols) -->
+<div class="md:col-span-6 glass-card rounded-xl p-lg flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary">cell_tower</span> Direct Signal Feed
+                    </h2>
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-sm font-data-tabular text-data-tabular text-on-surface-variant overflow-y-auto max-h-[200px]">
+<div class="mb-sm border-l-2 border-secondary pl-sm">
+<span class="text-secondary block text-xs">10:42 AM</span>
+<span>NQ Liquidity grab detected at 15420. Expecting minor retracement before continuation.</span>
+</div>
+<div class="mb-sm border-l-2 border-outline-variant pl-sm">
+<span class="text-outline-variant block text-xs">Yesterday</span>
+<span>Live Session Scheduled: "Reviewing NFP Volatility" @ 18:00 UTC.</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-sm bg-surface-container-lowest border-t border-outline-variant/20 flex justify-between items-center px-gutter xl:ml-64 relative z-50">
+<span class="font-label-caps text-label-caps text-on-surface-variant">© 2024 TradeMind. System Status: Optimal</span>
+<div class="flex gap-md font-data-tabular text-data-tabular text-outline">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+<a class="hover:text-primary transition-colors" href="#">API Docs</a>
+<a class="hover:text-primary transition-colors" href="#">Risk Disclosure</a>
+</div>
+</footer>
+</body></html>

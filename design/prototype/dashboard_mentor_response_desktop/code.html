@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Mentor Response</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1f1f27",
+                    "on-tertiary": "#452b00",
+                    "on-surface": "#e4e1ed",
+                    "on-primary-fixed-variant": "#2e3aa2",
+                    "on-tertiary-container": "#fffaf9",
+                    "tertiary": "#ffb955",
+                    "on-primary": "#121f8b",
+                    "on-primary-fixed": "#000965",
+                    "surface-tint": "#bdc2ff",
+                    "surface-container-lowest": "#0d0d15",
+                    "secondary-container": "#03c6b2",
+                    "on-secondary-container": "#004d44",
+                    "inverse-on-surface": "#302f38",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#62fae3",
+                    "primary-fixed": "#dfe0ff",
+                    "background": "#13131b",
+                    "surface-container-low": "#1b1b23",
+                    "surface-dim": "#13131b",
+                    "surface-variant": "#34343d",
+                    "on-tertiary-fixed": "#291800",
+                    "on-secondary": "#003731",
+                    "on-secondary-fixed": "#00201c",
+                    "tertiary-container": "#a06800",
+                    "error-container": "#93000a",
+                    "outline-variant": "#454652",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e4e1ed",
+                    "on-primary-container": "#fdfaff",
+                    "on-error": "#690005",
+                    "primary": "#bdc2ff",
+                    "on-tertiary-fixed-variant": "#633f00",
+                    "primary-fixed-dim": "#bdc2ff",
+                    "tertiary-fixed-dim": "#ffb955",
+                    "tertiary-fixed": "#ffddb4",
+                    "on-surface-variant": "#c6c5d5",
+                    "primary-container": "#5e6ad2",
+                    "surface-bright": "#393841",
+                    "surface-container-highest": "#34343d",
+                    "outline": "#908f9e",
+                    "on-background": "#e4e1ed",
+                    "on-secondary-fixed-variant": "#005047",
+                    "surface-container-high": "#292932",
+                    "secondary": "#44e2cd",
+                    "secondary-fixed-dim": "#3cddc7",
+                    "inverse-primary": "#4854bb",
+                    "surface": "#13131b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "margin-safe": "32px",
+                    "xs": "4px",
+                    "gutter": "20px",
+                    "xl": "40px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "body-base": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Geist Mono"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "data-tabular": [
+                            "Geist Mono"
+                    ]
+            },
+            "fontSize": {
+                    "display-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-base": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "data-tabular": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0em",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+        }
+        },
+      }
+    </script>
+<style>
+        /* Custom Utilities */
+        .glass-panel {
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15); /* Simulated top edge light */
+        }
+        
+        .aurora-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: #050507;
+            overflow: hidden;
+        }
+        .aurora-blob {
+            position: absolute;
+            width: 800px; height: 800px;
+            background: #5E6AD2;
+            opacity: 0.05;
+            filter: blur(150px);
+            border-radius: 50%;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, 50px) scale(1.1); }
+            100% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+
+        /* Spring physics animation helper classes for interactions */
+        .spring-transition {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Candlestick animation */
+        @keyframes wick-grow {
+            0% { height: 0; top: 50%; }
+            100% { height: 24px; top: calc(50% - 12px); }
+        }
+        .animate-wick {
+            animation: wick-grow 1s ease-out forwards;
+        }
+        
+        /* Learning Progress Bar */
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 1000;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #03c6b2; /* Mastery Teal */
+            width: 75%; /* Example progress */
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base antialiased min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- Atmospheric Background -->
+<div class="aurora-bg">
+<div class="aurora-blob" style="top: -20%; left: -10%;"></div>
+<div class="aurora-blob" style="bottom: -20%; right: -10%; background: #03c6b2; opacity: 0.03;"></div>
+</div>
+<!-- Learning Progress Bar -->
+<div class="progress-bar-container">
+<div class="progress-bar-fill"></div>
+</div>
+<!-- Shared Component: SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen fixed left-0 top-0 py-lg bg-surface-container-lowest border-r border-outline-variant docked left-0 h-full w-64 flat no shadows z-40">
+<!-- Brand / Header -->
+<div class="px-md mb-8 flex items-center space-x-3">
+<div class="relative w-6 h-10 flex justify-center">
+<!-- Candlestick Glyph -->
+<div class="absolute w-1 bg-secondary rounded-full animate-wick"></div>
+<div class="absolute w-3 h-5 bg-secondary rounded-sm top-1/2 -translate-y-1/2"></div>
+</div>
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tighter text-2xl font-bold leading-none">TradeMind</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mt-1">Quant Terminal</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 px-sm space-y-2">
+<!-- Active Tab -->
+<a class="flex items-center px-sm py-2 text-secondary font-bold border-r-2 border-secondary bg-surface-variant/10 rounded-l-lg hover:bg-surface-variant/30 transition-colors duration-200 Active: scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">terminal</span>
+                Terminal
+            </a>
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">insights</span>
+                Analytics
+            </a>
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">psychology</span>
+                Strategy
+            </a>
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">school</span>
+                Education
+            </a>
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">groups</span>
+                Community
+            </a>
+</div>
+<!-- Footer / CTA -->
+<div class="px-md mt-auto pt-4 space-y-4">
+<button class="w-full bg-primary-container text-on-primary-container rounded-lg py-2 font-label-caps text-label-caps hover:brightness-110 spring-transition flex items-center justify-center">
+<span class="material-symbols-outlined text-sm mr-2">analytics</span>
+                Analyze Live Feed
+            </button>
+<div class="pt-4 border-t border-outline-variant space-y-2">
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200 text-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center px-sm py-2 text-on-surface-variant font-medium hover:bg-surface-variant/30 transition-colors duration-200 text-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">help</span>
+                    Support
+                </a>
+</div>
+<!-- User Profile Snippet -->
+<div class="flex items-center space-x-3 pt-2">
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A small, stylized avatar portrait of a modern digital trader. High-tech, dark mode aesthetic with subtle teal lighting. Professional, focused, and minimalist. Head and shoulders only, against a deep black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc--GA8y2alKJh0a82i-fk8J0VKxgZzCz55tgSfujUMf0ubSCLmFU0EKlJC1g6dWtc_f45pFHRj9nYduOs8x5lo4Z-U5LCqDMmwtzxUd9t0Z1UGz4d-58evaMmdQhnhSBzRGSganbW_2O6cCqaWyhNh6sXFqZ97Q1eO2ZjBAfDMuukhPSSYcKw0kX60d02Osz4upHEiJrk1w8P8XlQnrN5SdjMrh5HPOzIWJSS6vniqrrAdG-OGrU0ns8IcbDEwbsFXjiEyCrgucGr"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="lg:ml-64 min-h-screen pt-16 pr-80"> <!-- pr-80 to account for the open drawer -->
+<!-- Shared Component: TopAppBar -->
+<header class="fixed top-0 right-0 left-0 lg:left-64 z-50 flex items-center justify-between px-lg h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant docked top-0 w-full flat no shadows">
+<!-- Search & Navigation -->
+<div class="flex items-center space-x-6">
+<!-- Search Bar Placeholder -->
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-full py-1.5 pl-9 pr-4 text-sm font-data-tabular focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all w-64 placeholder-on-surface-variant/50" placeholder="Search signals..." type="text"/>
+</div>
+<nav class="hidden md:flex space-x-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-opacity py-4" href="#">Market Data</a>
+<a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1 py-4 Active: opacity-80" href="#">Active Signals</a>
+</nav>
+</div>
+<!-- Actions -->
+<div class="flex items-center space-x-4">
+<button class="hidden lg:flex items-center font-label-caps text-label-caps text-secondary hover:text-on-surface transition-opacity">
+<span class="material-symbols-outlined mr-1 text-sm">psychology_alt</span>
+                    Review Mentor Feedback
+                </button>
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-lg font-label-caps text-label-caps hover:brightness-110 spring-transition shadow-[0_0_15px_rgba(94,106,210,0.3)]">
+                    Execute Trade
+                </button>
+<div class="flex items-center space-x-2 pl-2 border-l border-outline-variant">
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<!-- Notification Badge -->
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Content Canvas -->
+<div class="p-md lg:p-lg max-w-7xl mx-auto space-y-6">
+<!-- Performance Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Session Overview</h2>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant">Last updated: 14:32:05 UTC</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container rounded-md font-data-tabular text-data-tabular text-secondary text-xs flex items-center border border-outline-variant/50">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-2 animate-pulse"></span>
+                        Live Connection
+                    </span>
+</div>
+</div>
+<!-- Bento Grid Layout for Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Metric Card 1: Win Rate -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 spring-transition cursor-default relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Win Rate (30d)</h3>
+<span class="material-symbols-outlined text-secondary opacity-70">trending_up</span>
+</div>
+<div>
+<div class="font-display-lg text-display-lg text-on-surface mb-1">68.4%</div>
+<div class="font-data-tabular text-data-tabular text-secondary flex items-center text-xs">
+<span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span>
+                            +2.1% vs last period
+                        </div>
+</div>
+</div>
+<!-- Metric Card 2: Profit Factor -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 spring-transition cursor-default relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Profit Factor</h3>
+<span class="material-symbols-outlined text-primary opacity-70">balance</span>
+</div>
+<div>
+<div class="font-display-lg text-display-lg text-on-surface mb-1">2.14</div>
+<div class="font-data-tabular text-data-tabular text-on-surface-variant flex items-center text-xs">
+                            Target: &gt; 2.0
+                        </div>
+</div>
+</div>
+<!-- Metric Card 3: Recent Trades -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between hover:-translate-y-1 spring-transition cursor-default">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Recent Executions</h3>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center font-data-tabular text-data-tabular text-sm">
+<span class="text-on-surface">ES_F (Long)</span>
+<span class="text-secondary bg-secondary/10 px-2 py-0.5 rounded">+12.5 pts</span>
+</div>
+<div class="flex justify-between items-center font-data-tabular text-data-tabular text-sm">
+<span class="text-on-surface">NQ_F (Short)</span>
+<span class="text-error bg-error/10 px-2 py-0.5 rounded">-4.2 pts</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Chart Area (Placeholder for deeper analytics) -->
+<div class="glass-panel rounded-xl p-6 h-96 mt-6 relative flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface text-lg">Liquidity Grab Analysis</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded bg-surface-container-high border border-outline-variant font-data-tabular text-data-tabular text-xs hover:bg-surface-variant transition-colors">15m</button>
+<button class="px-3 py-1 rounded bg-secondary/20 text-secondary border border-secondary/50 font-data-tabular text-data-tabular text-xs">1H</button>
+</div>
+</div>
+<!-- Chart Visualization Mockup (Lines and Grid) -->
+<div class="flex-1 border-t border-l border-outline-variant/30 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+<div class="border-b border-outline-variant w-full h-0"></div>
+</div>
+<!-- Candlestick Mockups -->
+<div class="absolute bottom-10 left-10 w-2 h-16 bg-error/80 relative">
+<div class="absolute top-[-10px] left-1/2 w-px h-24 bg-error/50 -translate-x-1/2"></div>
+</div>
+<div class="absolute bottom-12 left-20 w-2 h-12 bg-secondary/80 relative">
+<div class="absolute top-[-20px] left-1/2 w-px h-20 bg-secondary/50 -translate-x-1/2"></div>
+</div>
+<div class="absolute bottom-24 left-32 w-2 h-20 bg-secondary/80 relative shadow-[0_0_10px_rgba(68,226,205,0.4)]">
+<div class="absolute top-[-30px] left-1/2 w-px h-32 bg-secondary/80 -translate-x-1/2"></div>
+<!-- Annotation -->
+<div class="absolute top-[-45px] left-1/2 -translate-x-1/2 bg-surface-container-high text-secondary font-data-tabular text-[10px] px-2 py-1 rounded border border-secondary/30 whitespace-nowrap">
+                            Buy Stop Swept
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Shared Component: NavigationDrawer (Open State on Right) -->
+<!-- Note: z-[100] applied to ensure it sits above the TopAppBar as per typical drawer behavior when open -->
+<aside class="fixed right-0 top-0 h-full z-[100] flex flex-col p-md bg-surface-container-high/90 backdrop-blur-2xl border-l border-outline-variant shadow-xl docked right-0 h-full w-80 transform transition-transform duration-500 cubic-bezier(0.175, 0.885, 0.32, 1.275) translate-x-0">
+<!-- Header -->
+<div class="flex items-center space-x-4 mb-8 pt-4">
+<div class="relative">
+<img alt="Mentor Notification" class="w-12 h-12 rounded-full border-2 border-secondary object-cover" data-alt="A professional headshot of a female trading mentor, looking supportive and analytical. Dark background, soft studio lighting with a faint teal rim light. Cinematic, high-quality, modern corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCirA82ttawJTCyQ8JVqz5-C9zLpq8InkbNt4LQpdvKiw3YW7PTKpX7AzqqWWhvssKAtyPLZeTgKcPnaGGC3H0xDViKs1F6zoEYoqN331cPBfkH6bPZg9oWI74Zc3IBBqEniPROVcILf7XuOkBY8FDQIB5wuLNE8pk7biTpR31AZbzlNgVX79zzP3pgQSEbMpW3qIR6e2F6UoUOoG9KFLiGy_KeYpAzOiMA3ZhRqIIp3nW1NuceVuzabmZw0C0DI7vqh47ts-71M9rZ"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full border-2 border-surface-container-high"></div>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface text-xl">Notifications</h2>
+<p class="font-data-tabular text-data-tabular text-secondary text-xs opacity-80">Real-time trade feedback</p>
+</div>
+<button class="ml-auto text-on-surface-variant hover:text-on-surface transition-colors p-1">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Navigation Tabs inside Drawer -->
+<div class="flex bg-surface-container-low rounded-lg p-1 mb-6 border border-outline-variant/50">
+<button class="flex-1 flex flex-col items-center justify-center py-2 bg-secondary-container text-on-secondary-container rounded-lg text-xs font-label-caps transition-all shadow-sm">
+<span class="material-symbols-outlined text-sm mb-1">chat</span>
+                 Mentor
+             </button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg text-xs font-label-caps transition-all">
+<span class="material-symbols-outlined text-sm mb-1">warning</span>
+                 Alerts
+             </button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg text-xs font-label-caps transition-all">
+<span class="material-symbols-outlined text-sm mb-1">dns</span>
+                 System
+             </button>
+</div>
+<!-- Notification Content Area -->
+<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
+<!-- High-Fidelity Notification Card -->
+<div class="glass-panel p-4 rounded-xl border border-secondary/30 relative group">
+<!-- Unread Indicator -->
+<div class="absolute top-4 left-0 w-1 h-8 bg-secondary rounded-r-md"></div>
+<div class="pl-3">
+<div class="flex justify-between items-start mb-2">
+<div class="font-label-caps text-label-caps text-secondary text-xs uppercase tracking-wider">New Review</div>
+<div class="font-data-tabular text-data-tabular text-on-surface-variant text-[10px]">2m ago</div>
+</div>
+<h4 class="font-body-base text-on-surface font-semibold mb-1">Liquidity Grab Execution</h4>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant text-sm mb-3 leading-relaxed">
+                        "Solid identification of the sweep on NQ. However, your entry was premature. Wait for the structural shift on the 1m chart to confirm..."
+                    </p>
+<!-- Snippet Context -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-2 mb-4 font-data-tabular text-[11px] flex justify-between items-center">
+<span class="text-on-surface">Ticket #8924</span>
+<span class="text-error">-4.2 pts</span>
+</div>
+<button class="w-full py-2 bg-secondary/10 hover:bg-secondary/20 text-secondary border border-secondary/50 rounded-lg font-label-caps text-label-caps transition-colors flex items-center justify-center group-hover:shadow-[0_0_10px_rgba(68,226,205,0.2)]">
+                        View Full Review
+                        <span class="material-symbols-outlined text-[14px] ml-1 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Older Notification (Read State) -->
+<div class="p-4 rounded-xl border border-outline-variant/30 opacity-70 hover:opacity-100 transition-opacity bg-surface-container-low">
+<div class="flex justify-between items-start mb-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant text-xs uppercase tracking-wider">Strategy Note</div>
+<div class="font-data-tabular text-data-tabular text-on-surface-variant text-[10px]">Yesterday</div>
+</div>
+<h4 class="font-body-base text-on-surface font-medium mb-1">Risk Management Check</h4>
+<p class="font-data-tabular text-data-tabular text-on-surface-variant text-xs line-clamp-2">
+                    Reviewing your sizing on the last three trades. Remember the 1% max risk rule per setup during high volatility...
+                </p>
+</div>
+</div>
+</aside>
+<style>
+        /* Custom Scrollbar for Drawer */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</body></html>

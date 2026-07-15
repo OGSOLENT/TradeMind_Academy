@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind Mobile Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed": "#291800",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "surface-dim": "#13131b",
+                        "primary-fixed": "#dfe0ff",
+                        "on-secondary": "#003731",
+                        "secondary": "#44e2cd",
+                        "primary": "#bdc2ff",
+                        "tertiary-container": "#a06800",
+                        "secondary-fixed": "#62fae3",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c6c5d5",
+                        "tertiary": "#ffb955",
+                        "tertiary-fixed": "#ffddb4",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "surface-tint": "#bdc2ff",
+                        "surface-container-highest": "#34343d",
+                        "inverse-surface": "#e4e1ed",
+                        "surface": "#13131b",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#393841",
+                        "on-primary-fixed": "#000965",
+                        "surface-container-high": "#292932",
+                        "surface-container": "#1f1f27",
+                        "surface-variant": "#34343d",
+                        "outline": "#908f9e",
+                        "surface-container-low": "#1b1b23",
+                        "on-tertiary-container": "#fffaf9",
+                        "on-tertiary": "#452b00",
+                        "inverse-primary": "#4854bb",
+                        "on-secondary-fixed-variant": "#005047",
+                        "on-secondary-container": "#004d44",
+                        "surface-container-lowest": "#0d0d15",
+                        "background": "#13131b",
+                        "on-surface": "#e4e1ed",
+                        "on-primary-container": "#fdfaff",
+                        "secondary-container": "#03c6b2",
+                        "on-background": "#e4e1ed",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "primary-container": "#5e6ad2",
+                        "inverse-on-surface": "#302f38",
+                        "on-error": "#690005",
+                        "outline-variant": "#454652",
+                        "on-primary": "#121f8b"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xl": "40px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "margin-safe": "32px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "sm": "8px"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "display-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500" }],
+                        "data-tabular": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "500" }],
+                        "body-base": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }]
+                    },
+                    animation: {
+                        'stagger-up': 'slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards',
+                        'pulse-glow': 'pulseGlow 3s infinite alternate',
+                    },
+                    keyframes: {
+                        slideUpFade: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        pulseGlow: {
+                            '0%': { opacity: '0.4', filter: 'blur(8px)' },
+                            '100%': { opacity: '0.8', filter: 'blur(12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        
+        .aurora-blob {
+            position: absolute;
+            background: radial-gradient(circle, rgba(94,106,210,0.15) 0%, rgba(94,106,210,0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .glass-panel {
+            background: linear-gradient(180deg, rgba(27,27,35,0.8) 0%, rgba(19,19,27,0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-base text-body-base min-h-screen pb-24 overflow-x-hidden relative selection:bg-secondary/30">
+<!-- Global Progress Bar -->
+<div class="fixed top-0 left-0 w-full h-[2px] bg-surface-container z-50">
+<div class="h-full bg-secondary w-2/3 rounded-r-full shadow-[0_0_8px_rgba(68,226,205,0.8)]"></div>
+</div>
+<!-- Aurora Background Effect -->
+<div class="aurora-blob w-96 h-96 top-[-100px] right-[-100px] animate-pulse-glow"></div>
+<div class="aurora-blob w-[500px] h-[500px] bottom-0 left-[-200px] bg-[radial-gradient(circle,rgba(68,226,205,0.08)_0%,rgba(68,226,205,0)_70%)] animate-pulse-glow" style="animation-delay: 1.5s;"></div>
+<main class="w-full max-w-md mx-auto px-4 pt-8 pb-4 relative z-10 flex flex-col gap-lg">
+<!-- Top Bar -->
+<header class="flex items-center justify-between animate-stagger-up stagger-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">candlestick_chart</span>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight">TradeMind</h1>
+</div>
+<div class="flex items-center gap-3">
+<!-- Streak -->
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-data-tabular text-data-tabular text-tertiary-fixed">14</span>
+</div>
+<!-- XP -->
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full border border-white/5">
+<span class="font-data-tabular text-data-tabular text-secondary">2.4k</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">XP</span>
+</div>
+<!-- Avatar -->
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A highly detailed close-up portrait of a young financial trader in a dark, atmospheric room illuminated by the cool, technical glow of multiple monitors. The lighting is cinematic, highlighting sharp features and a focused expression. The overall aesthetic matches a sleek, modern, technical minimalist design system with deep blacks and subtle cool undertones." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+</div>
+</div>
+</header>
+<!-- Hero Card -->
+<section class="glass-panel rounded-xl p-5 border border-white/10 relative overflow-hidden animate-stagger-up stagger-2 group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex items-center justify-between relative z-10">
+<div class="flex flex-col gap-2 w-2/3">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Continue Learning</span>
+<h2 class="font-headline-md text-headline-md font-semibold leading-tight">Market Microstructure</h2>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-1">Module 4: Order Book Dynamics</p>
+<button class="mt-4 bg-primary-container text-on-primary-container font-data-tabular text-data-tabular px-4 py-2 rounded-lg w-max flex items-center gap-2 hover:bg-primary-container/90 hover:shadow-[inset_0_0_12px_rgba(255,255,255,0.2)] transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Resume
+                    </button>
+</div>
+<!-- Mastery Ring -->
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="6"></circle>
+<circle class="text-secondary drop-shadow-[0_0_4px_rgba(68,226,205,0.5)]" cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-data-tabular text-data-tabular font-bold text-lg">75%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Stats Grid -->
+<section class="grid grid-cols-2 gap-4 animate-stagger-up stagger-3">
+<!-- Review Due -->
+<div class="bg-surface-container-low rounded-xl p-4 border-t border-white/5 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-16 h-16 bg-tertiary/5 rounded-bl-full transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Review Due</span>
+</div>
+<div>
+<span class="font-display-lg-mobile text-display-lg-mobile text-tertiary-fixed">12</span>
+<span class="font-body-base text-body-base text-on-surface-variant text-sm ml-1">Concepts</span>
+</div>
+</div>
+<!-- Mistake Bank -->
+<div class="bg-surface-container-low rounded-xl p-4 border-t border-white/5 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-16 h-16 bg-error/5 rounded-bl-full transition-transform group-hover:scale-110"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Mistakes</span>
+</div>
+<div>
+<span class="font-display-lg-mobile text-display-lg-mobile text-error">4</span>
+<span class="font-body-base text-body-base text-on-surface-variant text-sm ml-1">To Resolve</span>
+</div>
+</div>
+</section>
+<!-- Analytics Strip -->
+<section class="bg-surface-container-low rounded-xl p-4 border-t border-white/5 shadow-sm animate-stagger-up stagger-4">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Activity Heatmap</span>
+<span class="font-data-tabular text-data-tabular text-xs text-secondary bg-secondary/10 px-2 py-0.5 rounded">+15% vs Last Wk</span>
+</div>
+<div class="flex justify-between items-end h-12 gap-1 px-1">
+<div class="w-full bg-secondary/20 h-4 rounded-sm hover:bg-secondary/40 transition-colors"></div>
+<div class="w-full bg-secondary/40 h-8 rounded-sm hover:bg-secondary/60 transition-colors"></div>
+<div class="w-full bg-secondary/10 h-3 rounded-sm hover:bg-secondary/30 transition-colors"></div>
+<div class="w-full bg-secondary/80 h-10 rounded-sm hover:bg-secondary transition-colors shadow-[0_0_8px_rgba(68,226,205,0.3)]"></div>
+<div class="w-full bg-secondary/60 h-7 rounded-sm hover:bg-secondary/80 transition-colors"></div>
+<div class="w-full bg-surface-container-high h-2 rounded-sm border border-dashed border-outline-variant/50"></div>
+<div class="w-full bg-surface-container-high h-2 rounded-sm border border-dashed border-outline-variant/50"></div>
+</div>
+<div class="flex justify-between mt-2 px-1">
+<span class="font-label-caps text-label-caps text-[9px] text-outline">M</span>
+<span class="font-label-caps text-label-caps text-[9px] text-outline">T</span>
+<span class="font-label-caps text-label-caps text-[9px] text-outline">W</span>
+<span class="font-label-caps text-label-caps text-[9px] text-secondary font-bold">T</span>
+<span class="font-label-caps text-label-caps text-[9px] text-outline">F</span>
+<span class="font-label-caps text-label-caps text-[9px] text-outline">S</span>
+<span class="font-label-caps text-label-caps text-[9px] text-outline">S</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Generated from JSON, Content Immutable, Semantic Logic Applied) -->
+<nav class="bg-surface-container/90 backdrop-blur-lg border-t border-white/10 shadow-xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16 lg:hidden rounded-t-xl">
+<!-- Active Tab: Learn -->
+<a class="flex flex-col items-center justify-center text-secondary bg-secondary/10 rounded-xl px-4 py-2 active:bg-surface-container-highest active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-label-caps text-label-caps mt-1">Learn</span>
+</a>
+<!-- Inactive Tab: Trade -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 active:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">show_chart</span>
+<span class="font-label-caps text-label-caps mt-1">Trade</span>
+</a>
+<!-- Inactive Tab: Stats -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 active:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-label-caps text-label-caps mt-1">Stats</span>
+</a>
+<!-- Inactive Tab: Menu -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 active:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps mt-1">Menu</span>
+</a>
+</nav>
+</body></html>

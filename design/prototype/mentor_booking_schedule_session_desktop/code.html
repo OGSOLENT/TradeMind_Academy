@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Schedule Mentor Session</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#3cddc7",
+                        "surface-container-highest": "#34343d",
+                        "outline-variant": "#454652",
+                        "on-primary": "#121f8b",
+                        "surface-container-low": "#1b1b23",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-surface": "#e4e1ed",
+                        "primary": "#bdc2ff",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "tertiary-fixed": "#ffddb4",
+                        "inverse-surface": "#e4e1ed",
+                        "on-background": "#e4e1ed",
+                        "surface-tint": "#bdc2ff",
+                        "background": "#13131b",
+                        "on-error": "#690005",
+                        "inverse-primary": "#4854bb",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "secondary": "#44e2cd",
+                        "tertiary": "#ffb955",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-container-high": "#292932",
+                        "primary-container": "#5e6ad2",
+                        "on-tertiary-container": "#fffaf9",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary": "#452b00",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#005047",
+                        "on-primary-fixed": "#000965",
+                        "on-tertiary-fixed": "#291800",
+                        "surface-dim": "#13131b",
+                        "secondary-container": "#03c6b2",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#a06800",
+                        "inverse-on-surface": "#302f38",
+                        "primary-fixed": "#dfe0ff",
+                        "surface-variant": "#34343d",
+                        "surface-bright": "#393841",
+                        "surface": "#13131b",
+                        "on-secondary-container": "#004d44",
+                        "on-primary-container": "#fdfaff",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#c6c5d5",
+                        "surface-container": "#1f1f27",
+                        "secondary-fixed": "#62fae3",
+                        "outline": "#908f9e",
+                        "on-secondary": "#003731",
+                        "primary-fixed-dim": "#bdc2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "40px",
+                        "margin-safe": "32px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "display-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-base min-h-screen flex flex-col relative overflow-x-hidden selection:bg-secondary/30 selection:text-secondary-fixed">
+<!-- TopNavBar (Linear/Transactional Intent - Suppressed) -->
+<!-- Nav shell is suppressed for focused journey. Only showing a minimal header with brand/back button. -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-background/80 backdrop-blur-md border-b border-outline-variant/30">
+<div class="flex items-center gap-md">
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+</a>
+<div class="flex items-center gap-2">
+<div class="h-6 w-1 bg-secondary rounded-full animate-[pulse_2s_ease-in-out_infinite]" id="candlestick-wick"></div>
+<span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tighter">TradeMind</span>
+</div>
+</div>
+<div class="hidden md:flex gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant px-sm py-xs border border-outline-variant/30 rounded-full">STEP 2 OF 3</span>
+</div>
+</header>
+<main class="flex-1 mt-16 p-md md:p-lg xl:p-xl max-w-[1400px] mx-auto w-full flex flex-col lg:flex-row gap-lg">
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col gap-lg">
+<!-- Progress Stepper (Simplified) -->
+<div class="w-full h-1 bg-surface-container-low rounded-full overflow-hidden relative mb-md">
+<div class="absolute left-0 top-0 h-full w-[66%] bg-secondary transition-all duration-500 ease-out"></div>
+</div>
+<div class="mb-sm">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-xs">Select Date &amp; Time</h1>
+<p class="text-on-surface-variant font-data-tabular text-data-tabular">Schedule your 1-on-1 strategy session with Sarah Chen.</p>
+</div>
+<div class="flex flex-col md:flex-row gap-lg">
+<!-- Calendar Widget -->
+<div class="flex-1 bg-[#101018] rounded-lg border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-md">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps text-on-surface">OCTOBER 2024</span>
+<div class="flex gap-xs">
+<button class="p-xs hover:bg-surface-container-low rounded transition-colors text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button>
+<button class="p-xs hover:bg-surface-container-low rounded transition-colors text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-xs mb-sm text-center">
+<div class="font-label-caps text-[10px] text-outline">MO</div>
+<div class="font-label-caps text-[10px] text-outline">TU</div>
+<div class="font-label-caps text-[10px] text-outline">WE</div>
+<div class="font-label-caps text-[10px] text-outline">TH</div>
+<div class="font-label-caps text-[10px] text-outline">FR</div>
+<div class="font-label-caps text-[10px] text-outline">SA</div>
+<div class="font-label-caps text-[10px] text-outline">SU</div>
+</div>
+<div class="grid grid-cols-7 gap-xs text-center font-data-tabular text-data-tabular">
+<!-- Empty slots for alignment -->
+<div class="p-2 opacity-0">.</div>
+<div class="p-2 text-outline">1</div>
+<div class="p-2 text-outline">2</div>
+<div class="p-2 text-outline">3</div>
+<div class="p-2 text-outline">4</div>
+<div class="p-2 text-outline">5</div>
+<div class="p-2 text-outline">6</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">7</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">8</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors">9</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">10</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors">11</div>
+<div class="p-2 text-outline">12</div>
+<div class="p-2 text-outline">13</div>
+<div class="p-2 bg-secondary/10 text-secondary-fixed-dim rounded border border-secondary/30 font-bold relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">14</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">15</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors">16</div>
+<div class="p-2 text-on-surface hover:bg-surface-container-low rounded cursor-pointer transition-colors relative after:content-[''] after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary after:rounded-full">17</div>
+<div class="p-2 text-outline">18</div>
+<div class="p-2 text-outline">19</div>
+<div class="p-2 text-outline">20</div>
+</div>
+</div>
+<!-- Time Slots -->
+<div class="flex-[0.8] flex flex-col gap-sm">
+<div class="flex justify-between items-center mb-xs px-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">AVAILABLE SLOTS (UTC)</span>
+<span class="font-data-tabular text-[12px] text-secondary">Oct 14</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<button class="bg-[#101018] border border-white/[0.08] hover:border-secondary/50 rounded-md p-sm text-center font-data-tabular text-data-tabular text-on-surface transition-all duration-300 hover:shadow-[inset_0_0_10px_rgba(68,226,205,0.1)]">09:00</button>
+<button class="bg-[#101018] border border-white/[0.08] hover:border-secondary/50 rounded-md p-sm text-center font-data-tabular text-data-tabular text-on-surface transition-all duration-300 hover:shadow-[inset_0_0_10px_rgba(68,226,205,0.1)]">10:30</button>
+<button class="bg-secondary/10 border border-secondary text-secondary-fixed-dim rounded-md p-sm text-center font-data-tabular text-data-tabular shadow-[inset_0_0_10px_rgba(68,226,205,0.2)]">13:00</button>
+<button class="bg-[#101018] border border-white/[0.08] hover:border-secondary/50 rounded-md p-sm text-center font-data-tabular text-data-tabular text-on-surface transition-all duration-300 hover:shadow-[inset_0_0_10px_rgba(68,226,205,0.1)]">14:30</button>
+<button class="bg-surface-container-low border border-transparent rounded-md p-sm text-center font-data-tabular text-data-tabular text-outline cursor-not-allowed">16:00</button>
+<button class="bg-[#101018] border border-white/[0.08] hover:border-secondary/50 rounded-md p-sm text-center font-data-tabular text-data-tabular text-on-surface transition-all duration-300 hover:shadow-[inset_0_0_10px_rgba(68,226,205,0.1)]">17:30</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Booking Summary Sidebar -->
+<aside class="w-full lg:w-80 bg-[#101018] rounded-lg border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-md flex flex-col gap-md sticky top-[88px] h-fit">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-sm">BOOKING SUMMARY</h2>
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a female quantitative analyst in a modern, dark-themed office setting with subtle teal lighting accents. Corporate, serious expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3AlWKzZfPV6IRLAC2_Ke4GIH7J5T5UbQ4mKY10oGrFX5BGaxJyXJhZdolUv7AHAqtjjVedj-VV8Nux1IpO-Tu0rvINQZ3Z-y-K5X-NlQAEYa1Zkl3zsCk0pQvSsz6_6W2vPD5MQZtTyJO4MuNI0TDKtP-ijccW-9VnUlzAkzwcE3Kd9-qrPJ58cxHxpzdSpowiMVt1414fVSVF7L9EbMIJetAPu9iDBe5TEt9Jimpfom86b7xCFPCOv0sCg93KLzAMwqeIDZcVuM2"/>
+</div>
+<div>
+<div class="font-body-base text-body-base font-medium text-on-surface">Sarah Chen</div>
+<div class="font-data-tabular text-[12px] text-secondary">Senior Quant Strategy</div>
+</div>
+</div>
+<div class="space-y-sm font-data-tabular text-data-tabular pt-sm border-t border-outline-variant/10">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Service</span>
+<span class="text-on-surface text-right">Portfolio Review</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Date</span>
+<span class="text-on-surface text-right">Oct 14, 2024</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Time</span>
+<span class="text-on-surface text-right">13:00 UTC</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Duration</span>
+<span class="text-on-surface text-right">60 min</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/30">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL (USD)</span>
+<span class="font-data-tabular text-headline-md text-on-surface">$250.00</span>
+</div>
+<button class="w-full bg-primary-container text-white rounded-[10px] py-3 font-medium hover:bg-primary-container/90 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] hover:shadow-[inset_0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center gap-sm">
+                    Confirm Selection
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</aside>
+</main>
+<script>
+        // Simple micro-interaction for candlestick animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const wick = document.getElementById('candlestick-wick');
+            if(wick) {
+                setInterval(() => {
+                    const randomHeight = Math.floor(Math.random() * 16) + 8; // 8px to 24px
+                    wick.style.height = `${randomHeight}px`;
+                    wick.style.transition = 'height 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                }, 2000);
+            }
+        });
+    </script>
+</body></html>

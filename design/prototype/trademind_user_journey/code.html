@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind | Intellectual Velocity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#34343d",
+                      "on-primary-fixed-variant": "#2e3aa2",
+                      "tertiary-fixed": "#ffddb4",
+                      "primary-fixed": "#dfe0ff",
+                      "on-error": "#690005",
+                      "outline-variant": "#454652",
+                      "on-primary": "#121f8b",
+                      "surface-variant": "#34343d",
+                      "secondary": "#44e2cd",
+                      "on-tertiary-fixed-variant": "#633f00",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed": "#000965",
+                      "tertiary": "#ffb955",
+                      "tertiary-fixed-dim": "#ffb955",
+                      "inverse-on-surface": "#302f38",
+                      "on-tertiary-fixed": "#291800",
+                      "on-surface": "#e4e1ed",
+                      "surface-bright": "#393841",
+                      "surface-dim": "#13131b",
+                      "surface-container": "#1f1f27",
+                      "primary": "#bdc2ff",
+                      "secondary-fixed-dim": "#3cddc7",
+                      "on-tertiary": "#452b00",
+                      "surface-container-low": "#1b1b23",
+                      "on-secondary-fixed-variant": "#005047",
+                      "background": "#13131b",
+                      "outline": "#908f9e",
+                      "inverse-surface": "#e4e1ed",
+                      "surface": "#13131b",
+                      "error-container": "#93000a",
+                      "tertiary-container": "#a06800",
+                      "on-background": "#e4e1ed",
+                      "on-secondary-container": "#004d44",
+                      "on-secondary-fixed": "#00201c",
+                      "secondary-container": "#03c6b2",
+                      "inverse-primary": "#4854bb",
+                      "secondary-fixed": "#62fae3",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "on-secondary": "#003731",
+                      "surface-container-high": "#292932",
+                      "on-tertiary-container": "#fffaf9",
+                      "surface-tint": "#bdc2ff",
+                      "on-surface-variant": "#c6c5d5",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-container": "#fdfaff",
+                      "primary-container": "#5e6ad2",
+                      "surface-container-lowest": "#0d0d15"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "margin-safe": "32px",
+                      "md": "16px",
+                      "base": "4px",
+                      "sm": "8px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Geist Mono", "monospace"],
+                      "data-tabular": ["Geist Mono", "monospace"],
+                      "display-lg": ["Inter", "sans-serif"],
+                      "body-base": ["Inter", "sans-serif"],
+                      "headline-md": ["Inter", "sans-serif"],
+                      "display-lg-mobile": ["Inter", "sans-serif"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                      "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                      "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                      "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                      "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                      "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base Overrides & Utilities */
+        body { background-color: #13131b; color: #e4e1ed; overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Internal Illumination Levels */
+        .level-1 { background-color: #0A0A0F; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+        .level-2 { background-color: #101018; box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.03); }
+        .glass-overlay { background: rgba(19, 19, 27, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Primary Button Inner Glow */
+        .btn-primary { box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-primary:hover { box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.4), 0 0 20px rgba(94, 106, 210, 0.4); transform: translateY(-1px); }
+
+        /* Bento Grid Interactions */
+        .bento-card {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .bento-card:hover { transform: translateY(-4px) scale(1.01); }
+        .bento-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(189, 194, 255, 0.08), transparent 40%);
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 1; border-radius: inherit;
+        }
+        .bento-card:hover::before { opacity: 1; }
+
+        /* Animations */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .pulse-ring { animation: pulse-ring 3s infinite ease-in-out; }
+        
+        @keyframes draw-wick {
+            0% { transform: scaleY(0.2); }
+            100% { transform: scaleY(1); }
+        }
+        .animate-wick { transform-origin: center; animation: draw-wick 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #13131b; }
+        ::-webkit-scrollbar-thumb { background: #34343d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #454652; }
+    </style>
+</head>
+<body class="font-body-base text-body-base antialiased selection:bg-secondary/20 selection:text-secondary">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-[72px] bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm transition-all duration-300">
+<!-- Logo -->
+<div class="flex items-center gap-sm">
+<div class="relative w-6 h-6 flex items-center justify-center">
+<div class="w-1 h-full bg-secondary rounded-full animate-wick"></div>
+<div class="absolute w-3 h-3 bg-secondary rounded-sm top-1/2 -translate-y-1/2"></div>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">TradeMind</span>
+</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center gap-lg">
+<!-- Non-active state mapping from JSON -->
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-200 px-3 py-2 rounded-lg" href="#">Curriculum</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-200 px-3 py-2 rounded-lg" href="#">Simulations</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-200 px-3 py-2 rounded-lg" href="#">Community</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-on-surface hover:bg-white/5 transition-all duration-200 px-3 py-2 rounded-lg" href="#">Mentors</a>
+</div>
+<!-- Trailing Action -->
+<button class="btn-primary bg-primary-container text-on-primary-container font-label-caps text-label-caps px-5 py-2.5 rounded-lg active:scale-95 duration-150 flex items-center gap-2">
+            Start Free
+            <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</nav>
+<!-- Global Progress Bar -->
+<div class="fixed top-[72px] left-0 w-full h-[2px] bg-surface-container-high z-40">
+<div class="h-full bg-secondary w-1/4 rounded-r-full shadow-[0_0_8px_rgba(68,226,205,0.6)]"></div>
+</div>
+<!-- Main Content -->
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+<!-- Atmospheric Foundation -->
+<!-- STITCH_SHADER_START:ANIMATION_3 class="absolute inset-0 w-full h-full opacity-30 mix-blend-screen pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full opacity-30 mix-blend-screen pointer-events-none" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_3" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_3');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 mouse = u_mouse / u_resolution;
+    
+    // Base dark background
+    vec3 color = vec3(0.02, 0.02, 0.03);
+    
+    // Aurora Blobs
+    // Blob 1: Accent (Indigo #5E6AD2)
+    vec2 pos1 = vec2(0.3 + 0.1 * sin(u_time * 0.2), 0.4 + 0.1 * cos(u_time * 0.3));
+    float dist1 = length(uv - pos1);
+    float glow1 = smoothstep(0.6, 0.0, dist1);
+    color += vec3(0.37, 0.42, 0.82) * glow1 * 0.08;
+    
+    // Blob 2: Mastery (Teal #2DD4BF)
+    vec2 pos2 = vec2(0.7 + 0.1 * cos(u_time * 0.25), 0.6 + 0.1 * sin(u_time * 0.35));
+    float dist2 = length(uv - pos2);
+    float glow2 = smoothstep(0.5, 0.0, dist2);
+    color += vec3(0.18, 0.83, 0.75) * glow2 * 0.06;
+    
+    // Sparse particle field
+    vec2 grid = uv * 40.0;
+    vec2 id = floor(grid);
+    float n = hash(id);
+    if (n > 0.98) {
+        vec2 pt = fract(grid) - 0.5;
+        float d = length(pt);
+        float sparkle = smoothstep(0.1, 0.0, d) * (0.5 + 0.5 * sin(u_time * 2.0 + n * 10.0));
+        color += vec3(0.8, 0.8, 1.0) * sparkle * 0.3;
+    }
+
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_3 -->
+<!-- Interactive Particle Field -->
+<!-- STITCH_THREEJS_START:ANIMATION_4 class="absolute inset-0 w-full h-full opacity-60 pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full opacity-60 pointer-events-none" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_4" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_4');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+container.appendChild(renderer.domElement);
+
+// Particle Geometry - Arranged as abstract candlestick heights
+const particlesCount = 2500;
+const positions = new Float32Array(particlesCount * 3);
+const colors = new Float32Array(particlesCount * 3);
+
+const colorAccent = new THREE.Color("#5E6AD2");
+const colorMastery = new THREE.Color("#2DD4BF");
+
+for (let i = 0; i < particlesCount; i++) {
+    const x = (Math.random() - 0.5) * 20;
+    const z = (Math.random() - 0.5) * 20;
+    // Create a terrain/price-action-like wave
+    const y = Math.sin(x * 0.5) * Math.cos(z * 0.5) * 2 + (Math.random() - 0.5) * 0.5;
+    
+    positions[i * 3] = x;
+    positions[i * 3 + 1] = y;
+    positions[i * 3 + 2] = z;
+    
+    const mixedColor = Math.random() > 0.5 ? colorAccent : colorMastery;
+    colors[i * 3] = mixedColor.r;
+    colors[i * 3 + 1] = mixedColor.g;
+    colors[i * 3 + 2] = mixedColor.b;
+}
+
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+const material = new THREE.PointsMaterial({
+    size: 0.04,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    additiveBlending: true
+});
+
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+camera.position.z = 10;
+camera.position.y = 2;
+camera.lookAt(0, 0, 0);
+
+// Interaction
+let mouseX = 0, mouseY = 0;
+window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    points.rotation.y += 0.001;
+    
+    // Gentle parallax
+    camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY * 2 + 2 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, 0);
+    
+    renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+});
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_4 -->
+<div class="relative z-20 container mx-auto px-lg max-w-4xl text-center flex flex-col items-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
+<span class="w-2 h-2 rounded-full bg-secondary pulse-ring"></span>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">System Online</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white via-on-surface to-on-surface-variant drop-shadow-sm">
+                    Learn trading like your brain actually learns.
+                </h1>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-2xl mb-10 text-lg">
+                    An adaptive tutor that models what you know — and teaches exactly what you don't. Deep analytics meet cognitive science.
+                </p>
+<div class="flex flex-col sm:flex-row items-center gap-4 mb-12">
+<button class="btn-primary bg-primary-container text-on-primary-container font-label-caps text-label-caps px-8 py-4 rounded-xl flex items-center gap-3 w-full sm:w-auto justify-center">
+                        Start the placement test
+                        <span class="material-symbols-outlined">east</span>
+</button>
+<button class="font-label-caps text-label-caps text-on-surface px-8 py-4 rounded-xl border border-outline-variant hover:bg-white/5 transition-colors duration-200 w-full sm:w-auto justify-center flex items-center gap-2 group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-on-surface transition-colors">play_circle</span>
+                        Watch 90-sec demo
+                    </button>
+</div>
+<div class="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant/50 flex items-center gap-3">
+<span>Simulation only</span>
+<span class="w-1 h-1 rounded-full bg-on-surface-variant/30"></span>
+<span>No signals</span>
+<span class="w-1 h-1 rounded-full bg-on-surface-variant/30"></span>
+<span>No live money</span>
+</div>
+</div>
+</section>
+<!-- Section 3: Bento Grid Analytics Showcase -->
+<section class="py-24 relative z-10 bg-background">
+<div class="container mx-auto px-lg max-w-6xl">
+<div class="mb-12">
+<h2 class="font-headline-md text-headline-md font-medium text-on-surface mb-2">The Visible Mind</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Real-time quantification of your cognitive edge.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+<!-- Cell 1: Mastery Ring -->
+<div class="bento-card level-2 rounded-xl p-6 flex flex-col justify-between overflow-hidden group">
+<div class="flex justify-between items-start z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Pattern Recognition</span>
+<span class="material-symbols-outlined text-secondary">psychology</span>
+</div>
+<div class="relative flex-1 flex items-center justify-center z-10">
+<svg class="w-32 h-32 transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="rgba(255,255,255,0.05)" stroke-width="8"></circle>
+<circle class="transition-all duration-1000 ease-out" cx="50" cy="50" fill="none" r="45" stroke="#44e2cd" stroke-dasharray="283" stroke-dashoffset="60" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-data-tabular text-headline-md text-on-surface">78<span class="text-on-surface-variant">%</span></span>
+</div>
+</div>
+</div>
+<!-- Cell 2: Chart Replay -->
+<div class="bento-card level-2 rounded-xl col-span-1 md:col-span-2 p-0 overflow-hidden relative group">
+<div class="absolute inset-0 z-0 bg-surface-container-low" data-alt="A highly detailed, technical interface snippet of a financial candlestick chart in dark mode. Green and red candles are plotted against a dark obsidian grid. A minimalist glowing teal playhead cursor sits across the chart, indicating a timeline replay feature. The aesthetic is extremely precise, professional, and data-dense." style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#101018] to-transparent z-0"></div>
+<div class="absolute inset-0 z-10 p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant bg-background/80 backdrop-blur px-3 py-1 rounded-md">Historical Simulation</span>
+<div class="bg-primary-container/20 text-primary px-2 py-1 rounded flex items-center gap-1 backdrop-blur">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-tabular text-[10px] uppercase">Live Replay</span>
+</div>
+</div>
+<div>
+<h3 class="font-body-base text-body-base font-medium text-white mb-1">NQ1! Micro-Structure</h3>
+<p class="font-data-tabular text-sm text-on-surface-variant/80">Identifying trapped delta at VWAP.</p>
+</div>
+</div>
+</div>
+<!-- Cell 3: Skill Tree -->
+<div class="bento-card level-2 rounded-xl p-6 relative overflow-hidden group">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-4 z-10 relative">Knowledge Graph</span>
+<div class="absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)]" style="background-size: 20px 20px;"></div>
+<div class="h-full flex items-center justify-center relative z-10 mt-4">
+<!-- Abstract nodes -->
+<div class="relative w-full h-full">
+<div class="absolute top-4 left-4 w-3 h-3 rounded-full bg-secondary shadow-[0_0_12px_rgba(68,226,205,0.8)]"></div>
+<div class="absolute top-1/2 left-1/2 w-4 h-4 rounded-full bg-primary-container shadow-[0_0_15px_rgba(94,106,210,0.8)] transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-8 right-8 w-2 h-2 rounded-full bg-surface-variant border border-outline"></div>
+<!-- Connecting lines (SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index:-1;">
+<path d="M 28 28 L 120 100" stroke="rgba(68,226,205,0.3)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M 120 100 L 220 180" stroke="rgba(255,255,255,0.1)" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Cell 4: Data Stats -->
+<div class="bento-card level-2 rounded-xl p-6 flex flex-col justify-between group">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Session Metrics</span>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-white/5 pb-2">
+<span class="font-body-base text-sm text-on-surface-variant">Decisions</span>
+<span class="font-data-tabular text-lg text-on-surface">1,402</span>
+</div>
+<div class="flex justify-between items-end border-b border-white/5 pb-2">
+<span class="font-body-base text-sm text-on-surface-variant">Accuracy</span>
+<span class="font-data-tabular text-lg text-secondary">+4.2%</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="font-body-base text-sm text-on-surface-variant">Drawdown</span>
+<span class="font-data-tabular text-lg text-error">-1.1%</span>
+</div>
+</div>
+</div>
+<!-- Cell 5: Spaced Review -->
+<div class="bento-card level-2 rounded-xl p-6 group col-span-1 md:col-span-1">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Spaced Repetition</span>
+<span class="material-symbols-outlined text-on-surface-variant/50 text-sm">calendar_month</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Heatmap blocks -->
+<div class="w-full aspect-square rounded-sm bg-white/5"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/20"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/40"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/60"></div>
+<div class="w-full aspect-square rounded-sm bg-white/5"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/80"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary shadow-[0_0_8px_rgba(68,226,205,0.4)]"></div>
+<!-- row 2 -->
+<div class="w-full aspect-square rounded-sm bg-secondary/40"></div>
+<div class="w-full aspect-square rounded-sm bg-white/5"></div>
+<div class="w-full aspect-square rounded-sm bg-white/5"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/20"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/60"></div>
+<div class="w-full aspect-square rounded-sm bg-secondary/40"></div>
+<div class="w-full aspect-square rounded-sm bg-white/5"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<script>
+        // Bento Card Glow Interaction
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

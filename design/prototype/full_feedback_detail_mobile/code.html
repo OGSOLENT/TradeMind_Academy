@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Feedback Detail</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-container": "#fdfaff",
+                        "background": "#13131b",
+                        "surface-bright": "#393841",
+                        "tertiary": "#ffb955",
+                        "on-error": "#690005",
+                        "tertiary-container": "#a06800",
+                        "surface-dim": "#13131b",
+                        "on-surface-variant": "#c6c5d5",
+                        "inverse-surface": "#e4e1ed",
+                        "surface-container-high": "#292932",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface": "#13131b",
+                        "secondary-container": "#03c6b2",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-primary-fixed": "#000965",
+                        "on-background": "#e4e1ed",
+                        "surface-tint": "#bdc2ff",
+                        "on-secondary-fixed": "#00201c",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b23",
+                        "secondary-fixed": "#62fae3",
+                        "primary": "#bdc2ff",
+                        "surface-variant": "#34343d",
+                        "surface-container-highest": "#34343d",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "error-container": "#93000a",
+                        "outline": "#908f9e",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-primary": "#121f8b",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#454652",
+                        "on-secondary-container": "#004d44",
+                        "inverse-primary": "#4854bb",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "inverse-on-surface": "#302f38",
+                        "primary-fixed": "#dfe0ff",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "secondary": "#44e2cd",
+                        "on-secondary": "#003731",
+                        "on-tertiary": "#452b00",
+                        "on-surface": "#e4e1ed",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-container": "#1f1f27",
+                        "primary-container": "#5e6ad2",
+                        "on-tertiary-fixed": "#291800",
+                        "on-tertiary-container": "#fffaf9"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin-safe": "32px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "base": "4px",
+                        "gutter": "20px"
+                    },
+                    fontFamily: {
+                        "label-caps": ["Geist Mono", "monospace"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-base": ["Inter", "sans-serif"],
+                        "display-lg-mobile": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "data-tabular": ["Geist Mono", "monospace"]
+                    },
+                    fontSize: {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Spring Animation Utilities */
+        .spring-transition {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-duration: 300ms;
+        }
+        
+        /* Ambient Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at 50% -20%, rgba(94, 106, 210, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        /* Waveform Animation */
+        @keyframes wave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+        .waveform-bar {
+            animation: wave 1.2s infinite ease-in-out;
+            transform-origin: bottom;
+        }
+        .waveform-bar:nth-child(even) { animation-duration: 0.9s; animation-delay: 0.1s; }
+        .waveform-bar:nth-child(3n) { animation-duration: 1.5s; animation-delay: 0.3s; }
+        .waveform-bar:nth-child(5n) { animation-duration: 1.1s; animation-delay: 0.2s; }
+        
+        /* Internal Illumination Edge */
+        .inner-highlight {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Atmospheric Background -->
+<div class="aurora-bg"></div>
+<!-- Top Navigation Header (Detail Context) -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-md h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30">
+<button aria-label="Go back" class="w-10 h-10 flex items-center justify-center -ml-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/10 spring-transition active:scale-95">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface">Feedback Detail</h1>
+<button aria-label="More options" class="w-10 h-10 flex items-center justify-center -mr-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/10 spring-transition active:scale-95">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex flex-col gap-md p-md pb-margin-safe max-w-screen-md mx-auto w-full">
+<!-- Session Summary Card (Level 1) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative inner-highlight overflow-hidden group">
+<div class="flex justify-between items-start">
+<div>
+<div class="text-label-caps font-label-caps text-on-surface-variant mb-xs tracking-wider">SESSION #TR-942-QA</div>
+<div class="font-headline-md text-headline-md font-semibold text-on-surface">NQ1! Scalping</div>
+</div>
+<!-- Data Cell - Negative PnL -->
+<div class="bg-error/10 text-error px-2 py-1 rounded-DEFAULT text-data-tabular font-data-tabular border border-error/20 flex items-center gap-1 shadow-[0_0_10px_rgba(255,180,171,0.1)]">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                    -1.2 R
+                </div>
+</div>
+<div class="grid grid-cols-2 gap-sm mt-sm pt-sm border-t border-outline-variant/20">
+<div class="flex flex-col gap-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Mentor</span>
+<div class="flex items-center gap-2">
+<img class="w-6 h-6 rounded-full object-cover border border-outline-variant/50" data-alt="A close-up, professional headshot of a financial quantitative mentor. The lighting is dramatic and moody, reflecting a high-end trading desk environment. The background is slightly blurred with subtle hints of glowing terminal screens. Dark, sleek aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDun7CM1V7yySjzK-VCP_oHHuXlKN8w9u69gXG0Fm2IXpj4RHggSf395DPVPt-EYp5QPlZ5qH_EwzXpKOHk0QcEVb6Hnj230IfL9pFA7z0wt0ohpsy3C8QL8p8FNr9FIYqYTVxXytyjw-ymOWSpEhIHaI1A5CnDuLIKvFaNFFYUo3xjoUxCzMd5PpMXUDAoCIElZn-5k2DYLJOMN3gGq5vghkr71AMM1Sgm-DDugKkcST2-AI6EB4ElUfnUYQo4g5hkEj403hF9EYvh"/>
+<span class="text-data-tabular font-data-tabular text-on-surface">Dr. A. Thorne</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">Execution Time</span>
+<span class="text-data-tabular font-data-tabular text-on-surface">Oct 24, 09:30 EST</span>
+</div>
+</div>
+</section>
+<!-- Annotated Chart Widget (Level 2) -->
+<section class="bg-surface-container border border-outline-variant/30 rounded-xl overflow-hidden relative group inner-highlight cursor-pointer active:scale-[0.98] spring-transition">
+<!-- Chart Image Area -->
+<div class="relative w-full aspect-[4/3] bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<!-- Base Gradient & Image -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-lowest to-surface-container opacity-80 z-0"></div>
+<img class="absolute inset-0 w-full h-full object-cover mix-blend-screen opacity-70 z-10" data-alt="A highly detailed, futuristic candlestick chart on a dark terminal screen. Glowing teal and red candles indicating market movements. Complex technical indicators, Fibonacci retracement lines, and volume profiles overlay the chart. The aesthetic is professional, dense data visualization typical of a high-end quantitative trading desk. Deep obsidian background with sharp, precise data points." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO4B_ZZEfYh4xppkot48Q1JK-dOrRAEorbOkb_w95Ei4J2Z5crT6y1fY6uC9kcCOjGL196-j0NyIccs3tHl5bFH9CaBS-LSBzimKzyC2IrNzeiENWnrRHs-OwAeEe50SQJHB-gjmDapLC_A2KAkTwbOn89FGvLzVY_3RByQUDlI_jEaRFnBFZpAsI5hfcmyfU1j_70Y8cFCn0q6CF-ez7tFdjVRDJE8-HgK9bbI9s7B6-Vv060DlKDfNxmq2gh6nr6dCYYP4lHzsXP"/>
+<!-- Overlay Grid & Axis hints to simulate terminal feel -->
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPjxwb2x5Z29uIHBvaW50cz0iMCAwIDQwIDAgNDAgNDAgMCA0MCIvPjwvZz48L3N2Zz4=')] opacity-20 z-10 pointer-events-none"></div>
+<!-- Interactive Annotation Marker -->
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full border border-error bg-error/20 flex items-center justify-center shadow-[0_0_20px_rgba(255,180,171,0.4)] backdrop-blur-sm">
+<span class="material-symbols-outlined text-[16px] text-error">priority_high</span>
+</div>
+<div class="h-16 w-px bg-error/50 mt-2"></div>
+</div>
+<!-- Expand Icon -->
+<div class="absolute bottom-md right-md z-30 w-10 h-10 bg-surface-container/80 backdrop-blur-md rounded-full border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:text-on-surface spring-transition">
+<span class="material-symbols-outlined">fullscreen</span>
+</div>
+</div>
+<!-- Widget Footer -->
+<div class="p-sm px-md bg-surface-container border-t border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span class="text-label-caps font-label-caps">1 Critical Annotation</span>
+</div>
+<span class="text-label-caps font-label-caps text-secondary tracking-widest">TAP TO EXPAND</span>
+</div>
+</section>
+<!-- Prominent Play Voice Note Button -->
+<section class="bg-primary-container/10 border border-primary/20 rounded-xl p-md flex items-center gap-md relative overflow-hidden backdrop-blur-md mt-sm inner-highlight cursor-pointer hover:bg-primary-container/15 spring-transition active:scale-[0.98]">
+<!-- Decorative background glow -->
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-24 h-24 bg-primary/20 blur-2xl rounded-full pointer-events-none"></div>
+<!-- Play Button (Solid) -->
+<button class="w-12 h-12 shrink-0 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-[0_4px_20px_rgba(189,194,255,0.25)] pointer-events-none relative z-10">
+<span class="material-symbols-outlined font-bold text-xl" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<!-- Audio Info & Waveform -->
+<div class="flex-1 flex flex-col gap-2 relative z-10">
+<div class="flex items-center justify-between w-full">
+<span class="text-label-caps font-label-caps text-primary tracking-wider">MENTOR AUDIO NOTES</span>
+<span class="text-data-tabular font-data-tabular text-primary/70">01:45</span>
+</div>
+<!-- Dynamic Waveform Visualization -->
+<div class="flex items-end justify-between h-6 w-full opacity-80 gap-[2px]">
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 30%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 60%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 100%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 40%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 80%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 50%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 20%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 70%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 90%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 60%;"></div>
+<div class="w-full bg-primary rounded-t-sm waveform-bar" style="height: 30%;"></div>
+<!-- Played portion (dimmed) -->
+<div class="w-full bg-primary/30 rounded-t-sm waveform-bar" style="height: 50%;"></div>
+<div class="w-full bg-primary/30 rounded-t-sm waveform-bar" style="height: 40%;"></div>
+<div class="w-full bg-primary/30 rounded-t-sm waveform-bar" style="height: 70%;"></div>
+<div class="w-full bg-primary/30 rounded-t-sm waveform-bar" style="height: 20%;"></div>
+</div>
+</div>
+</section>
+<!-- Mentor Insights Section Header -->
+<div class="flex items-center gap-2 mt-md mb-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">psychology</span>
+<h2 class="text-headline-md font-headline-md font-semibold text-on-surface">Key Adjustments</h2>
+</div>
+<!-- Insight Card 1 (Negative Adjustment) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative inner-highlight">
+<div class="flex items-start gap-sm">
+<div class="mt-1 w-8 h-8 shrink-0 rounded-full bg-error/10 border border-error/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-error">timeline</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-body-base font-body-base font-medium text-on-surface">Premature Entry</h3>
+<p class="text-body-base font-body-base text-on-surface-variant text-[14px] leading-relaxed">
+                        You front-ran the liquidity sweep. Waiting for the M5 candle to close below the previous session low would have confirmed the trap before entering the long position.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Insight Card 2 (Positive/Educational) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-md flex flex-col gap-sm relative inner-highlight">
+<div class="flex items-start gap-sm">
+<div class="mt-1 w-8 h-8 shrink-0 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center shadow-[0_0_15px_rgba(68,226,205,0.1)]">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-body-base font-body-base font-medium text-on-surface">Risk Management Execution</h3>
+<p class="text-body-base font-body-base text-on-surface-variant text-[14px] leading-relaxed">
+                        Excellent discipline on the stop loss placement. Cutting the trade exactly at structural invalidation preserved capital for the next high-probability setup.
+                    </p>
+</div>
+</div>
+</section>
+</main>
+</body></html>

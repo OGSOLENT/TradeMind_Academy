@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>TradeMind - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#34343d",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-secondary-fixed-variant": "#005047",
+                        "tertiary": "#ffb955",
+                        "background": "#13131b",
+                        "on-secondary": "#003731",
+                        "secondary": "#44e2cd",
+                        "surface-container-low": "#1b1b23",
+                        "on-primary-container": "#fdfaff",
+                        "inverse-surface": "#e4e1ed",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-surface": "#e4e1ed",
+                        "surface-tint": "#bdc2ff",
+                        "secondary-container": "#03c6b2",
+                        "outline": "#908f9e",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "inverse-on-surface": "#302f38",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "primary-fixed": "#dfe0ff",
+                        "outline-variant": "#454652",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#5e6ad2",
+                        "tertiary-fixed": "#ffddb4",
+                        "tertiary-container": "#a06800",
+                        "primary": "#bdc2ff",
+                        "surface-bright": "#393841",
+                        "inverse-primary": "#4854bb",
+                        "error-container": "#93000a",
+                        "surface-dim": "#13131b",
+                        "surface-container-highest": "#34343d",
+                        "on-primary": "#121f8b",
+                        "surface-container-high": "#292932",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "surface-container": "#1f1f27",
+                        "secondary-fixed": "#62fae3",
+                        "on-tertiary": "#452b00",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary-container": "#fffaf9",
+                        "surface": "#13131b",
+                        "on-secondary-container": "#004d44",
+                        "on-tertiary-fixed": "#291800",
+                        "on-surface-variant": "#c6c5d5",
+                        "on-primary-fixed": "#000965",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-background": "#e4e1ed",
+                        "error": "#ffb4ab"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "base": "4px",
+                        "margin-safe": "32px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "display-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "data-tabular": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "500" }],
+                        "body-base": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.05;
+            animation: float 20s infinite ease-in-out alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -50px) scale(1.1); }
+        }
+        .bg-aurora-1 { background: #5e6ad2; width: 300px; height: 300px; top: 10%; left: -10%; }
+        .bg-aurora-2 { background: #44e2cd; width: 400px; height: 400px; bottom: 20%; right: -20%; animation-delay: -5s; }
+        
+        .spring-btn {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .spring-btn:active {
+            transform: scale(0.96);
+        }
+        
+        /* Internal Illumination Card Edge */
+        .card-illuminated {
+            position: relative;
+        }
+        .card-illuminated::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            z-index: 10;
+            border-radius: inherit;
+        }
+        
+        .progress-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background-color: #44e2cd;
+            width: 33%;
+            z-index: 100;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen relative overflow-x-hidden selection:bg-secondary/30 selection:text-secondary">
+<!-- Atmospheric Background -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="aurora-blob bg-aurora-1"></div>
+<div class="aurora-blob bg-aurora-2"></div>
+</div>
+<!-- Learning Progress Line -->
+<div class="progress-line" id="progress-bar"></div>
+<!-- Focus Mode Top Shell (Mobile) -->
+<header class="fixed top-0 left-0 w-full z-50 px-md py-sm bg-background/80 backdrop-blur-xl border-b border-white/5 md:hidden">
+<div class="flex justify-between items-center h-12">
+<button aria-label="Go back" class="text-on-surface-variant hover:text-on-surface p-2 -ml-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">
+                Assessment 1/3
+            </div>
+<button aria-label="Skip onboarding" class="text-on-surface-variant hover:text-on-surface p-2 -mr-2 rounded-full transition-colors font-label-caps text-label-caps">
+                Skip
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 pt-24 pb-safe px-md max-w-[800px] mx-auto min-h-screen flex flex-col justify-center">
+<!-- Step 1: Goal Picker -->
+<section class="flex flex-col gap-lg animate-fade-in w-full" id="step-1">
+<div class="mb-md">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-sm">What's your primary goal?</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">We'll tailor your terminal experience and curriculum.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<!-- Goal Card 1 -->
+<button class="card-illuminated bg-[#101018] border border-white/5 rounded-xl p-md flex items-center justify-between text-left spring-btn group hover:border-primary/30 min-h-[72px]">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">candlestick_chart</span>
+</div>
+<div>
+<div class="font-headline-md text-[18px] leading-tight text-on-surface mb-1">Algorithmic Trading</div>
+<div class="font-body-base text-[14px] text-on-surface-variant">Build and deploy automated strategies</div>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline-variant group-focus:border-primary group-focus:bg-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-background text-[16px] opacity-0 group-focus:opacity-100" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</button>
+<!-- Goal Card 2 -->
+<button class="card-illuminated bg-[#101018] border border-white/5 rounded-xl p-md flex items-center justify-between text-left spring-btn group hover:border-primary/30 min-h-[72px]">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-secondary group-hover:bg-secondary/10 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+</div>
+<div>
+<div class="font-headline-md text-[18px] leading-tight text-on-surface mb-1">Market Analysis</div>
+<div class="font-body-base text-[14px] text-on-surface-variant">Master technical and fundamental data</div>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline-variant group-focus:border-secondary group-focus:bg-secondary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-background text-[16px] opacity-0 group-focus:opacity-100" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</button>
+<!-- Goal Card 3 -->
+<button class="card-illuminated bg-[#101018] border border-white/5 rounded-xl p-md flex items-center justify-between text-left spring-btn group hover:border-primary/30 min-h-[72px]">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-tertiary group-hover:bg-tertiary/10 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">school</span>
+</div>
+<div>
+<div class="font-headline-md text-[18px] leading-tight text-on-surface mb-1">Financial Literacy</div>
+<div class="font-body-base text-[14px] text-on-surface-variant">Learn the basics of market mechanics</div>
+</div>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline-variant group-focus:border-tertiary group-focus:bg-tertiary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined text-background text-[16px] opacity-0 group-focus:opacity-100" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</button>
+</div>
+<div class="mt-lg">
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md text-[16px] py-3 rounded-lg spring-btn flex items-center justify-center gap-2 hover:bg-primary-container/90 relative overflow-hidden group min-h-[48px]" onclick="nextStep()">
+<span>Continue to Placement</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+<!-- Inner Glow on hover -->
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-lg"></div>
+</button>
+</div>
+</section>
+<!-- Step 2: Placement Test (Initially Hidden) -->
+<section class="hidden flex-col gap-lg animate-fade-in w-full" id="step-2">
+<div class="mb-md">
+<div class="font-label-caps text-label-caps text-secondary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span>Diagnostic Question 1</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">What does a 'Doji' candlestick typically indicate in technical analysis?</h2>
+</div>
+<div class="card-illuminated bg-[#101018] border border-white/5 rounded-xl p-md mb-lg backdrop-blur-[20px] relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary" style="font-variation-settings: 'FILL' 0;">candlestick_chart</span>
+</div>
+<div class="relative z-10 flex flex-col gap-xs">
+<!-- Answer Rows -->
+<button class="w-full text-left p-4 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent hover:border-white/10 transition-colors flex items-center gap-3 spring-btn min-h-[56px]">
+<span class="font-data-tabular text-data-tabular text-on-surface-variant w-6">A</span>
+<span class="font-body-base text-body-base text-on-surface">Strong bullish momentum</span>
+</button>
+<button class="w-full text-left p-4 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent hover:border-secondary/30 transition-colors flex items-center gap-3 spring-btn min-h-[56px] focus:bg-secondary/5 focus:border-secondary">
+<span class="font-data-tabular text-data-tabular text-on-surface-variant w-6">B</span>
+<span class="font-body-base text-body-base text-on-surface">Market indecision</span>
+</button>
+<button class="w-full text-left p-4 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent hover:border-white/10 transition-colors flex items-center gap-3 spring-btn min-h-[56px]">
+<span class="font-data-tabular text-data-tabular text-on-surface-variant w-6">C</span>
+<span class="font-body-base text-body-base text-on-surface">Imminent trend reversal</span>
+</button>
+<button class="w-full text-left p-4 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent hover:border-white/10 transition-colors flex items-center gap-3 spring-btn min-h-[56px]">
+<span class="font-data-tabular text-data-tabular text-on-surface-variant w-6">D</span>
+<span class="font-body-base text-body-base text-on-surface">High trading volume</span>
+</button>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-surface-container text-on-surface font-headline-md text-[16px] py-3 rounded-lg spring-btn hover:bg-surface-container-high transition-colors min-h-[48px] border border-white/5" onclick="finishTest()">
+                    Submit Answer
+                </button>
+</div>
+</section>
+<!-- Step 3: Skill Graph Reveal (Initially Hidden) -->
+<section class="hidden flex-col items-center justify-center gap-lg animate-fade-in w-full text-center py-xl" id="step-3">
+<div class="relative w-48 h-48 mb-md mx-auto flex items-center justify-center">
+<!-- Decorative rings -->
+<div class="absolute inset-0 border border-primary/20 rounded-full animate-[spin_10s_linear_infinite]"></div>
+<div class="absolute inset-4 border border-secondary/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+<!-- Central Node -->
+<div class="w-20 h-20 bg-surface-container rounded-full border border-white/10 flex items-center justify-center relative z-10 card-illuminated shadow-[0_0_30px_rgba(68,226,205,0.2)]">
+<span class="material-symbols-outlined text-4xl text-secondary" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<!-- Connecting lines and satellite nodes (Simplified CSS representation) -->
+<div class="absolute w-2 h-2 bg-primary rounded-full top-4 right-10 shadow-[0_0_10px_rgba(189,194,255,0.8)]"></div>
+<div class="absolute w-2 h-2 bg-secondary rounded-full bottom-8 left-6 shadow-[0_0_10px_rgba(68,226,205,0.8)]"></div>
+<div class="absolute w-1.5 h-1.5 bg-tertiary rounded-full bottom-6 right-12 opacity-60"></div>
+<svg class="absolute inset-0 w-full h-full text-white/10 pointer-events-none" viewbox="0 0 100 100">
+<line stroke="currentColor" stroke-dasharray="2,2" stroke-width="0.5" x1="50" x2="80" y1="50" y2="20"></line>
+<line stroke="currentColor" stroke-dasharray="2,2" stroke-width="0.5" x1="50" x2="20" y1="50" y2="70"></line>
+<line stroke="currentColor" stroke-dasharray="2,2" stroke-width="0.5" x1="50" x2="70" y1="50" y2="80"></line>
+</svg>
+</div>
+<div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-2">Your Starting Map</h2>
+<p class="font-body-base text-body-base text-on-surface-variant max-w-xs mx-auto">Based on your diagnostic, we've calibrated your terminal layout and unlocked Level 1 Technicals.</p>
+</div>
+<div class="mt-xl w-full max-w-sm mx-auto">
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md text-[16px] py-4 rounded-lg spring-btn flex items-center justify-center gap-2 relative overflow-hidden group min-h-[56px] shadow-[0_0_20px_rgba(94,106,210,0.3)]">
+<span>Enter Terminal</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">login</span>
+<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-lg"></div>
+</button>
+</div>
+</section>
+</main>
+<script>
+        function nextStep() {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+            document.getElementById('step-2').classList.add('flex');
+            document.getElementById('progress-bar').style.width = '66%';
+            
+            // Update header text if we could target it easily, for now just progressing the bar
+        }
+
+        function finishTest() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('flex');
+            document.getElementById('step-3').classList.remove('hidden');
+            document.getElementById('step-3').classList.add('flex');
+            document.getElementById('progress-bar').style.width = '100%';
+            
+            // Hide header on final step for more immersive reveal
+            document.querySelector('header').style.opacity = '0';
+            document.querySelector('header').style.pointerEvents = 'none';
+        }
+    </script>
+</body></html>

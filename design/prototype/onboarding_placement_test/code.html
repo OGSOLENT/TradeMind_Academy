@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Onboarding</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#34343d",
+                      "surface-container-lowest": "#0d0d15",
+                      "on-secondary-fixed-variant": "#005047",
+                      "tertiary": "#ffb955",
+                      "background": "#13131b",
+                      "on-secondary": "#003731",
+                      "secondary": "#44e2cd",
+                      "surface-container-low": "#1b1b23",
+                      "on-primary-container": "#fdfaff",
+                      "inverse-surface": "#e4e1ed",
+                      "on-tertiary-fixed-variant": "#633f00",
+                      "on-surface": "#e4e1ed",
+                      "surface-tint": "#bdc2ff",
+                      "secondary-container": "#03c6b2",
+                      "outline": "#908f9e",
+                      "secondary-fixed-dim": "#3cddc7",
+                      "inverse-on-surface": "#302f38",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "primary-fixed": "#dfe0ff",
+                      "outline-variant": "#454652",
+                      "on-error-container": "#ffdad6",
+                      "primary-container": "#5e6ad2",
+                      "tertiary-fixed": "#ffddb4",
+                      "tertiary-container": "#a06800",
+                      "primary": "#bdc2ff",
+                      "surface-bright": "#393841",
+                      "inverse-primary": "#4854bb",
+                      "error-container": "#93000a",
+                      "surface-dim": "#13131b",
+                      "surface-container-highest": "#34343d",
+                      "on-primary": "#121f8b",
+                      "surface-container-high": "#292932",
+                      "on-primary-fixed-variant": "#2e3aa2",
+                      "surface-container": "#1f1f27",
+                      "secondary-fixed": "#62fae3",
+                      "on-tertiary": "#452b00",
+                      "on-secondary-fixed": "#00201c",
+                      "on-tertiary-container": "#fffaf9",
+                      "surface": "#13131b",
+                      "on-secondary-container": "#004d44",
+                      "on-tertiary-fixed": "#291800",
+                      "on-surface-variant": "#c6c5d5",
+                      "on-primary-fixed": "#000965",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#ffb955",
+                      "on-background": "#e4e1ed",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "gutter": "20px",
+                      "base": "4px",
+                      "margin-safe": "32px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Geist Mono"],
+                      "display-lg": ["Inter"],
+                      "display-lg-mobile": ["Inter"],
+                      "data-tabular": ["Geist Mono"],
+                      "body-base": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "data-tabular": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500"}],
+                      "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}]
+              },
+              "animation": {
+                  "blob": "blob 20s infinite alternate",
+                  "grow-wick": "growWick 1s ease-out forwards",
+                  "fade-in-up": "fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+                  "pop-in": "popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
+              },
+              "keyframes": {
+                  "blob": {
+                      "0%": { transform: "translate(0px, 0px) scale(1)" },
+                      "100%": { transform: "translate(30px, -50px) scale(1.1)" }
+                  },
+                  "growWick": {
+                      "0%": { height: "0%" },
+                      "100%": { height: "100%" }
+                  },
+                  "fadeInUp": {
+                      "0%": { opacity: "0", transform: "translateY(20px)" },
+                      "100%": { opacity: "1", transform: "translateY(0)" }
+                  },
+                  "popIn": {
+                      "0%": { opacity: "0", transform: "scale(0.8)" },
+                      "100%": { opacity: "1", transform: "scale(1)" }
+                  }
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Level 2 Interactive Card internal highlight */
+        .glass-card-inner-highlight {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Map Reveal specific styles */
+        .constellation-node {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        .constellation-line {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .reveal-active .constellation-node {
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .reveal-active .constellation-line {
+            stroke-dashoffset: 0;
+        }
+        
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #34343d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #454652; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-base min-h-screen relative overflow-x-hidden antialiased flex flex-col items-center">
+<!-- Atmospheric Depth (Aurora Blobs) -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary-container/5 rounded-full blur-[120px] animate-blob"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-secondary-container/5 rounded-full blur-[100px] animate-blob" style="animation-delay: -5s;"></div>
+</div>
+<!-- Minimal Nav Shell (Focus Mode) -->
+<nav class="fixed top-lg left-1/2 -translate-x-1/2 z-50 flex items-center justify-between w-[calc(100%-2rem)] max-w-3xl px-lg py-sm bg-surface/50 backdrop-blur-xl border border-white/5 rounded-full shadow-lg">
+<!-- Brand -->
+<div class="flex items-center gap-xs">
+<div class="relative w-6 h-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary absolute z-10" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<div class="absolute bottom-0 w-0.5 bg-secondary animate-grow-wick"></div>
+</div>
+<span class="font-headline-md text-[18px] font-bold tracking-tight hidden sm:block text-on-surface">TradeMind</span>
+</div>
+<!-- Progress Bar -->
+<div class="flex-1 mx-lg max-w-[200px]">
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden w-full">
+<div class="h-full bg-secondary w-1/3 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full shadow-[0_0_8px_rgba(68,226,205,0.4)]" id="global-progress"></div>
+</div>
+</div>
+<!-- Exit Action -->
+<button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-xs font-label-caps text-label-caps uppercase group">
+<span class="hidden sm:inline group-hover:text-error transition-colors">Exit Test</span>
+<span class="material-symbols-outlined text-[18px] group-hover:text-error transition-colors">close</span>
+</button>
+</nav>
+<!-- Main Canvas -->
+<main class="relative z-10 w-full max-w-3xl px-md pt-[120px] pb-safe flex flex-col items-center flex-1">
+<!-- ==========================================
+             VIEW 1: Goal Picker
+             ========================================== -->
+<div class="w-full flex flex-col items-center gap-xl animate-fade-in-up" id="view-goal">
+<div class="text-center max-w-lg mb-md">
+<p class="font-label-caps text-label-caps text-secondary mb-sm uppercase tracking-widest">Calibration</p>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Where are you starting?</h1>
+</div>
+<div class="w-full flex flex-col gap-md" id="goal-options">
+<!-- Option 1 -->
+<div class="goal-card group bg-surface-container border border-white/5 rounded-xl p-lg cursor-pointer transition-all duration-300 relative overflow-hidden glass-card-inner-highlight hover:border-white/20" data-value="beginner">
+<div class="flex items-start gap-md relative z-10">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center border border-white/5 group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-secondary">explore</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">New to trading</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">I need to learn the absolute basics of markets and price action.</p>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center transition-colors indicator">
+<div class="w-3 h-3 rounded-full bg-secondary opacity-0 transition-opacity inner-dot"></div>
+</div>
+</div>
+</div>
+<!-- Option 2 -->
+<div class="goal-card group bg-surface-container border border-white/5 rounded-xl p-lg cursor-pointer transition-all duration-300 relative overflow-hidden glass-card-inner-highlight hover:border-white/20" data-value="intermediate">
+<div class="flex items-start gap-md relative z-10">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center border border-white/5 group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-secondary">insights</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">I know the basics</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">I understand candlesticks and support/resistance, but need consistency.</p>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center transition-colors indicator">
+<div class="w-3 h-3 rounded-full bg-secondary opacity-0 transition-opacity inner-dot"></div>
+</div>
+</div>
+</div>
+<!-- Option 3 -->
+<div class="goal-card group bg-surface-container border border-white/5 rounded-xl p-lg cursor-pointer transition-all duration-300 relative overflow-hidden glass-card-inner-highlight hover:border-white/20" data-value="advanced">
+<div class="flex items-start gap-md relative z-10">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center border border-white/5 group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-secondary">troubleshoot</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Refreshing concepts</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">I'm familiar with advanced concepts like FVGs and order blocks.</p>
+</div>
+<div class="w-6 h-6 rounded-full border border-outline flex items-center justify-center transition-colors indicator">
+<div class="w-3 h-3 rounded-full bg-secondary opacity-0 transition-opacity inner-dot"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-lg px-xl py-3 bg-primary-container text-on-primary-container font-headline-md text-[16px] rounded-lg opacity-50 cursor-not-allowed transition-all duration-300 hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.1)] flex items-center gap-sm" disabled="" id="btn-next-test">
+                Begin Assessment <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<!-- ==========================================
+             VIEW 2: Placement Test Shell
+             ========================================== -->
+<div class="hidden w-full flex-col items-center gap-xl" id="view-test">
+<!-- Segmented Progress Top -->
+<div class="w-full flex gap-xs mb-md">
+<div class="h-1 flex-1 bg-secondary rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full"></div>
+<div class="h-1 flex-1 bg-surface-variant rounded-full"></div>
+</div>
+<!-- Question Card Center Stage -->
+<div class="w-full max-w-[720px] bg-surface-container border border-white/5 rounded-[20px] p-xl relative overflow-hidden glass-card-inner-highlight shadow-2xl shadow-black/50">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary/20 to-transparent"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xl flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary">psychology</span> Technical Knowledge
+                </p>
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-xl leading-tight">What characterizes a <span class="text-secondary">Fair Value Gap</span> (FVG) in price action?</h2>
+<div class="flex flex-col gap-sm" id="test-options">
+<!-- Answer Option -->
+<div class="test-option p-md border border-white/10 rounded-lg flex items-center justify-between cursor-pointer hover:bg-surface-variant/30 transition-colors group">
+<span class="font-body-base text-body-base text-on-surface">A period of consolidation with tight Bollinger Bands.</span>
+<div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center shrink-0 indicator transition-colors">
+<span class="material-symbols-outlined text-[14px] text-surface opacity-0 inner-check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Answer Option -->
+<div class="test-option p-md border border-white/10 rounded-lg flex items-center justify-between cursor-pointer hover:bg-surface-variant/30 transition-colors group">
+<span class="font-body-base text-body-base text-on-surface">A three-candle sequence where the wicks of the 1st and 3rd candles do not overlap.</span>
+<div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center shrink-0 indicator transition-colors">
+<span class="material-symbols-outlined text-[14px] text-surface opacity-0 inner-check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Answer Option -->
+<div class="test-option p-md border border-white/10 rounded-lg flex items-center justify-between cursor-pointer hover:bg-surface-variant/30 transition-colors group">
+<span class="font-body-base text-body-base text-on-surface">When the Relative Strength Index (RSI) crosses below 30.</span>
+<div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center shrink-0 indicator transition-colors">
+<span class="material-symbols-outlined text-[14px] text-surface opacity-0 inner-check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Answer Option -->
+<div class="test-option p-md border border-white/10 rounded-lg flex items-center justify-between cursor-pointer hover:bg-surface-variant/30 transition-colors group">
+<span class="font-body-base text-body-base text-on-surface">A sudden spike in trading volume without significant price movement.</span>
+<div class="w-5 h-5 rounded-full border border-outline flex items-center justify-center shrink-0 indicator transition-colors">
+<span class="material-symbols-outlined text-[14px] text-surface opacity-0 inner-check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+</div>
+<div class="mt-xl flex justify-end">
+<button class="px-xl py-3 bg-secondary text-on-secondary font-headline-md text-[16px] font-semibold rounded-lg opacity-50 cursor-not-allowed transition-all duration-300 hover:shadow-[0_0_15px_rgba(68,226,205,0.4)] flex items-center gap-sm" disabled="" id="btn-submit-test">
+                        Submit Answer <span class="material-symbols-outlined text-[20px]">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ==========================================
+             VIEW 3: The "Initial Map" Reveal
+             ========================================== -->
+<div class="hidden w-full flex-col items-center justify-center min-h-[614px] relative" id="view-reveal">
+<div class="text-center relative z-20 mb-[100px] mt-xl opacity-0 transition-opacity duration-1000 delay-500" id="reveal-text">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-xs">Your starting map.</h2>
+<p class="font-headline-md text-headline-md text-secondary">Let's build it.</p>
+</div>
+<!-- Constellation Container -->
+<div class="relative w-[300px] h-[300px] flex items-center justify-center" id="constellation">
+<!-- Connecting Lines (SVG) -->
+<svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" viewbox="0 0 300 300">
+<line class="stroke-secondary/30 stroke-[1.5] constellation-line" x1="150" x2="150" y1="150" y2="40"></line>
+<line class="stroke-secondary/30 stroke-[1.5] constellation-line" style="transition-delay: 0.2s;" x1="150" x2="60" y1="150" y2="220"></line>
+<line class="stroke-white/10 stroke-[1.5] constellation-line" style="transition-delay: 0.4s;" x1="150" x2="240" y1="150" y2="220"></line>
+</svg>
+<!-- Center Node (Mastery Core) -->
+<div class="absolute z-10 w-[64px] h-[64px] rounded-full bg-surface-container/80 backdrop-blur-xl border-2 border-secondary flex items-center justify-center constellation-node shadow-[0_0_30px_rgba(68,226,205,0.2)]" style="animation-delay: 0.1s;">
+<span class="material-symbols-outlined text-secondary text-[28px]" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+<!-- Pulsing ring -->
+<div class="absolute inset-0 rounded-full border border-secondary/50 animate-ping" style="animation-duration: 3s;"></div>
+</div>
+<!-- Satellite Node 1 -->
+<div class="absolute top-[20px] z-10 w-[48px] h-[48px] rounded-full bg-surface-variant/50 backdrop-blur-md border border-secondary flex items-center justify-center constellation-node" style="animation-delay: 0.3s;">
+<span class="material-symbols-outlined text-on-surface text-[20px]">candlestick_chart</span>
+<div class="absolute -top-8 whitespace-nowrap font-label-caps text-[10px] text-secondary tracking-widest uppercase">Price Action</div>
+</div>
+<!-- Satellite Node 2 -->
+<div class="absolute bottom-[50px] left-[30px] z-10 w-[48px] h-[48px] rounded-full bg-surface-variant/50 backdrop-blur-md border border-secondary flex items-center justify-center constellation-node" style="animation-delay: 0.5s;">
+<span class="material-symbols-outlined text-on-surface text-[20px]">show_chart</span>
+<div class="absolute -bottom-8 whitespace-nowrap font-label-caps text-[10px] text-secondary tracking-widest uppercase">Market Struct</div>
+</div>
+<!-- Satellite Node 3 (Locked/Unexplored) -->
+<div class="absolute bottom-[50px] right-[30px] z-10 w-[48px] h-[48px] rounded-full bg-surface-container-lowest backdrop-blur-md border border-white/10 flex items-center justify-center constellation-node" style="animation-delay: 0.7s;">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">lock</span>
+<div class="absolute -bottom-8 whitespace-nowrap font-label-caps text-[10px] text-on-surface-variant tracking-widest uppercase">Risk Mgt</div>
+</div>
+</div>
+<button class="mt-[100px] px-xl py-3 border border-secondary/30 text-secondary font-headline-md text-[16px] rounded-lg transition-all duration-300 hover:bg-secondary/10 opacity-0" id="btn-enter-dashboard" style="transition: opacity 0.5s ease 2s;">
+                Enter Dashboard
+            </button>
+</div>
+</main>
+<!-- Interaction Logic -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // View Navigation Elements
+            const viewGoal = document.getElementById('view-goal');
+            const viewTest = document.getElementById('view-test');
+            const viewReveal = document.getElementById('view-reveal');
+            
+            const btnNextTest = document.getElementById('btn-next-test');
+            const btnSubmitTest = document.getElementById('btn-submit-test');
+            const globalProgress = document.getElementById('global-progress');
+
+            // --- Goal Picker Logic ---
+            const goalCards = document.querySelectorAll('.goal-card');
+            
+            goalCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Reset all
+                    goalCards.forEach(c => {
+                        c.classList.remove('border-secondary', 'bg-secondary/5', 'shadow-[0_0_20px_rgba(68,226,205,0.1)]');
+                        c.classList.add('border-white/5', 'bg-surface-container');
+                        const indicator = c.querySelector('.indicator');
+                        indicator.classList.remove('border-secondary');
+                        indicator.classList.add('border-outline');
+                        c.querySelector('.inner-dot').classList.remove('opacity-100');
+                    });
+
+                    // Set active
+                    card.classList.remove('border-white/5', 'bg-surface-container');
+                    card.classList.add('border-secondary', 'bg-secondary/5', 'shadow-[0_0_20px_rgba(68,226,205,0.1)]');
+                    
+                    const indicator = card.querySelector('.indicator');
+                    indicator.classList.remove('border-outline');
+                    indicator.classList.add('border-secondary');
+                    card.querySelector('.inner-dot').classList.add('opacity-100');
+
+                    // Enable button
+                    btnNextTest.disabled = false;
+                    btnNextTest.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+            });
+
+            // Transition to Test
+            btnNextTest.addEventListener('click', () => {
+                viewGoal.classList.add('hidden');
+                viewTest.classList.remove('hidden');
+                viewTest.classList.add('animate-fade-in-up');
+                globalProgress.style.width = '66%';
+            });
+
+            // --- Placement Test Logic ---
+            const testOptions = document.querySelectorAll('.test-option');
+            
+            testOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Reset all
+                    testOptions.forEach(o => {
+                        o.classList.remove('border-secondary', 'bg-secondary/10');
+                        o.classList.add('border-white/10');
+                        const ind = o.querySelector('.indicator');
+                        ind.classList.remove('bg-secondary', 'border-secondary');
+                        ind.classList.add('border-outline');
+                        o.querySelector('.inner-check').classList.remove('opacity-100');
+                    });
+
+                    // Set active
+                    option.classList.remove('border-white/10');
+                    option.classList.add('border-secondary', 'bg-secondary/10');
+                    
+                    const ind = option.querySelector('.indicator');
+                    ind.classList.remove('border-outline');
+                    ind.classList.add('bg-secondary', 'border-secondary');
+                    option.querySelector('.inner-check').classList.add('opacity-100');
+
+                    // Enable submit
+                    btnSubmitTest.disabled = false;
+                    btnSubmitTest.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+            });
+
+            // Transition to Reveal
+            btnSubmitTest.addEventListener('click', () => {
+                viewTest.classList.add('hidden');
+                viewReveal.classList.remove('hidden');
+                viewReveal.classList.add('flex');
+                globalProgress.style.width = '100%';
+                
+                // Trigger Reveal Animations
+                setTimeout(() => {
+                    document.getElementById('constellation').classList.add('reveal-active');
+                    document.getElementById('reveal-text').classList.remove('opacity-0');
+                    document.getElementById('btn-enter-dashboard').classList.remove('opacity-0');
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

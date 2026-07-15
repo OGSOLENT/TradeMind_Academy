@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Sign In</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#93000a",
+                        "surface-container-high": "#292932",
+                        "on-secondary": "#003731",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#454652",
+                        "on-background": "#e4e1ed",
+                        "primary-fixed": "#dfe0ff",
+                        "on-secondary-container": "#004d44",
+                        "surface-bright": "#393841",
+                        "inverse-surface": "#e4e1ed",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary-fixed": "#291800",
+                        "tertiary-container": "#a06800",
+                        "outline": "#908f9e",
+                        "inverse-on-surface": "#302f38",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "surface-container": "#1f1f27",
+                        "secondary": "#44e2cd",
+                        "on-surface-variant": "#c6c5d5",
+                        "surface-dim": "#13131b",
+                        "error": "#ffb4ab",
+                        "background": "#13131b",
+                        "surface-tint": "#bdc2ff",
+                        "secondary-container": "#03c6b2",
+                        "surface-container-highest": "#34343d",
+                        "on-tertiary-container": "#fffaf9",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-primary": "#121f8b",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "on-primary-fixed": "#000965",
+                        "on-primary-container": "#fdfaff",
+                        "primary": "#bdc2ff",
+                        "surface-variant": "#34343d",
+                        "surface-container-low": "#1b1b23",
+                        "secondary-fixed": "#62fae3",
+                        "primary-container": "#5e6ad2",
+                        "surface": "#13131b",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-secondary-fixed-variant": "#005047",
+                        "inverse-primary": "#4854bb",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-tertiary": "#452b00",
+                        "tertiary": "#ffb955",
+                        "on-surface": "#e4e1ed",
+                        "on-error": "#690005"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        xs: "4px",
+                        base: "4px",
+                        sm: "8px",
+                        gutter: "20px",
+                        xl: "40px",
+                        md: "16px",
+                        "margin-safe": "32px",
+                        lg: "24px"
+                    },
+                    fontFamily: {
+                        "label-caps": ["Geist Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "data-tabular": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "500" }],
+                        "body-base": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base Styling & Material Symbols */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+            33% { transform: translateY(-20px) translateX(10px) scale(1.05); }
+            66% { transform: translateY(10px) translateX(-15px) scale(0.95); }
+        }
+        .animate-aurora {
+            animation: float 15s ease-in-out infinite;
+        }
+        .animate-aurora-delayed {
+            animation: float 18s ease-in-out infinite reverse;
+            animation-delay: -5s;
+        }
+        
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-entrance {
+            animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes wick-grow {
+            0% { height: 0%; bottom: 50%; }
+            100% { height: 100%; bottom: 0%; }
+        }
+        .animate-wick {
+            animation: wick-grow 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+            transform-origin: center;
+        }
+
+        /* Input Auto-fill overrides for dark theme */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #050507 inset !important;
+            -webkit-text-fill-color: #e4e1ed !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base min-h-screen flex items-center justify-center relative overflow-hidden p-md">
+<!-- Atmospheric Background (Aurora Blobs) -->
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[-10%] left-[-20%] w-[70vw] h-[70vw] rounded-full bg-primary-container/10 blur-[80px] animate-aurora"></div>
+<div class="absolute bottom-[-10%] right-[-20%] w-[60vw] h-[60vw] rounded-full bg-secondary-container/5 blur-[80px] animate-aurora-delayed"></div>
+</div>
+<!-- Main Content Container -->
+<main class="relative z-10 w-full max-w-[400px] flex flex-col gap-lg animate-entrance opacity-0">
+<!-- Logo Header -->
+<header class="flex flex-col items-center justify-center text-center">
+<div class="flex items-center gap-2 mb-xs">
+<!-- Custom Candlestick Glyph animating in -->
+<div class="relative w-4 h-8 flex items-center justify-center">
+<div class="absolute w-[2px] bg-secondary h-0 bottom-1/2 animate-wick"></div>
+<div class="w-full h-4 bg-surface-container border border-secondary rounded-sm z-10 shadow-[0_0_8px_rgba(3,198,178,0.2)]"></div>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface">TradeMind</h1>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Intellectual Velocity</p>
+</header>
+<!-- Glassmorphism Form Card -->
+<!-- Level 2 Interactive Card: #101018 base with backdrop blur and hairline top highlight -->
+<div class="bg-[#101018]/80 backdrop-blur-xl border border-white/5 rounded-xl p-lg shadow-2xl relative">
+<!-- 1px Top Edge Inner Highlight -->
+<div class="absolute top-0 left-0 right-0 h-px bg-white/5 rounded-t-xl"></div>
+<form class="flex flex-col gap-md">
+<!-- Email Input -->
+<div class="relative group">
+<input class="peer w-full bg-[#050507] border border-outline-variant rounded-lg px-4 pt-6 pb-2 text-on-surface font-data-tabular text-data-tabular focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="email" placeholder=" " required="" type="email"/>
+<label class="absolute left-4 top-4 text-on-surface-variant font-body-base text-[14px] transition-all duration-200 ease-out pointer-events-none peer-focus:-translate-y-2.5 peer-focus:text-[11px] peer-focus:text-primary peer-[:not(:placeholder-shown)]:-translate-y-2.5 peer-[:not(:placeholder-shown)]:text-[11px] peer-[:not(:placeholder-shown)]:text-on-surface-variant" for="email">
+                        Email Address
+                    </label>
+</div>
+<!-- Password Input -->
+<div class="relative group">
+<input class="peer w-full bg-[#050507] border border-outline-variant rounded-lg px-4 pt-6 pb-2 text-on-surface font-data-tabular text-data-tabular focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all" id="password" placeholder=" " required="" type="password"/>
+<label class="absolute left-4 top-4 text-on-surface-variant font-body-base text-[14px] transition-all duration-200 ease-out pointer-events-none peer-focus:-translate-y-2.5 peer-focus:text-[11px] peer-focus:text-primary peer-[:not(:placeholder-shown)]:-translate-y-2.5 peer-[:not(:placeholder-shown)]:text-[11px] peer-[:not(:placeholder-shown)]:text-on-surface-variant" for="password">
+                        Password
+                    </label>
+</div>
+<!-- Primary Action -->
+<!-- 10px radius per style guide, inner glow on hover -->
+<button class="mt-sm w-full bg-primary-container text-on-primary-container rounded-[10px] py-3 font-body-base text-body-base font-semibold tracking-wide flex justify-center items-center gap-2 transition-all duration-300 hover:bg-inverse-primary hover:shadow-[inset_0_0_15px_rgba(255,255,255,0.15)] active:scale-[0.98]" type="submit">
+                    Sign In
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<!-- Divider -->
+<div class="flex items-center gap-4 my-2">
+<div class="h-px bg-outline-variant/30 flex-1"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Or continue with</span>
+<div class="h-px bg-outline-variant/30 flex-1"></div>
+</div>
+<!-- Secondary Actions Stack -->
+<button class="w-full bg-[#0A0A0F] border border-outline-variant/50 text-on-surface rounded-[10px] py-2.5 font-body-base text-body-base flex justify-center items-center gap-3 transition-colors hover:bg-surface-container-high active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">account_circle</span>
+                    Google
+                </button>
+<button class="w-full bg-[#0A0A0F] border border-outline-variant/50 text-on-surface rounded-[10px] py-2.5 font-body-base text-body-base flex justify-center items-center gap-3 transition-colors hover:bg-surface-container-high active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">mark_email_read</span>
+                    Magic Link
+                </button>
+</form>
+</div>
+<!-- Footer / Legal -->
+<footer class="flex flex-col items-center px-4">
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="relative flex items-center justify-center mt-0.5">
+<input class="appearance-none w-4 h-4 border border-outline-variant rounded-[4px] bg-[#050507] checked:bg-primary-container checked:border-primary-container transition-colors peer cursor-pointer" required="" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-on-primary-container text-[14px] font-bold opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
+</div>
+<span class="font-label-caps text-[11px] leading-relaxed text-on-surface-variant group-hover:text-on-surface transition-colors">
+                    I verify I am 18+ and agree to the 
+                    <a class="text-primary hover:text-primary-fixed-dim underline decoration-white/20 underline-offset-2 transition-colors" href="#">Terms of Service</a> &amp; 
+                    <a class="text-primary hover:text-primary-fixed-dim underline decoration-white/20 underline-offset-2 transition-colors" href="#">Privacy Policy</a>.
+                </span>
+</label>
+</footer>
+</main>
+</body></html>

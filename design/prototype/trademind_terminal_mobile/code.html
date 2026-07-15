@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind Mobile Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#908f9e",
+                        "on-secondary-container": "#004d44",
+                        "surface-container": "#1f1f27",
+                        "inverse-on-surface": "#302f38",
+                        "on-primary-fixed": "#000965",
+                        "surface-tint": "#bdc2ff",
+                        "primary-container": "#5e6ad2",
+                        "tertiary": "#ffb955",
+                        "on-primary": "#121f8b",
+                        "on-primary-container": "#fdfaff",
+                        "secondary": "#44e2cd",
+                        "on-tertiary": "#452b00",
+                        "primary": "#bdc2ff",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "primary-fixed": "#dfe0ff",
+                        "inverse-primary": "#4854bb",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#34343d",
+                        "secondary-container": "#03c6b2",
+                        "on-tertiary-container": "#fffaf9",
+                        "surface-container-high": "#292932",
+                        "primary-fixed-dim": "#bdc2ff",
+                        "outline-variant": "#454652",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-secondary": "#003731",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#62fae3",
+                        "surface-container-highest": "#34343d",
+                        "surface-dim": "#13131b",
+                        "tertiary-container": "#a06800",
+                        "on-tertiary-fixed": "#291800",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b23",
+                        "surface-bright": "#393841",
+                        "secondary-fixed-dim": "#3cddc7",
+                        "tertiary-fixed": "#ffddb4",
+                        "on-background": "#e4e1ed",
+                        "background": "#13131b",
+                        "on-surface-variant": "#c6c5d5",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-surface": "#e4e1ed",
+                        "inverse-surface": "#e4e1ed",
+                        "surface": "#13131b",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "on-secondary-fixed-variant": "#005047"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-safe": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(94, 106, 210, 0.05) 0%, rgba(19, 19, 27, 1) 100%);
+            pointer-events: none;
+        }
+        .border-hair {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .border-hair-t {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .border-hair-b {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .border-hair-l {
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .card-inner-highlight {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+        /* Hide scrollbar for cleaner look on mobile */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-base text-body-base h-screen flex flex-col overflow-hidden relative">
+<div class="aurora-bg"></div>
+<!-- Ticker HUD -->
+<header class="flex-none px-md py-sm bg-surface-container/80 backdrop-blur-md border-hair-b z-20 sticky top-0">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md">BTC/USD</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">keyboard_arrow_down</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</span>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<div class="font-data-tabular text-data-tabular text-xl font-bold tracking-tight">$64,250.00</div>
+<div class="font-data-tabular text-data-tabular text-secondary text-sm flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+                    1.2% ($771.00)
+                </div>
+</div>
+<div class="text-right">
+<div class="font-label-caps text-label-caps text-on-surface-variant">Session PnL</div>
+<div class="font-data-tabular text-data-tabular text-secondary font-semibold">+$1,450.20</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto flex flex-col pb-24">
+<!-- Chart Area (Simulated 40%) -->
+<div class="h-[353px] border-hair-b bg-surface-container-low relative flex flex-col p-2">
+<div class="flex justify-between items-center mb-2 px-2">
+<div class="flex gap-4 font-label-caps text-label-caps text-on-surface-variant">
+<span class="text-secondary font-bold border-b border-secondary pb-1">1H</span>
+<span>4H</span>
+<span>1D</span>
+<span>1W</span>
+</div>
+<div class="flex gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">candlestick_chart</span>
+<span class="material-symbols-outlined text-[18px]">show_chart</span>
+</div>
+</div>
+<!-- Mock Chart -->
+<div aria-label="Candlestick chart placeholder" class="flex-1 w-full relative overflow-hidden flex items-end justify-between px-2 opacity-80">
+<!-- Generating mock candles -->
+<script>
+                    for(let i=0; i<30; i++) {
+                        const isGreen = Math.random() > 0.4;
+                        const color = isGreen ? 'bg-secondary' : 'bg-error';
+                        const height = 20 + Math.random() * 60;
+                        const wickHeight = height + Math.random() * 20;
+                        const mb = Math.random() * 20;
+                        document.write(`
+                            <div class="relative w-[6px] flex flex-col items-center justify-end" style="height: 100%; margin-bottom: ${mb}%;">
+                                <div class="absolute w-[1px] ${color} opacity-50" style="height: ${wickHeight}%; bottom: 0;"></div>
+                                <div class="w-full ${color} rounded-[1px] relative z-10" style="height: ${height}%; bottom: 0;"></div>
+                            </div>
+                        `);
+                    }
+                </script>
+</div>
+<div class="absolute bottom-2 right-2 text-[10px] font-data-tabular text-on-surface-variant opacity-50">TM-CHART-V2</div>
+</div>
+<!-- Order Book & Execution Tab -->
+<div class="flex-1 flex flex-col p-md gap-4">
+<!-- Tabs -->
+<div class="flex gap-6 border-hair-b font-label-caps text-label-caps mb-2">
+<button class="text-secondary font-bold border-b-2 border-secondary pb-2 px-1">Order Book</button>
+<button class="text-on-surface-variant hover:text-on-surface pb-2 px-1 transition-colors">Recent Trades</button>
+</div>
+<!-- Simplified Order Book (Top 5) -->
+<div class="flex gap-4">
+<!-- Bids -->
+<div class="flex-1 space-y-1">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-2">
+<span>Size</span>
+<span>Bid</span>
+</div>
+<!-- Mock Bids -->
+<script>
+                        let bidPrice = 64249.50;
+                        for(let i=0; i<5; i++) {
+                            const size = (Math.random() * 2 + 0.1).toFixed(3);
+                            document.write(`
+                                <div class="flex justify-between font-data-tabular text-data-tabular relative group cursor-pointer hover:bg-white/5 rounded px-1 transition-colors">
+                                    <div class="absolute right-0 top-0 bottom-0 bg-secondary/10" style="width: ${Math.random()*80}%"></div>
+                                    <span class="text-on-surface relative z-10">${size}</span>
+                                    <span class="text-secondary relative z-10">${bidPrice.toFixed(2)}</span>
+                                </div>
+                            `);
+                            bidPrice -= Math.random() * 10;
+                        }
+                    </script>
+</div>
+<!-- Asks -->
+<div class="flex-1 space-y-1">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-2">
+<span>Ask</span>
+<span>Size</span>
+</div>
+<!-- Mock Asks -->
+<script>
+                        let askPrice = 64250.50;
+                        for(let i=0; i<5; i++) {
+                            const size = (Math.random() * 2 + 0.1).toFixed(3);
+                            document.write(`
+                                <div class="flex justify-between font-data-tabular text-data-tabular relative group cursor-pointer hover:bg-white/5 rounded px-1 transition-colors">
+                                    <div class="absolute left-0 top-0 bottom-0 bg-error/10" style="width: ${Math.random()*80}%"></div>
+                                    <span class="text-error relative z-10">${askPrice.toFixed(2)}</span>
+                                    <span class="text-on-surface relative z-10">${size}</span>
+                                </div>
+                            `);
+                            askPrice += Math.random() * 10;
+                        }
+                    </script>
+</div>
+</div>
+<!-- Quick Input (Limit/Market) -->
+<div class="mt-4 bg-surface-container rounded-lg border-hair p-3 card-inner-highlight">
+<div class="flex justify-between items-center mb-3">
+<div class="flex gap-2 bg-surface-container-low rounded p-1 border-hair">
+<button class="px-3 py-1 text-xs font-semibold rounded bg-surface text-on-surface shadow-sm">Limit</button>
+<button class="px-3 py-1 text-xs font-semibold rounded text-on-surface-variant hover:text-on-surface">Market</button>
+</div>
+<span class="font-data-tabular text-data-tabular text-xs text-on-surface-variant">Avail: 2.45 BTC</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center bg-surface border border-white/10 rounded-lg px-3 py-2 focus-within:border-primary/50 transition-colors">
+<span class="text-on-surface-variant text-sm w-12">Price</span>
+<input class="bg-transparent border-none text-right flex-1 font-data-tabular text-data-tabular text-on-surface focus:ring-0 p-0" type="text" value="64250.00"/>
+<span class="text-on-surface-variant text-sm ml-2">USD</span>
+</div>
+<div class="flex items-center bg-surface border border-white/10 rounded-lg px-3 py-2 focus-within:border-primary/50 transition-colors">
+<span class="text-on-surface-variant text-sm w-12">Amount</span>
+<input class="bg-transparent border-none text-right flex-1 font-data-tabular text-data-tabular text-on-surface focus:ring-0 p-0" placeholder="0.00" type="text"/>
+<span class="text-on-surface-variant text-sm ml-2">BTC</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Execution Bottom Sheet & Nav Shell -->
+<div class="fixed bottom-0 left-0 w-full z-50 flex flex-col bg-surface-container/95 backdrop-blur-xl border-hair-t pt-2 pb-safe">
+<!-- Execution Buttons -->
+<div class="flex gap-3 px-md pb-3">
+<button class="flex-1 bg-secondary text-on-secondary py-3 rounded-lg font-semibold text-lg hover:brightness-110 active:scale-95 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+                Buy
+            </button>
+<button class="flex-1 bg-error text-on-error py-3 rounded-lg font-semibold text-lg hover:brightness-110 active:scale-95 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+                Sell
+            </button>
+</div>
+<!-- BottomNavBar (Mobile Nav Shell) -->
+<nav class="flex items-center justify-between px-lg py-2">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">candlestick_chart</span>
+<span class="font-label-caps text-[10px]">Chart</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-secondary font-bold transition-colors">
+<span class="material-symbols-outlined text-[24px]">swap_horiz</span>
+<span class="font-label-caps text-[10px]">Trade</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+<span class="font-label-caps text-[10px]">Positions</span>
+<span class="absolute top-0 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+</nav>
+</div>
+</body></html>

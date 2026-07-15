@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeMind - Mentor Booking - Service Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#3cddc7",
+                        "surface-container-highest": "#34343d",
+                        "outline-variant": "#454652",
+                        "on-primary": "#121f8b",
+                        "surface-container-low": "#1b1b23",
+                        "tertiary-fixed-dim": "#ffb955",
+                        "on-surface": "#e4e1ed",
+                        "primary": "#bdc2ff",
+                        "on-primary-fixed-variant": "#2e3aa2",
+                        "tertiary-fixed": "#ffddb4",
+                        "inverse-surface": "#e4e1ed",
+                        "on-background": "#e4e1ed",
+                        "surface-tint": "#bdc2ff",
+                        "background": "#13131b",
+                        "on-error": "#690005",
+                        "inverse-primary": "#4854bb",
+                        "on-tertiary-fixed-variant": "#633f00",
+                        "secondary": "#44e2cd",
+                        "tertiary": "#ffb955",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-container-high": "#292932",
+                        "primary-container": "#5e6ad2",
+                        "on-tertiary-container": "#fffaf9",
+                        "on-secondary-fixed": "#00201c",
+                        "on-tertiary": "#452b00",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#005047",
+                        "on-primary-fixed": "#000965",
+                        "on-tertiary-fixed": "#291800",
+                        "surface-dim": "#13131b",
+                        "secondary-container": "#03c6b2",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#a06800",
+                        "inverse-on-surface": "#302f38",
+                        "primary-fixed": "#dfe0ff",
+                        "surface-variant": "#34343d",
+                        "surface-bright": "#393841",
+                        "surface": "#13131b",
+                        "on-secondary-container": "#004d44",
+                        "on-primary-container": "#fdfaff",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#c6c5d5",
+                        "surface-container": "#1f1f27",
+                        "secondary-fixed": "#62fae3",
+                        "outline": "#908f9e",
+                        "on-secondary": "#003731",
+                        "primary-fixed-dim": "#bdc2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "40px",
+                        "margin-safe": "32px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-caps": ["Geist Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-tabular": ["Geist Mono"],
+                        "display-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "data-tabular": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #050507; color: #e4e1ed; }
+        .glass-card {
+            background-color: #101018;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: #3cddc7;
+            background-color: rgba(60, 221, 199, 0.05);
+        }
+        .service-card.selected {
+            border-color: #44e2cd;
+            background-color: rgba(68, 226, 205, 0.1);
+        }
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.05;
+            animation: float 20s infinite ease-in-out alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+        .btn-primary {
+            background-color: #5e6ad2;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-primary:hover {
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Aurora Background -->
+<div class="aurora-blob bg-primary-container w-[600px] h-[600px] top-[-100px] left-[-100px]"></div>
+<div class="aurora-blob bg-secondary w-[500px] h-[500px] bottom-[-200px] right-[-100px]" style="animation-delay: -10s;"></div>
+<!-- Top Navigation (Transactional Layout - Hidden in main flow, but provided for context if needed, usually suppressed) -->
+<!-- Suppressed for transactional intent -->
+<main class="flex-grow z-10 flex flex-col items-center justify-center p-md md:p-xl w-full max-w-[800px] mx-auto">
+<!-- Header -->
+<div class="w-full mb-xl text-center">
+<h1 class="font-display-lg text-display-lg md:text-display-lg font-headline-md tracking-tight mb-sm">Select Service</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Choose a mentorship track to refine your edge.</p>
+</div>
+<!-- Stepper -->
+<div class="w-full flex items-center justify-between mb-xl px-lg">
+<div class="flex flex-col items-center relative z-10">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary-fixed flex items-center justify-center font-label-caps text-label-caps mb-xs shadow-[0_0_10px_rgba(68,226,205,0.3)]">
+                    1
+                </div>
+<span class="font-label-caps text-label-caps text-secondary">Service</span>
+</div>
+<div class="flex-grow h-px bg-outline-variant/30 mx-md"></div>
+<div class="flex flex-col items-center relative z-10 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-caps text-label-caps mb-xs border border-outline-variant/30">
+                    2
+                </div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Schedule</span>
+</div>
+<div class="flex-grow h-px bg-outline-variant/30 mx-md"></div>
+<div class="flex flex-col items-center relative z-10 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-caps text-label-caps mb-xs border border-outline-variant/30">
+                    3
+                </div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Checkout</span>
+</div>
+</div>
+<!-- Service Catalog -->
+<div class="w-full grid grid-cols-1 gap-md mb-xl">
+<!-- Card 1 -->
+<div class="service-card glass-card rounded-xl p-lg cursor-pointer flex flex-col md:flex-row justify-between items-start md:items-center" onclick="selectService(this)">
+<div class="flex-grow mb-md md:mb-0 pr-md">
+<div class="flex items-center mb-sm">
+<span class="material-symbols-outlined text-secondary mr-sm" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">1-on-1 Portfolio Audit</h3>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">Deep dive into recent trades and risk parameters.</p>
+<div class="flex items-center space-x-md">
+<span class="font-data-tabular text-data-tabular text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">schedule</span> 60m
+                        </span>
+<span class="font-data-tabular text-data-tabular text-secondary bg-secondary/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">payments</span> $150
+                        </span>
+</div>
+</div>
+<div class="w-full md:w-auto flex justify-end">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant/50 flex items-center justify-center selection-indicator transition-colors duration-200">
+<span class="material-symbols-outlined text-[16px] text-background opacity-0">check</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="service-card glass-card rounded-xl p-lg cursor-pointer flex flex-col md:flex-row justify-between items-start md:items-center" onclick="selectService(this)">
+<div class="flex-grow mb-md md:mb-0 pr-md">
+<div class="flex items-center mb-sm">
+<span class="material-symbols-outlined text-secondary mr-sm" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Live Execution Review</h3>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">Real-time analysis of trading mechanics during a live session.</p>
+<div class="flex items-center space-x-md">
+<span class="font-data-tabular text-data-tabular text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">schedule</span> 60m
+                        </span>
+<span class="font-data-tabular text-data-tabular text-secondary bg-secondary/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">payments</span> $250
+                        </span>
+</div>
+</div>
+<div class="w-full md:w-auto flex justify-end">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant/50 flex items-center justify-center selection-indicator transition-colors duration-200">
+<span class="material-symbols-outlined text-[16px] text-background opacity-0">check</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="service-card glass-card rounded-xl p-lg cursor-pointer flex flex-col md:flex-row justify-between items-start md:items-center" onclick="selectService(this)">
+<div class="flex-grow mb-md md:mb-0 pr-md">
+<div class="flex items-center mb-sm">
+<span class="material-symbols-outlined text-secondary mr-sm" style="font-variation-settings: 'FILL' 1;">science</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Strategy Backtest Session</h3>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant mb-md">Quantitative validation of custom strategies with a mentor.</p>
+<div class="flex items-center space-x-md">
+<span class="font-data-tabular text-data-tabular text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">schedule</span> 60m
+                        </span>
+<span class="font-data-tabular text-data-tabular text-secondary bg-secondary/10 px-sm py-xs rounded flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-xs">payments</span> $200
+                        </span>
+</div>
+</div>
+<div class="w-full md:w-auto flex justify-end">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant/50 flex items-center justify-center selection-indicator transition-colors duration-200">
+<span class="material-symbols-outlined text-[16px] text-background opacity-0">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="w-full flex justify-end">
+<button class="btn-primary font-body-base text-body-base font-medium py-sm px-lg rounded-[10px] flex items-center opacity-50 cursor-not-allowed" disabled="" id="continueBtn">
+                Continue to Schedule
+                <span class="material-symbols-outlined ml-xs">arrow_forward</span>
+</button>
+</div>
+</main>
+<script>
+        function selectService(clickedCard) {
+            // Deselect all
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('selected');
+                const indicator = card.querySelector('.selection-indicator');
+                indicator.classList.remove('bg-secondary', 'border-secondary');
+                indicator.classList.add('border-outline-variant/50');
+                indicator.querySelector('span').classList.add('opacity-0');
+            });
+
+            // Select clicked
+            clickedCard.classList.add('selected');
+            const indicator = clickedCard.querySelector('.selection-indicator');
+            indicator.classList.remove('border-outline-variant/50');
+            indicator.classList.add('bg-secondary', 'border-secondary');
+            indicator.querySelector('span').classList.remove('opacity-0');
+
+            // Enable button
+            const btn = document.getElementById('continueBtn');
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.removeAttribute('disabled');
+        }
+    </script>
+</body></html>

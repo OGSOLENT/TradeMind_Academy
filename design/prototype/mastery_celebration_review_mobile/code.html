@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mastery Celebration &amp; Review - TradeMind</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #050507;
+            overflow: hidden;
+        }
+        .aurora-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(94, 106, 210, 0.05); /* primary-container */
+            filter: blur(80px);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -100px; left: -100px; }
+        .blob-2 { bottom: -100px; right: -100px; animation-delay: -5s; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* Mastery Ring Animation */
+        .progress-ring__circle {
+            transition: stroke-dashoffset 1.5s ease-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        /* Spring Physics utility class simulation */
+        .spring-transition {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#291800",
+                      "tertiary-container": "#a06800",
+                      "surface-dim": "#13131b",
+                      "surface-container-highest": "#34343d",
+                      "secondary-fixed": "#62fae3",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#633f00",
+                      "on-secondary-fixed-variant": "#005047",
+                      "surface": "#13131b",
+                      "on-surface": "#e4e1ed",
+                      "inverse-surface": "#e4e1ed",
+                      "surface-container-lowest": "#0d0d15",
+                      "on-surface-variant": "#c6c5d5",
+                      "background": "#13131b",
+                      "tertiary-fixed": "#ffddb4",
+                      "on-background": "#e4e1ed",
+                      "secondary-fixed-dim": "#3cddc7",
+                      "surface-bright": "#393841",
+                      "surface-container-low": "#1b1b23",
+                      "primary-fixed": "#dfe0ff",
+                      "inverse-primary": "#4854bb",
+                      "primary": "#bdc2ff",
+                      "on-primary-fixed-variant": "#2e3aa2",
+                      "secondary": "#44e2cd",
+                      "on-tertiary": "#452b00",
+                      "on-primary-container": "#fdfaff",
+                      "tertiary": "#ffb955",
+                      "on-primary": "#121f8b",
+                      "surface-tint": "#bdc2ff",
+                      "primary-container": "#5e6ad2",
+                      "on-primary-fixed": "#000965",
+                      "surface-container": "#1f1f27",
+                      "inverse-on-surface": "#302f38",
+                      "outline": "#908f9e",
+                      "on-secondary-container": "#004d44",
+                      "error-container": "#93000a",
+                      "on-secondary": "#003731",
+                      "tertiary-fixed-dim": "#ffb955",
+                      "surface-container-high": "#292932",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "outline-variant": "#454652",
+                      "on-secondary-fixed": "#00201c",
+                      "on-tertiary-container": "#fffaf9",
+                      "secondary-container": "#03c6b2",
+                      "surface-variant": "#34343d",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "40px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "20px",
+                      "base": "4px",
+                      "margin-safe": "32px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Geist Mono"
+                      ],
+                      "data-tabular": [
+                              "Geist Mono"
+                      ],
+                      "body-base": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-tabular": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-base": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-[140px]">
+<!-- Atmospheric Background -->
+<div class="aurora-bg">
+<div class="aurora-blob blob-1"></div>
+<div class="aurora-blob blob-2"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-[768px] mx-auto px-md pt-lg flex flex-col gap-lg z-10 relative">
+<!-- Header: Celebration -->
+<header class="flex flex-col items-center justify-center text-center py-xl mt-md">
+<!-- Mastery Ring -->
+<div class="relative w-40 h-40 mb-lg flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 160 160">
+<!-- Background Circle -->
+<circle class="text-surface-container stroke-current" cx="80" cy="80" fill="transparent" r="72" stroke-width="8"></circle>
+<!-- Progress Circle (Teal) -->
+<circle class="text-secondary stroke-current progress-ring__circle" cx="80" cy="80" fill="transparent" id="mastery-ring" r="72" stroke-dasharray="452.389" stroke-dashoffset="452.389" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="flex flex-col items-center z-10">
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">96<span class="text-headline-md">%</span></span>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest mt-xs">Mastery</span>
+</div>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-sm">Session Complete</h1>
+<div class="inline-flex items-center gap-sm px-md py-sm bg-secondary-container/10 border border-secondary/20 rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm">stars</span>
+<span class="font-data-tabular text-data-tabular text-secondary font-bold">+450 XP Earned</span>
+</div>
+</header>
+<!-- Main Card: Skill Node Preview -->
+<section class="bg-[#101018] border border-white/10 rounded-xl p-md relative overflow-hidden backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent z-0"></div>
+<div class="relative z-10">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-md">Skill Mastered</h2>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface flex items-center justify-center border border-white/5">
+<span class="material-symbols-outlined text-secondary">candlestick_chart</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Order Book Dynamics</h3>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm mt-xs">Level 4 unlocked</p>
+</div>
+</div>
+<!-- Micro-visualization of skill tree progression -->
+<div class="mt-lg pt-md border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-lg">check_circle</span>
+<span class="font-data-tabular text-data-tabular text-on-surface text-sm">Current</span>
+</div>
+<!-- Connecting line -->
+<div class="flex-1 h-[2px] bg-gradient-to-r from-secondary/50 to-surface-container mx-md relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-surface-container"></div>
+</div>
+<div class="flex items-center gap-sm opacity-50">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">lock</span>
+<span class="font-data-tabular text-data-tabular text-on-surface-variant text-sm">Liquidity Pools</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Performance Stats (Bento-ish Grid) -->
+<section class="grid grid-cols-2 gap-md">
+<!-- Accuracy -->
+<div class="bg-[#101018] border border-white/10 rounded-xl p-md backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] flex flex-col justify-between h-24">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Accuracy</span>
+<div class="flex items-end gap-xs">
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">96</span>
+<span class="font-body-base text-body-base text-secondary mb-1">%</span>
+</div>
+</div>
+<!-- Time Spent -->
+<div class="bg-[#101018] border border-white/10 rounded-xl p-md backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] flex flex-col justify-between h-24">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Time Spent</span>
+<div class="flex items-end gap-xs">
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">14</span>
+<span class="font-data-tabular text-data-tabular text-on-surface-variant mb-1">:20</span>
+</div>
+</div>
+<!-- New Concepts (Spans full width) -->
+<div class="col-span-2 bg-[#101018] border border-white/10 rounded-xl p-md backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-sm">lightbulb</span>
+</div>
+<span class="font-body-base text-body-base text-on-surface">New Concepts</span>
+</div>
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">4</span>
+</div>
+</section>
+<!-- Review Section (Mistake Bank) -->
+<section class="bg-surface-container-lowest border border-error-container/30 rounded-xl p-md relative overflow-hidden backdrop-blur-xl mt-sm">
+<div class="absolute inset-0 bg-gradient-to-r from-error/5 to-transparent z-0"></div>
+<div class="relative z-10 flex flex-col gap-md">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-error text-lg">warning</span>
+<h3 class="font-headline-md text-headline-md text-on-surface text-lg">Mistake Bank</h3>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant text-sm">4 items to resolve from this session</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-error-container/20 flex items-center justify-center">
+<span class="font-data-tabular text-data-tabular text-error">4</span>
+</div>
+</div>
+<button class="w-full py-md px-lg bg-surface border border-white/10 rounded-lg font-data-tabular text-data-tabular text-on-surface hover:bg-white/5 transition-colors duration-200 spring-transition flex items-center justify-center gap-sm">
+                    Review Now
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Spacer for fixed bottom elements -->
+<div class="h-8"></div>
+</main>
+<!-- Sticky Bottom CTA -->
+<div class="fixed bottom-[80px] md:bottom-0 left-0 w-full p-md bg-gradient-to-t from-background via-background/90 to-transparent z-40 flex justify-center pb-lg">
+<button class="w-full max-w-[768px] bg-primary-container text-white py-lg rounded-[10px] font-body-base text-body-base font-semibold hover:opacity-90 spring-transition flex items-center justify-center gap-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+            Continue Journey
+            <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+<!-- Navigation Shell (BottomNavBar for Mobile) -->
+<!-- Suppressed Nav Shell: As per the "Semantic Shell Mandate", this page represents a "Success/Confirmation splash screen" following a focused journey (session complete). Therefore, the navigation shell should logically be suppressed to focus on the content canvas. However, the prompt EXPLICITLY requested: "Navigation: Use the BottomNavBar component from the design system." 
+    Conflict Resolution: The prompt's specific requirement overrides the general rule in this specific instance. I will render a mock BottomNavBar based on inferred TradeMind architecture. -->
+<nav class="md:hidden fixed bottom-0 w-full h-16 bg-surface/80 backdrop-blur-xl border-t-0 z-50 flex justify-around items-center px-md shadow-[0_-4px_24px_rgba(0,0,0,0.4)]">
+<!-- Dashboard (Inactive) -->
+<a class="flex flex-col items-center gap-xs p-sm text-on-surface-variant hover:text-secondary transition-colors duration-200 opacity-80 scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="font-label-caps text-[10px]">Dashboard</span>
+</a>
+<!-- Skill Tree (Active - Since this is a Mastery/Session complete screen) -->
+<a class="flex flex-col items-center gap-xs p-sm text-secondary border-t-2 border-secondary pt-[6px] -mt-[2px]" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">account_tree</span>
+<span class="font-label-caps text-[10px]">Skill Tree</span>
+</a>
+<!-- Portfolio (Inactive) -->
+<a class="flex flex-col items-center gap-xs p-sm text-on-surface-variant hover:text-secondary transition-colors duration-200 opacity-80 scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+<span class="font-label-caps text-[10px]">Portfolio</span>
+</a>
+<!-- Profile (Inactive) -->
+<a class="flex flex-col items-center gap-xs p-sm text-on-surface-variant hover:text-secondary transition-colors duration-200 opacity-80 scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-caps text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Animate Mastery Ring on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const circle = document.getElementById('mastery-ring');
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = `${circumference}`;
+            
+            const percentage = 96;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            // Small delay to ensure CSS transition triggers
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+        });
+    </script>
+</body></html>
