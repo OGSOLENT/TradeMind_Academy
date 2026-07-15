@@ -1,10 +1,63 @@
 rules_version = '2';
 
-// Deny-by-default (guardrail §7.5). Real rules + tests land in Phase 2.
+// TradeMind Academy — deny-by-default (BUILD_PROMPT §4, §7.5).
+// The response log is a research dataset: responses are CREATE-ONLY, ever.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    // ---- User subtree: owner-only -------------------------------------
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.isAdult == true; // 18+ is a hard gate
+      allow update: if isOwner(uid);
+      allow delete: if isOwner(uid);
+
+      match /mastery/{courseId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /sessions/{sid} {
+        allow read, create, update: if isOwner(uid);
+        allow delete: if false;
+
+        // APPEND-ONLY research log (guardrail §7.2)
+        match /responses/{rid} {
+          allow read: if isOwner(uid);
+          allow create: if isOwner(uid);
+          allow update, delete: if false;
+        }
+      }
+    }
+
+    // ---- Content: authed read, admin-claim write ----------------------
+    match /courses/{courseId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /kcs/{kcId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /lessons/{lessonId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /items/{itemId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
     }
   }
 }
