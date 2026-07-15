@@ -51,3 +51,27 @@ parallel test workers could mint colliding signup emails.
 
 Screenshots: `docs/screenshots/sign-up.png`, `consent.png`, `lesson-top.png`,
 `lesson-full.png`.
+
+## Phase 3 — Assessment engine + question bank (2026-07-15, tag `v0.3-phase3`)
+
+| Check | Result |
+| --- | --- |
+| `npm run lint` / `npm run typecheck` | ✅ clean |
+| `npm run test` (Vitest unit) | ✅ **27/27** — BKT hand-computed fixtures + threshold crossings (11), grading per type (6), logger queue/retry/persistence/backoff (4), utils (6) |
+| Rules tests (against live emulator) | ✅ 14/14 |
+| `npm run test:e2e` | ✅ **12/12** (kitchen sink, auth journey, quiz — desktop + mobile) |
+| Done-criterion | ✅ Playwright completes a full **10-question mixed-type session** (all six renderers exercised), with the network killed mid-session: events queue in localStorage, the queue drains on reconnect, and **all 10 responses verifiably land in the emulator's Firestore, each carrying `pLBefore`/`pLAfter`/`latencyMs`** |
+| Refresh resume | ✅ mid-session reload resumes at the same question (Zustand persist) |
+
+Engineering notes for the report:
+- The Firestore transport fails fast when `navigator.onLine` is false so the
+  custom queue is the *single* retry authority — otherwise the SDK's internal
+  write queue would double-deliver on reconnect and contaminate the research
+  log with duplicates.
+- BKT runs live in the session store from Phase 3 so every logged response
+  carries true model state; routing/dashboard wiring remains Phase 4 scope.
+- WebKit (Safari) long-polling to the Firestore emulator proved flaky
+  ("access control checks"); the mobile E2E project now uses Chromium-based
+  Pixel 7 emulation (see DECISIONS.md).
+
+Screenshots: `docs/screenshots/quiz-question.png`, `quiz-feedback.png`.

@@ -6,6 +6,7 @@ import { signOut } from "firebase/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { createUserProfile, getUserProfile, recordConsent } from "@/lib/firebase/repos";
+import { CONSENT_VERSION } from "@/lib/firebase/types";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -45,9 +46,14 @@ export default function ConsentPage() {
         await createUserProfile(db, user.uid, name, true);
       }
       await recordConsent(db, user.uid);
-      // The learn-area guard reads this query — refresh it before navigating
-      // or the stale consent:null profile bounces the user straight back here.
-      await queryClient.invalidateQueries({ queryKey: ["profile", user.uid] });
+      // The learn-area guard reads this query. Write the consent into the
+      // cache SYNCHRONOUSLY — an invalidate-refetch races the navigation and
+      // the stale consent:null profile bounces the user straight back here.
+      queryClient.setQueryData(["profile", user.uid], (old: unknown) => ({
+        ...(typeof old === "object" && old !== null ? old : {}),
+        isAdult: true,
+        consent: { agreedAt: new Date(), version: CONSENT_VERSION },
+      }));
       router.push(FIRST_LESSON);
     } catch {
       toast({ title: "Could not save your consent", description: "Please try again.", variant: "danger" });
