@@ -75,7 +75,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {error}
         </p>
       ) : hint ? (
-        <p id={`${id}-hint`} className="mt-1.5 px-1 text-sm text-fg-muted">
+        // fg-secondary, not fg-muted: muted fails WCAG contrast for small text on bg-deep
+        <p id={`${id}-hint`} className="mt-1.5 px-1 text-sm text-fg-secondary">
           {hint}
         </p>
       ) : null}

@@ -1,0 +1,5 @@
+node_modules
+.next
+design/prototype
+package-lock.json
+docs/BUILD_PROMPT.md

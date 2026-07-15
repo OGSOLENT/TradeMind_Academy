@@ -8,7 +8,7 @@ import { Pill } from "@/components/ui/pill";
  */
 export default function Home() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-8 px-6 text-center">
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-8 px-6 text-center">
       <Logo />
       <Pill tone="warning" dot>
         Educational simulation only
@@ -24,6 +24,6 @@ export default function Home() {
       >
         View design system
       </Link>
-    </div>
+    </main>
   );
 }

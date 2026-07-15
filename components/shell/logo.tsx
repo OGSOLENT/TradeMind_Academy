@@ -12,11 +12,7 @@ import { ease } from "@/lib/motion";
 export function Logo({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   return (
-    <Link
-      href="/"
-      className={cn("flex items-center gap-2.5 text-fg-primary", className)}
-      aria-label="TradeMind Academy home"
-    >
+    <Link href="/" className={cn("flex items-center gap-2.5 text-fg-primary", className)}>
       <span className="relative flex h-6 w-6 items-center justify-center" aria-hidden="true">
         <motion.span
           className="h-full w-1 rounded-pill bg-mastery"
