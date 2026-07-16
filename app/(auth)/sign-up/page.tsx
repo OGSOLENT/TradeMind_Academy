@@ -4,8 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useQueryClient } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { createUserProfile } from "@/lib/firebase/repos";
+import { defaultSettings } from "@/lib/firebase/types";
 import { PasswordStrength, scorePassword } from "@/components/auth/password-strength";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,6 +38,16 @@ export default function SignUpPage() {
       const name = displayName.trim() || email.split("@")[0] || "Learner";
       await updateProfile(cred.user, { displayName: name });
       await createUserProfile(db, cred.user.uid, name, true);
+      // Prime the shared profile cache: the root SettingsApplier races this
+      // write on real-network latency and would otherwise cache null for 60s,
+      // making the consent page demand a redundant 18+ re-attestation.
+      queryClient.setQueryData(["profile", cred.user.uid], {
+        displayName: name,
+        createdAt: new Date(),
+        consent: null,
+        isAdult: true,
+        settings: defaultSettings,
+      });
       router.push("/consent");
     } catch (err) {
       const code = (err as { code?: string }).code ?? "";

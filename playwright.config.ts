@@ -18,7 +18,12 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: "npm run build && npm run start",
+    // Locally ALWAYS the dev server: it reads .env.development.local (emulator
+    // config). The production build reads .env.production.local (real
+    // Firebase) — auto-starting it here once routed E2E traffic into the real
+    // research database. CI has no env files, so the prod-style build there
+    // runs Firebase-free and the Firebase specs self-skip.
+    command: process.env.CI ? "npm run build && npm run start" : "npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
