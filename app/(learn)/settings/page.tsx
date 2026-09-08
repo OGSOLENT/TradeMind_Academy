@@ -16,6 +16,7 @@ import { Modal } from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 /** Mini candle pair rendered from the live CSS vars — the colour-blind preview. */
 function CandlePreview() {
@@ -182,7 +183,7 @@ export default function SettingsPage() {
   const s = profile.settings;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <Stagger className="mx-auto max-w-2xl space-y-6">
       <h1 className="text-headline-md text-fg-primary">Settings</h1>
 
       <Card level="elevated" className="divide-y divide-white/5 py-2">
@@ -280,6 +281,6 @@ export default function SettingsPage() {
           </Button>
         </div>
       </Modal>
-    </div>
+    </Stagger>
   );
 }
