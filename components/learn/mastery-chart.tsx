@@ -63,7 +63,7 @@ export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ar
 
   if (points.length === 0) {
     return (
-      <p className="flex h-[200px] items-center justify-center text-sm text-fg-muted">
+      <p className="flex h-[200px] items-center justify-center text-sm text-fg-secondary">
         Complete a practice session to see your mastery curve.
       </p>
     );

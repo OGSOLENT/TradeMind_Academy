@@ -13,9 +13,13 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
 }
 
+/* Surfaces are translucent so the ambient aurora reads through the whole
+   composition rather than only in the gutters — "layers separated by light
+   and glass rather than heavy shadows" (DESIGN.md). Contrast is unaffected:
+   the veils sit on #050507, so body text keeps well over 12:1. */
 const levels: Record<CardLevel, string> = {
-  base: "bg-bg-base shadow-hairline",
-  elevated: "bg-bg-elevated shadow-edge-lit",
+  base: "bg-bg-base-veil shadow-hairline",
+  elevated: "bg-bg-elevated-veil shadow-edge-lit",
   glass: "surface-glass shadow-hairline",
 };
 

@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Logo } from "@/components/shell/logo";
 import { OfflineBanner } from "@/components/offline-banner";
+import { AmbientBackground } from "@/components/shell/ambient-background";
 import { Toaster } from "@/components/ui/toast";
 
 /** Marketing shell: visitor glass nav + full-disclaimer footer. */
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh">
+      <AmbientBackground />
       <OfflineBanner />
       <header className="glass-nav fixed inset-x-0 top-0 z-30 flex h-[72px] items-center justify-between border-b border-white/10 px-6 md:px-margin-safe">
         <Logo />
@@ -42,7 +44,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             money carries substantial risk of loss. This platform never connects to a broker,
             never handles funds, and makes no claims about profitability. For adults 18+.
           </p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-muted">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-secondary">
             <Link href="/legal" className="hover:text-fg-primary">
               Legal & privacy
             </Link>

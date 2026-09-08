@@ -7,7 +7,7 @@ export default function LegalPage() {
     <article className="mx-auto max-w-[720px] space-y-8 px-6 py-16">
       <header>
         <h1 className="text-display-lg-mobile text-fg-primary">Legal & privacy</h1>
-        <p className="num mt-2 text-sm text-fg-muted">Version 2026-07-15.v1</p>
+        <p className="num mt-2 text-sm text-fg-secondary">Version 2026-07-15.v1</p>
       </header>
 
       <section className="space-y-3">

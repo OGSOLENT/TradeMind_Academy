@@ -12,6 +12,11 @@
   --bg-deep: #050507; /* Level 0 — document body. Never pure #000. */
   --bg-base: #0a0a0f; /* Level 1 — primary workspace containers */
   --bg-elevated: #101018; /* Level 2 — floating panels, interactive cards */
+  /* Translucent twins of the elevation levels. The ambient aurora is a soft
+     gradient with no high-frequency detail, so plain alpha reads like glass
+     without paying for a backdrop-filter on every card. */
+  --bg-base-veil: rgba(10, 10, 15, 0.66);
+  --bg-elevated-veil: rgba(16, 16, 24, 0.74);
   --surface-glass: rgba(255, 255, 255, 0.04); /* always pair with blur(20px) */
   --glass-nav: rgba(19, 19, 27, 0.4); /* landing nav glass, blur(20px) */
 
@@ -116,4 +121,73 @@
   animation-iteration-count: 1 !important;
   transition-duration: 150ms !important;
   scroll-behavior: auto !important;
+}
+
+/* ── Ambient background ────────────────────────────────────────────────────
+   Aurora blobs (DESIGN.md: "slow-moving, low-opacity organic shapes that
+   provide a sense of life without distracting from data").
+
+   Only `transform` is animated, so these stay on the compositor and never
+   cost the main thread a frame — important because the dashboard renders
+   charts and the quiz runs a BKT update on every submit. */
+.tm-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+@keyframes tm-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 5%, 0) scale(1.08);
+  }
+}
+@keyframes tm-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-7%, -4%, 0) scale(1);
+  }
+}
+@keyframes tm-drift-c {
+  0%,
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-56%, -44%, 0) scale(1.12);
+  }
+}
+
+.tm-blob-drift-a {
+  animation: tm-drift-a 42s ease-in-out infinite;
+}
+.tm-blob-drift-b {
+  animation: tm-drift-b 55s ease-in-out infinite;
+}
+.tm-blob-drift-c {
+  transform: translate3d(-50%, -50%, 0);
+  animation: tm-drift-c 68s ease-in-out infinite;
+}
+
+/* The global reduced-motion rules clamp every animation to 150ms, which would
+   make these snap rather than settle. Stop them outright instead: the
+   composition still reads, it simply holds still. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-blob-drift-a,
+  .tm-blob-drift-b,
+  .tm-blob-drift-c {
+    animation: none !important;
+  }
+}
+[data-motion="reduced"] .tm-blob-drift-a,
+[data-motion="reduced"] .tm-blob-drift-b,
+[data-motion="reduced"] .tm-blob-drift-c {
+  animation: none !important;
 }

@@ -29,7 +29,7 @@ export function Faq() {
         {FAQS.map(({ q, a }) => (
           <details
             key={q}
-            className="group rounded-card bg-bg-elevated shadow-edge-lit open:pb-5"
+            className="group rounded-card bg-bg-elevated-veil shadow-edge-lit open:pb-5"
           >
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-card px-6 py-5 text-body-base font-medium text-fg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
               {q}
