@@ -146,12 +146,15 @@ export default function AnswerReviewPage() {
               </dl>
             )}
 
-            <p className="rounded-control bg-white/5 p-3 text-sm leading-6 text-fg-secondary">
+            <p
+              data-testid="review-explanation"
+              className="rounded-control bg-white/5 p-3 text-sm leading-6 text-fg-secondary"
+            >
               {item.explanation}
             </p>
             {!record.correct && (
               <Link
-                href={`/lesson/${item.kcId}-lesson`}
+                href={`/lesson/${item.kcId}`}
                 className="inline-block text-sm text-accent-bright hover:underline"
               >
                 Review the lesson →

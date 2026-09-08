@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
 /**
  * Phase 3 done-criterion: full 10-question mixed-type session, offline-
@@ -6,72 +7,6 @@ import { expect, test, type Page } from "@playwright/test";
  * 10 responses verifiably land in the emulator's Firestore.
  * Requires emulators + seed (self-skips otherwise).
  */
-
-async function emulatorUp(): Promise<boolean> {
-  try {
-    const res = await fetch("http://localhost:9099/", { signal: AbortSignal.timeout(1500) });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
-async function signUpAndConsent(page: Page): Promise<void> {
-  await page.goto("/sign-up");
-  await page.getByLabel("Email address").fill(
-    `quiz-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`,
-  );
-  await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: "Create account" }).click();
-  await page.getByRole("button", { name: "I consent — start learning" }).click();
-  await expect(
-    page.getByRole("heading", { name: /map what you already know/i }),
-  ).toBeVisible({ timeout: 20_000 });
-  await page.getByRole("button", { name: /Skip — start from scratch/ }).click();
-  await page.waitForURL(/dashboard/, { timeout: 20_000 });
-}
-
-/** Answer whatever question type is on screen; correctness not required. */
-async function answerCurrent(page: Page): Promise<void> {
-  // Wait out the card transition — exiting + entering cards briefly coexist.
-  await expect(page.getByTestId("question-type")).toHaveCount(1);
-  const type = await page.getByTestId("question-type").textContent();
-
-  switch (type?.trim()) {
-    case "mcq":
-      await page.getByRole("radio", { name: /option B/ }).click();
-      break;
-    case "multi":
-      await page.getByRole("checkbox", { name: /option B/ }).click();
-      await page.getByRole("checkbox", { name: /option D/ }).click();
-      break;
-    case "numeric":
-      await page.getByRole("spinbutton").fill("42");
-      break;
-    case "ordering":
-      break; // initial order is submittable
-    case "annotation": {
-      const pane = page.locator(".cursor-crosshair");
-      const box = await pane.boundingBox();
-      if (!box) throw new Error("annotation chart not visible");
-      // Click over a mid-series candle, clear of the right price axis.
-      for (const fx of [0.4, 0.5, 0.3, 0.6]) {
-        await pane.click({ position: { x: box.width * fx, y: box.height * 0.5 } });
-        if (await page.getByText(/Marker: /).isVisible()) break;
-      }
-      await expect(page.getByText(/Marker: /)).toBeVisible();
-      break;
-    }
-    case "tf-confidence":
-      await page.getByRole("radio", { name: "True" }).click();
-      break;
-    default:
-      throw new Error(`Unknown question type on screen: ${type}`);
-  }
-  await page.getByRole("button", { name: "Submit answer" }).click();
-  await page.getByRole("button", { name: /Continue|Finish session/ }).click();
-}
 
 test.describe("quiz session — mixed types, offline tolerant", () => {
   test.beforeEach(async () => {

@@ -49,6 +49,14 @@ export async function getKcs(db: Firestore, courseId: string): Promise<Kc[]> {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
 }
 
+/** All lessons in a knowledge component, in curriculum order. */
+export async function getLessonsByKc(db: Firestore, kcId: string): Promise<Lesson[]> {
+  const snap = await getDocs(query(collection(db, "lessons"), where("kcId", "==", kcId)));
+  return snap.docs
+    .map((d) => ({ id: d.id, ...d.data() }) as Lesson)
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
 export async function getLessonByKc(db: Firestore, kcId: string): Promise<Lesson | null> {
   const snap = await getDocs(query(collection(db, "lessons"), where("kcId", "==", kcId)));
   const first = snap.docs[0];

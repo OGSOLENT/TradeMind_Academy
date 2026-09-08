@@ -51,25 +51,31 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByRole("button", { name: /Skip — start from scratch/ }).click();
     await page.waitForURL(/dashboard/);
 
-    await page.goto("/lesson/kc-candlestick-anatomy-lesson");
+    await page.goto("/lesson/kc-candle-anatomy");
 
-    // Lesson view: title, reading progress, figure describe-toggle, video placeholder.
+    // Lesson view: real curriculum content, video, figure describe-toggle.
     await expect(
-      page.getByRole("heading", { level: 1, name: "Candlestick anatomy" }),
+      page.getByRole("heading", { level: 1, name: "Reading a Single Candle" }),
     ).toBeVisible();
-    await expect(page.getByText("Video coming soon")).toBeVisible();
+    // The lesson plays its real video rather than a placeholder poster.
+    await expect(page.locator("video")).toHaveCount(1);
+    // Markdown extras the curriculum relies on render.
+    await expect(page.locator("table").first()).toBeVisible();
+    await expect(page.locator("blockquote").first()).toBeVisible();
 
     await page.getByRole("button", { name: "Describe this chart" }).click();
-    await expect(page.getByText(/Text alternative: a simulated chart/)).toBeVisible();
+    await expect(page.getByText(/Text alternative: a simulated candlestick series/)).toBeVisible();
 
     // Inline knowledge check → answer correctly → collapses to ✓ chip.
-    await page.getByRole("radio", { name: /option B/ }).click();
+    await page.getByRole("radio", { name: /Open, High, Low, Close/ }).click();
     await page.getByRole("button", { name: "Check answer" }).click();
     await expect(page.getByText(/^Correct\./)).toBeVisible();
     await page.getByRole("button", { name: "Continue reading" }).click();
     await expect(page.getByText(/Check complete/)).toBeVisible();
 
     await expect(page.getByText("Lesson complete")).toBeVisible();
+    // Every lesson in the module is reachable from the footer.
+    await expect(page.locator('nav[aria-label="Lessons in this module"] a')).toHaveCount(2);
   });
 
   test("declining consent signs the user out", async ({ page }) => {
@@ -85,7 +91,7 @@ test.describe("auth → consent → lesson journey", () => {
     await expect(page).toHaveURL(/\/$/);
 
     // Learn area must bounce a signed-out visitor back to sign-in.
-    await page.goto("/lesson/kc-candlestick-anatomy-lesson");
+    await page.goto("/lesson/kc-candle-anatomy");
     await expect(page).toHaveURL(/sign-in/);
   });
 });
