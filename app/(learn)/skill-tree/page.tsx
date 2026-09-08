@@ -153,7 +153,7 @@ function SkillTree() {
         <span className="num text-sm text-fg-secondary">{Math.round(selected.pL * 100)}% mastery</span>
       </div>
       <p className="text-sm leading-6 text-fg-secondary">{selected.description}</p>
-      <p className="num text-xs text-fg-muted">{selected.attempts} attempts recorded</p>
+      <p className="num text-xs text-fg-secondary">{selected.attempts} attempts recorded</p>
       {selected.state === "locked" ? (
         <p className="text-sm text-fg-secondary">
           Master{" "}
@@ -198,7 +198,7 @@ function SkillTree() {
       </div>
 
       <div className="flex gap-6">
-        <div className="min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base shadow-hairline">
+        <div className="min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base-veil shadow-hairline">
           <svg
             viewBox={viewBox}
             className="h-[480px] w-full touch-none"
@@ -341,7 +341,7 @@ function SkillTree() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="w-80 shrink-0 rounded-card bg-bg-elevated p-6 shadow-edge-lit"
+                className="w-80 shrink-0 rounded-card bg-bg-elevated-veil p-6 shadow-edge-lit"
               >
                 <div className="flex items-start justify-between">
                   <h2 className="text-headline-md text-fg-primary">{selected.title}</h2>

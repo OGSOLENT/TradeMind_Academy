@@ -20,6 +20,8 @@ const config: Config = {
           deep: "var(--bg-deep)",
           base: "var(--bg-base)",
           elevated: "var(--bg-elevated)",
+          "base-veil": "var(--bg-base-veil)",
+          "elevated-veil": "var(--bg-elevated-veil)",
         },
         glass: {
           DEFAULT: "var(--surface-glass)",

@@ -480,7 +480,7 @@ function SessionSummary() {
         {perKc.map(([kcId, { before, after }]) => (
           <div
             key={kcId}
-            className="flex items-center justify-between rounded-control bg-bg-elevated px-4 py-3 shadow-edge-lit"
+            className="flex items-center justify-between rounded-control bg-bg-elevated-veil px-4 py-3 shadow-edge-lit"
           >
             <span className="text-sm capitalize text-fg-secondary">
               {kcId.replace("kc-", "").replaceAll("-", " ")}

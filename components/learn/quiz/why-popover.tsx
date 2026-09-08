@@ -71,7 +71,7 @@ export function WhyPopover({ reason }: { reason: SelectionReason }) {
                 </div>
               ))}
             </dl>
-            <p className="mt-3 text-[11px] leading-4 text-fg-muted">
+            <p className="mt-3 text-[11px] leading-4 text-fg-secondary">
               Questions target your lowest-mastery unlocked topic; difficulty
               rises with your estimate.
             </p>

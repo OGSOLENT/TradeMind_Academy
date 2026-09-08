@@ -97,7 +97,7 @@ export default function PlacementPage() {
             Skip — start from scratch
           </Button>
         </div>
-        <p className="mt-4 text-xs text-fg-muted">
+        <p className="mt-4 text-xs text-fg-secondary">
           Skipping starts every topic at the default prior (25%).
         </p>
       </Card>

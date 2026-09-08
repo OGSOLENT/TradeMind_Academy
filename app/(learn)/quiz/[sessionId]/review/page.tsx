@@ -107,7 +107,7 @@ export default function AnswerReviewPage() {
         return (
           <Card key={item.id} level="elevated" className="space-y-4">
             <div className="flex items-start justify-between gap-3">
-              <span className="num text-sm text-fg-muted">{i + 1}</span>
+              <span className="num text-sm text-fg-secondary">{i + 1}</span>
               <p className="flex-1 font-medium text-fg-primary">
                 {"question" in item.payload ? item.payload.question : item.payload.statement}
               </p>
@@ -132,14 +132,14 @@ export default function AnswerReviewPage() {
             ) : (
               <dl className="space-y-2 text-sm">
                 <div className="flex gap-3">
-                  <dt className="w-28 shrink-0 text-fg-muted">Your answer</dt>
+                  <dt className="w-28 shrink-0 text-fg-secondary">Your answer</dt>
                   <dd className={cn("num", record.correct ? "text-mastery-bright" : "text-warning")}>
                     {describeAnswer(item, record.answer)}
                   </dd>
                 </div>
                 {!record.correct && (
                   <div className="flex gap-3">
-                    <dt className="w-28 shrink-0 text-fg-muted">Correct answer</dt>
+                    <dt className="w-28 shrink-0 text-fg-secondary">Correct answer</dt>
                     <dd className="num text-mastery-bright">{describeKey(item)}</dd>
                   </div>
                 )}

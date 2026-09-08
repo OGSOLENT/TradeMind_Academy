@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { AppShell } from "@/components/shell/app-shell";
+import { AmbientBackground } from "@/components/shell/ambient-background";
 import { Toaster } from "@/components/ui/toast";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { getFirebase } from "@/lib/firebase/client";
@@ -36,6 +37,9 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
   if (focusMode) {
     return (
       <div data-drawer-scale className="min-h-dvh">
+        {/* Focus mode: a still, half-strength field. Anything drifting beside
+            a question would confound the response latency we log. */}
+        <AmbientBackground variant="calm" />
         {children}
         <Toaster />
       </div>

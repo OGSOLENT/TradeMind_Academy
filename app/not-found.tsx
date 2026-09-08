@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AmbientBackground } from "@/components/shell/ambient-background";
 
 /** 404 — "this chart pattern doesn't exist" with the candle glyph. */
 export default function NotFound() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-6 px-6 text-center">
+      <AmbientBackground />
       <svg width="120" height="80" viewBox="0 0 120 80" aria-hidden="true">
         <line x1="20" y1="8" x2="20" y2="72" stroke="var(--bull)" strokeWidth="3" opacity="0.7" />
         <rect x="12" y="26" width="16" height="30" rx="3" fill="var(--bull)" opacity="0.85" />

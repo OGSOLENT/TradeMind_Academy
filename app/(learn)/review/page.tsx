@@ -85,7 +85,7 @@ export default function ReviewPage() {
 
       <div className="relative mt-8 h-80" aria-live="polite">
         {queue.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center rounded-card bg-bg-base p-8 text-center shadow-hairline">
+          <div className="flex h-full flex-col items-center justify-center rounded-card bg-bg-base-veil p-8 text-center shadow-hairline">
             <p className="text-2xl" aria-hidden="true">
               ✓
             </p>
@@ -130,7 +130,7 @@ export default function ReviewPage() {
                         : { x: 420, rotate: 12, opacity: 0, transition: { type: "spring", stiffness: 200, damping: 22 } }
                     }
                     transition={{ type: "spring", stiffness: 260, damping: 24 }}
-                    className="absolute inset-x-0 top-0 rounded-card bg-bg-elevated p-6 shadow-edge-lit"
+                    className="absolute inset-x-0 top-0 rounded-card bg-bg-elevated-veil p-6 shadow-edge-lit"
                     style={{ zIndex: 10 - stackIndex, cursor: isTop ? "grab" : "default" }}
                   >
                     <div className="flex items-center gap-5">
@@ -165,7 +165,7 @@ export default function ReviewPage() {
         )}
       </div>
       {queue.length > 3 && (
-        <p className="num mt-4 text-center text-sm text-fg-muted">+{queue.length - 3} more in the queue</p>
+        <p className="num mt-4 text-center text-sm text-fg-secondary">+{queue.length - 3} more in the queue</p>
       )}
     </div>
   );

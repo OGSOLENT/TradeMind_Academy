@@ -1,4 +1,5 @@
 import { Logo } from "@/components/shell/logo";
+import { AmbientBackground } from "@/components/shell/ambient-background";
 import { Toaster } from "@/components/ui/toast";
 
 /**
@@ -8,7 +9,8 @@ import { Toaster } from "@/components/ui/toast";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh">
-      <aside className="relative hidden flex-1 flex-col justify-end bg-bg-base p-margin-safe lg:flex">
+      <AmbientBackground />
+      <aside className="relative hidden flex-1 flex-col justify-end bg-bg-base-veil p-margin-safe lg:flex">
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(60%_50%_at_30%_30%,var(--accent-glow),transparent_70%)] opacity-30"

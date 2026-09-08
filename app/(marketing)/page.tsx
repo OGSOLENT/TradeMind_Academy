@@ -65,7 +65,7 @@ export default function LandingPage() {
             ["02", "Adaptive practice", "Routing rules serve your weakest unlocked topic at the difficulty you've earned — and always explain themselves."],
             ["03", "Visible mastery", "Cross 80% and the constellation unlocks the next topic. Skip practice and skills fade back into review."],
           ].map(([n, title, copy]) => (
-            <div key={n} className="rounded-card bg-bg-base p-6 shadow-hairline">
+            <div key={n} className="rounded-card bg-bg-base-veil p-6 shadow-hairline">
               <p className="num text-label-caps uppercase tracking-widest text-accent-bright">{n}</p>
               <h3 className="mt-2 text-body-base font-medium text-fg-primary">{title}</h3>
               <p className="mt-2 text-sm leading-6 text-fg-secondary">{copy}</p>
@@ -78,7 +78,7 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <section aria-label="Get started" className="px-6 pb-24 text-center">
-        <div className="mx-auto max-w-2xl rounded-card bg-bg-elevated p-10 shadow-edge-lit">
+        <div className="mx-auto max-w-2xl rounded-card bg-bg-elevated-veil p-10 shadow-edge-lit">
           <h2 className="text-headline-md text-fg-primary">See your own starting map</h2>
           <p className="mt-2 text-body-base text-fg-secondary">
             Free, simulated, 18+. Your data stays yours — download or delete it anytime.
