@@ -124,70 +124,85 @@
 }
 
 /* ── Ambient background ────────────────────────────────────────────────────
-   Aurora blobs (DESIGN.md: "slow-moving, low-opacity organic shapes that
-   provide a sense of life without distracting from data").
-
-   Only `transform` is animated, so these stay on the compositor and never
-   cost the main thread a frame — important because the dashboard renders
-   charts and the quiz runs a BKT update on every submit. */
-.tm-blob {
+   Aurora blobs, a drifting grid, and three parallax layers of candlestick
+   silhouettes. Only `transform`/`background-position` animate, so these stay
+   on the compositor and never cost the main thread a frame. */
+.tm-blob,
+.tm-grid,
+.tm-candles {
   position: absolute;
-  border-radius: 9999px;
   will-change: transform;
+}
+.tm-blob {
+  border-radius: 9999px;
   transform: translate3d(0, 0, 0);
+}
+/* No mask here: masking a full-screen animated layer forces a re-raster on
+   every frame (measured ~18fps). The vignette above the stack does the
+   edge fade instead, and costs nothing because it never moves. */
+.tm-grid {
+  inset: -10%;
+}
+.tm-candles {
+  inset: -20%;
 }
 
 @keyframes tm-drift-a {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(6%, 5%, 0) scale(1.08);
-  }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(7%, 6%, 0) scale(1.1); }
 }
 @keyframes tm-drift-b {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.05);
-  }
-  50% {
-    transform: translate3d(-7%, -4%, 0) scale(1);
-  }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.06); }
+  50%      { transform: translate3d(-8%, -5%, 0) scale(1); }
 }
 @keyframes tm-drift-c {
-  0%,
-  100% {
-    transform: translate3d(-50%, -50%, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-56%, -44%, 0) scale(1.12);
-  }
+  0%, 100% { transform: translate3d(-50%, -50%, 0) scale(1); }
+  50%      { transform: translate3d(-58%, -42%, 0) scale(1.14); }
+}
+/* Grid slides exactly one cell, so the loop is seamless. */
+@keyframes tm-grid-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(56px, 56px, 0); }
+}
+/* Candle layers cross the viewport and reset; the field is wider than the
+   screen, so the wrap never shows. */
+@keyframes tm-candles-pan {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-8%, -3%, 0); }
 }
 
-.tm-blob-drift-a {
-  animation: tm-drift-a 42s ease-in-out infinite;
-}
-.tm-blob-drift-b {
-  animation: tm-drift-b 55s ease-in-out infinite;
+.tm-blob-drift-a { animation: tm-drift-a 42s ease-in-out infinite; }
+.tm-blob-drift-b { animation: tm-drift-b 55s ease-in-out infinite; }
+/* The centre blob is positioned from its own middle; the drift keyframes
+   carry that translate so it does not jump when the animation starts. */
+.tm-blob-centre {
+  transform: translate3d(-50%, -50%, 0);
 }
 .tm-blob-drift-c {
-  transform: translate3d(-50%, -50%, 0);
   animation: tm-drift-c 68s ease-in-out infinite;
 }
+.tm-grid-drift { animation: tm-grid-drift 26s linear infinite; }
 
-/* The global reduced-motion rules clamp every animation to 150ms, which would
-   make these snap rather than settle. Stop them outright instead: the
-   composition still reads, it simply holds still. */
+.tm-candles-far  { animation: tm-candles-pan 190s ease-in-out infinite alternate; }
+.tm-candles-mid  { animation: tm-candles-pan 120s ease-in-out infinite alternate; }
+.tm-candles-near { animation: tm-candles-pan  78s ease-in-out infinite alternate; }
+
+/* The global reduced-motion rule clamps animations to 150ms, which would make
+   these snap rather than settle. Stop them outright: the composition still
+   reads, it simply holds still. */
 @media (prefers-reduced-motion: reduce) {
-  .tm-blob-drift-a,
-  .tm-blob-drift-b,
-  .tm-blob-drift-c {
+  .tm-blob-drift-a, .tm-blob-drift-b, .tm-blob-drift-c,
+  .tm-grid-drift,
+  .tm-candles-far, .tm-candles-mid, .tm-candles-near {
     animation: none !important;
   }
 }
 [data-motion="reduced"] .tm-blob-drift-a,
 [data-motion="reduced"] .tm-blob-drift-b,
-[data-motion="reduced"] .tm-blob-drift-c {
+[data-motion="reduced"] .tm-blob-drift-c,
+[data-motion="reduced"] .tm-grid-drift,
+[data-motion="reduced"] .tm-candles-far,
+[data-motion="reduced"] .tm-candles-mid,
+[data-motion="reduced"] .tm-candles-near {
   animation: none !important;
 }

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -122,7 +123,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <Stagger className="mx-auto max-w-2xl space-y-6">
       <Card level="elevated" className="flex items-center gap-5 p-6">
         <div
           aria-hidden="true"
@@ -186,6 +187,6 @@ export default function ProfilePage() {
           Settings — accessibility, your data, account
         </Link>
       </p>
-    </div>
+    </Stagger>
   );
 }

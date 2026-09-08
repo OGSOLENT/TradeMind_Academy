@@ -11,6 +11,7 @@ import { useQuizSession } from "@/lib/quiz/session-store";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const COURSE_ID = "trading-foundations";
 
@@ -76,7 +77,7 @@ export default function PlacementPage() {
   }
 
   return (
-    <div className="mx-auto max-w-xl pt-12">
+    <Stagger className="mx-auto max-w-xl pt-12">
       <Card level="elevated" className="p-8 text-center">
         <Pill tone="accent" dot>
           One-time calibration
@@ -101,6 +102,6 @@ export default function PlacementPage() {
           Skipping starts every topic at the default prior (25%).
         </p>
       </Card>
-    </div>
+    </Stagger>
   );
 }

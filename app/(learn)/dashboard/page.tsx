@@ -14,6 +14,9 @@ import { Card } from "@/components/ui/card";
 import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Counter } from "@/components/ui/counter";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { HistoryPoint } from "@/components/learn/mastery-chart";
 import { cn } from "@/lib/utils";
@@ -43,6 +46,7 @@ const actionCopy: Record<NextAction, { label: string; href(kcId: string): string
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const reduced = useReducedMotion();
   const [selectedKc, setSelectedKc] = useState<string | null>(null);
 
   const { data, isPending } = useQuery({
@@ -140,10 +144,11 @@ export default function DashboardPage() {
     .map((h) => ({ ts: h.ts, pL: h.pL }));
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      {header}
+    <Stagger autoWrap={false} className="mx-auto max-w-4xl space-y-6">
+      <StaggerItem>{header}</StaggerItem>
       {/* Continue-learning hero */}
-      <Card level="elevated" className="flex min-h-[240px] flex-col items-center gap-6 p-8 sm:flex-row">
+      <StaggerItem>
+      <Card level="elevated" spotlight className="flex min-h-[240px] flex-col items-center gap-6 p-8 sm:flex-row">
         {noModel ? (
           <>
             <div className="flex-1">
@@ -191,11 +196,12 @@ export default function DashboardPage() {
           </div>
         )}
       </Card>
+      </StaggerItem>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card level="base" className="min-h-[168px] p-5">
+      <StaggerItem className="grid gap-4 md:grid-cols-3">
+        <Card level="base" interactive spotlight className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Review due</p>
-          <p className="num mt-2 text-3xl text-fg-primary">{reviewDue.length}</p>
+          <Counter value={reviewDue.length} className="mt-2 block text-3xl text-fg-primary" />
           <p className="mt-1 text-sm text-fg-secondary">
             {reviewDue.length === 0 ? "Nothing fading right now." : "topics fading — revisit soon."}
           </p>
@@ -206,11 +212,11 @@ export default function DashboardPage() {
           )}
         </Card>
 
-        <Card level="base" className="min-h-[168px] p-5">
+        <Card level="base" interactive spotlight className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Mastered</p>
-          <p className="num mt-2 text-3xl text-mastery-bright">
-            {masteredCount}
-            <span className="text-lg text-fg-muted">/{kcs.length}</span>
+          <p className="mt-2 text-3xl text-mastery-bright">
+            <Counter value={masteredCount} />
+            <span className="num text-lg text-fg-secondary">/{kcs.length}</span>
           </p>
           <p className="mt-1 text-sm text-fg-secondary">Level 1 topics at 80%+.</p>
           <Link href="/skill-tree" className="mt-3 inline-block text-sm text-accent-bright hover:underline">
@@ -218,19 +224,22 @@ export default function DashboardPage() {
           </Link>
         </Card>
 
-        <Card level="base" className="min-h-[168px] p-5">
+        <Card level="base" spotlight className="min-h-[168px] p-5">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
             Activity · 7 days
           </p>
           <div className="mt-3 flex h-14 items-end gap-1.5" aria-label={`${sessionDays.length} recent sessions`}>
-            {days.map(({ dayStart, count }) => (
-              <div
+            {days.map(({ dayStart, count }, i) => (
+              <motion.div
                 key={dayStart}
                 title={`${count} session${count === 1 ? "" : "s"}`}
                 className={cn(
-                  "flex-1 rounded-t",
-                  count > 0 ? "bg-accent" : "bg-white/5",
+                  "flex-1 origin-bottom rounded-t",
+                  count > 0 ? "bg-accent shadow-glow-accent" : "bg-white/5",
                 )}
+                initial={reduced ? false : { scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.25 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                 style={{ height: `${Math.min(100, 15 + count * 28)}%` }}
               />
             ))}
@@ -239,9 +248,10 @@ export default function DashboardPage() {
             {days.reduce((n, d) => n + d.count, 0)} sessions this week
           </p>
         </Card>
-      </div>
+      </StaggerItem>
 
       {/* Mastery over time */}
+      <StaggerItem>
       <Card level="elevated" className="p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-headline-md text-fg-primary">Mastery over time</h2>
@@ -271,6 +281,7 @@ export default function DashboardPage() {
           />
         </div>
       </Card>
-    </div>
+      </StaggerItem>
+    </Stagger>
   );
 }

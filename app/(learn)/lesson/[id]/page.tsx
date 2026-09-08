@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { getKcs, getLesson, getLessonsByKc } from "@/lib/firebase/repos";
 import { cn } from "@/lib/utils";
+import { Reveal, Stagger } from "@/components/motion/stagger";
 import { ProgressBar } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
@@ -94,7 +95,7 @@ export default function LessonPage() {
       </div>
 
       <article className="mx-auto max-w-[720px] space-y-8 pb-24">
-        <header className="space-y-4 pt-4">
+        <Stagger className="space-y-4 pt-4">
           <Pill tone="mastery">Level {kc?.level ?? 1} · {kc?.title ?? "Lesson"}</Pill>
           <h1 className="text-display-lg-mobile md:text-display-lg text-fg-primary">
             {lesson.title}
@@ -103,19 +104,22 @@ export default function LessonPage() {
           <Pill tone="warning" dot>
             Simulated data · education only
           </Pill>
-        </header>
+        </Stagger>
 
         {lesson.blocks.map((block, i) => {
-          switch (block.kind) {
-            case "markdown":
-              return <Markdown key={i} md={block.md} />;
-            case "figure":
-              return <FigureBlock key={i} block={block} />;
-            case "video":
-              return <VideoBlock key={i} block={block} videoUrl={lesson.videoUrl} />;
-            case "checkQuestion":
-              return <CheckQuestionBlock key={i} itemId={block.itemId} />;
-          }
+          const body = (() => {
+            switch (block.kind) {
+              case "markdown":
+                return <Markdown md={block.md} />;
+              case "figure":
+                return <FigureBlock block={block} />;
+              case "video":
+                return <VideoBlock block={block} videoUrl={lesson.videoUrl} />;
+              case "checkQuestion":
+                return <CheckQuestionBlock itemId={block.itemId} />;
+            }
+          })();
+          return <Reveal key={i}>{body}</Reveal>;
         })}
 
         <footer className="space-y-6 border-t border-hair pt-8">

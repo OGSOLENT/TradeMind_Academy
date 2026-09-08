@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const COURSE_ID = "trading-foundations";
 
@@ -104,7 +105,7 @@ export default function MistakesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <Stagger className="mx-auto max-w-2xl space-y-6">
       <div>
         <h1 className="text-headline-md text-fg-primary">Mistake bank</h1>
         <p className="mt-1 text-sm text-fg-secondary">
@@ -142,6 +143,6 @@ export default function MistakesPage() {
           </Card>
         ))
       )}
-    </div>
+    </Stagger>
   );
 }
