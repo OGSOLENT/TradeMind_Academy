@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
-import { getKcs, getLesson } from "@/lib/firebase/repos";
+import { getKcs, getLesson, getLessonsByKc } from "@/lib/firebase/repos";
+import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Markdown } from "@/components/learn/markdown";
@@ -23,9 +26,24 @@ export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const [progress, setProgress] = useState(0);
 
+  // The id may be a lesson id, or a knowledge-component id — a module link
+  // resolves to the first lesson of that module.
   const { data: lesson, isPending } = useQuery({
     queryKey: ["lesson", id],
-    queryFn: () => getLesson(getFirebase().db, id),
+    queryFn: async () => {
+      const { db } = getFirebase();
+      const direct = await getLesson(db, id);
+      if (direct) return direct;
+      const byKc = await getLessonsByKc(db, id);
+      return byKc[0] ?? null;
+    },
+  });
+
+  // Sibling lessons in the same module, for in-module navigation.
+  const { data: siblings } = useQuery({
+    queryKey: ["lessons-by-kc", lesson?.kcId],
+    enabled: !!lesson?.kcId,
+    queryFn: () => getLessonsByKc(getFirebase().db, lesson!.kcId),
   });
 
   const { data: kcs } = useQuery({
@@ -100,10 +118,54 @@ export default function LessonPage() {
           }
         })}
 
-        <footer className="pt-8 text-center">
-          <p className="text-label-caps uppercase tracking-widest text-fg-secondary">
+        <footer className="space-y-6 border-t border-hair pt-8">
+          <p className="text-center text-label-caps uppercase tracking-widest text-fg-secondary">
             Lesson complete
           </p>
+
+          {siblings && siblings.length > 1 && (
+            <nav aria-label="Lessons in this module" className="space-y-2">
+              <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
+                {kc?.title} · {siblings.length} lessons
+              </p>
+              <ol className="space-y-1.5">
+                {siblings.map((s, i) => {
+                  const current = s.id === lesson.id;
+                  return (
+                    <li key={s.id}>
+                      <Link
+                        href={`/lesson/${s.id}`}
+                        aria-current={current ? "page" : undefined}
+                        className={cn(
+                          "flex min-h-11 items-center gap-3 rounded-control px-4 py-2.5 text-sm transition-colors",
+                          current
+                            ? "bg-accent/15 text-fg-primary shadow-[inset_0_0_0_1px_var(--accent)]"
+                            : "text-fg-secondary shadow-hairline hover:bg-white/5 hover:text-fg-primary",
+                        )}
+                      >
+                        <span className="num text-fg-muted">{String(i + 1).padStart(2, "0")}</span>
+                        <span className="flex-1">{s.title}</span>
+                        {current && (
+                          <span className="text-label-caps uppercase tracking-wider text-accent-bright">
+                            Reading
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          )}
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/practice">
+              <Button>Practise this module</Button>
+            </Link>
+            <Link href="/skill-tree">
+              <Button variant="secondary">Back to the map</Button>
+            </Link>
+          </div>
         </footer>
       </article>
     </>

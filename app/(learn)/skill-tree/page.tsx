@@ -164,7 +164,7 @@ function SkillTree() {
         </p>
       ) : (
         <div className="flex gap-3">
-          <Link href={`/lesson/${selected.id}-lesson`}>
+          <Link href={`/lesson/${selected.id}`}>
             <Button variant="secondary" size="sm">
               Lesson
             </Button>

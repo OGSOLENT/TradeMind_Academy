@@ -12,14 +12,14 @@ export interface NodePosition {
 export const CANVAS = { width: 1000, height: 560 } as const;
 
 export const NODE_POSITIONS: Record<string, NodePosition> = {
-  "kc-candlestick-anatomy": { x: 90, y: 420 },
-  "kc-market-structure": { x: 220, y: 320 },
-  "kc-support-resistance": { x: 360, y: 400 },
-  "kc-liquidity-basics": { x: 490, y: 280 },
-  "kc-fair-value-gaps": { x: 610, y: 380 },
-  "kc-kill-zones": { x: 720, y: 240 },
-  "kc-risk-management": { x: 840, y: 330 },
-  "kc-position-sizing": { x: 930, y: 180 },
+  "kc-candle-anatomy": { x: 90, y: 420 },
+  "kc-liquidity": { x: 220, y: 320 },
+  "kc-reversal-patterns": { x: 360, y: 400 },
+  "kc-cisd-confirmation": { x: 490, y: 280 },
+  "kc-daily-bias": { x: 610, y: 380 },
+  "kc-fractal-model": { x: 720, y: 240 },
+  "kc-smt-divergence": { x: 840, y: 330 },
+  "kc-weekly-profiles": { x: 930, y: 180 },
 };
 
 export function positionFor(kcId: string, index: number): NodePosition {

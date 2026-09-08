@@ -26,7 +26,7 @@ export default function SignInPage() {
   async function afterAuth(uid: string) {
     const { db } = getFirebase();
     const profile = await getUserProfile(db, uid);
-    router.push(profile?.consent ? "/lesson/kc-candlestick-anatomy-lesson" : "/consent");
+    router.push(profile?.consent ? "/lesson/kc-candle-anatomy" : "/consent");
   }
 
   async function onSubmit(e: React.FormEvent) {

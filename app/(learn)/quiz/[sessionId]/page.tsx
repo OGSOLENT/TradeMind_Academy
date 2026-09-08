@@ -226,7 +226,7 @@ export default function QuizPage() {
 
   const record = s.answers[item.id];
   const reason = s.reasons[item.id];
-  const lessonHref = `/lesson/${item.kcId}-lesson`;
+  const lessonHref = `/lesson/${item.kcId}`;
   const isPlacement = s.sessionType === "placement";
 
   return (
@@ -274,6 +274,7 @@ export default function QuizPage() {
                 {reason && <WhyPopover reason={reason} />}
                 <span
                   data-testid="question-type"
+                  data-item-id={item.id}
                   className="text-label-caps uppercase tracking-wider text-fg-muted"
                 >
                   {item.type}

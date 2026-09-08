@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { answerCurrent } from "./helpers";
 
 /**
  * Phase 5: settings (incl. colour-blind + font scale + delete-undo),
@@ -32,39 +33,6 @@ async function signUpSkipPlacement(page: Page): Promise<void> {
   await page.waitForURL(/dashboard/, { timeout: 20_000 });
 }
 
-async function answerCurrent(page: Page): Promise<void> {
-  await expect(page.getByTestId("question-type")).toHaveCount(1);
-  const type = (await page.getByTestId("question-type").textContent())?.trim();
-  switch (type) {
-    case "mcq":
-      await page.getByRole("radio", { name: /option B/ }).click();
-      break;
-    case "multi":
-      await page.getByRole("checkbox", { name: /option B/ }).click();
-      break;
-    case "numeric":
-      await page.getByRole("spinbutton").fill("10"); // deliberately wrong → mistake bank
-      break;
-    case "ordering":
-      break;
-    case "annotation": {
-      const pane = page.locator(".cursor-crosshair");
-      const box = await pane.boundingBox();
-      if (box) {
-        for (const fx of [0.4, 0.5, 0.3]) {
-          await pane.click({ position: { x: box.width * fx, y: box.height * 0.5 } });
-          if (await page.getByText(/Marker: /).isVisible()) break;
-        }
-      }
-      break;
-    }
-    case "tf-confidence":
-      await page.getByRole("radio", { name: "True" }).click();
-      break;
-  }
-  await page.getByRole("button", { name: "Submit answer" }).click();
-  await page.getByRole("button", { name: /Continue|Finish session/ }).click();
-}
 
 test.describe("learner support", () => {
   test.beforeEach(async () => {
@@ -115,7 +83,7 @@ test.describe("learner support", () => {
     await page.waitForURL(/\/quiz\//);
     for (let i = 0; i < 10; i++) {
       if (await page.getByText("Session complete").isVisible()) break;
-      await answerCurrent(page);
+      await answerCurrent(page, false);
     }
     await expect(page.getByText("Session complete")).toBeVisible({ timeout: 15_000 });
 
@@ -125,7 +93,8 @@ test.describe("learner support", () => {
     await expect(page.getByRole("heading", { name: "Answer review" })).toBeVisible();
     await expect(page.getByText("missed").first()).toBeVisible();
     await expect(page.getByText("correct").first()).toBeVisible();
-    await expect(page.getByText(/Placeholder explanation/).first()).toBeVisible();
+    // Each reviewed item carries its authored explanation.
+    await expect(page.getByTestId("review-explanation").first()).toBeVisible();
 
     // Mistake bank groups the missed numeric item by KC.
     await page.goto("/mistakes");

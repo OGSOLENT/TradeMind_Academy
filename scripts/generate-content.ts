@@ -1,136 +1,211 @@
 /**
- * Deterministically generate the Level-1 placeholder curriculum
- * (content/level1.json). Structure and KC ids are canonical (BUILD_PROMPT §6
- * Phase 2); the copy is placeholder and will be replaced by the author.
+ * Build content/level1.json from the REAL curriculum.
+ *
+ * Source of truth: content/lessons/*.md — the 25 written lessons derived from
+ * the video series. Edit the markdown, re-run this script, re-seed.
+ *
+ * Structure: 8 knowledge components (the curriculum's 8 modules) in a strict
+ * prerequisite chain, 25 lessons distributed across them, and 64 authored
+ * questions (8 per KC) from scripts/level1-items.ts.
  *
  * Run: npx tsx scripts/generate-content.ts
  */
-import { writeFileSync } from "node:fs";
-import type {
-  AnswerKey,
-  Item,
-  ItemPayload,
-  Kc,
-  Lesson,
-  Level1Content,
-} from "../lib/content/types";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
+import { ITEMS } from "./level1-items";
 
 const COURSE_ID = "trading-foundations";
+const LESSON_DIR = "content/lessons";
 
-const KC_DEFS: Array<{ id: string; title: string }> = [
-  { id: "kc-candlestick-anatomy", title: "Candlestick anatomy" },
-  { id: "kc-market-structure", title: "Market structure" },
-  { id: "kc-support-resistance", title: "Support & resistance" },
-  { id: "kc-liquidity-basics", title: "Liquidity basics" },
-  { id: "kc-fair-value-gaps", title: "Fair value gaps" },
-  { id: "kc-kill-zones", title: "Kill zones" },
-  { id: "kc-risk-management", title: "Risk management" },
-  { id: "kc-position-sizing", title: "Position sizing" },
+/** The eight modules, in teaching order. Prerequisites chain strictly. */
+const MODULES: Array<{ id: string; title: string; description: string; lessons: number[] }> = [
+  {
+    id: "kc-candle-anatomy",
+    title: "The Candle",
+    description:
+      "Read a single candle: OHLC, the three candle types, and why every wick is a lower-timeframe trend.",
+    lessons: [1, 2],
+  },
+  {
+    id: "kc-liquidity",
+    title: "Liquidity & Wicks",
+    description:
+      "Why price moves where it moves — buyside and sellside liquidity, and how wick size decides whether a candle can expand.",
+    lessons: [3, 4],
+  },
+  {
+    id: "kc-reversal-patterns",
+    title: "Reversal Patterns",
+    description:
+      "What a turn actually looks like: the Candle 2 closure, the Candle 3 variant, and why context beats shape.",
+    lessons: [5, 6],
+  },
+  {
+    id: "kc-cisd-confirmation",
+    title: "Confirmation & Structure",
+    description:
+      "Prove a turn is real, not a fakeout: CISD, protected swings, ideal swing points and order blocks.",
+    lessons: [7, 8, 9, 10, 11],
+  },
+  {
+    id: "kc-daily-bias",
+    title: "Daily Bias",
+    description:
+      "Decide direction for the day using PDH, PDL and equilibrium — and know what to do when the bias is wrong.",
+    lessons: [12, 13, 14, 15],
+  },
+  {
+    id: "kc-fractal-model",
+    title: "The Fractal Model",
+    description:
+      "The complete system: the T-Spot, standard deviation projections, fractal targets and the TTFM playbook.",
+    lessons: [16, 17, 18, 19],
+  },
+  {
+    id: "kc-smt-divergence",
+    title: "SMT Divergence",
+    description:
+      "Add confluence without fooling yourself — correlated markets, and why the framework always comes first.",
+    lessons: [20],
+  },
+  {
+    id: "kc-weekly-profiles",
+    title: "Weekly Profiles",
+    description:
+      "The four shapes a week takes, and which day to act on in each: expansion, midweek reversal, Thursday counter, consolidation.",
+    lessons: [21, 22, 23, 24, 25],
+  },
 ];
 
-/** Small synthetic OHLC series for annotation items — simulated data only. */
-function candles(seed: number) {
-  const out: Array<{ time: string; open: number; high: number; low: number; close: number }> = [];
-  let price = 100 + seed * 3;
-  for (let i = 0; i < 12; i++) {
-    const drift = Math.sin(seed + i * 0.9) * 2;
-    const open = price;
-    const close = price + drift;
-    out.push({
-      time: `2024-01-${String(i + 1).padStart(2, "0")}`,
-      open: round(open),
-      high: round(Math.max(open, close) + 0.8),
-      low: round(Math.min(open, close) - 0.8),
-      close: round(close),
-    });
-    price = close;
+interface ParsedLesson {
+  n: number;
+  slug: string;
+  title: string;
+  video: string | null;
+  main: string;
+  tail: string;
+}
+
+/** Split a lesson markdown into a body and a reference tail, dropping meta. */
+function parseLesson(file: string): ParsedLesson {
+  const raw = readFileSync(path.join(LESSON_DIR, file), "utf8");
+  const lines = raw.split("\n");
+
+  const titleLine = lines.find((l) => l.startsWith("# ")) ?? "";
+  const title = (titleLine.split("—")[1] ?? titleLine.replace(/^#\s*/, "")).trim();
+  const n = Number(file.slice(0, 2));
+  const video = /Video:\s*`([^`]+\.mp4)`/.exec(raw)?.[1] ?? null;
+
+  // Drop: h1, the meta line, the standing disclaimer (the app renders its own
+  // banner), the "Next:" navigation link, and the self-check section (those
+  // questions became real items).
+  const kept: string[] = [];
+  let section = "";
+  for (const line of lines) {
+    const t = line.trim();
+    if (t.startsWith("## ")) section = t.slice(3).trim();
+    if (t.startsWith("# ")) continue;
+    if (t.startsWith("**Module ") && t.includes("Video:")) continue;
+    if (t.startsWith("> Educational content only")) continue;
+    if (t.startsWith("**Format note:**")) continue;
+    if (t.startsWith("**Next:**")) continue;
+    if (section === "Check your understanding") continue;
+    kept.push(line);
   }
-  return out;
+
+  const body = kept.join("\n").trim();
+  const splitAt = body.indexOf("## Key terms");
+  const main = (splitAt === -1 ? body : body.slice(0, splitAt)).trim();
+  const tail = splitAt === -1 ? "" : body.slice(splitAt).trim();
+
+  return { n, slug: file.replace(/\.md$/, ""), title, video, main, tail };
 }
 
-function round(n: number) {
-  return Math.round(n * 100) / 100;
-}
+function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
+  const blocks: LessonBlock[] = [];
 
-function buildItems(kc: Kc, index: number): Item[] {
-  const t = kc.title;
-  const mk = (
-    n: number,
-    type: Item["type"],
-    difficulty: Item["difficulty"],
-    payload: ItemPayload,
-    answerKey: AnswerKey,
-    isPretestEligible: boolean,
-  ): Item => ({
-    id: `${kc.id}-item-${n}`,
-    kcId: kc.id,
-    type,
-    difficulty,
-    payload,
-    answerKey,
-    explanation: `Placeholder explanation for ${t.toLowerCase()} item ${n}: the correct response follows from the definition introduced in the lesson.`,
-    isPretestEligible,
+  if (parsed.video) {
+    blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
+  }
+  blocks.push({ kind: "markdown", md: parsed.main });
+  blocks.push({
+    kind: "figure",
+    src: `/figures/${kc.id}.svg`,
+    caption: `Fig ${parsed.n}: ${kc.title} — simulated illustration.`,
+    describe: `Text alternative: a simulated candlestick series illustrating ${kc.title.toLowerCase()}. Prices are generated for teaching purposes and do not represent any real market.`,
   });
+  if (checkItemId) blocks.push({ kind: "checkQuestion", itemId: checkItemId });
+  if (parsed.tail) blocks.push({ kind: "markdown", md: parsed.tail });
 
-  const opts = (stem: string) => [
-    `${stem} — option A (placeholder)`,
-    `${stem} — option B (placeholder, correct)`,
-    `${stem} — option C (placeholder)`,
-    `${stem} — option D (placeholder)`,
-  ];
-
-  return [
-    mk(1, "mcq", "easy", { type: "mcq", question: `Which statement about ${t.toLowerCase()} is correct? (placeholder)`, options: opts(t) }, { type: "mcq", correct: 1 }, true),
-    mk(2, "mcq", "med", { type: "mcq", question: `In the scenario described, how does ${t.toLowerCase()} apply? (placeholder)`, options: opts(t) }, { type: "mcq", correct: 1 }, true),
-    mk(3, "mcq", "hard", { type: "mcq", question: `Which subtle case violates the ${t.toLowerCase()} principle? (placeholder)`, options: opts(t) }, { type: "mcq", correct: 1 }, false),
-    mk(4, "multi", "med", { type: "multi", question: `Select every true statement about ${t.toLowerCase()}. (placeholder)`, options: opts(t) }, { type: "multi", correct: [1, 3] }, false),
-    mk(5, "numeric", "easy", { type: "numeric", question: `Compute the placeholder ${t.toLowerCase()} value.`, unit: "pts", min: 0, max: 100, step: 0.5 }, { type: "numeric", value: 42, tolerance: 0.5 }, true),
-    mk(6, "ordering", "med", { type: "ordering", question: `Order the steps of the ${t.toLowerCase()} checklist. (placeholder)`, entries: ["Step one (placeholder)", "Step two (placeholder)", "Step three (placeholder)", "Step four (placeholder)"] }, { type: "ordering", order: [0, 1, 2, 3] }, false),
-    mk(7, "annotation", "hard", { type: "annotation", question: `Mark the zone on this simulated chart where ${t.toLowerCase()} is in play. (placeholder)`, candles: candles(index), describe: `A simulated 12-candle daily series used for the ${t.toLowerCase()} exercise; prices drift in a gentle sine pattern between roughly 96 and 108.` }, { type: "annotation", zone: { from: "2024-01-04", to: "2024-01-07", priceLow: 98, priceHigh: 104 } }, false),
-    mk(8, "tf-confidence", "easy", { type: "tf-confidence", statement: `True or false: the placeholder definition of ${t.toLowerCase()} holds. (placeholder)` }, { type: "tf-confidence", value: true }, true),
-  ];
-}
-
-function buildLesson(kc: Kc, index: number): Lesson {
   return {
-    id: `${kc.id}-lesson`,
+    id: `${parsed.slug}`,
     kcId: kc.id,
-    title: kc.title,
-    blocks: [
-      {
-        kind: "markdown",
-        md: `## ${kc.title}\n\nPlaceholder introduction to **${kc.title.toLowerCase()}**. This copy will be replaced by the author; the structure (reading column, figure, video, inline check) is canonical.\n\n- Placeholder key idea one\n- Placeholder key idea two\n- Placeholder key idea three\n\nAll charts in this lesson use simulated data. This is education, not financial advice.`,
-      },
-      {
-        kind: "figure",
-        src: `/figures/${kc.id}.svg`,
-        caption: `Fig 1: placeholder ${kc.title.toLowerCase()} illustration (simulated data).`,
-        describe: `Text alternative: a simulated chart illustrating ${kc.title.toLowerCase()}. Placeholder description to be replaced with the final figure copy.`,
-      },
-      { kind: "video", poster: `/posters/${kc.id}.svg` },
-      { kind: "checkQuestion", itemId: `${kc.id}-item-1` },
-    ],
-    videoUrl: null, // NotebookLM videos slot in later
+    title: parsed.title,
+    blocks,
+    videoUrl: parsed.video ? `/videos/${parsed.video}` : null,
     videoFallbackUrl: null,
   };
 }
 
-const kcs: Kc[] = KC_DEFS.map((def, i) => ({
-  ...def,
-  courseId: COURSE_ID,
-  prereqIds: i === 0 ? [] : [KC_DEFS[i - 1]!.id],
-  level: 1,
-  description: `Placeholder description for ${def.title.toLowerCase()} — replaced by author copy later.`,
-}));
+function main() {
+  const files = readdirSync(LESSON_DIR)
+    .filter((f) => /^\d{2}-.*\.md$/.test(f))
+    .sort();
 
-const content: Level1Content = {
-  course: { id: COURSE_ID, title: "Trading Foundations", levels: [1] },
-  kcs,
-  lessons: kcs.map(buildLesson),
-  items: kcs.flatMap(buildItems),
-};
+  const parsed = new Map<number, ParsedLesson>();
+  for (const f of files) {
+    const p = parseLesson(f);
+    parsed.set(p.n, p);
+  }
 
-writeFileSync("content/level1.json", JSON.stringify(content, null, 2) + "\n");
-console.log(
-  `content/level1.json written: ${content.kcs.length} KCs, ${content.lessons.length} lessons, ${content.items.length} items`,
-);
+  const kcs: Kc[] = MODULES.map((m, i) => ({
+    id: m.id,
+    courseId: COURSE_ID,
+    title: m.title,
+    prereqIds: i === 0 ? [] : [MODULES[i - 1]!.id],
+    level: 1,
+    description: m.description,
+  }));
+
+  const items: Item[] = [];
+  for (const kc of kcs) {
+    const seeds = ITEMS[kc.id] ?? [];
+    if (seeds.length === 0) throw new Error(`No items authored for ${kc.id}`);
+    seeds.forEach((seed, i) => {
+      items.push({ id: `${kc.id}-item-${i + 1}`, kcId: kc.id, ...seed });
+    });
+  }
+
+  const lessons: Lesson[] = [];
+  MODULES.forEach((m, mi) => {
+    const kc = kcs[mi]!;
+    // Use a different pretest-eligible MCQ as each lesson's inline check.
+    const checks = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
+    m.lessons.forEach((n, li) => {
+      const p = parsed.get(n);
+      if (!p) throw new Error(`Missing lesson markdown for lesson ${n}`);
+      lessons.push(buildLesson(p, kc, checks[li % checks.length]?.id ?? null));
+    });
+  });
+
+  const content: Level1Content = {
+    course: { id: COURSE_ID, title: "Trading Foundations", levels: [1] },
+    kcs,
+    lessons,
+    items,
+  };
+
+  writeFileSync("content/level1.json", JSON.stringify(content, null, 2) + "\n");
+  console.log(
+    `content/level1.json written: ${kcs.length} KCs, ${lessons.length} lessons, ${items.length} items`,
+  );
+  for (const kc of kcs) {
+    const n = lessons.filter((l) => l.kcId === kc.id).length;
+    console.log(`  ${kc.id.padEnd(24)} ${n} lesson(s), ${ITEMS[kc.id]!.length} items`);
+  }
+  const missingVideo = lessons.filter((l) => !l.videoUrl);
+  if (missingVideo.length) console.log(`  note: ${missingVideo.length} lesson(s) without video`);
+}
+
+main();

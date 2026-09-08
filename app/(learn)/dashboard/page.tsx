@@ -35,9 +35,9 @@ interface KcState {
 }
 
 const actionCopy: Record<NextAction, { label: string; href(kcId: string): string }> = {
-  lesson: { label: "Read the lesson", href: (kcId) => `/lesson/${kcId}-lesson` },
+  lesson: { label: "Read the lesson", href: (kcId) => `/lesson/${kcId}` },
   practice: { label: "Practise now", href: () => "/practice" },
-  remediate: { label: "Rebuild the basics", href: (kcId) => `/lesson/${kcId}-lesson` },
+  remediate: { label: "Rebuild the basics", href: (kcId) => `/lesson/${kcId}` },
   advance: { label: "Advance", href: () => "/practice" },
 };
 
@@ -175,7 +175,7 @@ export default function DashboardPage() {
                 <Link href={actionCopy[action].href(targetKc.id)}>
                   <Button>{actionCopy[action].label}</Button>
                 </Link>
-                <Link href={`/lesson/${targetKc.id}-lesson`}>
+                <Link href={`/lesson/${targetKc.id}`}>
                   <Button variant="ghost">Review lesson</Button>
                 </Link>
               </div>

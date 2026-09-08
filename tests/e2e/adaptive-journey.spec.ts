@@ -1,101 +1,45 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
 /**
  * Phase 4 done-criterion: placement → routed lesson → topic test → mastery
  * event → unlocked next KC. The full adaptive loop, end to end.
  * Requires emulators + seed (self-skips otherwise).
  */
-
-async function emulatorUp(): Promise<boolean> {
-  try {
-    const res = await fetch("http://localhost:9099/", { signal: AbortSignal.timeout(1500) });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
-/** Answer the on-screen question correctly (answer keys are seeded fixtures). */
-async function answerCorrectly(page: Page): Promise<void> {
-  await expect(page.getByTestId("question-type")).toHaveCount(1);
-  const type = await page.getByTestId("question-type").textContent();
-  switch (type?.trim()) {
-    case "mcq":
-      await page.getByRole("radio", { name: /option B/ }).click();
-      break;
-    case "multi":
-      await page.getByRole("checkbox", { name: /option B/ }).click();
-      await page.getByRole("checkbox", { name: /option D/ }).click();
-      break;
-    case "numeric":
-      await page.getByRole("spinbutton").fill("42");
-      break;
-    case "ordering":
-      break; // seeded key = initial order
-    case "annotation": {
-      const pane = page.locator(".cursor-crosshair");
-      const box = await pane.boundingBox();
-      if (!box) throw new Error("annotation chart not visible");
-      for (const fx of [0.35, 0.45, 0.3, 0.55]) {
-        await pane.click({ position: { x: box.width * fx, y: box.height * 0.5 } });
-        if (await page.getByText(/Marker: /).isVisible()) break;
-      }
-      break;
-    }
-    case "tf-confidence":
-      await page.getByRole("radio", { name: "True" }).click();
-      break;
-    default:
-      throw new Error(`Unknown question type: ${type}`);
-  }
-  await page.getByRole("button", { name: "Submit answer" }).click();
-  await page.getByRole("button", { name: /Continue|Finish session/ }).click();
-}
-
 test.describe("the adaptive loop — dissertation core journey", () => {
   test.beforeEach(async () => {
     test.skip(!(await emulatorUp()), "Firebase emulators not running");
   });
 
   test("placement → lesson → topic test → mastery → unlock", async ({ page }) => {
-    test.setTimeout(120_000);
+    test.setTimeout(180_000);
 
-    // ---- Sign up + consent ------------------------------------------------
-    await page.goto("/sign-up");
-    await page
-      .getByLabel("Email address")
-      .fill(`journey-${Date.now()}-${Math.random().toString(36).slice(2, 6)}@example.com`);
-    await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-    await page.getByRole("checkbox").check();
-    await page.getByRole("button", { name: "Create account" }).click();
-    await page.getByRole("button", { name: "I consent — start learning" }).click();
-
-    // ---- Placement test ----------------------------------------------------
-    await expect(
-      page.getByRole("heading", { name: /map what you already know/i }),
-    ).toBeVisible({ timeout: 20_000 });
-    await page.getByRole("button", { name: "Start placement" }).click();
-    await page.waitForURL(/\/quiz\/placement-/);
+    // ---- Sign up, consent, placement --------------------------------------
+    await signUpAndConsent(page, { placement: true });
     await expect(page.getByText("1/8")).toBeVisible();
 
-    for (let i = 0; i < 8; i++) await answerCorrectly(page);
+    for (let i = 0; i < 8; i++) await answerCurrent(page, true);
 
     // ---- Model-initialization moment ---------------------------------------
-    await expect(page.getByText("Your starting map.")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText("Your starting map.")).toBeVisible({ timeout: 20_000 });
     await page.getByRole("button", { name: "Continue to dashboard" }).click();
     await page.waitForURL(/dashboard/);
 
-    // ---- Dashboard routes to the target KC ---------------------------------
-    await expect(page.getByRole("heading", { name: "Candlestick anatomy" })).toBeVisible({
-      timeout: 15_000,
+    // ---- Dashboard routes to the first unmastered module --------------------
+    await expect(page.getByRole("heading", { name: "The Candle", level: 1 })).toBeVisible({
+      timeout: 20_000,
     });
 
     // ---- Routed lesson ------------------------------------------------------
     await page.getByRole("link", { name: "Review lesson" }).click();
-    await page.waitForURL(/lesson\/kc-candlestick-anatomy-lesson/);
+    await page.waitForURL(/lesson\/kc-candle-anatomy/);
     await expect(
-      page.getByRole("heading", { level: 1, name: "Candlestick anatomy" }),
+      page.getByRole("heading", { level: 1, name: "Reading a Single Candle" }),
     ).toBeVisible();
+    // Every lesson in the module is reachable from the lesson footer.
+    await expect(
+      page.locator('nav[aria-label="Lessons in this module"] a'),
+    ).toHaveCount(2);
 
     // ---- Topic test (adaptive practice) -------------------------------------
     await page.goto("/practice");
@@ -108,47 +52,34 @@ test.describe("the adaptive loop — dissertation core journey", () => {
     await expect(page.getByText("Current mastery estimate")).toBeVisible();
     await page.keyboard.press("Escape");
 
-    // Answer until the session completes (pool-limited sessions end early).
+    // Answer correctly until the session ends or mastery is reached.
     for (let i = 0; i < 10; i++) {
       if (await page.getByText("Session complete").isVisible()) break;
-      const summaryOrQuestion = await Promise.race([
-        page
-          .getByTestId("question-type")
-          .first()
-          .waitFor({ timeout: 10_000 })
-          .then(() => "question" as const),
-        page
-          .getByText(/mastered$/)
-          .first()
-          .waitFor({ timeout: 10_000 })
-          .then(() => "celebration" as const)
-          .catch(() => "question" as const),
-      ]).catch(() => "done" as const);
-      if (summaryOrQuestion === "celebration") break;
-      if (await page.getByText("Session complete").isVisible()) break;
-      await answerCorrectly(page);
+      if (await page.getByRole("status", { name: /mastered/ }).isVisible()) break;
+      if ((await page.getByTestId("question-type").count()) === 0) break;
+      await answerCurrent(page, true);
     }
 
     // ---- Mastery event: the ONE big ceremony --------------------------------
     await expect(page.getByRole("status", { name: /mastered/ })).toBeVisible({
-      timeout: 15_000,
+      timeout: 20_000,
     });
 
     // ---- Session summary shows the delta and the unlock ----------------------
-    await expect(page.getByText("Session complete")).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText(/New topic unlocked: market structure/)).toBeVisible();
+    await expect(page.getByText("Session complete")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/New topic unlocked: liquidity/i)).toBeVisible();
 
-    // ---- Skill tree: next KC unlocked + ceremony -----------------------------
+    // ---- Skill tree: next KC unlocked ----------------------------------------
     await page.getByRole("link", { name: "See your map" }).click();
     await page.waitForURL(/skill-tree/);
+    await expect(page.getByRole("button", { name: /The Candle: mastered/ })).toBeVisible({
+      timeout: 20_000,
+    });
     await expect(
-      page.getByRole("button", { name: /Candlestick anatomy: mastered/ }),
-    ).toBeVisible({ timeout: 15_000 });
-    await expect(
-      page.getByRole("button", { name: /Market structure: available/ }),
+      page.getByRole("button", { name: /Liquidity & Wicks: available/ }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /Support & resistance: locked/ }),
+      page.getByRole("button", { name: /Reversal Patterns: locked/ }),
     ).toBeVisible();
   });
 });

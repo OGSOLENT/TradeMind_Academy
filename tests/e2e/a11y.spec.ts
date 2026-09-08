@@ -41,10 +41,8 @@ test.describe("accessibility", () => {
     // First question is an MCQ: select option 2 with the keyboard, submit
     // with Enter, continue with Enter — no pointer at any step.
     await page.keyboard.press("2");
-    await expect(page.getByRole("radio", { name: /option B/ })).toHaveAttribute(
-      "aria-checked",
-      "true",
-    );
+    // Pressing "2" selects the second option, whatever its text.
+    await expect(page.getByRole("radio").nth(1)).toHaveAttribute("aria-checked", "true");
     await page.keyboard.press("Enter"); // submit
     await expect(page.getByText(/Correct|Not quite/)).toBeVisible();
     await page.keyboard.press("Enter"); // continue
@@ -57,11 +55,11 @@ test.describe("accessibility", () => {
   test("skill-tree nodes are focusable and open the panel with Enter", async ({ page }) => {
     await signUpSkipPlacement(page);
     await page.goto("/skill-tree");
-    const node = page.getByRole("button", { name: /Candlestick anatomy:/ });
+    const node = page.getByRole("button", { name: /The Candle:/ });
     await expect(node).toBeVisible();
     await node.focus();
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("heading", { name: "Candlestick anatomy" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "The Candle" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Lesson" })).toBeVisible();
   });
 
