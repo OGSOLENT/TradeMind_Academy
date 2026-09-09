@@ -26,11 +26,21 @@
       "description": "Why price moves where it moves — buyside and sellside liquidity, and how wick size decides whether a candle can expand."
     },
     {
+      "id": "kc-risk-sizing",
+      "courseId": "trading-foundations",
+      "title": "Risk & Position Sizing",
+      "prereqIds": [
+        "kc-liquidity"
+      ],
+      "level": 1,
+      "description": "Fixed risk, calculated size: why the stop is set by structure and the quantity is the variable that follows."
+    },
+    {
       "id": "kc-reversal-patterns",
       "courseId": "trading-foundations",
       "title": "Reversal Patterns",
       "prereqIds": [
-        "kc-liquidity"
+        "kc-risk-sizing"
       ],
       "level": 1,
       "description": "What a turn actually looks like: the Candle 2 closure, the Candle 3 variant, and why context beats shape."
@@ -43,7 +53,7 @@
         "kc-reversal-patterns"
       ],
       "level": 1,
-      "description": "Prove a turn is real, not a fakeout: CISD, protected swings, ideal swing points and order blocks."
+      "description": "Prove a turn is real, not a fakeout: CISD, fair value gaps, protected swings, ideal swing points and order blocks."
     },
     {
       "id": "kc-daily-bias",
@@ -53,7 +63,7 @@
         "kc-cisd-confirmation"
       ],
       "level": 1,
-      "description": "Decide direction for the day using PDH, PDL and equilibrium — and know what to do when the bias is wrong."
+      "description": "Decide direction for the day using PDH, PDL and equilibrium — let the wick form, and know what to do when the bias is wrong."
     },
     {
       "id": "kc-fractal-model",
@@ -103,7 +113,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-candle-anatomy.svg",
-          "caption": "Fig 1: The Candle — simulated illustration.",
+          "caption": "Fig: The Candle — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the candle. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -134,7 +144,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-candle-anatomy.svg",
-          "caption": "Fig 2: The Candle — simulated illustration.",
+          "caption": "Fig: The Candle — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the candle. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -165,7 +175,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-liquidity.svg",
-          "caption": "Fig 3: Liquidity & Wicks — simulated illustration.",
+          "caption": "Fig: Liquidity & Wicks — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating liquidity & wicks. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -196,7 +206,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-liquidity.svg",
-          "caption": "Fig 4: Liquidity & Wicks — simulated illustration.",
+          "caption": "Fig: Liquidity & Wicks — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating liquidity & wicks. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -209,6 +219,68 @@
         }
       ],
       "videoUrl": "/videos/Wick_Size_Matters.mp4",
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "03a-the-math-of-consistency",
+      "kcId": "kc-risk-sizing",
+      "title": "The Math of Consistency",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-risk-sizing.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "**A note on this lesson.** This video is narration-led with sparse on-screen text, so the written version captures the concepts and figures shown on screen rather than every spoken sentence. Watch the video alongside it.\n\n## What you'll learn\n\n- Why the risk amount is fixed and the position size is the variable\n- How a high win rate can still lose money\n- Why losses and gains are not symmetrical\n- What a drawdown limit means in practice\n\n---\n\n## The fixed-risk principle\n\nThe core idea, and it inverts how most beginners think:\n\n> **The risk amount stays the same. The position size changes to keep it the same.**\n\nThree trades, three different stop distances, one risk amount:\n\n| Trade | Stop loss | Risk amount |\n|---|---|---|\n| A | 10 pts | **$500** |\n| B | 25 pts | **$500** |\n| C | 40 pts | **$500** |\n\nThe stop is placed where the *setup* says it belongs — at invalidation, the protected swing (Lesson 9). It is never moved to suit a position size. Instead the **quantity** is calculated so that, if the stop is hit, the loss equals the same fixed amount every time.\n\nA wide stop therefore means a *smaller* position, not more risk. A tight stop means a larger position for the same money at risk.\n\n### Why fixed\n\nBecause it makes every trade comparable. If one loss costs $500 and another costs $2,000, your results are not a measure of your edge — they are a measure of which trades happened to be sized large. Consistency in sizing is what lets the win rate and the R multiple mean anything at all.\n\nThe journal image is the whole lesson in one page: a column of identical `$500` entries, trade after trade.\n\n## An 80% win rate that loses money\n\nThe video's central demonstration:\n\n| | Value |\n|---|---|\n| Win rate | **80%** |\n| Risk on winners | $50 |\n| Risk on the loser | $2,000 |\n| **Net P&L** | **Negative** |\n\nEight wins out of ten, and the account still goes backwards, because the single loss was sized forty times larger than the wins. Being right most of the time is worthless if the times you are wrong cost more than all the times you were right.\n\n> Win rate without consistent sizing tells you nothing.\n\nThis is why position sizing sits before the entry patterns in this course: an excellent setup, sized inconsistently, is still a losing system.\n\n## Losses and gains are not symmetrical\n\nShown as two charts side by side:\n\n| Direction | Label |\n|---|---|\n| Negative trend | **CRITICAL** |\n| Positive growth | **MINOR** |\n\nA 50% loss requires a 100% gain to recover. Damage compounds faster than repair, which is why the fixed-risk rule protects the downside first and lets the upside look after itself.\n\n## What happens without it\n\nThe failure modes shown:\n\n- **Margin call** — \"account requires immediate funding, limits strictly breached\"\n- **Trailing drawdown** on a funded-trader dashboard, with the account evaluation warning at the threshold\n\nBoth are the same event: risk that was not fixed in advance, met by a limit that was.\n\nA **trailing drawdown** is a floor that rises as your account grows — so a run of oversized losses can breach it even from a profitable peak. Sizing consistently is what keeps you away from that floor.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-risk-sizing.svg",
+          "caption": "Fig: Risk & Position Sizing — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating risk & position sizing. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-risk-sizing-item-1"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Fixed risk** — the same monetary amount at risk on every trade\n- **Position size** — the variable that changes so risk stays fixed\n- **R multiple** — a result expressed as a multiple of the amount risked\n- **Drawdown** — the fall from a peak in account value\n- **Trailing drawdown** — a drawdown limit that follows the account's high-water mark\n\n## Common mistakes\n\n- **Moving the stop to fit the position size.** Backwards: the stop is set by structure, the size is calculated from it.\n- **Judging yourself on win rate.** Meaningless unless every trade risked the same.\n- **Sizing up after losses to \"get it back\".** The asymmetry above makes this the fastest route to a breached limit."
+        }
+      ],
+      "videoUrl": "/videos/The_Math_of_Consistency__Proper_Position_Sizing.mp4",
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "03b-position-sizing-in-practice",
+      "kcId": "kc-risk-sizing",
+      "title": "Position Sizing in Practice",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-risk-sizing.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "**A note on this lesson.** A screen-recorded walkthrough with little on-screen text; the written version captures the parameters and the method rather than every click.\n\n## What you'll learn\n\n- The three numbers that define your risk parameter\n- How to turn a stop distance into a position size\n- Saving the setup as a reusable template\n- Why inconsistency, not strategy, destroys the equity curve\n\n---\n\n## Inconsistent risk destroys profit\n\nThe opening chart makes Lesson 3a's point concrete:\n\n| Trade | Result |\n|---|---|\n| Trade 1 | Loss |\n| Trade 2 | Win |\n| **Net cumulative** | **Negative** |\n\nOne win and one loss, and the account is down — because the loss was sized larger than the win. The strategy was not the problem.\n\n## Your three parameters\n\nEverything follows from three numbers you decide **before** the session:\n\n| Parameter | Example |\n|---|---|\n| **Capital base** | $100,000 |\n| **Exposure %** | 2.5% |\n| **Risk per trade** | $150 |\n\n- **Capital base** — the account the percentages apply to.\n- **Exposure %** — how much of it may be at risk overall.\n- **Risk per trade** — the fixed monetary amount from Lesson 3a, the *account parameter* the whole method hangs on.\n\nSet them once. They do not change trade to trade, and they especially do not change after a loss.\n\n> A conventional starting point in trading education is risking a small, fixed **percentage** of the account per trade, so the monetary amount shrinks automatically during a losing run. Whatever figure you choose, the discipline is the same: decide it in advance and hold it.\n\n## Turning a stop into a size\n\nThe mechanical step, done for every trade:\n\n1. **Place the stop where structure says** — beyond the protected swing (Lesson 9).\n2. **Measure the distance** from entry to stop, in points or ticks.\n3. **Divide the risk amount by that distance** to get the quantity.\n4. **Enter that quantity** in the order ticket.\n\n`position size = risk per trade ÷ (distance to stop × value per point)`\n\nThe tool shown does this arithmetic for you: set the risk parameter, drag the stop to the level structure dictates, and it returns the **lot size** — 1000 in the walkthrough's example, 2 contracts in Lesson 3a's.\n\nThe point is not the software. It is that the quantity is *calculated*, never chosen by feel.\n\n## The risk template\n\nRather than repeating the setup each time, the walkthrough saves it as a **risk template** in the charting tool: the risk amount, the default stop behaviour and the display settings, stored once and reapplied to every new chart.\n\nTwo reasons this matters:\n\n- **Consistency** — the same parameter is applied automatically, so discipline does not depend on remembering.\n- **Speed** — the sizing decision is made before the market moves, not during it.\n\n## Tracking it\n\nThe trade log shown pairs each entry with its P&L and the **available margin** remaining — a running check that exposure is inside the limit set at the start. A row of losses that each cost roughly the same amount is a system working as designed; a row where the losses vary wildly is the failure mode from Lesson 3a.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-risk-sizing.svg",
+          "caption": "Fig: Risk & Position Sizing — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating risk & position sizing. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-risk-sizing-item-2"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Capital base** — the account value the risk percentages apply to\n- **Exposure %** — the share of capital that may be at risk\n- **Risk per trade** — the fixed amount risked on any single position\n- **Lot size / quantity** — the calculated output, not an input\n- **Risk template** — a saved configuration that applies the parameters automatically\n- **Available margin** — capital not currently committed\n\n## Common mistakes\n\n- **Choosing quantity first, then placing the stop to suit it.** Exactly inverted.\n- **Adjusting the risk parameter mid-session** — usually upward, usually after a loss.\n- **Skipping the template** and re-deciding by hand each time, which is where inconsistency creeps back in."
+        }
+      ],
+      "videoUrl": "/videos/Perfect_Position_Sizing_in_TradingView.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -227,7 +299,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-reversal-patterns.svg",
-          "caption": "Fig 5: Reversal Patterns — simulated illustration.",
+          "caption": "Fig: Reversal Patterns — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating reversal patterns. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -258,7 +330,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-reversal-patterns.svg",
-          "caption": "Fig 6: Reversal Patterns — simulated illustration.",
+          "caption": "Fig: Reversal Patterns — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating reversal patterns. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -289,7 +361,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-cisd-confirmation.svg",
-          "caption": "Fig 7: Confirmation & Structure — simulated illustration.",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -302,6 +374,37 @@
         }
       ],
       "videoUrl": "/videos/Mastering_the_CISD.mp4",
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "07a-how-fair-value-gaps-work",
+      "kcId": "kc-cisd-confirmation",
+      "title": "How Fair Value Gaps Work",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-cisd-confirmation.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "## What you'll learn\n\n- The three-candle definition of a Fair Value Gap\n- SIBI and BISI — what the jargon actually means\n- The 50% rule, and when a gap is invalidated\n- FVG inversion: how a failed gap flips its job\n- How an FVG differs from an ordinary market gap\n\n---\n\n## The missing definition\n\nEvery lesson from Module 4 onwards has used the fair value gap as a Point of Interest — the place a setup is allowed to happen. This lesson defines it.\n\n## Defining an FVG\n\n> **Fair Value Gap (FVG) — a three-candle pattern where candle 1 and candle 3 highs and lows do not overlap.**\n\nLook at any three consecutive candles:\n\n- **Valid FVG:** candles 1 and 3 **do not** overlap, leaving a clear space between them.\n- **Not an FVG:** candles 1 and 3 **overlap**, closing the space completely.\n\nThe gap is the untraded space between candle 1's extreme and candle 3's extreme, created by candle 2's aggressive move straight through the middle.\n\n### Why the gap matters\n\n> **One side is offered while the other is not, creating a market inefficiency.**\n\nIn a normal, balanced market both buyers and sellers transact across every price. In the gap, price moved so fast that one side never got filled. That imbalance is an inefficiency — and markets tend to return to inefficiencies to rebalance them, which is exactly why an FVG works as a magnet and a Point of Interest.\n\n## SIBI and BISI — translating the jargon\n\nTwo labels for the same structure, named by which side was left unfilled:\n\n| Term | Full name | Forms during | Acts as |\n|---|---|---|---|\n| **BISI** | Buyside Imbalance, Sellside Inefficiency | An aggressive move **up** | Support on a return |\n| **SIBI** | Sellside Imbalance, Buyside Inefficiency | An aggressive move **down** | Resistance on a return |\n\nStrip the acronym and it is simply: *which direction created the gap?* A gap made by a violent rally is a bullish gap, and price returning to it is expected to find buyers.\n\n## The 50 percent rule\n\nA gap is not all-or-nothing. Price interacts with it in stages:\n\n| Stage | What happens |\n|---|---|\n| **Start** | Price touches the beginning of the gap |\n| **50% mark** | Price reaches **consequent encroachment** — the midpoint |\n| **Complete fill** | Price pushes entirely through |\n\n**Consequent encroachment** is the name for the 50% level of the gap, and it is the level that matters. Equilibrium again — the same midpoint logic you met in Lesson 6 for candle ranges and Lesson 12 for the daily range. Fifty percent recurs throughout this method because it is where a range is fairly priced.\n\n### Invalidation\n\n> **An FVG is invalidated if a candle body closes over the 50% line or outside the gap.**\n\nNote the precision, consistent with everything in Module 4: a **body close**, not a wick. Price may spike through the midpoint and recover — that is not invalidation. A candle that *closes* beyond it is.\n\n## FVG inversion — when the rules fail\n\nThe most useful part of the lesson, because it turns a failure into information:\n\n> **FVG Inversion — an invalidated gap flips its function to act as future support or resistance.**\n\n| Before | After inversion |\n|---|---|\n| Old **SIBI** (bearish gap) | Now acts as **support** for price moving higher |\n| Old **BISI** (bullish gap) | Now acts as **resistance** for price moving lower |\n\nA gap that failed to hold has told you something real: the side that created it has been overwhelmed. The level does not become meaningless — it changes sides. This is the same principle as the Golden Fractal Rule in Lesson 15: a valid structure that fails is itself a signal.\n\n> **Inversions don't have to be immediate; an old gap can be tested much later.**\n\nMark inverted gaps and leave them on the chart. They stay relevant.\n\n## Comparing market gaps\n\nNot every space on a chart is an FVG:\n\n| Feature | FVG | Volume imbalance | Standard gap |\n|---|---|---|---|\n| **Body gap?** | Yes | Yes | Yes |\n| **Wick overlap?** | No | Yes | No |\n| **Trading occurred?** | Some | Some | **None** |\n\n- A **volume imbalance** has bodies apart but **wicks overlapping** — price did trade through, just thinly.\n- A **standard gap** (a weekend or news gap) has *no trading at all* in the space — the market was closed.\n- An **FVG** sits between the two: fast one-sided delivery, not an absence of market.\n\nGetting this distinction right stops you marking weekend gaps as setups.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-cisd-confirmation.svg",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-cisd-confirmation-item-2"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Fair Value Gap (FVG)** — three candles where 1 and 3 do not overlap\n- **BISI / SIBI** — bullish / bearish imbalance labels\n- **Consequent encroachment** — the 50% midpoint of the gap\n- **Invalidation** — a body close beyond the 50% line or outside the gap\n- **FVG inversion** — an invalidated gap flipping to the opposite function\n- **Volume imbalance** — bodies apart, wicks overlapping\n\n## Common mistakes\n\n- **Marking gaps where candles 1 and 3 overlap.** That is not an FVG.\n- **Treating a wick through the midpoint as invalidation.** It takes a body close.\n- **Discarding a failed gap.** An invalidated gap inverts — it becomes a level on the other side.\n- **Confusing weekend gaps with FVGs.** No trading occurred in a standard gap at all."
+        }
+      ],
+      "videoUrl": "/videos/How_Fair_Value_Gaps_Work.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -320,12 +423,12 @@
         {
           "kind": "figure",
           "src": "/figures/kc-cisd-confirmation.svg",
-          "caption": "Fig 8: Confirmation & Structure — simulated illustration.",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-2"
+          "itemId": "kc-cisd-confirmation-item-3"
         }
       ],
       "videoUrl": "/videos/How_to_Validate_Swing_Points_with_CISD.mp4",
@@ -347,12 +450,12 @@
         {
           "kind": "figure",
           "src": "/figures/kc-cisd-confirmation.svg",
-          "caption": "Fig 9: Confirmation & Structure — simulated illustration.",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-3"
+          "itemId": "kc-cisd-confirmation-item-4"
         },
         {
           "kind": "markdown",
@@ -378,12 +481,12 @@
         {
           "kind": "figure",
           "src": "/figures/kc-cisd-confirmation.svg",
-          "caption": "Fig 10: Confirmation & Structure — simulated illustration.",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-4"
+          "itemId": "kc-cisd-confirmation-item-1"
         },
         {
           "kind": "markdown",
@@ -409,12 +512,12 @@
         {
           "kind": "figure",
           "src": "/figures/kc-cisd-confirmation.svg",
-          "caption": "Fig 11: Confirmation & Structure — simulated illustration.",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-1"
+          "itemId": "kc-cisd-confirmation-item-2"
         },
         {
           "kind": "markdown",
@@ -440,7 +543,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-daily-bias.svg",
-          "caption": "Fig 12: Daily Bias — simulated illustration.",
+          "caption": "Fig: Daily Bias — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -471,7 +574,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-daily-bias.svg",
-          "caption": "Fig 13: Daily Bias — simulated illustration.",
+          "caption": "Fig: Daily Bias — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -502,7 +605,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-daily-bias.svg",
-          "caption": "Fig 14: Daily Bias — simulated illustration.",
+          "caption": "Fig: Daily Bias — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -515,6 +618,37 @@
         }
       ],
       "videoUrl": "/videos/Confirming_the_Daily_Wick.mp4",
+      "videoFallbackUrl": null
+    },
+    {
+      "id": "14a-let-the-wick-form",
+      "kcId": "kc-daily-bias",
+      "title": "Let the Wick Form",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-daily-bias.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "## What you'll learn\n\n- Why entering early makes you the liquidity\n- The protected swing, defined as a three-part logic check\n- The wick checklist: a yes/no gate before any entry\n- Trading the body, stop placement and the 2R target\n- Pinpointing a daily wick on the 5-minute chart\n\n---\n\n## Why do you keep getting stopped out early?\n\nNot because the analysis was wrong. Because the *timing* was.\n\n> **Timing costs capital.**\n\nThe bias can be correct, the level can be correct, and the trade still loses — because it was taken before the market had finished doing the one thing it always does first.\n\n## Entering early makes you the liquidity\n\nThe sentence that should stay with you:\n\n> **If you enter before the wick forms, YOU become the liquidity.**\n\n| Timing | Outcome |\n|---|---|\n| **Entering too early** | Makes you the liquidity |\n| **Entering on time** | Catches the expansion |\n\nYour stop, placed before the manipulation is complete, sits exactly where the market is heading to collect orders (Lesson 3). You are not unlucky — you are early, and early and wrong look identical on a statement.\n\n## Defining the protected swing\n\n> **Protected Swing — price sweeps a key level and closes through prior candles, shifting the trend.**\n\nThe three-part logic, all required:\n\n| Step | What happens |\n|---|---|\n| **1. Sweep level** | Price sweeps a high, low, or gap |\n| **2. Reversal** | Short-term movement reverses direction |\n| **3. Candle close** | Price closes through the prior candle series |\n\n> **This logic confirms the swing is protected and ready for expansion.**\n\nThis is the same structure as Lesson 9's protected swing and Lesson 7's CISD, stated as an execution gate. Notice step 1 now explicitly includes a **gap** — the FVG from Lesson 7a is a valid thing to sweep into.\n\n## The wick checklist\n\nOne question, asked before every entry:\n\n> **Did the higher timeframe form its wick yet?**\n\n- **YES** → proceed to execution.\n- **NO** → wait. Do nothing.\n\nThat is the whole checklist, and it is binary on purpose. Most losing entries in this method fail this single gate.\n\n## Trading the body\n\nOnce the wick is confirmed, execution is mechanical:\n\n> **Let the wick form. Enter around the opening price. Trade the body.**\n\nThe candle's *body* is the expansion — the part that travels. The wick is the manipulation that precedes it. Entering near the opening price after the wick has formed puts you at the start of the body rather than inside the wick.\n\nThe three-step sequence:\n\n| Step | Action |\n|---|---|\n| **1. Find swing** | Identify a confirmed protected swing |\n| **2. Enter trade** | Enter near the higher-timeframe open |\n| **3. Trade body** | Ride the expansion toward your target |\n\n### Stop-loss placement\n\n- **Stop on invalidation** — at the point that proves the idea wrong (Lesson 9), not a fixed distance\n- **Wick holds** — the protected wick is the level that must not break\n- **Aim 2R+** — the structure should offer at least twice the risk\n\nEntry sits near the open, the stop sits beyond the wick, and the target is measured in R multiples of that distance.\n\n> *Position sizing — turning \"2R\" into an actual order quantity — is Module 3.*\n\n## Multi-timeframe: fractal market logic\n\nThe nesting from Lesson 5, applied to wick formation:\n\n**Daily → 4-Hour → 1-Hour → 15-Minute → 5-Minute**\n\nThe higher timeframe supplies the wick that must form; the lower timeframe supplies the precision:\n\n> **A daily wick formation can be pinpointed using a 5-minute swing.**\n\nYou are not choosing between timeframes. The daily tells you *what* has to happen; the 5-minute tells you the exact moment it has happened. The confirmed protected wick on the low timeframe is your entry trigger for the high-timeframe idea.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-daily-bias.svg",
+          "caption": "Fig: Daily Bias — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-daily-bias-item-4"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Becoming the liquidity** — entering before the manipulation completes, so your stop feeds it\n- **Protected swing** — sweep → reversal → close through the prior series\n- **The wick checklist** — has the higher timeframe formed its wick, yes or no\n- **Trading the body** — entering for the expansion, not inside the manipulation\n- **2R** — a target of at least twice the risked distance\n\n## Common mistakes\n\n- **Entering on the level rather than after the wick.** The level is where the wick forms, not where the move starts.\n- **Placing the stop inside the wick.** It must sit beyond the protected wick, at invalidation.\n- **Answering the wick checklist with \"nearly\".** It is a yes/no gate."
+        }
+      ],
+      "videoUrl": "/videos/Let_the_Wick_Form.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -533,12 +667,12 @@
         {
           "kind": "figure",
           "src": "/figures/kc-daily-bias.svg",
-          "caption": "Fig 15: Daily Bias — simulated illustration.",
+          "caption": "Fig: Daily Bias — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-4"
+          "itemId": "kc-daily-bias-item-1"
         },
         {
           "kind": "markdown",
@@ -564,7 +698,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-fractal-model.svg",
-          "caption": "Fig 16: The Fractal Model — simulated illustration.",
+          "caption": "Fig: The Fractal Model — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the fractal model. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -595,7 +729,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-fractal-model.svg",
-          "caption": "Fig 17: The Fractal Model — simulated illustration.",
+          "caption": "Fig: The Fractal Model — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the fractal model. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -626,7 +760,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-fractal-model.svg",
-          "caption": "Fig 18: The Fractal Model — simulated illustration.",
+          "caption": "Fig: The Fractal Model — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the fractal model. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -657,7 +791,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-fractal-model.svg",
-          "caption": "Fig 19: The Fractal Model — simulated illustration.",
+          "caption": "Fig: The Fractal Model — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating the fractal model. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -688,7 +822,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-smt-divergence.svg",
-          "caption": "Fig 20: SMT Divergence — simulated illustration.",
+          "caption": "Fig: SMT Divergence — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating smt divergence. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -719,7 +853,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-weekly-profiles.svg",
-          "caption": "Fig 21: Weekly Profiles — simulated illustration.",
+          "caption": "Fig: Weekly Profiles — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating weekly profiles. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -750,7 +884,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-weekly-profiles.svg",
-          "caption": "Fig 22: Weekly Profiles — simulated illustration.",
+          "caption": "Fig: Weekly Profiles — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating weekly profiles. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -781,7 +915,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-weekly-profiles.svg",
-          "caption": "Fig 23: Weekly Profiles — simulated illustration.",
+          "caption": "Fig: Weekly Profiles — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating weekly profiles. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -812,7 +946,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-weekly-profiles.svg",
-          "caption": "Fig 24: Weekly Profiles — simulated illustration.",
+          "caption": "Fig: Weekly Profiles — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating weekly profiles. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -843,7 +977,7 @@
         {
           "kind": "figure",
           "src": "/figures/kc-weekly-profiles.svg",
-          "caption": "Fig 25: Weekly Profiles — simulated illustration.",
+          "caption": "Fig: Weekly Profiles — simulated illustration.",
           "describe": "Text alternative: a simulated candlestick series illustrating weekly profiles. Prices are generated for teaching purposes and do not represent any real market."
         },
         {
@@ -1320,6 +1454,190 @@
         }
       },
       "explanation": "Sellside liquidity sits below old lows — the sell stop orders of anyone holding long. It acts as a magnet pulling price down toward it.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-1",
+      "kcId": "kc-risk-sizing",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "In the fixed-risk method, which value stays the same on every trade?",
+        "options": [
+          "The number of contracts or lots",
+          "The monetary amount at risk",
+          "The distance to the stop loss",
+          "The profit target in points"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "The risk amount is fixed; the position size is the variable that changes so the loss is identical whatever the stop distance.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-sizing-item-2",
+      "kcId": "kc-risk-sizing",
+      "type": "mcq",
+      "difficulty": "easy",
+      "payload": {
+        "type": "mcq",
+        "question": "Your setup requires a wide stop. What happens to the position size?",
+        "options": [
+          "It gets larger, to keep the profit the same",
+          "It gets smaller, to keep the risk the same",
+          "It stays the same and you accept more risk",
+          "You move the stop closer instead"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "A wider stop means a smaller position for the same money at risk. The stop is set by structure — never moved to suit a position size.",
+      "isPretestEligible": true
+    },
+    {
+      "id": "kc-risk-sizing-item-3",
+      "kcId": "kc-risk-sizing",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "A trader wins 80% of trades but the account is down. What is the most likely cause?",
+        "options": [
+          "The win rate was measured wrongly",
+          "The losing trades were sized far larger than the winners",
+          "The strategy has no edge at all",
+          "Commissions consumed the profit"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Eight wins at $50 cannot cover one loss at $2,000. Win rate is meaningless unless every trade risks the same amount.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-4",
+      "kcId": "kc-risk-sizing",
+      "type": "mcq",
+      "difficulty": "med",
+      "payload": {
+        "type": "mcq",
+        "question": "Why are losses and gains described as asymmetrical?",
+        "options": [
+          "Losses are taxed differently from gains",
+          "A large loss needs a proportionally larger gain to recover from",
+          "Gains always take longer to achieve",
+          "Brokers charge more on losing trades"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "A 50% loss needs a 100% gain just to get back to level. Damage compounds faster than repair, so the downside is protected first.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-5",
+      "kcId": "kc-risk-sizing",
+      "type": "mcq",
+      "difficulty": "hard",
+      "payload": {
+        "type": "mcq",
+        "question": "What is a trailing drawdown?",
+        "options": [
+          "A stop loss that moves with price",
+          "A loss limit that follows the account's high-water mark",
+          "The average loss across a losing streak",
+          "The margin required to hold a position overnight"
+        ]
+      },
+      "answerKey": {
+        "type": "mcq",
+        "correct": 1
+      },
+      "explanation": "Because the floor rises as the account grows, a run of oversized losses can breach it even from a profitable peak — which is exactly what consistent sizing prevents.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-6",
+      "kcId": "kc-risk-sizing",
+      "type": "multi",
+      "difficulty": "med",
+      "payload": {
+        "type": "multi",
+        "question": "Which three parameters are set before a session begins?",
+        "options": [
+          "Capital base",
+          "Exposure percentage",
+          "Risk per trade",
+          "Expected win rate"
+        ]
+      },
+      "answerKey": {
+        "type": "multi",
+        "correct": [
+          0,
+          1,
+          2
+        ]
+      },
+      "explanation": "Capital base, exposure % and risk per trade are decided in advance and held. Win rate is an outcome you measure afterwards, not a parameter you set.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-7",
+      "kcId": "kc-risk-sizing",
+      "type": "numeric",
+      "difficulty": "med",
+      "payload": {
+        "type": "numeric",
+        "question": "You risk $150 per trade and your stop is 30 points away, at $1 per point. What quantity do you take?",
+        "unit": "units",
+        "min": 1,
+        "max": 50,
+        "step": 1
+      },
+      "answerKey": {
+        "type": "numeric",
+        "value": 5,
+        "tolerance": 0.5
+      },
+      "explanation": "position size = risk ÷ (stop distance × value per point) = 150 ÷ (30 × 1) = 5. The quantity is always calculated, never chosen by feel.",
+      "isPretestEligible": false
+    },
+    {
+      "id": "kc-risk-sizing-item-8",
+      "kcId": "kc-risk-sizing",
+      "type": "ordering",
+      "difficulty": "med",
+      "payload": {
+        "type": "ordering",
+        "question": "Order the steps for sizing a trade correctly.",
+        "entries": [
+          "Place the stop where structure says — beyond the protected swing",
+          "Measure the distance from entry to stop",
+          "Divide the fixed risk amount by that distance",
+          "Enter the resulting quantity in the order ticket"
+        ]
+      },
+      "answerKey": {
+        "type": "ordering",
+        "order": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Structure first, arithmetic second. Choosing the quantity first and then placing the stop to suit it inverts the whole method.",
       "isPretestEligible": false
     },
     {

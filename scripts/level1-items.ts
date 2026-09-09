@@ -323,7 +323,106 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 3 ────────────────────────────────────────────────────────────
+
+  // ── Module 3 — Risk & Position Sizing ───────────────────────────────────
+  "kc-risk-sizing": [
+    mcq(
+      "easy",
+      "In the fixed-risk method, which value stays the same on every trade?",
+      [
+        "The number of contracts or lots",
+        "The monetary amount at risk",
+        "The distance to the stop loss",
+        "The profit target in points",
+      ],
+      1,
+      "The risk amount is fixed; the position size is the variable that changes so the loss is identical whatever the stop distance.",
+      true,
+    ),
+    mcq(
+      "easy",
+      "Your setup requires a wide stop. What happens to the position size?",
+      [
+        "It gets larger, to keep the profit the same",
+        "It gets smaller, to keep the risk the same",
+        "It stays the same and you accept more risk",
+        "You move the stop closer instead",
+      ],
+      1,
+      "A wider stop means a smaller position for the same money at risk. The stop is set by structure — never moved to suit a position size.",
+      true,
+    ),
+    mcq(
+      "med",
+      "A trader wins 80% of trades but the account is down. What is the most likely cause?",
+      [
+        "The win rate was measured wrongly",
+        "The losing trades were sized far larger than the winners",
+        "The strategy has no edge at all",
+        "Commissions consumed the profit",
+      ],
+      1,
+      "Eight wins at $50 cannot cover one loss at $2,000. Win rate is meaningless unless every trade risks the same amount.",
+      false,
+    ),
+    mcq(
+      "med",
+      "Why are losses and gains described as asymmetrical?",
+      [
+        "Losses are taxed differently from gains",
+        "A large loss needs a proportionally larger gain to recover from",
+        "Gains always take longer to achieve",
+        "Brokers charge more on losing trades",
+      ],
+      1,
+      "A 50% loss needs a 100% gain just to get back to level. Damage compounds faster than repair, so the downside is protected first.",
+      false,
+    ),
+    mcq(
+      "hard",
+      "What is a trailing drawdown?",
+      [
+        "A stop loss that moves with price",
+        "A loss limit that follows the account's high-water mark",
+        "The average loss across a losing streak",
+        "The margin required to hold a position overnight",
+      ],
+      1,
+      "Because the floor rises as the account grows, a run of oversized losses can breach it even from a profitable peak — which is exactly what consistent sizing prevents.",
+      false,
+    ),
+    multi(
+      "med",
+      "Which three parameters are set before a session begins?",
+      ["Capital base", "Exposure percentage", "Risk per trade", "Expected win rate"],
+      [0, 1, 2],
+      "Capital base, exposure % and risk per trade are decided in advance and held. Win rate is an outcome you measure afterwards, not a parameter you set.",
+    ),
+    numeric(
+      "med",
+      "You risk $150 per trade and your stop is 30 points away, at $1 per point. What quantity do you take?",
+      "units",
+      1,
+      50,
+      1,
+      5,
+      0.5,
+      "position size = risk ÷ (stop distance × value per point) = 150 ÷ (30 × 1) = 5. The quantity is always calculated, never chosen by feel.",
+    ),
+    ordering(
+      "med",
+      "Order the steps for sizing a trade correctly.",
+      [
+        "Place the stop where structure says — beyond the protected swing",
+        "Measure the distance from entry to stop",
+        "Divide the fixed risk amount by that distance",
+        "Enter the resulting quantity in the order ticket",
+      ],
+      "Structure first, arithmetic second. Choosing the quantity first and then placing the stop to suit it inverts the whole method.",
+    ),
+  ],
+
+  // ── Module 4 ────────────────────────────────────────────────────────────
   "kc-reversal-patterns": [
     mcq(
       "easy",

@@ -171,10 +171,27 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
           />
 
           {/* The market drifting past, at three depths. */}
-          <CandleLayer className="tm-candles" count={30} seed={3} opacity={0.05} size="900px 520px" />
-          <CandleLayer className="tm-candles" count={20} seed={11} opacity={0.075} size="1400px 800px" />
-          <CandleLayer className="tm-candles" count={12} seed={29} opacity={0.05} size="2100px 1200px" />
+          <CandleLayer className="tm-candles" count={30} seed={3} opacity={0.075} size="900px 520px" />
+          <CandleLayer className="tm-candles" count={20} seed={11} opacity={0.10} size="1400px 800px" />
+          <CandleLayer className="tm-candles" count={12} seed={29} opacity={0.07} size="2100px 1200px" />
         </>
+      )}
+
+      {/* Shafts of light from the upper left, as though the field were lit
+          from a single source. Static: costs nothing, kills the flatness that
+          uniform gradients leave behind. */}
+      {!calm && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "repeating-linear-gradient(102deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 2px, transparent 2px, transparent 190px), repeating-linear-gradient(102deg, rgba(139,124,246,0.03) 0px, rgba(139,124,246,0.03) 60px, transparent 60px, transparent 340px)",
+            maskImage:
+              "radial-gradient(90% 70% at 18% 0%, #000 0%, rgba(0,0,0,0.5) 45%, transparent 78%)",
+            WebkitMaskImage:
+              "radial-gradient(90% 70% at 18% 0%, #000 0%, rgba(0,0,0,0.5) 45%, transparent 78%)",
+          }}
+        />
       )}
 
       {/* Horizon glow behind the fixed nav, so the glass bar refracts
@@ -184,6 +201,19 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         style={{
           background:
             "linear-gradient(to bottom, rgba(94,106,210,0.22), rgba(94,106,210,0.06) 45%, transparent 100%)",
+        }}
+      />
+
+      {/* Film grain. A single fractal-noise tile, rendered once by the
+          browser and tiled — static, so it costs nothing, and it stops large
+          dark gradients banding into flat bands. */}
+      <div
+        className="absolute inset-0 opacity-[0.16] mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="180" height="180" filter="url(#n)" opacity="0.5"/></svg>',
+          )}")`,
+          backgroundSize: "180px 180px",
         }}
       />
 
