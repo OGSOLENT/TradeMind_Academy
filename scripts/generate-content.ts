@@ -19,67 +19,75 @@ const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
 /** The eight modules, in teaching order. Prerequisites chain strictly. */
-const MODULES: Array<{ id: string; title: string; description: string; lessons: number[] }> = [
+const MODULES: Array<{ id: string; title: string; description: string; lessons: string[] }> = [
   {
     id: "kc-candle-anatomy",
     title: "The Candle",
     description:
       "Read a single candle: OHLC, the three candle types, and why every wick is a lower-timeframe trend.",
-    lessons: [1, 2],
+    lessons: ["01", "02"],
   },
   {
     id: "kc-liquidity",
     title: "Liquidity & Wicks",
     description:
       "Why price moves where it moves — buyside and sellside liquidity, and how wick size decides whether a candle can expand.",
-    lessons: [3, 4],
+    lessons: ["03", "04"],
+  },
+  {
+    id: "kc-risk-sizing",
+    title: "Risk & Position Sizing",
+    description:
+      "Fixed risk, calculated size: why the stop is set by structure and the quantity is the variable that follows.",
+    lessons: ["03a", "03b"],
   },
   {
     id: "kc-reversal-patterns",
     title: "Reversal Patterns",
     description:
       "What a turn actually looks like: the Candle 2 closure, the Candle 3 variant, and why context beats shape.",
-    lessons: [5, 6],
+    lessons: ["05", "06"],
   },
   {
     id: "kc-cisd-confirmation",
     title: "Confirmation & Structure",
     description:
-      "Prove a turn is real, not a fakeout: CISD, protected swings, ideal swing points and order blocks.",
-    lessons: [7, 8, 9, 10, 11],
+      "Prove a turn is real, not a fakeout: CISD, fair value gaps, protected swings, ideal swing points and order blocks.",
+    lessons: ["07", "07a", "08", "09", "10", "11"],
   },
   {
     id: "kc-daily-bias",
     title: "Daily Bias",
     description:
-      "Decide direction for the day using PDH, PDL and equilibrium — and know what to do when the bias is wrong.",
-    lessons: [12, 13, 14, 15],
+      "Decide direction for the day using PDH, PDL and equilibrium — let the wick form, and know what to do when the bias is wrong.",
+    lessons: ["12", "13", "14", "14a", "15"],
   },
   {
     id: "kc-fractal-model",
     title: "The Fractal Model",
     description:
       "The complete system: the T-Spot, standard deviation projections, fractal targets and the TTFM playbook.",
-    lessons: [16, 17, 18, 19],
+    lessons: ["16", "17", "18", "19"],
   },
   {
     id: "kc-smt-divergence",
     title: "SMT Divergence",
     description:
       "Add confluence without fooling yourself — correlated markets, and why the framework always comes first.",
-    lessons: [20],
+    lessons: ["20"],
   },
   {
     id: "kc-weekly-profiles",
     title: "Weekly Profiles",
     description:
       "The four shapes a week takes, and which day to act on in each: expansion, midweek reversal, Thursday counter, consolidation.",
-    lessons: [21, 22, 23, 24, 25],
+    lessons: ["21", "22", "23", "24", "25"],
   },
 ];
 
 interface ParsedLesson {
-  n: number;
+  /** Filename prefix — "07", "07a" — the key MODULES refers to. */
+  key: string;
   slug: string;
   title: string;
   video: string | null;
@@ -94,7 +102,7 @@ function parseLesson(file: string): ParsedLesson {
 
   const titleLine = lines.find((l) => l.startsWith("# ")) ?? "";
   const title = (titleLine.split("—")[1] ?? titleLine.replace(/^#\s*/, "")).trim();
-  const n = Number(file.slice(0, 2));
+  const key = /^([0-9]{2}[a-z]?)-/.exec(file)?.[1] ?? file.slice(0, 2);
   const video = /Video:\s*`([^`]+\.mp4)`/.exec(raw)?.[1] ?? null;
 
   // Drop: h1, the meta line, the standing disclaimer (the app renders its own
@@ -119,7 +127,7 @@ function parseLesson(file: string): ParsedLesson {
   const main = (splitAt === -1 ? body : body.slice(0, splitAt)).trim();
   const tail = splitAt === -1 ? "" : body.slice(splitAt).trim();
 
-  return { n, slug: file.replace(/\.md$/, ""), title, video, main, tail };
+  return { key, slug: file.replace(/\.md$/, ""), title, video, main, tail };
 }
 
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
@@ -132,7 +140,7 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
   blocks.push({
     kind: "figure",
     src: `/figures/${kc.id}.svg`,
-    caption: `Fig ${parsed.n}: ${kc.title} — simulated illustration.`,
+    caption: `Fig: ${kc.title} — simulated illustration.`,
     describe: `Text alternative: a simulated candlestick series illustrating ${kc.title.toLowerCase()}. Prices are generated for teaching purposes and do not represent any real market.`,
   });
   if (checkItemId) blocks.push({ kind: "checkQuestion", itemId: checkItemId });
@@ -150,13 +158,13 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
 
 function main() {
   const files = readdirSync(LESSON_DIR)
-    .filter((f) => /^\d{2}-.*\.md$/.test(f))
+    .filter((f) => /^\d{2}[a-z]?-.*\.md$/.test(f))
     .sort();
 
-  const parsed = new Map<number, ParsedLesson>();
+  const parsed = new Map<string, ParsedLesson>();
   for (const f of files) {
     const p = parseLesson(f);
-    parsed.set(p.n, p);
+    parsed.set(p.key, p);
   }
 
   const kcs: Kc[] = MODULES.map((m, i) => ({
@@ -182,9 +190,9 @@ function main() {
     const kc = kcs[mi]!;
     // Use a different pretest-eligible MCQ as each lesson's inline check.
     const checks = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
-    m.lessons.forEach((n, li) => {
-      const p = parsed.get(n);
-      if (!p) throw new Error(`Missing lesson markdown for lesson ${n}`);
+    m.lessons.forEach((key, li) => {
+      const p = parsed.get(key);
+      if (!p) throw new Error(`Missing lesson markdown for lesson ${key}`);
       lessons.push(buildLesson(p, kc, checks[li % checks.length]?.id ?? null));
     });
   });

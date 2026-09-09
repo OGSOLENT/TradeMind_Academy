@@ -16,9 +16,9 @@ test.describe("the adaptive loop — dissertation core journey", () => {
 
     // ---- Sign up, consent, placement --------------------------------------
     await signUpAndConsent(page, { placement: true });
-    await expect(page.getByText("1/8")).toBeVisible();
+    await expect(page.getByText("1/9")).toBeVisible();
 
-    for (let i = 0; i < 8; i++) await answerCurrent(page, true);
+    for (let i = 0; i < 9; i++) await answerCurrent(page, true);
 
     // ---- Model-initialization moment ---------------------------------------
     await expect(page.getByText("Your starting map.")).toBeVisible({ timeout: 20_000 });

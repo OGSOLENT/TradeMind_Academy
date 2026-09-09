@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Kc } from "@/lib/content/types";
 import { MASTERY_THRESHOLD, REMEDIATION_THRESHOLD } from "@/lib/bkt";
 import { unlockedKcIds, type MasteryMap } from "@/lib/routing";
-import { CANVAS, positionFor } from "@/lib/constellation";
+import { ConstellationMap, type KcView, type NodeState } from "@/components/learn/constellation-map";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { Button } from "@/components/ui/button";
@@ -20,17 +20,6 @@ import { toast } from "@/components/ui/toast";
 import { clamp, cn } from "@/lib/utils";
 
 const COURSE_ID = "trading-foundations";
-const R = 26;
-const CIRC = 2 * Math.PI * R;
-
-type NodeState = "locked" | "available" | "mastered" | "remediation";
-
-interface KcView extends Kc {
-  pL: number;
-  attempts: number;
-  state: NodeState;
-}
-
 function stateFor(pL: number, attempts: number, unlocked: boolean): NodeState {
   if (!unlocked) return "locked";
   if (pL >= MASTERY_THRESHOLD) return "mastered";
@@ -53,8 +42,6 @@ function SkillTree() {
   const [selected, setSelected] = useState<KcView | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
-  const dragStart = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
   const [ceremonyIndex, setCeremonyIndex] = useState(0);
 
   const justUnlocked = useMemo(
@@ -129,10 +116,6 @@ function SkillTree() {
     );
   }
 
-  const viewW = CANVAS.width / zoom;
-  const viewH = CANVAS.height / zoom;
-  const viewBox = `${pan.x} ${pan.y} ${viewW} ${viewH}`;
-
   const panel = selected && (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
@@ -198,137 +181,34 @@ function SkillTree() {
       </div>
 
       <div className="flex gap-6">
-        <div className="min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base-veil shadow-hairline">
-          <svg
-            viewBox={viewBox}
-            className="h-[480px] w-full touch-none"
-            role="group"
-            aria-label="Skill tree constellation"
-            onPointerDown={(e) => {
-              dragStart.current = { x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y };
-            }}
-            onPointerMove={(e) => {
-              if (!dragStart.current) return;
-              const scale = viewW / (e.currentTarget.clientWidth || 1);
-              setPan({
-                x: dragStart.current.panX - (e.clientX - dragStart.current.x) * scale,
-                y: dragStart.current.panY - (e.clientY - dragStart.current.y) * scale,
-              });
-            }}
-            onPointerUp={() => (dragStart.current = null)}
-            onPointerLeave={() => (dragStart.current = null)}
+        <div className="relative min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base-veil shadow-hairline">
+          <div
+            className="h-[520px] w-full"
+            style={{ transform: `scale(${zoom})`, transformOrigin: "center center" }}
           >
-            {/* Edges */}
-            {views.map((kc) =>
-              kc.prereqIds.map((p) => {
-                const a = positionFor(p, 0);
-                const b = positionFor(kc.id, 0);
-                const lit = kc.state !== "locked";
-                const isNew = justUnlocked.includes(kc.id);
-                return (
-                  <motion.line
-                    key={`${p}-${kc.id}`}
-                    x1={a.x}
-                    y1={a.y}
-                    x2={b.x}
-                    y2={b.y}
-                    stroke={lit ? "rgba(94,106,210,0.5)" : "rgba(255,255,255,0.08)"}
-                    strokeWidth={lit ? 1.5 : 1}
-                    initial={isNew && !reduced ? { pathLength: 0 } : { pathLength: 1 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                  />
-                );
-              }),
-            )}
+            <ConstellationMap
+              views={views}
+              justUnlocked={justUnlocked}
+              selectedId={selected?.id ?? null}
+              onSelect={setSelected}
+            />
+          </div>
 
-            {views.map((kc, i) => {
-              const pos = positionFor(kc.id, i);
-              const isNew = justUnlocked.includes(kc.id);
-              const color =
-                kc.state === "mastered"
-                  ? "var(--mastery)"
-                  : kc.state === "remediation"
-                    ? "var(--warning)"
-                    : "var(--accent)";
-              return (
-                <motion.g
-                  key={kc.id}
-                  role="button"
-                  aria-label={`${kc.title}: ${kc.state}, ${Math.round(kc.pL * 100)} percent mastery`}
-                  tabIndex={0}
-                  className={cn("cursor-pointer focus:outline-none", kc.state === "locked" && "opacity-40")}
-                  onClick={() => setSelected(kc)}
-                  onKeyDown={(e) => e.key === "Enter" && setSelected(kc)}
-                  initial={isNew && !reduced ? { scale: 0.3, opacity: 0 } : undefined}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 16, delay: isNew ? 0.9 : 0 }}
-                  style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
-                >
-                  {kc.state === "available" && (
-                    <circle cx={pos.x} cy={pos.y} r={R + 8} fill="var(--accent-glow)" opacity="0.5">
-                      {!reduced && (
-                        <animate attributeName="r" values={`${R + 5};${R + 11};${R + 5}`} dur="2.4s" repeatCount="indefinite" />
-                      )}
-                    </circle>
-                  )}
-                  {kc.state === "remediation" && !reduced && (
-                    <circle cx={pos.x} cy={pos.y} r={R + 7} fill="none" stroke="var(--warning)" strokeOpacity="0.4" strokeWidth="2">
-                      <animate attributeName="stroke-opacity" values="0.15;0.5;0.15" dur="1.8s" repeatCount="indefinite" />
-                    </circle>
-                  )}
-                  <circle cx={pos.x} cy={pos.y} r={R} fill="#101018" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
-                  <circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={R}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeDasharray={CIRC}
-                    strokeDashoffset={CIRC * (1 - kc.pL)}
-                    transform={`rotate(-90 ${pos.x} ${pos.y})`}
-                  />
-                  {kc.state === "locked" ? (
-                    <text x={pos.x} y={pos.y + 5} textAnchor="middle" className="fill-[#5B5B6B] text-[14px]">
-                      🔒
-                    </text>
-                  ) : kc.state === "mastered" ? (
-                    <text x={pos.x} y={pos.y + 5} textAnchor="middle" className="fill-[#2DD4BF] text-[15px]">
-                      ✓
-                    </text>
-                  ) : (
-                    <text x={pos.x} y={pos.y + 4} textAnchor="middle" className="num fill-[#E4E1ED] text-[12px]">
-                      {Math.round(kc.pL * 100)}
-                    </text>
-                  )}
-                  <text x={pos.x} y={pos.y + R + 18} textAnchor="middle" className="fill-[#908F9E] text-[11px]">
-                    {kc.title}
-                  </text>
-                  {/* 12-particle unlock burst */}
-                  {isNew &&
-                    !reduced &&
-                    Array.from({ length: 12 }, (_, pi) => (
-                      <motion.circle
-                        key={pi}
-                        cx={pos.x}
-                        cy={pos.y}
-                        r={2.5}
-                        fill="var(--accent-bright)"
-                        initial={{ opacity: 0 }}
-                        animate={{
-                          opacity: [0, 1, 0],
-                          cx: pos.x + Math.cos((pi / 12) * Math.PI * 2) * 52,
-                          cy: pos.y + Math.sin((pi / 12) * Math.PI * 2) * 52,
-                        }}
-                        transition={{ duration: 0.9, delay: 1.1, ease: "easeOut" }}
-                      />
-                    ))}
-                </motion.g>
-              );
-            })}
-          </svg>
+          {/* Route legend — the map's own key. */}
+          <div className="pointer-events-none absolute right-5 top-4 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-label-caps uppercase tracking-wider text-fg-secondary">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-pill bg-mastery" /> mastered
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-pill bg-accent" /> in progress
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-pill bg-warning" /> needs work
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-pill bg-[#3a3a48]" /> locked
+            </span>
+          </div>
         </div>
 
         {/* Desktop side panel */}

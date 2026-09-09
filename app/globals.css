@@ -206,3 +206,65 @@
 [data-motion="reduced"] .tm-candles-near {
   animation: none !important;
 }
+
+/* ── Skill constellation ───────────────────────────────────────────────────
+   Localised SVG motion: a handful of small elements, not full-screen layers,
+   so the compositor cost stays negligible (docs/DECISIONS.md). */
+
+/* Energy travelling forward along the completed stretch of the route. */
+@keyframes tm-route-flow {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -0.134; }
+}
+.tm-route-flow {
+  animation: tm-route-flow 2.6s linear infinite;
+}
+
+/* The learner's position on the route. */
+@keyframes tm-traveller {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.14); }
+}
+.tm-traveller {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tm-traveller 2.2s ease-in-out infinite;
+}
+
+/* Halo breathing on the live frontier / remediation nodes. */
+@keyframes tm-node-pulse {
+  0%, 100% { opacity: 0.10; transform: scale(0.94); }
+  50%      { opacity: 0.26; transform: scale(1.10); }
+}
+.tm-node-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tm-node-pulse 3s ease-in-out infinite;
+}
+
+/* Each node bobs on its own phase so the map breathes instead of sitting
+   perfectly still. Two-pixel amplitude — present, never distracting. */
+@keyframes tm-node-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+.tm-node-float {
+  animation: tm-node-float 7s ease-in-out infinite;
+}
+
+.tm-const-stars {
+  animation: tm-node-float 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-route-flow, .tm-traveller, .tm-node-pulse, .tm-node-float, .tm-const-stars {
+    animation: none !important;
+  }
+}
+[data-motion="reduced"] .tm-route-flow,
+[data-motion="reduced"] .tm-traveller,
+[data-motion="reduced"] .tm-node-pulse,
+[data-motion="reduced"] .tm-node-float,
+[data-motion="reduced"] .tm-const-stars {
+  animation: none !important;
+}
