@@ -60,7 +60,7 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     title: "Daily Bias",
     description:
       "Decide direction for the day using PDH, PDL and equilibrium — let the wick form, and know what to do when the bias is wrong.",
-    lessons: ["12", "13", "14", "14a", "15"],
+    lessons: ["12", "13", "14", "14a", "14b", "15"],
   },
   {
     id: "kc-fractal-model",
