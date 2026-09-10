@@ -284,6 +284,37 @@
       "videoFallbackUrl": null
     },
     {
+      "id": "03c-risk-under-evaluation-rules",
+      "kcId": "kc-risk-sizing",
+      "title": "Risk Under Evaluation Rules",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-risk-sizing.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "## What you'll learn\n\n- What an evaluation account is and the rules it imposes\n- Drawdown maths: turning a loss limit into a per-trade risk figure\n- Why a 2:1 target and a strict cap survive a losing streak\n- How external rules change nothing about the method\n\n---\n\n## Why this lesson exists\n\nLessons 3a and 3b taught fixed risk in the abstract. This one applies it to a case where the limits are **set by somebody else** and breaching one ends the account immediately. It is the clearest possible demonstration of why the sizing rule exists.\n\n## The challenge — rules of the game\n\nAn evaluation account gives you simulated capital and a set of conditions:\n\n| Rule | Example |\n|---|---|\n| **Cost** | $49 / month |\n| **Profit target** | $3,000 |\n| **Max loss limit** | $2,000 |\n| **Max size** | 5 contracts |\n\nHit the profit target without breaching the loss limit and you pass. Breach the limit, even once, and the account is closed. The fee is not refunded.\n\nTwo honest observations before the maths. The monthly fee is a real cost that accrues whether you pass or not, and pass rates across the industry are low. Treat the numbers below as an exercise in constraint arithmetic, not a business plan.\n\n## Risk parameters — mathematical survival\n\nHere is the calculation that makes the constraint survivable:\n\n| Step | Working |\n|---|---|\n| **Drawdown maths** | Divide the $2,000 loss limit by the number of trades you expect in a month — say 10 |\n| **Set risk** | A strict **$200 maximum risk per trade** |\n| **Target reward** | Aim for **2:1**, so a winner returns about $400 |\n\nThe point of dividing first is that it converts an external rule into a personal one. The firm says \"never lose $2,000\". You say \"never lose more than $200, ten times\". The second is a rule you can actually follow on a trade-by-trade basis.\n\n### Surviving a losing streak\n\nTake a brutal run of five consecutive losses at $200 each. That is $1,000 gone, half the limit, and the account is still alive with a **$1,200 buffer** remaining. Now a couple of 2:1 winners at $400 rebuild it.\n\nRun the same streak with inconsistent sizing, where one of those losses is $800, and the account is finished before the recovery has a chance to happen. This is Lesson 3a's asymmetry with a hard floor underneath it.\n\n## Executing the strategy\n\nNothing about the setup criteria changes. The evaluation constrains **size and frequency**, not method:\n\n- The same protected-swing stop (Lesson 9)\n- The same fixed risk, now capped by an external number\n- The same 2R-style targets (Lesson 14a)\n\nWhat changes is patience. With a fixed number of \"lives\", low-quality setups become expensive in a way they are not on an unconstrained account. The point-of-interest hierarchy (Lesson 11a) and the kill zones (Lesson 13a) are the filters that keep the trade count down.\n\n## Managing live trades and final results\n\nThe video closes on the outcome: consistent sizing plus a 2:1 target means the account survives variance long enough for the edge to show. The reverse is the failure mode from Lesson 3a — a good win rate, wrecked by one oversized loss.\n\n> The lesson is not \"pass an evaluation\". It is that a rule imposed from outside is only survivable if you have already imposed a stricter one on yourself.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-risk-sizing.svg",
+          "caption": "Fig: Risk & Position Sizing — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating risk & position sizing. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-risk-sizing-item-3"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Evaluation account** — simulated capital with a profit target and loss limits\n- **Max loss limit** — the breach point that closes the account\n- **Drawdown maths** — dividing the limit by expected trade count to get per-trade risk\n- **Buffer** — the distance remaining between current loss and the limit\n- **2:1** — a target of twice the risked amount\n\n## Common mistakes\n\n- **Sizing to the maximum allowed.** \"Max 5 contracts\" is a ceiling, not an instruction.\n- **Increasing risk to hit the target faster.** The limit is hit first, reliably.\n- **Treating the fee as sunk and therefore irrelevant.** It is a recurring cost that changes the expected value of the whole exercise."
+        }
+      ],
+      "videoUrl": "/videos/Cracking_Prop_Firms.mp4",
+      "videoFallbackUrl": null
+    },
+    {
       "id": "05-the-candle-2-closure",
       "kcId": "kc-reversal-patterns",
       "title": "The Candle 2 Closure",
@@ -528,6 +559,37 @@
       "videoFallbackUrl": null
     },
     {
+      "id": "11a-the-point-of-interest-hierarchy",
+      "kcId": "kc-cisd-confirmation",
+      "title": "The Point of Interest Hierarchy",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-cisd-confirmation.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "## What you'll learn\n\n- Why using too many points gets you stopped out\n- The priority order: FVG first, swing points second, CISD last\n- What to do when there is no gap, and when there is no gap and no swing\n- The mechanical trading checklist\n\n---\n\n## Too many points is the problem\n\n> **Use way too many points… and end up getting stopped out.**\n\nBy now you have a lot of levels available. Order blocks, fair value gaps, swing points, equilibrium, previous day high and low. Mark all of them on one chart and every candle touches something, which means everything looks like a setup and nothing is one.\n\nThis lesson fixes that with a **priority order**. Not a new tool. Just a rule for which of the tools you already have wins when several are in play.\n\n## The point of reversal\n\nFirst, what all these levels are for:\n\n> **Point of Reversal — the protected swing.** The place price is expected to reset, or turn, and the anchor a trade is secured to.\n\nA protected high or protected low is the anchor. Everything below is about finding the best *entry* into that turn.\n\n## Priority one — Fair Value Gaps\n\n> **Fair Value Gap (FVG) — the highest-priority gap between candles for a price reversal or continuation.**\n\nIf a valid FVG (Lesson 7a) sits in the range you are working with, that is your point of interest. Nothing else outranks it.\n\nOne warning attached to it:\n\n> **Do not try to front-run it.**\n\nWait for price to actually reach the gap. Entering early because you expect it to get there is Lesson 14a's mistake in a different costume.\n\n## Priority two — Swing Points\n\nIf there is no gap in the range, drop to the second option: a swing high or swing low.\n\n> **Wait for a swing high or low to be swept out before trading.**\n\nThe swing is not the entry on its own. The *sweep* of it is. That is Lesson 3's liquidity logic and Lesson 14b's relevant-swing filter doing their job at execution level.\n\n### What if an FVG is resting under a swing low?\n\nThis is the case that confuses people, and the answer is clean: the FVG still wins. It is priority one. A gap sitting beneath a swing low is where price is heading after it sweeps the swing, so the sweep is the manipulation and the gap is the destination.\n\n## Priority three — CISD as last resort\n\n> **CISD Retest Level — a last resort retest level when no gaps or swing points exist in the range.**\n\nTwo gates before you get here:\n\n| Gate | Check |\n|---|---|\n| **Gate 1** | Is there a gap? If yes, use it. |\n| **Gate 2** | Is there a swing point? If yes, use it. |\n| **Final option** | Neither exists — use the CISD retest level. |\n\nThe CISD (Lesson 7) always confirms the shift. What is different here is using its *level* as the entry zone, which you only do when the range offers nothing better. It is a fail-safe, not a first choice.\n\nThe 50% principle applies here too: the midpoint of that CISD range is the reference.\n\n## The mechanical trading checklist\n\nThe whole method in one line:\n\n**FVG → Swings → CISD**\n\nWork down the list. Take the first one that exists in your range. Do not mix them, and do not mark all three at once, which is exactly how you end up with too many points and a stop somewhere in the middle of them.\n\n## The fractal model\n\nThe hierarchy is not a separate system. It slots into the fractal model (Module 7): the higher timeframe tells you *where* the reversal should happen, and this checklist tells you *which level inside that zone* to actually use.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-cisd-confirmation.svg",
+          "caption": "Fig: Confirmation & Structure — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating confirmation & structure. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-cisd-confirmation-item-3"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Point of Interest (POI)** — a pre-marked level giving a reason for a trade\n- **Point of reversal** — the protected swing the trade is anchored to\n- **Priority one / two / last resort** — FVG, swing point, CISD retest\n- **Front-running** — entering before price reaches the level\n- **CISD retest level** — the fail-safe entry when the range has no gap and no swing\n\n## Common mistakes\n\n- **Marking every level you know.** The hierarchy exists to stop this.\n- **Front-running the gap** rather than waiting for price to arrive.\n- **Reaching for CISD first** because it is familiar. It is the last resort, by definition."
+        }
+      ],
+      "videoUrl": "/videos/Trading_Point_Hierarchy.mp4",
+      "videoFallbackUrl": null
+    },
+    {
       "id": "12-daily-anchor-points",
       "kcId": "kc-daily-bias",
       "title": "Daily Anchor Points: PDH, PDL and Equilibrium",
@@ -590,6 +652,37 @@
       "videoFallbackUrl": null
     },
     {
+      "id": "13a-kill-zones-and-the-daily-cycle",
+      "kcId": "kc-daily-bias",
+      "title": "Kill Zones & the Daily Cycle",
+      "blocks": [
+        {
+          "kind": "video",
+          "poster": "/posters/kc-daily-bias.svg"
+        },
+        {
+          "kind": "markdown",
+          "md": "## What you'll learn\n\n- What a kill zone is and why time filters setups\n- Session windows for forex and for indices, and why they differ\n- The daily cycle: Asia sets, London breaks, New York reverses\n- The Silver Bullet hour\n- Setting the windows up on a chart\n\n---\n\n## Trading at the wrong times\n\nEvery checklist since Lesson 13 has opened with \"Kill Zone\" and never explained it. This is that lesson.\n\nThe problem it solves: most of the trading day is **choppy price action**, and most of the range is delivered in a few concentrated windows. Trading the quiet hours means paying spread and commission for noise.\n\n> **Killzones — specific time windows with higher volatility for catching larger ranges.**\n\nTime is a filter, exactly like the point-of-interest hierarchy is a filter. A perfect setup at the wrong hour is usually not a setup.\n\n## All times are New York time\n\nBefore any table makes sense:\n\n> **All times shown are in New York time, or Eastern Standard Time.**\n\nBecause of daylight savings, a window pinned to London or your local clock drifts twice a year relative to the New York session, which is where the volume actually is. Set your charts to New York time and leave them there.\n\n## Session windows\n\nThe windows differ by instrument, which is the detail most people miss:\n\n| Session | Forex | Indices |\n|---|---|---|\n| **Asia** | 20:00 – 00:00 | 20:00 – 00:00 |\n| **London** | 02:00 – 05:00 | 02:00 – 05:00 |\n| **New York AM** | opening bell onward | from 09:30, key move often ~10:00 |\n| **New York PM** | — | from ~13:30 |\n\nForex and indices share the Asia and London windows. They separate in New York, because index futures key off the 09:30 cash open while forex does not.\n\nEach session also gets a colour in the video's scheme — London green, NY AM orange, NY PM yellow — which is simply a way to see at a glance which window a candle belongs to.\n\n## The daily cycle — connecting the sessions\n\nThe sessions are not independent. They form a sequence:\n\n| Time (EST) | What happens |\n|---|---|\n| **20:00** | **Asia** begins and sets the stage — builds the range |\n| **02:00** | **London** interacts with Asia liquidity — the breakout |\n| **08:30 – 09:30** | **New York AM** opens and reacts — often the reversal |\n\nRead as one story: **Asian range → London breakout → New York reversal → consolidation.**\n\nThis is the AMD cycle from Lesson 7 laid over the clock. Asia accumulates, London manipulates by running the Asian range, and New York distributes in the true direction.\n\n### The textbook sequence\n\nA clean bullish day looks like:\n\n1. **Sweep the Asia low** — the manipulation\n2. **Displace back into the range** — the shift\n3. **Create an FVG** on that displacement — the point of interest (Lesson 7a)\n4. **Target the Asia high** — the draw on liquidity (Lesson 13)\n\nEvery element there is something you have already learned. The kill zone tells you *when* to expect it.\n\n## The Silver Bullet\n\n> **Silver Bullet — a 1-hour window to find opportunities drawing to a specific liquidity pool.**\n\nRather than watching a three-hour session, you narrow to a single hour and take only setups drawing toward one identified pool. It is the tightest version of the same discipline: fewer windows, fewer levels, fewer trades.\n\n## Setting it up on a chart\n\nThe video walks through configuring a kill zone indicator. The sequence:\n\n| Step | Action |\n|---|---|\n| **1. Add indicator** | An ICT kill zone / pivots indicator |\n| **2. Set timezone** | Ensure the chart is on New York time |\n| **3. Remove labels** | Turn off default text to declutter |\n| **4. Input times** | Set the precise hours for your instrument |\n\nStep 2 is the one that silently breaks everything if skipped. Step 4 matters because, as the table above shows, the correct hours depend on whether you trade forex or indices.\n\n---"
+        },
+        {
+          "kind": "figure",
+          "src": "/figures/kc-daily-bias.svg",
+          "caption": "Fig: Daily Bias — simulated illustration.",
+          "describe": "Text alternative: a simulated candlestick series illustrating daily bias. Prices are generated for teaching purposes and do not represent any real market."
+        },
+        {
+          "kind": "checkQuestion",
+          "itemId": "kc-daily-bias-item-3"
+        },
+        {
+          "kind": "markdown",
+          "md": "## Key terms\n\n- **Kill zone** — a defined window of higher volatility\n- **EST / New York time** — the reference clock for every window\n- **Daily cycle** — Asian range → London breakout → New York reversal\n- **Silver Bullet** — a one-hour window targeting a specific liquidity pool\n- **Session colour coding** — a visual aid for identifying the active window\n\n## Common mistakes\n\n- **Leaving charts on local time.** Every window drifts, twice a year.\n- **Using forex windows on indices.** New York differs; the others do not.\n- **Trading outside the windows** because a setup \"looks good\". Time is part of the setup."
+        }
+      ],
+      "videoUrl": "/videos/Mastering_ICT_Killzones.mp4",
+      "videoFallbackUrl": null
+    },
+    {
       "id": "14-confirming-the-daily-wick",
       "kcId": "kc-daily-bias",
       "title": "Confirming the Daily Wick",
@@ -610,7 +703,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-3"
+          "itemId": "kc-daily-bias-item-4"
         },
         {
           "kind": "markdown",
@@ -641,7 +734,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-4"
+          "itemId": "kc-daily-bias-item-1"
         },
         {
           "kind": "markdown",
@@ -672,7 +765,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-1"
+          "itemId": "kc-daily-bias-item-2"
         },
         {
           "kind": "markdown",
@@ -703,7 +796,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-2"
+          "itemId": "kc-daily-bias-item-3"
         },
         {
           "kind": "markdown",

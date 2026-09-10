@@ -39,7 +39,7 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     title: "Risk & Position Sizing",
     description:
       "Fixed risk, calculated size: why the stop is set by structure and the quantity is the variable that follows.",
-    lessons: ["03a", "03b"],
+    lessons: ["03a", "03b", "03c"],
   },
   {
     id: "kc-reversal-patterns",
@@ -53,14 +53,14 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     title: "Confirmation & Structure",
     description:
       "Prove a turn is real, not a fakeout: CISD, fair value gaps, protected swings, ideal swing points and order blocks.",
-    lessons: ["07", "07a", "08", "09", "10", "11"],
+    lessons: ["07", "07a", "08", "09", "10", "11", "11a"],
   },
   {
     id: "kc-daily-bias",
     title: "Daily Bias",
     description:
       "Decide direction for the day using PDH, PDL and equilibrium — let the wick form, and know what to do when the bias is wrong.",
-    lessons: ["12", "13", "14", "14a", "14b", "15"],
+    lessons: ["12", "13", "13a", "14", "14a", "14b", "15"],
   },
   {
     id: "kc-fractal-model",
