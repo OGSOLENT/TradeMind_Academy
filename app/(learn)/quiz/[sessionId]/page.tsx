@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { collection, doc, getDocs, runTransaction, serverTimestamp, updateDoc } from "firebase/firestore";
+import { applyMasteryUpdates } from "@/lib/firebase/mastery";
+import { QuestionBody, answerFromWorking, freshWorking, promptOf, type Working } from "@/components/learn/question-body";
 import { useQuery } from "@tanstack/react-query";
 import type { Item, Kc } from "@/lib/content/types";
 import { MASTERY_THRESHOLD, initialiseFromPlacement } from "@/lib/bkt";
@@ -19,11 +21,6 @@ import { Kbd } from "@/components/ui/kbd";
 import { Pill } from "@/components/ui/pill";
 import { SegmentedProgress } from "@/components/ui/progress";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
-import { McqOptions } from "@/components/learn/questions/mcq";
-import { NumericInput } from "@/components/learn/questions/numeric";
-import { OrderingList } from "@/components/learn/questions/ordering";
-import { TfConfidence } from "@/components/learn/questions/tf-confidence";
-import { AnnotationChart, type AnnotationValue } from "@/components/learn/questions/annotation";
 import { FeedbackPanel } from "@/components/learn/quiz/feedback-panel";
 import { MasteryHud } from "@/components/learn/quiz/mastery-hud";
 import { WhyPopover } from "@/components/learn/quiz/why-popover";
@@ -33,29 +30,6 @@ import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const COURSE_ID = "trading-foundations";
-
-interface Working {
-  mcq: number | null;
-  multi: number[];
-  numeric: number | null;
-  ordering: number[];
-  annotation: AnnotationValue | null;
-  tf: boolean | null;
-  confidence: number;
-}
-
-function freshWorking(item: Item | undefined): Working {
-  const orderingLength = item?.payload.type === "ordering" ? item.payload.entries.length : 0;
-  return {
-    mcq: null,
-    multi: [],
-    numeric: null,
-    ordering: Array.from({ length: orderingLength }, (_, i) => i),
-    annotation: null,
-    tf: null,
-    confidence: 70,
-  };
-}
 
 export default function QuizPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -72,29 +46,7 @@ export default function QuizPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [s.currentIndex, item?.id]);
 
-  const answerFor = useCallback(
-    (it: Item): LearnerAnswer | null => {
-      switch (it.payload.type) {
-        case "mcq":
-          return working.mcq === null ? null : { type: "mcq", selected: working.mcq };
-        case "multi":
-          return working.multi.length === 0 ? null : { type: "multi", selected: working.multi };
-        case "numeric":
-          return working.numeric === null ? null : { type: "numeric", value: working.numeric };
-        case "ordering":
-          return { type: "ordering", order: working.ordering };
-        case "annotation":
-          return working.annotation === null
-            ? null
-            : { type: "annotation", time: working.annotation.time, price: working.annotation.price };
-        case "tf-confidence":
-          return working.tf === null
-            ? null
-            : { type: "tf-confidence", value: working.tf, confidence: working.confidence };
-      }
-    },
-    [working],
-  );
+  const answerFor = useCallback((it: Item): LearnerAnswer | null => answerFromWorking(it, working), [working]);
 
   const canSubmit = item ? answerFor(item) !== null : false;
 
@@ -169,39 +121,9 @@ export default function QuizPage() {
           return;
         }
 
-        await runTransaction(db, async (tx) => {
-          const ref = doc(db, "users", user.uid, "mastery", COURSE_ID);
-          const snap = await tx.get(ref);
-          const existing = (snap.data()?.kcs ?? {}) as Record<
-            string,
-            { pL: number; attempts: number; lastSeen: number; masteredAt: number | null }
-          >;
-          const history = (snap.data()?.history ?? []) as Array<{
-            ts: number;
-            kcId: string;
-            pL: number;
-          }>;
-          const kcs = { ...existing };
-          const byKc = new Map<string, number>();
-          for (const r of records) byKc.set(r.kcId, (byKc.get(r.kcId) ?? 0) + 1);
-          const newHistory = [...history];
-          for (const [kcId, attemptCount] of byKc) {
-            const prev = kcs[kcId];
-            const pL = s.mastery[kcId] ?? prev?.pL ?? 0;
-            kcs[kcId] = {
-              pL,
-              attempts: (prev?.attempts ?? 0) + attemptCount,
-              lastSeen: Date.now(),
-              masteredAt: prev?.masteredAt ?? (pL >= MASTERY_THRESHOLD ? Date.now() : null),
-            };
-            newHistory.push({ ts: Date.now(), kcId, pL });
-          }
-          tx.set(
-            ref,
-            { kcs, history: newHistory.slice(-200), updatedAt: serverTimestamp() },
-            { merge: true },
-          );
-        });
+        const attempts: Record<string, number> = {};
+        for (const r of records) attempts[r.kcId] = (attempts[r.kcId] ?? 0) + 1;
+        await applyMasteryUpdates(db, user.uid, COURSE_ID, s.mastery, attempts);
       } catch {
         // The responses are already safe in the append-only log. The mastery
         // doc catches up on the next completed session.
@@ -286,78 +208,15 @@ export default function QuizPage() {
               </div>
             </div>
 
-            <h1 className="text-headline-md text-fg-primary">
-              {"question" in item.payload ? item.payload.question : item.payload.statement}
-            </h1>
+            <h1 className="text-headline-md text-fg-primary">{promptOf(item)}</h1>
 
-            {item.payload.type === "mcq" && (
-              <McqOptions
-                options={item.payload.options}
-                selected={working.mcq}
-                onSelect={(i) => setWorking((w) => ({ ...w, mcq: i }))}
-                disabled={s.phase === "feedback"}
-                reveal={
-                  record && item.answerKey.type === "mcq"
-                    ? { correct: item.answerKey.correct, chosen: working.mcq ?? -1 }
-                    : null
-                }
-              />
-            )}
-            {item.payload.type === "multi" && (
-              <McqOptions
-                multi
-                options={item.payload.options}
-                selected={null}
-                onSelect={() => {}}
-                selectedMulti={working.multi}
-                onToggle={(i) =>
-                  setWorking((w) => ({
-                    ...w,
-                    multi: w.multi.includes(i) ? w.multi.filter((x) => x !== i) : [...w.multi, i],
-                  }))
-                }
-                disabled={s.phase === "feedback"}
-              />
-            )}
-            {item.payload.type === "numeric" && (
-              <NumericInput
-                unit={item.payload.unit}
-                min={item.payload.min}
-                max={item.payload.max}
-                step={item.payload.step}
-                value={working.numeric}
-                onChange={(v) => setWorking((w) => ({ ...w, numeric: v }))}
-                disabled={s.phase === "feedback"}
-              />
-            )}
-            {item.payload.type === "ordering" && (
-              <OrderingList
-                entries={item.payload.entries}
-                order={working.ordering}
-                onChange={(order) => setWorking((w) => ({ ...w, ordering: order }))}
-                disabled={s.phase === "feedback"}
-              />
-            )}
-            {item.payload.type === "annotation" && (
-              <AnnotationChart
-                candles={item.payload.candles}
-                describe={item.payload.describe}
-                value={working.annotation}
-                onChange={(v) => setWorking((w) => ({ ...w, annotation: v }))}
-                disabled={s.phase === "feedback"}
-                revealZone={
-                  record && item.answerKey.type === "annotation" ? item.answerKey.zone : null
-                }
-              />
-            )}
-            {item.payload.type === "tf-confidence" && (
-              <TfConfidence
-                value={working.tf}
-                confidence={working.confidence}
-                onChange={(value, confidence) => setWorking((w) => ({ ...w, tf: value, confidence }))}
-                disabled={s.phase === "feedback"}
-              />
-            )}
+            <QuestionBody
+              item={item}
+              working={working}
+              setWorking={(update) => setWorking(update)}
+              disabled={s.phase === "feedback"}
+              graded={!!record}
+            />
 
             {s.phase === "answering" ? (
               <div className="flex items-center justify-end gap-3">

@@ -10,11 +10,16 @@ import type { NodeState } from "@/lib/routing";
 /**
  * The knowledge orb, drawn as a brain.
  *
- * Two hemispheres of fine points make the silhouette, with a fissure down
- * the middle and a little wrinkle in the surface so it reads as cortex and
- * not a balloon. The modules sit inside it as neurons, placed along a path
- * that winds up through the volume in teaching order, so it's still the
- * climb the 2D skill map draws. The prerequisite chain is the main axon: a
+ * The silhouette is a real brain shape, not a balloon: a cerebrum built from
+ * a few overlapping ellipsoids (frontal bulge, temporal lobes, the long
+ * body), a cerebellum tucked under the back and a stem running down from
+ * the middle. I sample stars on the skin of that shape, wrinkle it for the
+ * gyri, darken the stars that fall into the folds so the sulci draw
+ * themselves, and carve the fissure along the top. It opens on the side
+ * view so the first thing you see is unmistakably a brain, then it sways
+ * gently around that view instead of spinning to the back. The modules sit
+ * inside it as neurons, placed along a path that winds up through the
+ * volume in teaching order, so it's still the climb the 2D skill map draws. The prerequisite chain is the main axon: a
  * dim tube for the whole route, a bright one built from the stretch the
  * learner has covered (mean mastery, same as the map), and signal pulses
  * travelling along it, bright where it's lit and faint beyond. Thin
@@ -54,38 +59,116 @@ const TONE: Record<NodeState, string> = {
   locked: "#3b3b4a",
 };
 
-/** Neuron positions: a squashed helix that stays inside the brain volume. */
+/** Neuron positions: a squashed helix that stays inside the cerebrum. */
 function neuronPositions(count: number): THREE.Vector3[] {
   const out: THREE.Vector3[] = [];
   for (let i = 0; i < count; i++) {
     const t = count > 1 ? i / (count - 1) : 0;
     const a = -Math.PI * 0.45 + t * Math.PI * 2.3;
-    out.push(new THREE.Vector3(Math.cos(a) * 1.28, -0.66 + t * 1.32, Math.sin(a) * 0.92));
+    out.push(new THREE.Vector3(Math.cos(a) * 0.62, -0.32 + t * 1.05, Math.sin(a) * 0.95));
   }
   return out;
 }
 
-/** The brain silhouette as points: two wrinkled ellipsoids either side of a fissure. */
-function brainCloud(count: number): Float32Array {
-  const arr = new Float32Array(count * 3);
+/* ---- The brain shape, as a signed distance field ------------------------
+   x runs left to right across the hemispheres, y is up, and -z is the
+   front. Everything below is in those units. */
+
+const _p = new THREE.Vector3();
+
+function sdEllipsoid(p: THREE.Vector3, c: [number, number, number], r: [number, number, number]) {
+  const px = (p.x - c[0]) / r[0];
+  const py = (p.y - c[1]) / r[1];
+  const pz = (p.z - c[2]) / r[2];
+  const k0 = Math.sqrt(px * px + py * py + pz * pz);
+  const qx = px / r[0];
+  const qy = py / r[1];
+  const qz = pz / r[2];
+  const k1 = Math.sqrt(qx * qx + qy * qy + qz * qz);
+  return k1 === 0 ? -Math.min(r[0], r[1], r[2]) : (k0 * (k0 - 1)) / k1;
+}
+
+function sdCapsule(p: THREE.Vector3, a: [number, number, number], b: [number, number, number], r: number) {
+  const pax = p.x - a[0];
+  const pay = p.y - a[1];
+  const paz = p.z - a[2];
+  const bax = b[0] - a[0];
+  const bay = b[1] - a[1];
+  const baz = b[2] - a[2];
+  const h = Math.max(0, Math.min(1, (pax * bax + pay * bay + paz * baz) / (bax * bax + bay * bay + baz * baz)));
+  const dx = pax - bax * h;
+  const dy = pay - bay * h;
+  const dz = paz - baz * h;
+  return Math.sqrt(dx * dx + dy * dy + dz * dz) - r;
+}
+
+/** Distance to the brain surface. Negative inside. */
+function brainSdf(p: THREE.Vector3): number {
+  const body = sdEllipsoid(p, [0, 0.22, 0.1], [1.02, 0.86, 1.32]);
+  const frontal = sdEllipsoid(p, [0, 0.12, -0.78], [0.86, 0.72, 0.78]);
+  const temporal = sdEllipsoid(p, [0, -0.36, -0.3], [0.98, 0.42, 0.92]);
+  const parietal = sdEllipsoid(p, [0, 0.62, 0.35], [0.82, 0.5, 0.95]);
+  const cerebellum = sdEllipsoid(p, [0, -0.6, 0.98], [0.6, 0.4, 0.52]);
+  const stem = sdCapsule(p, [0, -0.35, 0.42], [0, -1.32, 0.72], 0.19);
+  return Math.min(body, frontal, temporal, parietal, cerebellum, stem);
+}
+
+/** The gyri. A field of overlapping waves that wrinkles the surface. */
+function gyri(p: THREE.Vector3): number {
+  return (
+    Math.sin(p.y * 7.5 + p.z * 4.2) * Math.cos(p.z * 6.3 - p.x * 3.1) * 0.55 +
+    Math.sin(p.x * 9.1 + p.y * 5.7) * 0.3 +
+    Math.cos(p.z * 11.2 + p.y * 2.9 + p.x * 4.4) * 0.15
+  );
+}
+
+/**
+ * Stars on the skin of the brain. Rejection sampling: throw random points
+ * at the bounding box and keep the ones that land in a thin shell around
+ * the wrinkled surface. Each star also gets a brightness from the same
+ * wrinkle field, so the folds come out darker and the ridges brighter,
+ * which is what makes it read as cortex instead of a smooth egg.
+ */
+function brainStars(count: number): { positions: Float32Array; colors: Float32Array } {
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const base = new THREE.Color("#8b95ff");
+  const bright = new THREE.Color("#c9d0ff");
+  const tmp = new THREE.Color();
   let i = 0;
-  while (i < count) {
-    const side = i % 2 === 0 ? -1 : 1;
+  let guard = 0;
+  while (i < count && guard < count * 60) {
+    guard++;
+    _p.set((Math.random() - 0.5) * 2.3, -1.45 + Math.random() * 2.75, (Math.random() - 0.5) * 3.1);
+    const g = gyri(_p);
+    const d = brainSdf(_p) + g * 0.04;
+    if (d < -0.035 || d > 0.02) continue;
+    // The longitudinal fissure: a groove along the top of the midline.
+    if (Math.abs(_p.x) < 0.05 && _p.y > -0.05 && _p.z < 0.75) continue;
+    positions[i * 3] = _p.x;
+    positions[i * 3 + 1] = _p.y;
+    positions[i * 3 + 2] = _p.z;
+    // Ridges bright, folds dim.
+    const k = 0.35 + 0.65 * Math.max(0, Math.min(1, (g + 1) / 2));
+    tmp.copy(base).lerp(bright, k * 0.6).multiplyScalar(0.3 + k * 0.9);
+    colors[i * 3] = tmp.r;
+    colors[i * 3 + 1] = tmp.g;
+    colors[i * 3 + 2] = tmp.b;
+    i++;
+  }
+  return { positions: positions.subarray(0, i * 3), colors: colors.subarray(0, i * 3) };
+}
+
+/** A faint field of distant stars around the brain, for the constellation feel. */
+function farStars(count: number): Float32Array {
+  const arr = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const r = 2.6 + Math.random() * 2.2;
     const th = Math.random() * Math.PI * 2;
     const ph = Math.acos(2 * Math.random() - 1);
-    const wrinkle = 1 + 0.045 * Math.sin(ph * 6.5) * Math.cos(th * 5.5) + 0.03 * Math.sin(th * 9);
-    const rx = 1.12 * wrinkle;
-    const ry = 0.92 * wrinkle;
-    const rz = 1.36 * wrinkle;
-    const x = rx * Math.sin(ph) * Math.cos(th);
-    const y = ry * Math.cos(ph);
-    const z = rz * Math.sin(ph) * Math.sin(th);
-    // Keep the fissure open: drop points that would cross the midline.
-    if (side * x < -0.5) continue;
-    arr[i * 3] = x + side * 0.66;
-    arr[i * 3 + 1] = y;
-    arr[i * 3 + 2] = z;
-    i++;
+    arr[i * 3] = r * Math.sin(ph) * Math.cos(th);
+    arr[i * 3 + 1] = r * Math.cos(ph) * 0.7;
+    arr[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
   }
   return arr;
 }
@@ -137,11 +220,13 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
   const glow = useGlowTexture();
   const { invalidate } = useThree();
   const start = useRef<number | null>(null);
+  const sway = useRef(0);
   const [localHover, setLocalHover] = useState<string | null>(null);
   const hovered = hoveredId ?? localHover;
 
   const positions = useMemo(() => neuronPositions(nodes.length), [nodes.length]);
-  const cloud = useMemo(() => brainCloud(2200), []);
+  const stars = useMemo(() => brainStars(7000), []);
+  const far = useMemo(() => farStars(320), []);
 
   // The axon. A dim tube for the whole route, a bright one for the covered
   // stretch, both built from the same Catmull-Rom curve through the neurons.
@@ -193,11 +278,17 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
     if (start.current === null) start.current = state.clock.elapsedTime;
     const t = state.clock.elapsedTime - start.current;
 
-    // Slow turn, paused while hovering, and a lean toward the pointer.
+    // Open on the side view (the brain faces left, like a textbook), then
+    // sway gently around it so it never turns its back on you. Hovering
+    // holds it still, and the pointer adds a small lean.
+    const side = Math.PI / 2;
     if (!reduced) {
-      if (!hovered) g.rotation.y += delta * 0.12;
-      g.rotation.x += (state.pointer.y * -0.16 - g.rotation.x) * 0.05;
-      g.rotation.z += (state.pointer.x * 0.05 - g.rotation.z) * 0.05;
+      const target = hovered ? sway.current : Math.sin(t * 0.22) * 0.55;
+      sway.current += (target - sway.current) * 0.04;
+      g.rotation.y = side + sway.current + state.pointer.x * 0.12;
+      g.rotation.x += (state.pointer.y * -0.14 - g.rotation.x) * 0.05;
+    } else {
+      g.rotation.y = side;
     }
 
     // Entrance: each neuron pops in on its own beat.
@@ -240,12 +331,20 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
 
   return (
     <group ref={group}>
-      {/* The cortex. Two clouds, additive, faint. */}
+      {/* The cortex, as stars on the skin of the brain. */}
       <points>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[cloud, 3]} />
+          <bufferAttribute attach="attributes-position" args={[stars.positions, 3]} />
+          <bufferAttribute attach="attributes-color" args={[stars.colors, 3]} />
         </bufferGeometry>
-        <pointsMaterial size={0.026} color="#8790ea" transparent opacity={0.5} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+        <pointsMaterial size={0.028} vertexColors transparent opacity={0.85} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+      </points>
+      {/* Distant stars, so the brain hangs in a sky rather than a box. */}
+      <points>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[far, 3]} />
+        </bufferGeometry>
+        <pointsMaterial size={0.02} color="#9aa3ff" transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
       </points>
 
       {/* Dendrites */}
@@ -359,7 +458,7 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
                 calculatePosition={clampedPosition}
                 style={{ pointerEvents: "none" }}
               >
-                <div className="num flex items-center gap-2 whitespace-nowrap rounded-pill bg-bg-elevated/90 px-2.5 py-1 text-[11px] text-fg-primary shadow-lift backdrop-blur-sm">
+                <div className="num flex items-center gap-2 whitespace-nowrap rounded-pill bg-bg-elevated/95 px-2.5 py-1 text-[11px] text-fg-primary shadow-lift backdrop-blur-sm">
                   <span className="h-1.5 w-1.5 rounded-pill" style={{ background: tone }} />
                   {node.title}
                   <span style={{ color: tone }}>{Math.round(node.pL * 100)}%</span>
@@ -380,7 +479,7 @@ export function MindOrb(props: MindOrbProps) {
   const reduced = !!useReducedMotion();
   return (
     <Canvas
-      camera={{ position: [0, 0.1, 4.6], fov: 40 }}
+      camera={{ position: [0, 0.05, 5.35], fov: 40 }}
       frameloop={reduced ? "demand" : "always"}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}

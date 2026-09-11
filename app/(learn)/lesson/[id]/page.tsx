@@ -16,6 +16,7 @@ import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Markdown } from "@/components/learn/markdown";
+import { LessonCheck } from "@/components/learn/lesson-check";
 import {
   CheckQuestionBlock,
   FigureBlock,
@@ -181,6 +182,9 @@ export default function LessonPage() {
   const index = siblings?.findIndex((s) => s.id === lesson.id) ?? -1;
   const next = index >= 0 ? siblings?.[index + 1] : undefined;
   const moduleProgress = siblings && siblings.length > 0 && index >= 0 ? (index + 1) / siblings.length : 0;
+  // The inline check's item stays out of the end-of-lesson check, so it
+  // never asks the same question twice.
+  const inlineCheckId = lesson.blocks.find((b) => b.kind === "checkQuestion")?.itemId ?? null;
 
   return (
     <>
@@ -283,6 +287,20 @@ export default function LessonPage() {
             })();
             return <Reveal key={i}>{body}</Reveal>;
           })}
+
+          {/* The check at the end of the lesson. It only asks once you press
+              start, so the reading isn't interrupted by a question you didn't
+              ask for. */}
+          <Reveal>
+            <LessonCheck
+              kcId={lesson.kcId}
+              kcTitle={kc?.title ?? "this module"}
+              lessonId={lesson.id}
+              excludeItemId={inlineCheckId}
+              nextHref={next ? `/lesson/${next.id}` : "/practice"}
+              nextLabel={next ? `Next lesson: ${next.title}` : "Practise this module"}
+            />
+          </Reveal>
 
           <footer className="space-y-8 border-t border-hair pt-8">
             {/* The end-of-lesson mark. The ring and the tick draw themselves in
@@ -446,6 +464,14 @@ export default function LessonPage() {
                       </li>
                     );
                   })}
+                  <li>
+                    <a
+                      href="#check"
+                      className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-accent-bright transition-colors hover:text-fg-primary"
+                    >
+                      Check yourself
+                    </a>
+                  </li>
                 </ol>
               </div>
             )}

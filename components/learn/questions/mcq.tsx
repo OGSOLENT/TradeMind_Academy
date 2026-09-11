@@ -10,6 +10,8 @@ interface McqProps {
   disabled?: boolean;
   /** Once graded, which index was correct. It drives the reveal styling. */
   reveal?: { correct: number; chosen: number } | null;
+  /** The multi-select version: every correct index. Chosen-and-wrong goes amber, missed-and-correct goes teal. */
+  revealSet?: number[] | null;
   /** multi mode uses checkbox semantics instead of radio. */
   multi?: boolean;
   selectedMulti?: number[];
@@ -23,10 +25,12 @@ export function McqOptions({
   onSelect,
   disabled,
   reveal,
+  revealSet,
   multi = false,
   selectedMulti = [],
   onToggle,
 }: McqProps) {
+  const revealing = !!reveal || !!revealSet;
   return (
     <div
       role={multi ? "group" : "radiogroup"}
@@ -35,8 +39,8 @@ export function McqOptions({
     >
       {options.map((opt, i) => {
         const chosen = multi ? selectedMulti.includes(i) : selected === i;
-        const isCorrect = reveal && reveal.correct === i;
-        const isWrongChoice = reveal && chosen && reveal.correct !== i;
+        const isCorrect = revealSet ? revealSet.includes(i) : !!reveal && reveal.correct === i;
+        const isWrongChoice = revealing && chosen && !isCorrect;
         return (
           <button
             key={i}
@@ -48,11 +52,11 @@ export function McqOptions({
               "flex min-h-11 w-full items-center gap-3 rounded-control px-4 py-3 text-left text-sm transition-[color,background-color,box-shadow,transform] duration-200",
               chosen ? "text-fg-primary" : "text-fg-secondary",
               !disabled && "hover:translate-x-0.5 hover:bg-white/5",
-              !reveal && chosen && "bg-accent/15 shadow-[inset_0_0_0_1px_var(--accent)]",
-              !reveal && !chosen && "shadow-hairline",
+              !revealing && chosen && "bg-accent/15 shadow-[inset_0_0_0_1px_var(--accent)]",
+              !revealing && !chosen && "shadow-hairline",
               isCorrect && "bg-mastery/10 text-fg-primary shadow-[inset_0_0_0_1px_var(--mastery)]",
               isWrongChoice && "bg-warning/10 shadow-[inset_0_0_0_1px_var(--warning)]",
-              reveal && !isCorrect && !isWrongChoice && "opacity-60 shadow-hairline",
+              revealing && !isCorrect && !isWrongChoice && "opacity-60 shadow-hairline",
             )}
           >
             <Kbd>{i + 1}</Kbd>
