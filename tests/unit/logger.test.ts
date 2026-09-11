@@ -62,14 +62,14 @@ describe("ResponseLogger", () => {
       send: async () => {
         throw new Error("network down");
       },
-      backoffBaseMs: 100_000, // don't retry during the test
+      backoffBaseMs: 100_000, // so it doesn't retry during the test
     });
     dead.enqueue(makeEvent(1));
     dead.enqueue(makeEvent(2));
     await new Promise((r) => setTimeout(r, 5));
     expect(dead.pending).toBe(2);
 
-    // "refresh": a new logger instance restores the same storage key
+    // A "refresh": a new logger instance restores from the same storage key
     const sent: string[] = [];
     const revived = new ResponseLogger({ send: async (e) => void sent.push(e.itemId) });
     expect(revived.pending).toBe(2);

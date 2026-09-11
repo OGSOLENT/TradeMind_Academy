@@ -2,9 +2,10 @@ import { test } from "@playwright/test";
 import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
 /**
- * Report figure capture. Not a test of behaviour: it walks the real adaptive
- * journey and saves the screens the dissertation reproduces as figures, so
- * the figures always match the current artefact rather than a July build.
+ * Report figure capture. This isn't a test of behaviour. It walks the real
+ * adaptive journey and saves the screens the dissertation reproduces as
+ * figures, so the figures always match the current artefact rather than
+ * some July build.
  *
  *   npx playwright test tests/e2e/report-screens.spec.ts --project=desktop
  */
@@ -36,7 +37,7 @@ test.describe("report figures", () => {
     await page.waitForTimeout(600);
     await page.screenshot({ path: `${OUT}/04-placement.png` });
 
-    // Mixed placement: 6 right, 3 wrong, so the starting map isn't flat.
+    // A mixed placement, six right and three wrong, so the starting map isn't flat.
     const pattern = [true, true, false, true, true, false, true, false, true];
     for (const c of pattern) await answerCurrent(page, c);
     await page.getByText("Your starting map.").waitFor({ timeout: 20_000 });
@@ -66,11 +67,12 @@ test.describe("report figures", () => {
     await page.screenshot({ path: `${OUT}/10-why-this-question.png` });
     await page.keyboard.press("Escape");
 
-    // One wrong answer to capture the amber feedback state.
+    // One wrong answer, to capture the amber feedback state.
     const type = await page.getByTestId("question-type").getAttribute("data-item-id");
     if (type) {
-      // answerCurrent submits AND continues; capture feedback by submitting manually is
-      // renderer-specific, so instead capture the post-answer HUD after a wrong answer.
+      // answerCurrent submits AND continues. Capturing the feedback by submitting
+      // manually depends on the renderer, so instead I capture the post-answer
+      // HUD after a wrong answer.
       await answerCurrent(page, false);
       await page.waitForTimeout(600);
       await page.screenshot({ path: `${OUT}/11-after-wrong.png` });

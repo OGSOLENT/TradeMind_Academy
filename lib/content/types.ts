@@ -1,6 +1,7 @@
 /**
- * Content-domain types shared by the app, the seed script, and tests.
- * Mirrors the Firestore data model in docs/BUILD_PROMPT.md §4.
+ * The content-domain types shared by the app, the seed script and the
+ * tests. They mirror the Firestore data model in docs/BUILD_PROMPT.md
+ * section 4.
  */
 
 export type Difficulty = "easy" | "med" | "hard";
@@ -28,7 +29,7 @@ export type LessonBlock =
       kind: "figure";
       src: string;
       caption: string;
-      /** "Describe this chart" text alternative — required on every figure. */
+      /** The "Describe this chart" text alternative. Required on every figure. */
       describe: string;
     }
   | { kind: "video"; poster: string }
@@ -43,7 +44,7 @@ export interface Lesson {
   videoFallbackUrl: string | null;
 }
 
-/** Payload shapes per item type. Placeholder copy — structure is canonical. */
+/** The payload shape for each item type. */
 export type ItemPayload =
   | { type: "mcq"; question: string; options: string[] }
   | { type: "multi"; question: string; options: string[] }
@@ -52,7 +53,7 @@ export type ItemPayload =
   | {
       type: "annotation";
       question: string;
-      /** OHLC series rendered by lightweight-charts (simulated data only). */
+      /** The OHLC series lightweight-charts renders. Simulated data only. */
       candles: Array<{ time: string; open: number; high: number; low: number; close: number }>;
       describe: string;
     }

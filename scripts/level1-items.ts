@@ -1,7 +1,7 @@
 /**
- * Level-1 question bank — authored from the real curriculum in
- * content/lessons/*.md. Eight items per knowledge component, spanning all six
- * question types. Every chart series is simulated (guardrail §7.1).
+ * The Level-1 question bank, written from the real curriculum in
+ * content/lessons/*.md. Eight items per knowledge component, covering all
+ * six question types. Every chart series in here is simulated (guardrail 7.1).
  */
 import type { AnswerKey, Difficulty, ItemPayload, ItemType } from "../lib/content/types";
 
@@ -14,7 +14,7 @@ export interface ItemSeed {
   isPretestEligible: boolean;
 }
 
-/** Deterministic simulated OHLC series for annotation questions. */
+/** A deterministic simulated OHLC series for the annotation questions. */
 function series(seed: number, drift: number) {
   const out: Array<{ time: string; open: number; high: number; low: number; close: number }> = [];
   let price = 100;
@@ -324,7 +324,7 @@ export const ITEMS: Record<string, ItemSeed[]> = {
   ],
 
 
-  // ── Module 3 — Risk & Position Sizing ───────────────────────────────────
+  // ── Module 3: Risk & Position Sizing ────────────────────────────────────
   "kc-risk-sizing": [
     mcq(
       "easy",

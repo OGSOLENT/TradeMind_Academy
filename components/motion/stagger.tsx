@@ -7,12 +7,12 @@ import { ease, stagger } from "@/lib/motion";
 /**
  * Page entrance choreography.
  *
- * The design system specifies entrances as "fade + 12–24px rise, stagger 0.06,
- * max 8 children" (§3) — this is that rule, made reusable so every page opens
- * the same way instead of snapping into place.
+ * The design system says entrances are "fade plus a 12 to 24px rise, stagger
+ * 0.06, max 8 children" (section 3). This is that rule made reusable, so
+ * every page opens the same way instead of snapping into place.
  *
- * Under reduced motion the rise collapses to a 150ms fade with no stagger, so
- * content still arrives but nothing travels.
+ * Under reduced motion the rise collapses to a 150ms fade with no stagger.
+ * Content still arrives, nothing travels.
  */
 
 export function Stagger({
@@ -27,10 +27,10 @@ export function Stagger({
 >) {
   const reduced = useReducedMotion();
 
-  // Variants only reach child *motion* components, so by default each direct
-  // child is wrapped in a StaggerItem. Callers that already wrap their own
-  // children (the dashboard, which needs layout classes on the items) pass
-  // autoWrap={false}.
+  // Variants only propagate to child *motion* components, so by default I
+  // wrap each direct child in a StaggerItem. Callers that already wrap their
+  // own children (the dashboard, which needs layout classes on the items)
+  // pass autoWrap={false}.
   const content = autoWrap
     ? Children.map(children, (child) =>
         isValidElement(child) ? <StaggerItem>{child}</StaggerItem> : child,
@@ -85,8 +85,9 @@ export function StaggerItem({
 }
 
 /**
- * Scroll-triggered reveal for long reading columns (lessons, legal). Fires
- * once, when the block is a little way into the viewport.
+ * A scroll-triggered reveal for long reading columns (lessons, legal, the
+ * landing page). It fires once, when the block is a little way into the
+ * viewport.
  */
 export function Reveal({
   children,

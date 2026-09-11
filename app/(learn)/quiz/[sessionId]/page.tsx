@@ -128,7 +128,7 @@ export default function QuizPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [s, item, canSubmit, submit]);
 
-  // ---- Completion: mastery writes (single-doc transaction, §4) ------------
+  // ---- Completion: the mastery writes (one doc, one transaction, section 4) ----
   useEffect(() => {
     if (s.phase !== "complete" || !user || !s.sessionId || finishedRef.current) return;
     finishedRef.current = true;
@@ -142,7 +142,7 @@ export default function QuizPage() {
         });
 
         if (s.sessionType === "placement") {
-          // Placement finalisation: initialise pL0 per KC from the evidence.
+          // Finishing a placement: initialise pL0 per KC from what I just saw.
           const kcsSnap = await getDocs(collection(db, "kcs"));
           const kcIds = kcsSnap.docs.map((d) => d.id);
           const initial = initialiseFromPlacement(
@@ -199,8 +199,8 @@ export default function QuizPage() {
           );
         });
       } catch {
-        // Responses are already safe in the append-only log; mastery doc
-        // reconciles on the next completed session.
+        // The responses are already safe in the append-only log. The mastery
+        // doc catches up on the next completed session.
       }
     })();
   }, [s.phase, user, s.sessionId, s.answers, s.mastery, s.sessionType]);
@@ -250,7 +250,7 @@ export default function QuizPage() {
         <Link
           href="/dashboard"
           aria-label="Exit session"
-          className="flex h-11 w-11 items-center justify-center rounded-control text-fg-muted hover:bg-white/5 hover:text-fg-primary"
+          className="flex h-11 w-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-200 hover:bg-white/5 hover:text-fg-primary"
         >
           ✕
         </Link>
@@ -387,7 +387,7 @@ export default function QuizPage() {
   );
 }
 
-/** Placement finish: the model-initialization moment. */
+/** The end of placement: the model-initialisation moment. */
 function PlacementComplete() {
   const router = useRouter();
   const s = useQuizSession();
@@ -424,7 +424,8 @@ function SessionSummary() {
   const records = Object.values(s.answers);
   const correct = records.filter((r) => r.correct).length;
 
-  // Unlock detection needs the FULL prereq graph, not just the session's KCs.
+  // Unlock detection needs the FULL prerequisite graph, not just the KCs
+  // that happened to be in this session.
   const { data: allKcs } = useQuery({
     queryKey: ["kcs", COURSE_ID],
     queryFn: async () => {
@@ -480,7 +481,7 @@ function SessionSummary() {
         {perKc.map(([kcId, { before, after }]) => (
           <div
             key={kcId}
-            className="flex items-center justify-between rounded-control bg-bg-elevated-veil px-4 py-3 shadow-edge-lit"
+            className="flex items-center justify-between rounded-control bg-bg-elevated-veil px-4 py-3 shadow-edge-lit transition-[background-color,box-shadow] duration-200 hover:bg-bg-elevated hover:shadow-lift"
           >
             <span className="text-sm capitalize text-fg-secondary">
               {kcId.replace("kc-", "").replaceAll("-", " ")}

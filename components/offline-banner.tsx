@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-/** Amber banner while offline — answers keep queueing, nothing is lost. */
+/** The amber banner for when you're offline. Answers keep queueing, nothing gets lost. */
 export function OfflineBanner() {
   const [offline, setOffline] = useState(false);
 

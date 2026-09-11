@@ -18,7 +18,7 @@ import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
-/** Mini candle pair rendered from the live CSS vars — the colour-blind preview. */
+/** A mini candle pair drawn from the live CSS vars. This is the colour-blind preview. */
 function CandlePreview() {
   return (
     <svg width="72" height="44" viewBox="0 0 72 44" aria-hidden="true" className="shrink-0">
@@ -96,7 +96,7 @@ export default function SettingsPage() {
       return next;
     },
     onMutate: async (patch) => {
-      // Optimistic: the SettingsApplier reads this cache.
+      // Optimistic update, because the SettingsApplier reads this cache.
       queryClient.setQueryData(["profile", user?.uid], (old: unknown) =>
         old && typeof old === "object"
           ? { ...old, settings: { ...(old as { settings: UserSettings }).settings, ...patch } }

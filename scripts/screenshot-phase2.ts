@@ -1,6 +1,6 @@
 /**
- * Capture Phase 2 report screenshots by driving the real sign-up → consent →
- * lesson journey against the running dev server + emulators.
+ * Capture the Phase 2 report screenshots by driving the real journey, sign-up
+ * to consent to lesson, against the running dev server and emulators.
  * Run: npx tsx scripts/screenshot-phase2.ts
  */
 import { chromium } from "@playwright/test";

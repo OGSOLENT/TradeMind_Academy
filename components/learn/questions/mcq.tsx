@@ -8,15 +8,15 @@ interface McqProps {
   selected: number | null;
   onSelect(i: number): void;
   disabled?: boolean;
-  /** After grading: which index was correct (styles the reveal). */
+  /** Once graded, which index was correct. It drives the reveal styling. */
   reveal?: { correct: number; chosen: number } | null;
-  /** multi mode renders checkboxes semantics instead of radio. */
+  /** multi mode uses checkbox semantics instead of radio. */
   multi?: boolean;
   selectedMulti?: number[];
   onToggle?(i: number): void;
 }
 
-/** Shared option-list renderer for MCQ and multi-select. */
+/** The option list shared by MCQ and multi-select. */
 export function McqOptions({
   options,
   selected,
@@ -45,9 +45,9 @@ export function McqOptions({
             disabled={disabled}
             onClick={() => (multi ? onToggle?.(i) : onSelect(i))}
             className={cn(
-              "flex min-h-11 w-full items-center gap-3 rounded-control px-4 py-3 text-left text-sm transition-colors duration-200",
+              "flex min-h-11 w-full items-center gap-3 rounded-control px-4 py-3 text-left text-sm transition-[color,background-color,box-shadow,transform] duration-200",
               chosen ? "text-fg-primary" : "text-fg-secondary",
-              !disabled && "hover:bg-white/5",
+              !disabled && "hover:translate-x-0.5 hover:bg-white/5",
               !reveal && chosen && "bg-accent/15 shadow-[inset_0_0_0_1px_var(--accent)]",
               !reveal && !chosen && "shadow-hairline",
               isCorrect && "bg-mastery/10 text-fg-primary shadow-[inset_0_0_0_1px_var(--mastery)]",

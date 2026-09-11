@@ -1,12 +1,13 @@
 import { Fragment } from "react";
 
 /**
- * Minimal markdown renderer for lesson blocks.
+ * A minimal markdown renderer for lesson blocks.
  *
- * Supported subset (a contract, not a limitation — lesson copy is authored
- * in-house): h2/h3, paragraphs, bullet and numbered lists, blockquotes
- * (used for the definition callouts), pipe tables, `code`, **bold**, *em*.
- * Tables scroll horizontally on their own so the page body never does.
+ * It handles a fixed subset, and I think of that as a contract rather than a
+ * limitation because I write the lesson copy myself: h2 and h3, paragraphs,
+ * bullet and numbered lists, blockquotes (the definition callouts), pipe
+ * tables, `code`, **bold** and *em*. Tables scroll sideways on their own so
+ * the page body never has to.
  */
 
 function inline(text: string, key: number) {
@@ -37,7 +38,7 @@ function inline(text: string, key: number) {
   );
 }
 
-/** A pipe-table row split into trimmed cells. */
+/** One pipe-table row, split into trimmed cells. */
 function cells(line: string): string[] {
   return line
     .replace(/^\||\|$/g, "")

@@ -31,7 +31,7 @@ interface AnnotationProps {
   value: AnnotationValue | null;
   onChange(v: AnnotationValue): void;
   disabled?: boolean;
-  /** After grading: the correct zone to reveal. */
+  /** Once graded, the correct zone to reveal. */
   revealZone?: { from: string; to: string; priceLow: number; priceHigh: number } | null;
 }
 
@@ -45,10 +45,11 @@ function timeToString(t: Time): string {
 }
 
 /**
- * Chart-annotation question: tap the chart to drop a marker; on feedback the
- * correct zone is revealed as a translucent overlay. Simulated data only —
- * charts read --bull/--bear so colour-blind mode swaps automatically.
- * A "Describe this chart" text alternative accompanies every chart (§7.4).
+ * The chart-annotation question. Tap the chart to drop a marker, and once
+ * you've answered the correct zone shows up as a translucent overlay.
+ * Simulated data only. The chart reads --bull and --bear, so colour-blind
+ * mode swaps the candles automatically. And every chart carries a "Describe
+ * this chart" text alternative (guardrail 7.4).
  */
 export function AnnotationChart({
   candles,
@@ -121,7 +122,7 @@ export function AnnotationChart({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candles]);
 
-  // Learner marker
+  // The learner's marker
   useEffect(() => {
     const series = seriesRef.current;
     if (!series) return;
@@ -140,7 +141,7 @@ export function AnnotationChart({
     return () => markers.detach();
   }, [value]);
 
-  // Correct-zone reveal overlay
+  // The correct-zone overlay
   useEffect(() => {
     const chart = chartRef.current;
     const series = seriesRef.current;

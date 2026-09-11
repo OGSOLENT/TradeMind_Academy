@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { pressScale, spring } from "@/lib/motion";
 import { CardsIcon, ConstellationIcon, HomeIcon, TargetIcon, UserIcon } from "./icons";
@@ -16,11 +16,13 @@ const tabs = [
 ] as const;
 
 /**
- * Mobile bottom tab bar (from trademind_dashboard_mobile) with the raised
- * Practice FAB in the centre slot. Hidden on md+ where GlassNav takes over.
+ * The mobile bottom tab bar (from trademind_dashboard_mobile), with the raised
+ * Practice FAB in the middle slot. It hides at md and up, where GlassNav takes
+ * over. A small teal dot springs along under whichever tab is active.
  */
 export function TabBar() {
   const pathname = usePathname();
+  const reduced = useReducedMotion();
   return (
     <nav
       aria-label="Primary"
@@ -47,12 +49,20 @@ export function TabBar() {
             href={href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-control px-3 py-1.5 transition-colors duration-200",
+              "relative isolate flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-control px-3 py-1.5 transition-colors duration-200",
               active ? "text-mastery-bright" : "text-fg-secondary",
             )}
           >
             <Icon />
             <span className="text-label-caps uppercase tracking-wider">{label}</span>
+            {active && (
+              <motion.span
+                layoutId="tab-bar-active"
+                transition={reduced ? { duration: 0.15 } : spring.ui}
+                className="absolute -bottom-0.5 h-1 w-1 rounded-pill bg-mastery-bright shadow-[0_0_8px_var(--mastery-glow)]"
+                aria-hidden="true"
+              />
+            )}
           </Link>
         );
       })}

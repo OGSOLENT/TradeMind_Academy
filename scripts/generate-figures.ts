@@ -1,7 +1,7 @@
 /**
- * Generate placeholder figure + poster SVGs for the Level-1 lessons.
- * Simple branded frames with simulated candle glyphs — replaced by real
- * figures when the author supplies copy. Run: npx tsx scripts/generate-figures.ts
+ * Generate placeholder figure and poster SVGs for the Level-1 lessons.
+ * Simple branded frames with simulated candle glyphs. Real figures replace
+ * them as I supply them. Run: npx tsx scripts/generate-figures.ts
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import type { Level1Content } from "../lib/content/types";

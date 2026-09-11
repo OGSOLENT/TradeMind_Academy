@@ -21,7 +21,7 @@ import dynamic from "next/dynamic";
 import type { HistoryPoint } from "@/components/learn/mastery-chart";
 import { cn } from "@/lib/utils";
 
-// lightweight-charts is heavy and below the fold — load it lazily.
+// lightweight-charts is heavy and sits below the fold, so I load it lazily.
 const MasteryChart = dynamic(
   () => import("@/components/learn/mastery-chart").then((m) => m.MasteryChart),
   { ssr: false, loading: () => <Skeleton className="h-[200px] w-full rounded-card" /> },
@@ -90,7 +90,8 @@ export default function DashboardPage() {
     [data],
   );
 
-  // Static header is server-rendered: it's the page's LCP element and its h1.
+  // The header is static and renders on the server. It's the page's LCP
+  // element and its h1, so it has to be there before anything else.
   const header = (
     <header>
       <h1 className="text-display-lg-mobile text-fg-primary">Your dashboard</h1>
@@ -101,7 +102,7 @@ export default function DashboardPage() {
   );
 
   if (isPending || !data) {
-    // Skeleton dimensions mirror the loaded layout exactly — CLS gate.
+    // The skeleton mirrors the loaded layout to the pixel. That's the CLS gate.
     return (
       <div className="mx-auto max-w-4xl space-y-6">
         {header}
@@ -128,7 +129,7 @@ export default function DashboardPage() {
     ([, st]) => st.pL < MASTERY_THRESHOLD && st.attempts > 0 && Date.now() - st.lastSeen > 3 * DAY_MS,
   );
 
-  // Activity strip: sessions per day, last 7 days.
+  // The activity strip: sessions per day over the last seven days.
   const days = Array.from({ length: 7 }, (_, i) => {
     const start = new Date();
     start.setHours(0, 0, 0, 0);
@@ -146,7 +147,7 @@ export default function DashboardPage() {
   return (
     <Stagger autoWrap={false} className="mx-auto max-w-4xl space-y-6">
       <StaggerItem>{header}</StaggerItem>
-      {/* Continue-learning hero */}
+      {/* The continue-learning hero */}
       <StaggerItem>
       <Card level="elevated" spotlight className="flex min-h-[240px] flex-col items-center gap-6 p-8 sm:flex-row">
         {noModel ? (
@@ -250,7 +251,7 @@ export default function DashboardPage() {
         </Card>
       </StaggerItem>
 
-      {/* Mastery over time */}
+      {/* Mastery over time, one KC at a time */}
       <StaggerItem>
       <Card level="elevated" className="p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -263,10 +264,10 @@ export default function DashboardPage() {
                 aria-selected={chartKc === kc.id}
                 onClick={() => setSelectedKc(kc.id)}
                 className={cn(
-                  "whitespace-nowrap rounded-pill px-3 py-1.5 text-label-caps uppercase tracking-wider transition-colors",
+                  "whitespace-nowrap rounded-pill px-3 py-1.5 text-label-caps uppercase tracking-wider transition-[color,background-color,box-shadow] duration-200",
                   chartKc === kc.id
-                    ? "bg-mastery/10 text-mastery-bright"
-                    : "bg-white/5 text-fg-secondary hover:text-fg-primary",
+                    ? "bg-mastery/10 text-mastery-bright shadow-[inset_0_0_0_1px_var(--mastery-glow)]"
+                    : "bg-white/5 text-fg-secondary hover:bg-white/10 hover:text-fg-primary",
                 )}
               >
                 {kc.title}

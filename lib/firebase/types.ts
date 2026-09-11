@@ -1,6 +1,6 @@
 import type { Timestamp } from "firebase/firestore";
 
-/** users/{uid} — BUILD_PROMPT §4. */
+/** The users/{uid} document, per BUILD_PROMPT section 4. */
 export interface UserProfile {
   displayName: string;
   createdAt: Timestamp;

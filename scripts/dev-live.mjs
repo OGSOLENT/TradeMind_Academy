@@ -1,14 +1,15 @@
 /**
- * Hot-reload dev server against the LIVE Firebase project.
+ * A hot-reload dev server against the LIVE Firebase project.
  *
- *   npm run dev:live        → http://localhost:3001, real Google sign-in
+ *   npm run dev:live        (http://localhost:3001, real Google sign-in)
  *
- * `npm run dev` is deliberately pinned to the emulator so test accounts can
+ * `npm run dev` is pinned to the emulator on purpose, so test accounts can
  * never reach the research dataset. This script is the one sanctioned way
- * round that: it loads .env.production.local before Next reads its own env
- * files (Next never overwrites a variable that is already set), so the app
+ * round that. It loads .env.production.local before Next reads its own env
+ * files (Next never overwrites a variable that's already set), so the app
  * connects to trademind-academy while keeping hot reload. Anything you do
- * here lands in the real database. The in-app badge says so.
+ * here lands in the real database, so the warning below is the only thing
+ * standing between you and that.
  */
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -30,7 +31,7 @@ console.log(
 );
 console.log("     Every account you create here is real. Use npm run dev for throwaway testing.\n");
 
-process.env.NEXT_DIST_DIR = ".next-live"; // own build folder, see next.config.mjs
+process.env.NEXT_DIST_DIR = ".next-live"; // its own build folder, see next.config.mjs
 const port = process.env.PORT ?? "3001";
 const child = spawn("npx", ["next", "dev", "-p", port], { stdio: "inherit", env: process.env });
 child.on("exit", (code) => process.exit(code ?? 0));

@@ -17,7 +17,7 @@ export interface TabsProps {
   className?: string;
 }
 
-/** Tab strip with a spring-animated underline (shared layout). */
+/** A tab strip whose underline springs between tabs (shared layout animation). */
 export function Tabs({ items, defaultTab, className }: TabsProps) {
   const [active, setActive] = useState(defaultTab ?? items[0]?.id);
   const groupId = useId();
@@ -46,7 +46,7 @@ export function Tabs({ items, defaultTab, className }: TabsProps) {
                 <motion.span
                   layoutId={`${groupId}-underline`}
                   transition={spring.ui}
-                  className="absolute inset-x-2 -bottom-px h-0.5 rounded-pill bg-accent"
+                  className="absolute inset-x-2 -bottom-px h-0.5 rounded-pill bg-accent shadow-[0_0_8px_var(--accent-glow)]"
                 />
               )}
             </button>

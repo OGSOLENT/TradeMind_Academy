@@ -9,13 +9,14 @@ import { grade, type LearnerAnswer } from "./grade";
 import { getLogger } from "@/lib/logging";
 
 /**
- * Quiz-session state (Zustand + localStorage persistence: refresh resumes,
- * offline keeps working — the full item pool is local).
+ * Quiz-session state. Zustand with localStorage persistence, so a refresh
+ * resumes where you were and offline keeps working because the whole item
+ * pool is local.
  *
- * Adaptive sessions select each next item live through /lib/routing:
- * lowest-mastery unlocked KC → difficulty ladder → never-repeat, with two
- * consecutive wrongs forcing remediation. Every selection's reason is kept
- * for the "Why this question?" popover.
+ * Adaptive sessions pick each next item live through /lib/routing: the
+ * lowest-mastery unlocked KC, then the difficulty ladder, never repeating,
+ * with two wrongs in a row forcing remediation. I keep the reason behind
+ * every selection for the "Why this question?" popover.
  */
 
 export interface AnswerRecord {
@@ -35,9 +36,9 @@ interface QuizSessionState {
   uid: string | null;
   sessionId: string | null;
   sessionType: SessionType;
-  /** Items asked so far, in order (grows adaptively). */
+  /** The items asked so far, in order. It grows as the session adapts. */
   items: Item[];
-  /** Candidate pool for adaptive selection (empty for fixed sessions). */
+  /** The candidate pool for adaptive selection. Empty for fixed sessions. */
   pool: Item[];
   kcs: Kc[];
   targetLength: number;
@@ -51,7 +52,7 @@ interface QuizSessionState {
   phase: "answering" | "feedback" | "complete";
   direction: 1 | -1;
 
-  /** Fixed sequence (placement). */
+  /** A fixed sequence, which is what placement uses. */
   startFixed(
     uid: string,
     sessionId: string,
@@ -59,7 +60,7 @@ interface QuizSessionState {
     items: Item[],
     mastery: Record<string, number>,
   ): void;
-  /** Adaptive session: routing picks every item. */
+  /** An adaptive session, where routing picks every item. */
   startAdaptive(
     uid: string,
     sessionId: string,
@@ -88,7 +89,7 @@ function selectNext(s: QuizSessionState): { item: Item; reason: SelectionReason 
     consecutiveWrong: s.consecutiveWrong[askIn] ?? 0,
   });
   if (sel) return sel;
-  // Target KC exhausted: fall back to any KC with items left.
+  // The target KC has run out. Fall back to any KC with items left.
   for (const kc of s.kcs) {
     const alt = nextItem(s.pool, kc.id, s.mastery[kc.id] ?? DEFAULT_PARAMS.pL0, {
       usedItemIds: s.items.map((i) => i.id),
@@ -224,7 +225,7 @@ export const useQuizSession = create<QuizSessionState>()(
           set({ currentIndex: s.currentIndex + 1, phase: "answering", direction: 1, shownAt: Date.now() });
           return;
         }
-        // Adaptive: choose the next item now.
+        // Adaptive session, so choose the next item now.
         const sel = selectNext(s);
         if (!sel) {
           set({ phase: "complete" });

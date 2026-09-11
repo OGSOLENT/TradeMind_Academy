@@ -1,4 +1,4 @@
-/** Inline stroke icons for shell navigation (no icon-font dependency). */
+/** Inline stroke icons for the shell navigation. No icon font, no extra dependency. */
 
 type IconProps = React.SVGAttributes<SVGSVGElement>;
 

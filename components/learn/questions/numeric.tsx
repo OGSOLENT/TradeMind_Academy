@@ -13,7 +13,7 @@ interface NumericProps {
   disabled?: boolean;
 }
 
-/** Numeric answer with stepper buttons (44px targets). */
+/** A numeric answer with stepper buttons either side. 44px targets. */
 export function NumericInput({ unit, min, max, step, value, onChange, disabled }: NumericProps) {
   const v = value ?? min;
   const set = (next: number) => onChange(clamp(Math.round(next / step) * step, min, max));

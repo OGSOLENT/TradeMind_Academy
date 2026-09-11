@@ -2,7 +2,7 @@
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 
-/** Google "G" mark, drawn inline so it works offline and in the emulator. */
+/** The Google "G", drawn inline so it works offline and inside the emulator. */
 function GoogleMark() {
   return (
     <svg aria-hidden="true" viewBox="0 0 18 18" className="h-4 w-4 shrink-0">
@@ -35,7 +35,7 @@ export function GoogleButton({ children = "Continue with Google", ...props }: Bu
   );
 }
 
-/** The "or" rule between the email form and the Google button. */
+/** The little "or" rule that sits between the email form and the Google button. */
 export function OrDivider() {
   return (
     <div className="my-6 flex items-center gap-3" aria-hidden="true">

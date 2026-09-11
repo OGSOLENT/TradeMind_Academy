@@ -12,7 +12,7 @@ export default defineConfig({
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
-      // Guardrail §7.3: the BKT math must hold 100% unit coverage.
+      // Guardrail 7.3: the BKT maths has to hold 100% unit coverage.
       include: ["lib/**/*.ts"],
     },
   },

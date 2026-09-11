@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
 /**
- * Vaul-style bottom sheet, built in-house (no extra dependency).
- * Snap points at 40% and 90% of the viewport; drag between them, drag down
- * past the lower snap (or flick) to dismiss. While open, any element marked
- * `data-drawer-scale` (the app shell) is scaled to 0.97 for depth.
+ * A Vaul-style bottom sheet I built myself rather than pulling in another
+ * dependency. It snaps at 40% and 90% of the viewport. You can drag between
+ * the two, and dragging down past the lower snap (or flicking) dismisses it.
+ * While it's open, anything marked `data-drawer-scale` (the app shell) is
+ * scaled back to 0.97 so the page feels like it's sitting behind the sheet.
  */
 
 export interface DrawerProps {
@@ -17,7 +18,7 @@ export interface DrawerProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
-  /** Fractions of viewport height, ascending. */
+  /** Fractions of the viewport height, lowest first. */
   snapPoints?: [number, number];
   className?: string;
 }
@@ -31,7 +32,7 @@ export function Drawer({
   className,
 }: DrawerProps) {
   const reduced = useReducedMotion();
-  const [snap, setSnap] = useState(0); // index into snapPoints
+  const [snap, setSnap] = useState(0); // an index into snapPoints
   const [viewportH, setViewportH] = useState(0);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export function Drawer({
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Depth effect on the shell behind the sheet.
+  // The depth effect on the shell behind the sheet.
   useEffect(() => {
     const shell = document.querySelector<HTMLElement>("[data-drawer-scale]");
     if (!shell) return;
@@ -58,7 +59,7 @@ export function Drawer({
 
   const maxSnap = snapPoints[snapPoints.length - 1] as number;
   const sheetH = viewportH * maxSnap;
-  // y offset from the fully-open position for the current snap
+  // How far down from fully open the sheet sits at a given snap.
   const yFor = (index: number) => sheetH - viewportH * (snapPoints[index] as number);
 
   return (
@@ -92,7 +93,8 @@ export function Drawer({
               if (flickDown && snap === 0) return onClose();
               if (flickDown) return setSnap(0);
               if (flickUp) return setSnap(snapPoints.length - 1);
-              // settle to nearest snap, or close if dragged well below the lowest
+              // Otherwise settle on the nearest snap, or close if it's been
+              // dragged well below the lowest one.
               const positions = snapPoints.map((_, i) => yFor(i));
               const lowest = positions[0] as number;
               if (y > lowest + viewportH * 0.12) return onClose();

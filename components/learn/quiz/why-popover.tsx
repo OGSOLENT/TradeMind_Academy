@@ -6,9 +6,9 @@ import type { SelectionReason } from "@/lib/routing";
 import { spring } from "@/lib/motion";
 
 /**
- * "Why this question?" — surfaces the routing engine's real decision values.
- * The visible mind: nothing here is invented for display; it's the exact
- * SelectionReason the engine acted on.
+ * "Why this question?" It shows the routing engine's real decision values.
+ * This is the visible mind in practice: nothing here is made up for display.
+ * It's the exact SelectionReason the engine acted on.
  */
 export function WhyPopover({ reason }: { reason: SelectionReason }) {
   const [open, setOpen] = useState(false);

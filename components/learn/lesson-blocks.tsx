@@ -15,7 +15,7 @@ import { Markdown } from "./markdown";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
-/** Figure with the mandatory "Describe this chart" text alternative toggle. */
+/** A figure with the "Describe this chart" text alternative. Every figure gets one, no exceptions. */
 export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "figure" }> }) {
   const [describe, setDescribe] = useState(false);
   return (
@@ -23,7 +23,7 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
       <div className="relative overflow-hidden rounded-card bg-bg-elevated shadow-edge-lit">
         <Image
           src={block.src}
-          alt="" /* the visible caption + describe toggle carry the description */
+          alt="" /* the visible caption and the describe toggle carry the description */
           width={1200}
           height={520}
           className="h-auto w-full"
@@ -32,7 +32,7 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
         <button
           onClick={() => setDescribe((d) => !d)}
           aria-expanded={describe}
-          className="absolute right-3 top-3 rounded-pill bg-bg-deep/80 px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm hover:bg-bg-deep"
+          className="absolute right-3 top-3 rounded-pill bg-bg-deep/80 px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm transition-[background-color,box-shadow] duration-200 hover:bg-bg-deep hover:shadow-[inset_0_0_0_1px_var(--mastery-glow)]"
         >
           {describe ? "Hide description" : "Describe this chart"}
         </button>
@@ -54,7 +54,7 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
   );
 }
 
-/** Video slot with fallback poster — NotebookLM videos slot in later. */
+/** The video slot, with a poster fallback for when there's no video yet. */
 export function VideoBlock({
   block,
   videoUrl,
@@ -85,7 +85,7 @@ export function VideoBlock({
   );
 }
 
-/** Inline knowledge check that collapses to a ✓ chip once answered. */
+/** An inline knowledge check. Once you get it right it collapses down to a tick chip. */
 export function CheckQuestionBlock({ itemId }: { itemId: string }) {
   const reduced = useReducedMotion();
   const [selected, setSelected] = useState<number | null>(null);

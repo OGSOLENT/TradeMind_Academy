@@ -11,10 +11,11 @@ export interface InputProps
 }
 
 /**
- * Text input with floating label (per auth_sign_in prototype). The label sits
- * as placeholder text and rises to a caps micro-label when focused or filled.
- * Inputs are darker than their card (bg-deep) with a hairline that becomes
- * the accent on focus; errors switch it to soft danger — never harsh red.
+ * Text input with a floating label, the way the auth_sign_in prototype does
+ * it. The label starts out as placeholder text and rises to a caps micro-label
+ * once you focus or type. Inputs are darker than their card (bg-deep) with a
+ * hairline that turns accent on focus and picks up a soft halo. Errors switch
+ * the hairline to the soft danger tone. Never a harsh red.
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { label, hint, error, className, id: idProp, onFocus, onBlur, onChange, defaultValue, value, ...props },
@@ -54,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           "shadow-hairline transition-shadow duration-200 focus:outline-none",
           error
             ? "shadow-[inset_0_0_0_1px_var(--danger)]"
-            : "focus:shadow-[inset_0_0_0_1px_var(--accent)]",
+            : "focus:shadow-[inset_0_0_0_1px_var(--accent),0_0_0_4px_rgba(94,106,210,0.14)]",
         )}
         {...props}
       />
@@ -75,7 +76,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {error}
         </p>
       ) : hint ? (
-        // fg-secondary, not fg-muted: muted fails WCAG contrast for small text on bg-deep
+        // fg-secondary here, not fg-muted. Muted fails WCAG contrast for small text on bg-deep.
         <p id={`${id}-hint`} className="mt-1.5 px-1 text-sm text-fg-secondary">
           {hint}
         </p>
@@ -115,7 +116,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
           "shadow-hairline transition-shadow duration-200 focus:outline-none",
           error
             ? "shadow-[inset_0_0_0_1px_var(--danger)]"
-            : "focus:shadow-[inset_0_0_0_1px_var(--accent)]",
+            : "focus:shadow-[inset_0_0_0_1px_var(--accent),0_0_0_4px_rgba(94,106,210,0.14)]",
         )}
         {...props}
       />

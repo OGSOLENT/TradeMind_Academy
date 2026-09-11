@@ -1,13 +1,14 @@
 /**
- * Simulated-learner harness (BUILD_PROMPT §5) — dissertation evidence.
+ * The simulated-learner harness (BUILD_PROMPT section 5). This is
+ * dissertation evidence, so I made the output presentable.
  *
- * Generates N=200 synthetic learners with KNOWN ground-truth BKT parameters,
- * has them answer through the true generative model, runs the REAL engine
- * over their responses, then:
- *   1. asserts the three AE1 sanity behaviours, and
- *   2. recovers (pL0, pT) per learner by maximum-likelihood grid search and
- *      reports RMSE against ground truth,
- * writing the results table into docs/EVALUATION.md between markers.
+ * It generates 200 synthetic learners with KNOWN ground-truth BKT
+ * parameters, has them answer through the true generative model, runs the
+ * REAL engine over their responses, and then:
+ *   1. checks the three sanity behaviours from my AE1 report, and
+ *   2. recovers (pL0, pT) per learner with a maximum-likelihood grid search
+ *      and reports the RMSE against ground truth,
+ * writing the results table into docs/EVALUATION.md between the markers.
  *
  * Run: npx tsx scripts/simulate.ts [--seed 42]
  */
@@ -26,7 +27,7 @@ const OPPORTUNITIES = 40;
 const seedArg = process.argv.indexOf("--seed");
 let seed = seedArg > -1 ? Number(process.argv[seedArg + 1]) : 42;
 
-/** Deterministic LCG so the report table is reproducible. */
+/** A deterministic LCG, so the table in the report can be reproduced exactly. */
 function rand(): number {
   seed = (seed * 1664525 + 1013904223) % 2 ** 32;
   return seed / 2 ** 32;
@@ -41,7 +42,7 @@ function generateLearner(): Learner {
   const truth: BktParams = {
     pL0: 0.05 + rand() * 0.4, // U(0.05, 0.45)
     pT: 0.05 + rand() * 0.2, // U(0.05, 0.25)
-    pG: DEFAULT_PARAMS.pG, // fixed — identifiability
+    pG: DEFAULT_PARAMS.pG, // fixed, for identifiability
     pS: DEFAULT_PARAMS.pS,
   };
   let known = rand() < truth.pL0;
@@ -54,7 +55,7 @@ function generateLearner(): Learner {
   return { truth, responses };
 }
 
-/** Log-likelihood of a response sequence under BKT(params). */
+/** The log-likelihood of a response sequence under BKT(params). */
 function logLikelihood(responses: boolean[], params: BktParams): number {
   let pL = params.pL0;
   let ll = 0;
@@ -86,7 +87,7 @@ function main() {
     `\n━━━ TradeMind simulated-learner harness — N=${N}, ${OPPORTUNITIES} opportunities ━━━\n`,
   );
 
-  // ---- Sanity 1: all-correct streak crosses 0.8 within a few items -------
+  // ---- Sanity 1: a streak of correct answers crosses 0.8 within a few items ----
   let pL = DEFAULT_PARAMS.pL0;
   let toMastery = 0;
   while (pL < MASTERY_THRESHOLD) {
@@ -98,7 +99,7 @@ function main() {
     `Sanity 1 — correct streak crosses ${MASTERY_THRESHOLD}: ${toMastery} items ${sanity1 ? "✅" : "❌"}`,
   );
 
-  // ---- Sanity 2: all-wrong streak stays below 0.4 -------------------------
+  // ---- Sanity 2: a streak of wrong answers stays below 0.4 ----------------
   pL = DEFAULT_PARAMS.pL0;
   let maxWrong = 0;
   for (let i = 0; i < 20; i++) {
@@ -110,10 +111,10 @@ function main() {
     `Sanity 2 — wrong streak stays < ${REMEDIATION_THRESHOLD}: max ${maxWrong.toFixed(4)} ${sanity2 ? "✅" : "❌"}`,
   );
 
-  // ---- Generate cohort -----------------------------------------------------
+  // ---- Generate the cohort -------------------------------------------------
   const learners = Array.from({ length: N }, generateLearner);
 
-  // ---- Sanity 3: improving learners climb monotonically-ish ---------------
+  // ---- Sanity 3: improving learners climb, more or less monotonically ------
   let climbing = 0;
   for (const learner of learners) {
     let est = DEFAULT_PARAMS.pL0;
@@ -137,8 +138,9 @@ function main() {
   let seT = 0;
   let biasL0 = 0;
   let biasT = 0;
-  // Per-learner truth vs fit, dumped as CSV so the report can plot recovery
-  // rather than quote a single RMSE (docs/simulation-recovery.csv).
+  // Truth against fit for every learner, dumped as CSV so the report can
+  // plot the recovery instead of just quoting one RMSE
+  // (docs/simulation-recovery.csv).
   const rows = ["learner,true_pL0,fit_pL0,true_pT,fit_pT,correct_rate"];
   for (const [i, learner] of learners.entries()) {
     const fit = fitParams(learner.responses);
@@ -173,7 +175,7 @@ function main() {
   );
   console.log(table);
 
-  // ---- Write into EVALUATION.md between markers -----------------------------
+  // ---- Write it into EVALUATION.md between the markers ----------------------
   const path = "docs/EVALUATION.md";
   const START = "<!-- SIMULATION:START -->";
   const END = "<!-- SIMULATION:END -->";

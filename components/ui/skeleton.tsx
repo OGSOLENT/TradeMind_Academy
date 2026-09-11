@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Loading placeholder with a subtle shimmer sweep. */
+/** A loading placeholder with a quiet shimmer sweeping across it. */
 export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
