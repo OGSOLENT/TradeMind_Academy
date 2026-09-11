@@ -46,3 +46,15 @@ One line per significant decision: date · decision · why.
 - 2026-09-10 · Live project content was stale (8 KCs / 8 lessons from the July placeholder seed). Content collections cleared and reseeded to 9 KCs / 30 lessons / 72 items. User data untouched — the reseed only touches courses/kcs/lessons/items.
 - 2026-09-10 · Google sign-in confirmed NOT enabled on the live project (`idpConfig: []`). The Admin API cannot enable it: `defaultSupportedIdpConfigs` requires an OAuth `client_id`, which the Firebase console auto-provisions. It is therefore a manual console step, documented in docs/GOOGLE_SIGNIN.md.
 - 2026-09-10 · Dev server degrades after long uptime (curl returns 200 but page loads time out; 10/12 E2E failed). Restarting it cleanly returned 12/12. Not a code fault — worth restarting the dev server before trusting any local E2E run.
+
+## 2026-09-11 — Google on sign-up, honest auth errors, and a sanctioned live dev mode
+
+**Problem.** "Continue with Google" appeared broken. Three separate causes: sign-up had no Google button at all; `npm run dev` is pinned to the emulator so the popup always showed the emulator's fake IdP page; and when the SDK did fail against the live project, the only message was "cancelled", which hid the real reason.
+
+**Decision.** Extract `signInWithGoogle()` into `lib/firebase/google.ts` and map the SDK error codes to plain reasons (cancelled, popup blocked, provider not enabled, domain not authorised). Both auth pages use it, so the messages can't drift. Sign-up gets a Google button behind the same 18+ checkbox, because the Firestore rule refuses a profile without `isAdult: true` and the gate has to be identical whichever way you arrive.
+
+Add `npm run dev:live`, which loads `.env.production.local` before Next reads its env files and builds into `.next-live` so it can run beside the emulator server. It prints a warning on start and renders a fixed "Live project. Real data." badge that only exists when `NODE_ENV=development` and the emulator flag is off. Production builds and emulator runs never show it.
+
+**Rejected.** Pointing Auth at the live project while keeping Firestore on the emulator. It would technically work (the emulator doesn't verify token signatures) but it mixes environments and undermines the dev/live split we rely on for the research dataset.
+
+**Also fixed.** `scripts/check-google.ts` was reading `getProjectConfig.idpConfig`, which Identity Toolkit no longer returns, so it reported Google as disabled after it had been enabled. It now calls `createAuthUri`, which is what the popup handler does, and is the definitive test. Sign-in for a returning learner now lands on `/dashboard` (where the router decides) rather than a lesson hard-coded in Phase 2.
