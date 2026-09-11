@@ -56,8 +56,16 @@ npm run build           # production build
 
 ## Local vs. real Google account
 
-- **`npm run dev`** always uses the local fake login (safe, offline, no real data touched) — that's why "Continue with Google" shows a plain white "Auth Emulator" box instead of the real Google screen. This is correct, not a bug.
-- The **real** Google/Firebase project (`trademind-academy`) is only used in a production build — ask before testing that, since it writes to the live database.
+Two servers, two ports. Which one you're on decides what "Continue with Google" does.
+
+| URL | Command | Google button | Where data goes |
+| --- | --- | --- | --- |
+| **http://localhost:3000** | `npm run dev` | the plain white "Auth Emulator" box | the local emulator, wiped on restart |
+| **http://localhost:3001** | `npm run dev:live` | the real Google account chooser | the live `trademind-academy` project, permanently |
+
+- On **3000** the emulator box is correct, not a bug. It's there so test accounts can never reach the research dataset.
+- For real Google, open **3001**. If nothing's there, run `npm run dev:live` in a spare terminal. It prints a warning on start because everything you do there is real.
+- `npm run live` is the production build on 3001, which is what participants would get.
 
 ## If something won't start
 

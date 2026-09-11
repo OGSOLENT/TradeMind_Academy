@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -76,19 +77,26 @@ export default function ReviewPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <h1 className="text-headline-md text-fg-primary">Review queue</h1>
-      <p className="mt-1 text-sm text-fg-secondary">
-        Skills fade without practice — the model decays its confidence in
-        anything you haven&apos;t touched for {FADE_AFTER_DAYS}+ days.
-      </p>
+    <Stagger autoWrap={false} className="mx-auto max-w-md">
+      <StaggerItem>
+        <h1 className="text-headline-md text-fg-primary">
+          Review <span className="text-gradient">queue</span>
+        </h1>
+        <p className="mt-1 text-sm text-fg-secondary">
+          Skills fade without practice — the model decays its confidence in
+          anything you haven&apos;t touched for {FADE_AFTER_DAYS}+ days.
+        </p>
+      </StaggerItem>
 
-      <div className="relative mt-8 h-80" aria-live="polite">
+      <StaggerItem className="relative mt-8 h-80" aria-live="polite">
         {queue.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center rounded-card bg-bg-base-veil p-8 text-center shadow-hairline">
-            <p className="text-2xl" aria-hidden="true">
+            <span
+              aria-hidden="true"
+              className="flex h-12 w-12 items-center justify-center rounded-pill bg-mastery/10 text-xl text-mastery-bright shadow-[inset_0_0_0_1px_var(--mastery-glow),0_0_24px_-4px_var(--mastery-glow)]"
+            >
               ✓
-            </p>
+            </span>
             <p className="mt-3 text-body-base text-fg-primary">Nothing is fading</p>
             <p className="mt-1 text-sm text-fg-secondary">
               Everything you&apos;ve practised is fresh. Keep building instead.
@@ -163,10 +171,10 @@ export default function ReviewPage() {
               })}
           </AnimatePresence>
         )}
-      </div>
+      </StaggerItem>
       {queue.length > 3 && (
         <p className="num mt-4 text-center text-sm text-fg-secondary">+{queue.length - 3} more in the queue</p>
       )}
-    </div>
+    </Stagger>
   );
 }

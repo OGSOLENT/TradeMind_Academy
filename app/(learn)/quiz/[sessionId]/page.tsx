@@ -14,8 +14,11 @@ import { useAuth } from "@/lib/firebase/auth-context";
 import { useQuizSession } from "@/lib/quiz/session-store";
 import type { LearnerAnswer } from "@/lib/quiz/grade";
 import { Button } from "@/components/ui/button";
+import { Counter } from "@/components/ui/counter";
 import { Kbd } from "@/components/ui/kbd";
+import { Pill } from "@/components/ui/pill";
 import { SegmentedProgress } from "@/components/ui/progress";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { McqOptions } from "@/components/learn/questions/mcq";
 import { NumericInput } from "@/components/learn/questions/numeric";
 import { OrderingList } from "@/components/learn/questions/ordering";
@@ -27,6 +30,7 @@ import { WhyPopover } from "@/components/learn/quiz/why-popover";
 import { ConstellationInit } from "@/components/learn/constellation-init";
 import { MasteryCelebration } from "@/components/learn/mastery-celebration";
 import { ease } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 const COURSE_ID = "trading-foundations";
 
@@ -421,6 +425,7 @@ function PlacementComplete() {
 
 function SessionSummary() {
   const s = useQuizSession();
+  const reduced = useReducedMotion();
   const records = Object.values(s.answers);
   const correct = records.filter((r) => r.correct).length;
 
@@ -460,50 +465,103 @@ function SessionSummary() {
     return [...map.entries()];
   }, [records]);
 
+  const accuracy = records.length ? correct / records.length : 0;
+
   return (
-    <div className="mx-auto max-w-md space-y-8 px-4 pt-16 text-center">
+    <Stagger autoWrap={false} className="mx-auto max-w-md space-y-8 px-4 pt-16 text-center">
       {celebrating && crossedKc && (
         <MasteryCelebration
           kcTitle={crossedKc.replace("kc-", "").replaceAll("-", " ")}
           onDone={() => setCelebrating(false)}
         />
       )}
-      <div>
+      <StaggerItem>
         <p className="text-label-caps uppercase tracking-widest text-fg-secondary">Session complete</p>
-        <p className="num mt-4 text-5xl text-fg-primary">
-          {correct}
-          <span className="text-fg-muted">/{records.length}</span>
-        </p>
-        <p className="mt-1 text-sm text-fg-secondary">answers correct</p>
-      </div>
-
-      <div className="space-y-2 text-left">
-        {perKc.map(([kcId, { before, after }]) => (
-          <div
-            key={kcId}
-            className="flex items-center justify-between rounded-control bg-bg-elevated-veil px-4 py-3 shadow-edge-lit transition-[background-color,box-shadow] duration-200 hover:bg-bg-elevated hover:shadow-lift"
+        {/* The score rolls up, and a thin arc underneath it fills to the
+            accuracy so the number has a shape as well as a value. */}
+        <div className="relative mx-auto mt-10 inline-block">
+          <svg
+            aria-hidden="true"
+            width="180"
+            height="100"
+            viewBox="0 0 180 100"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[58%]"
           >
-            <span className="text-sm capitalize text-fg-secondary">
-              {kcId.replace("kc-", "").replaceAll("-", " ")}
-            </span>
-            <span className="num text-sm">
-              <span className="text-fg-muted">{Math.round(before * 100)}%</span>
-              <span className="mx-2 text-fg-muted">→</span>
-              <span className={after >= before ? "text-mastery-bright" : "text-warning"}>
-                {Math.round(after * 100)}%
-              </span>
-            </span>
-          </div>
-        ))}
-      </div>
+            <path d="M 14 94 A 76 76 0 0 1 166 94" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="4" strokeLinecap="round" />
+            <motion.path
+              d="M 14 94 A 76 76 0 0 1 166 94"
+              fill="none"
+              stroke={accuracy >= 0.7 ? "var(--mastery)" : "var(--warning)"}
+              strokeWidth="4"
+              strokeLinecap="round"
+              initial={reduced ? { pathLength: accuracy } : { pathLength: 0 }}
+              animate={{ pathLength: accuracy }}
+              transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              style={{ filter: "drop-shadow(0 0 6px var(--mastery-glow))" }}
+            />
+          </svg>
+          <p className="num relative text-5xl text-fg-primary">
+            <Counter value={correct} />
+            <span className="text-fg-muted">/{records.length}</span>
+          </p>
+        </div>
+        <p className="mt-1 text-sm text-fg-secondary">answers correct</p>
+      </StaggerItem>
+
+      <StaggerItem className="space-y-2 text-left">
+        {perKc.map(([kcId, { before, after }], i) => {
+          const gained = after >= before;
+          return (
+            <div
+              key={kcId}
+              className="rounded-control bg-bg-elevated-veil px-4 py-3 shadow-edge-lit transition-[background-color,box-shadow] duration-200 hover:bg-bg-elevated hover:shadow-lift"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm capitalize text-fg-secondary">
+                  {kcId.replace("kc-", "").replaceAll("-", " ")}
+                </span>
+                <span className="num text-sm">
+                  <span className="text-fg-muted">{Math.round(before * 100)}%</span>
+                  <span className="mx-2 text-fg-muted">→</span>
+                  <span className={gained ? "text-mastery-bright" : "text-warning"}>
+                    {Math.round(after * 100)}%
+                  </span>
+                </span>
+              </div>
+              {/* The bar underneath: the muted stretch is where you started,
+                  the coloured stretch is the move. Losses draw in amber and
+                  a little slower, per the emotional rule. */}
+              <div className="relative mt-2 h-1 w-full overflow-hidden rounded-pill bg-white/5" aria-hidden="true">
+                <div
+                  className="absolute inset-y-0 left-0 rounded-pill bg-white/15"
+                  style={{ width: `${Math.min(before, after) * 100}%` }}
+                />
+                <motion.div
+                  className={cn("absolute inset-y-0 rounded-pill", gained ? "bg-mastery" : "bg-warning")}
+                  style={{ left: `${Math.min(before, after) * 100}%` }}
+                  initial={reduced ? false : { width: 0 }}
+                  animate={{ width: `${Math.abs(after - before) * 100}%` }}
+                  transition={
+                    reduced
+                      ? { duration: 0.15 }
+                      : { duration: gained ? 0.7 : 1, delay: 0.5 + i * 0.08, ease: [0.16, 1, 0.3, 1] }
+                  }
+                />
+              </div>
+            </div>
+          );
+        })}
+      </StaggerItem>
 
       {unlocked.length > 0 && (
-        <p className="text-sm text-mastery-bright">
-          New topic unlocked: {unlocked.map((u) => u.replace("kc-", "").replaceAll("-", " ")).join(", ")}
-        </p>
+        <StaggerItem>
+          <Pill tone="mastery" dot className="normal-case tracking-normal shadow-[0_0_18px_var(--mastery-glow)]">
+            New topic unlocked: {unlocked.map((u) => u.replace("kc-", "").replaceAll("-", " ")).join(", ")}
+          </Pill>
+        </StaggerItem>
       )}
 
-      <div className="flex flex-wrap justify-center gap-3">
+      <StaggerItem className="flex flex-wrap justify-center gap-3">
         <Link href={`/quiz/${s.sessionId}/review`}>
           <Button variant="ghost">Review answers</Button>
         </Link>
@@ -513,7 +571,7 @@ function SessionSummary() {
         <Link href="/dashboard">
           <Button>Continue</Button>
         </Link>
-      </div>
-    </div>
+      </StaggerItem>
+    </Stagger>
   );
 }

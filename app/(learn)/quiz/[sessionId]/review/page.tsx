@@ -9,6 +9,7 @@ import { AnnotationChart } from "@/components/learn/questions/annotation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { cn } from "@/lib/utils";
 
 /**
@@ -86,8 +87,8 @@ export default function AnswerReviewPage() {
   const answered = s.items.filter((it) => s.answers[it.id]);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <header className="flex items-center justify-between">
+    <Stagger autoWrap={false} className="mx-auto max-w-2xl space-y-6">
+      <StaggerItem className="flex items-center justify-between">
         <div>
           <h1 className="text-headline-md text-fg-primary">Answer review</h1>
           <p className="mt-1 text-sm text-fg-secondary">
@@ -100,12 +101,13 @@ export default function AnswerReviewPage() {
             Done
           </Button>
         </Link>
-      </header>
+      </StaggerItem>
 
       {answered.map((item, i) => {
         const record = s.answers[item.id]!;
         return (
-          <Card key={item.id} level="elevated" className="space-y-4">
+          <StaggerItem key={item.id}>
+          <Card level="elevated" className="space-y-4">
             <div className="flex items-start justify-between gap-3">
               <span className="num text-sm text-fg-secondary">{i + 1}</span>
               <p className="flex-1 font-medium text-fg-primary">
@@ -161,8 +163,9 @@ export default function AnswerReviewPage() {
               </Link>
             )}
           </Card>
+          </StaggerItem>
         );
       })}
-    </div>
+    </Stagger>
   );
 }
