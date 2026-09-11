@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export type CardLevel = "base" | "elevated" | "glass";
@@ -44,6 +44,16 @@ export function Card({
 }: CardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [glow, setGlow] = useState<{ x: number; y: number } | null>(null);
+
+  // Scrolling moves the card out from under a still cursor without any
+  // mouseleave firing, which left the spotlight lit at a stale spot. So a
+  // scroll clears it. The listener only exists while a glow is showing.
+  useEffect(() => {
+    if (!glow) return;
+    const clear = () => setGlow(null);
+    window.addEventListener("scroll", clear, { passive: true });
+    return () => window.removeEventListener("scroll", clear);
+  }, [glow]);
 
   return (
     <div

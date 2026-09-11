@@ -169,9 +169,43 @@ export default function LessonPage() {
         })}
 
         <footer className="space-y-6 border-t border-hair pt-8">
-          <p className="text-center text-label-caps uppercase tracking-widest text-fg-secondary">
-            Lesson complete
-          </p>
+          {/* The end-of-lesson mark. The ring and the tick draw themselves in
+              as you reach the bottom, once. */}
+          <Reveal className="flex flex-col items-center gap-3">
+            <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true">
+              <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
+              <motion.circle
+                cx="28"
+                cy="28"
+                r="24"
+                fill="none"
+                stroke="var(--mastery)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                transform="rotate(-90 28 28)"
+                initial={reduced ? { pathLength: 1 } : { pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                style={{ filter: "drop-shadow(0 0 6px var(--mastery-glow))" }}
+              />
+              <motion.path
+                d="M18 28.5l7 7 13-14"
+                fill="none"
+                stroke="var(--mastery-bright)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={reduced ? { pathLength: 1 } : { pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: reduced ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </svg>
+            <p className="text-center text-label-caps uppercase tracking-widest text-fg-secondary">
+              Lesson complete
+            </p>
+          </Reveal>
 
           {siblings && siblings.length > 1 && (
             <nav aria-label="Lessons in this module" className="space-y-2">

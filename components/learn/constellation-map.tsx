@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Kc } from "@/lib/content/types";
-import { CANVAS, journeyPath, positionFor } from "@/lib/constellation";
+import { CANVAS, journeyPath, orderByChain, positionFor } from "@/lib/constellation";
 import { cn } from "@/lib/utils";
 
-export type NodeState = "locked" | "available" | "mastered" | "remediation";
+export type { NodeState } from "@/lib/routing";
+import type { NodeState } from "@/lib/routing";
 
 export interface KcView extends Kc {
   pL: number;
@@ -52,35 +53,7 @@ export function ConstellationMap({
   const [traveller, setTraveller] = useState<{ x: number; y: number } | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
 
-  /**
-   * Walk the prerequisite chain from the root. I originally sorted by prereq
-   * count, and that was wrong: every module after the first has exactly one
-   * prerequisite, so the order came out arbitrary and the route zig-zagged
-   * all over the place.
-   */
-  const ordered = useMemo(() => {
-    const byId = new Map(views.map((k) => [k.id, k]));
-    const nextOf = new Map<string, KcView>();
-    for (const k of views) for (const pre of k.prereqIds) nextOf.set(pre, k);
-
-    const root = views.find((k) => k.prereqIds.length === 0);
-    if (!root) return [...views];
-
-    const chain: KcView[] = [root];
-    const seen = new Set([root.id]);
-    let cur = root;
-    while (chain.length < views.length) {
-      const nxt = nextOf.get(cur.id);
-      if (!nxt || seen.has(nxt.id)) break;
-      chain.push(nxt);
-      seen.add(nxt.id);
-      cur = nxt;
-    }
-    // Anything that isn't on the main chain keeps a stable spot at the end.
-    for (const k of views) if (!seen.has(k.id)) chain.push(k);
-    void byId;
-    return chain;
-  }, [views]);
+  const ordered = useMemo(() => orderByChain(views), [views]);
   const points = useMemo(
     () => ordered.map((kc, i) => positionFor(kc.id, i)),
     [ordered],

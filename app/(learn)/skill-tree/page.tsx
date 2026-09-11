@@ -7,9 +7,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import type { Kc } from "@/lib/content/types";
-import { MASTERY_THRESHOLD, REMEDIATION_THRESHOLD } from "@/lib/bkt";
-import { unlockedKcIds, type MasteryMap } from "@/lib/routing";
-import { ConstellationMap, type KcView, type NodeState } from "@/components/learn/constellation-map";
+import { nodeStateFor, unlockedKcIds, type MasteryMap } from "@/lib/routing";
+import { ConstellationMap, type KcView } from "@/components/learn/constellation-map";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { Button } from "@/components/ui/button";
@@ -24,12 +23,6 @@ import { LazyParticleField } from "@/components/three/lazy-particle-field";
 import { clamp, cn } from "@/lib/utils";
 
 const COURSE_ID = "trading-foundations";
-function stateFor(pL: number, attempts: number, unlocked: boolean): NodeState {
-  if (!unlocked) return "locked";
-  if (pL >= MASTERY_THRESHOLD) return "mastered";
-  if (attempts > 0 && pL < REMEDIATION_THRESHOLD) return "remediation";
-  return "available";
-}
 
 export default function SkillTreePage() {
   return (
@@ -108,7 +101,7 @@ function SkillTree() {
           ...kc,
           pL: st?.pL ?? 0,
           attempts: st?.attempts ?? 0,
-          state: stateFor(st?.pL ?? 0, st?.attempts ?? 0, unlocked.has(kc.id)),
+          state: nodeStateFor(st?.pL ?? 0, st?.attempts ?? 0, unlocked.has(kc.id)),
         };
       });
   }, [data]);
