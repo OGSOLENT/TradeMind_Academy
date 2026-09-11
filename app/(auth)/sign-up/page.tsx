@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useQueryClient } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
-import { createUserProfile } from "@/lib/firebase/repos";
+import { signInWithGoogle } from "@/lib/firebase/google";
+import { createUserProfile, getUserProfile } from "@/lib/firebase/repos";
 import { defaultSettings } from "@/lib/firebase/types";
+import { GoogleButton, OrDivider } from "@/components/auth/google-button";
 import { PasswordStrength, scorePassword } from "@/components/auth/password-strength";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/toast";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -26,7 +29,8 @@ export default function SignUpPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const next: typeof errors = {};
-    if (scorePassword(password) < 2) next.password = "Choose a stronger password (12+ characters help).";
+    if (scorePassword(password) < 2)
+      next.password = "Choose a stronger password (12+ characters help).";
     if (!isAdult) next.adult = "TradeMind Academy is for adults (18+) only.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
@@ -56,6 +60,57 @@ export default function SignUpPage() {
           code === "auth/email-already-in-use"
             ? "An account with this email already exists."
             : "Sign-up failed — check the email address and try again.",
+      });
+      setBusy(false);
+    }
+  }
+
+  // Google goes through the same 18+ gate as the form. The Firestore rule
+  // refuses a profile without isAdult=true, so the checkbox has to come first
+  // here too; a returning Google user skips profile creation entirely.
+  async function onGoogle() {
+    if (!isAdult) {
+      setErrors({ adult: "Please confirm you are 18 or older before continuing with Google." });
+      return;
+    }
+    setErrors({});
+    setBusy(true);
+    const { auth, db } = getFirebase();
+    const result = await signInWithGoogle(auth);
+    if (!result.ok) {
+      toast({
+        title:
+          result.reason === "cancelled"
+            ? "Google sign-up was cancelled"
+            : "Google sign-up didn't work",
+        description: result.reason === "cancelled" ? undefined : result.message,
+        variant: result.reason === "cancelled" ? "warning" : "danger",
+      });
+      setBusy(false);
+      return;
+    }
+    const { user } = result;
+    try {
+      const existing = await getUserProfile(db, user.uid);
+      if (existing) {
+        router.push(existing.consent ? "/dashboard" : "/consent");
+        return;
+      }
+      const name = user.displayName?.trim() || user.email?.split("@")[0] || "Learner";
+      await createUserProfile(db, user.uid, name, true);
+      queryClient.setQueryData(["profile", user.uid], {
+        displayName: name,
+        createdAt: new Date(),
+        consent: null,
+        isAdult: true,
+        settings: defaultSettings,
+      });
+      router.push("/consent");
+    } catch {
+      toast({
+        title: "Could not create your profile",
+        description: "Please try again.",
+        variant: "danger",
       });
       setBusy(false);
     }
@@ -97,7 +152,7 @@ export default function SignUpPage() {
           <PasswordStrength password={password} />
         </div>
 
-        <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-control p-2 -mx-2 hover:bg-white/5">
+        <label className="-mx-2 flex min-h-11 cursor-pointer items-start gap-3 rounded-control p-2 hover:bg-white/5">
           <input
             type="checkbox"
             checked={isAdult}
@@ -120,6 +175,12 @@ export default function SignUpPage() {
           Create account
         </Button>
       </form>
+
+      <OrDivider />
+
+      <GoogleButton onClick={onGoogle} disabled={busy}>
+        Sign up with Google
+      </GoogleButton>
 
       <p className="mt-6 text-center text-sm text-fg-secondary">
         Already have an account?{" "}

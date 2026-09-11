@@ -3,14 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  GoogleAuthProvider,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirebase } from "@/lib/firebase/client";
+import { signInWithGoogle } from "@/lib/firebase/google";
 import { getUserProfile } from "@/lib/firebase/repos";
+import { GoogleButton, OrDivider } from "@/components/auth/google-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -26,7 +23,7 @@ export default function SignInPage() {
   async function afterAuth(uid: string) {
     const { db } = getFirebase();
     const profile = await getUserProfile(db, uid);
-    router.push(profile?.consent ? "/lesson/kc-candle-anatomy" : "/consent");
+    router.push(profile?.consent ? "/dashboard" : "/consent");
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -45,14 +42,21 @@ export default function SignInPage() {
 
   async function onGoogle() {
     setBusy(true);
-    try {
-      const { auth } = getFirebase();
-      const cred = await signInWithPopup(auth, new GoogleAuthProvider());
-      await afterAuth(cred.user.uid);
-    } catch {
-      toast({ title: "Google sign-in was cancelled", variant: "warning" });
+    const { auth } = getFirebase();
+    const result = await signInWithGoogle(auth);
+    if (!result.ok) {
+      toast({
+        title:
+          result.reason === "cancelled"
+            ? "Google sign-in was cancelled"
+            : "Google sign-in didn't work",
+        description: result.reason === "cancelled" ? undefined : result.message,
+        variant: result.reason === "cancelled" ? "warning" : "danger",
+      });
       setBusy(false);
+      return;
     }
+    await afterAuth(result.user.uid);
   }
 
   async function onForgot() {
@@ -68,9 +72,7 @@ export default function SignInPage() {
   return (
     <Card level="elevated" className="p-8">
       <h1 className="text-headline-md text-fg-primary">Welcome back</h1>
-      <p className="mt-1 text-sm text-fg-secondary">
-        Enter your credentials to continue learning.
-      </p>
+      <p className="mt-1 text-sm text-fg-secondary">Enter your credentials to continue learning.</p>
 
       <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
         <Input
@@ -104,15 +106,9 @@ export default function SignInPage() {
         </Button>
       </form>
 
-      <div className="my-6 flex items-center gap-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-hair" />
-        <span className="text-label-caps uppercase tracking-wider text-fg-muted">or</span>
-        <span className="h-px flex-1 bg-hair" />
-      </div>
+      <OrDivider />
 
-      <Button variant="secondary" className="w-full" onClick={onGoogle} disabled={busy}>
-        Continue with Google
-      </Button>
+      <GoogleButton onClick={onGoogle} disabled={busy} />
 
       <p className="mt-6 text-center text-sm text-fg-secondary">
         New here?{" "}
