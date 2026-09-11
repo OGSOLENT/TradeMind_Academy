@@ -142,7 +142,7 @@ Click into the current lesson.
 
 > Here's a lesson. Reading column, progress bar at the top, and the actual video embedded.
 >
-> This content is real. I built the curriculum from a set of video lessons, roughly three and a half hours of material, and I wrote each one up as a structured written lesson so the platform has both formats.
+> This content is real. I built the curriculum from a set of video lessons, roughly four hours of material, and I wrote each one up as a structured written lesson so the platform has both formats.
 >
 > Two accessibility things worth pointing out. Every figure has a "describe this chart" toggle, so a screen reader user gets a text alternative rather than a decorative image.
 
@@ -296,7 +296,7 @@ Two ways. The unit tests assert against arithmetic I worked out by hand, so they
 It's the main limitation and I'd rather state it than have it drawn out of me. What I have is a system that's verified to behave correctly and instrumented to collect exactly the data a human study would need. Ethics approval, recruitment and a pre post design would be the next phase. The artefact is the thing that makes that study possible.
 
 **What would you actually measure with real learners?**
-Normalised learning gain between a pretest and a posttest, and whether the model's predicted probability of a correct answer matches observed accuracy. The response log has predicted and actual on every row, so that's directly computable. I'd also want time to mastery per component against a non adaptive control.
+Normalised learning gain between a pretest and a posttest, and whether the model's predicted probability of a correct answer matches observed accuracy. The response log has the model's estimate before every answer, and the predicted probability follows directly from that, so calibration is computable from the log. I'd also want time to mastery per component against a non adaptive control.
 
 **How many participants would you need?**
 For a within subjects pre post design, somewhere around thirty to forty gets you reasonable power for a medium effect. A controlled comparison against a fixed order version of the same content would need more, probably double.
@@ -307,7 +307,7 @@ For a within subjects pre post design, somewhere around thirty to forty gets you
 Firebase gave me authentication, a database and security rules that are themselves testable, which mattered because the append only guarantee on the response log is a rule, not a convention. Next.js because the app is content heavy and the framework handles routing and rendering without much ceremony. Neither choice is load bearing for the research. The engine is deliberately isolated from both.
 
 **How much of this did you write?**
-All of the design decisions and the architecture. I used AI assistance during implementation, which is declared in the AI declaration appendix. What I'd point to as mine is the decisions record. There are around twenty five documented decisions in the repository, each with the reasoning, including several where I built something, measured it, and removed it.
+All of the design decisions and the architecture. I used AI assistance during implementation, which is declared in the methodology chapter of the report. What I'd point to as mine is the decisions record. There are around fifty documented decisions in the repository, each with the reasoning, including several where I built something, measured it, and removed it.
 
 **Can you give an example of that?**
 Yes. I built an animated background effect that looked good, then measured it and found it dropped the dashboard from 120 frames per second to 19. I cut it and got the same visual result from static layers at no cost. That's in the decisions file with the numbers.
@@ -316,7 +316,7 @@ Yes. I built an animated background effect that looked good, then measured it an
 The duplicate write problem in the logger. My retry queue and the Firebase SDK's internal queue would both hold the same write when the connection dropped, and both would deliver on reconnect. It doesn't show up in normal use. It shows up as duplicate rows in the research data much later. The fix was to fail fast when offline so my queue is the only authority.
 
 **Why nine modules? Where did the content come from?**
-The content is a real trading curriculum, about three and a half hours of video across thirty three lessons. I sequenced it by building the actual dependency graph of the concepts rather than keeping the recording order, because several videos used terms that hadn't been defined yet. The modules fell out of that dependency analysis.
+The content is a real trading curriculum, about four hours of video across thirty three lessons. I sequenced it by building the actual dependency graph of the concepts rather than keeping the recording order, because several videos used terms that hadn't been defined yet. The modules fell out of that dependency analysis.
 
 ### About ethics
 

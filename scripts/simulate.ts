@@ -12,7 +12,14 @@
  * Run: npx tsx scripts/simulate.ts [--seed 42]
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { DEFAULT_PARAMS, MASTERY_THRESHOLD, REMEDIATION_THRESHOLD, predictCorrect, updateMastery, type BktParams } from "../lib/bkt";
+import {
+  DEFAULT_PARAMS,
+  MASTERY_THRESHOLD,
+  REMEDIATION_THRESHOLD,
+  predictCorrect,
+  updateMastery,
+  type BktParams,
+} from "../lib/bkt";
 
 const N = 200;
 const OPPORTUNITIES = 40;
@@ -75,7 +82,9 @@ function fitParams(responses: boolean[]): { pL0: number; pT: number } {
 }
 
 function main() {
-  console.log(`\n━━━ TradeMind simulated-learner harness — N=${N}, ${OPPORTUNITIES} opportunities ━━━\n`);
+  console.log(
+    `\n━━━ TradeMind simulated-learner harness — N=${N}, ${OPPORTUNITIES} opportunities ━━━\n`,
+  );
 
   // ---- Sanity 1: all-correct streak crosses 0.8 within a few items -------
   let pL = DEFAULT_PARAMS.pL0;
@@ -85,7 +94,9 @@ function main() {
     toMastery++;
   }
   const sanity1 = toMastery <= 5;
-  console.log(`Sanity 1 — correct streak crosses ${MASTERY_THRESHOLD}: ${toMastery} items ${sanity1 ? "✅" : "❌"}`);
+  console.log(
+    `Sanity 1 — correct streak crosses ${MASTERY_THRESHOLD}: ${toMastery} items ${sanity1 ? "✅" : "❌"}`,
+  );
 
   // ---- Sanity 2: all-wrong streak stays below 0.4 -------------------------
   pL = DEFAULT_PARAMS.pL0;
@@ -95,7 +106,9 @@ function main() {
     maxWrong = Math.max(maxWrong, pL);
   }
   const sanity2 = maxWrong < REMEDIATION_THRESHOLD;
-  console.log(`Sanity 2 — wrong streak stays < ${REMEDIATION_THRESHOLD}: max ${maxWrong.toFixed(4)} ${sanity2 ? "✅" : "❌"}`);
+  console.log(
+    `Sanity 2 — wrong streak stays < ${REMEDIATION_THRESHOLD}: max ${maxWrong.toFixed(4)} ${sanity2 ? "✅" : "❌"}`,
+  );
 
   // ---- Generate cohort -----------------------------------------------------
   const learners = Array.from({ length: N }, generateLearner);
@@ -115,20 +128,30 @@ function main() {
   }
   const climbPct = (climbing / N) * 100;
   const sanity3 = climbPct >= 80;
-  console.log(`Sanity 3 — learners climb (last quarter > first quarter): ${climbPct.toFixed(1)}% ${sanity3 ? "✅" : "❌"}`);
+  console.log(
+    `Sanity 3 — learners climb (last quarter > first quarter): ${climbPct.toFixed(1)}% ${sanity3 ? "✅" : "❌"}`,
+  );
 
   // ---- Parameter recovery ---------------------------------------------------
   let seL0 = 0;
   let seT = 0;
   let biasL0 = 0;
   let biasT = 0;
-  for (const learner of learners) {
+  // Per-learner truth vs fit, dumped as CSV so the report can plot recovery
+  // rather than quote a single RMSE (docs/simulation-recovery.csv).
+  const rows = ["learner,true_pL0,fit_pL0,true_pT,fit_pT,correct_rate"];
+  for (const [i, learner] of learners.entries()) {
     const fit = fitParams(learner.responses);
     seL0 += (fit.pL0 - learner.truth.pL0) ** 2;
     seT += (fit.pT - learner.truth.pT) ** 2;
     biasL0 += fit.pL0 - learner.truth.pL0;
     biasT += fit.pT - learner.truth.pT;
+    const rate = learner.responses.filter(Boolean).length / learner.responses.length;
+    rows.push(
+      `${i},${learner.truth.pL0.toFixed(4)},${fit.pL0.toFixed(4)},${learner.truth.pT.toFixed(4)},${fit.pT.toFixed(4)},${rate.toFixed(4)}`,
+    );
   }
+  writeFileSync("docs/simulation-recovery.csv", rows.join("\n") + "\n");
   const rmseL0 = Math.sqrt(seL0 / N);
   const rmseT = Math.sqrt(seT / N);
 
@@ -145,7 +168,9 @@ function main() {
     `| Ground-truth priors | pL0 ~ U(0.05, 0.45) · pT ~ U(0.05, 0.25) · pG=${DEFAULT_PARAMS.pG} · pS=${DEFAULT_PARAMS.pS} fixed |`,
   ].join("\n");
 
-  console.log(`\nParameter recovery: RMSE(pL0)=${rmseL0.toFixed(4)}  RMSE(pT)=${rmseT.toFixed(4)}\n`);
+  console.log(
+    `\nParameter recovery: RMSE(pL0)=${rmseL0.toFixed(4)}  RMSE(pT)=${rmseT.toFixed(4)}\n`,
+  );
   console.log(table);
 
   // ---- Write into EVALUATION.md between markers -----------------------------
