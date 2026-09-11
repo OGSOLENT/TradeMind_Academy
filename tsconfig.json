@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next-live/types/**/*.ts",
+    ".next-emulator/types/**/*.ts",
     ".next-audit/types/**/*.ts"
   ],
   "exclude": [

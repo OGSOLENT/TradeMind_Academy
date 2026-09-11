@@ -4,8 +4,9 @@
  * debugging port, signs a fresh user in over CDP (auth persists in the
  * profile's IndexedDB), then points Lighthouse at that same browser.
  *
- * Needs the production server on :3000, the emulators and the seed, and
- * Chrome at the standard macOS path. Run: npx tsx scripts/audit.ts
+ * Needs the emulator production server on :3100 (`npm run build:emulator`
+ * then `npm run start:emulator`), the emulators and the seed, and Chrome at
+ * the standard macOS path. Run: npx tsx scripts/audit.ts
  */
 import { execFileSync, spawn } from "node:child_process";
 import { rmSync } from "node:fs";
@@ -14,7 +15,7 @@ import { chromium } from "@playwright/test";
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const PORT = 9223;
 const PROFILE = "/tmp/tm-audit-profile";
-const BASE = "http://localhost:3000";
+const BASE = "http://localhost:3100";
 
 interface AuditRow {
   page: string;

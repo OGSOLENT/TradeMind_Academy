@@ -6,10 +6,10 @@ Google is enabled on the live project (verified 11 Sept 2026, OAuth client `9756
 
 ```bash
 cd ~/Documents/DIssertation/TradeMind_Academy
-npm run dev:live
+npm run dev
 ```
 
-Open **http://localhost:3001**. Both _Continue with Google_ (sign-in) and _Sign up with Google_ (sign-up) open the real Google account chooser.
+Open **http://localhost:3000**. Both _Continue with Google_ (sign-in) and _Sign up with Google_ (sign-up) open the real Google account chooser.
 
 To check the provider at any time:
 
@@ -19,21 +19,19 @@ npx tsx scripts/check-google.ts
 
 ## Why it looked broken
 
-`npm run dev` runs against the **Firebase Emulator Suite**, a local offline copy of Firebase. Its fake Google page (`localhost:9099/emulator/auth/handler`, "No Google.com accounts exist in the Auth Emulator") is the emulator doing its job. It lets you test the _flow_ without a real account. It never shows real Google, no matter what's enabled in the console.
-
-Real Google sign-in only appears when the app points at the live project, `trademind-academy`.
+Until 11 September, `npm run dev` ran against the **Firebase Emulator Suite**, a local offline copy of Firebase, and real Google lived on a second command and a second port. The emulator's fake Google page (`localhost:9099/emulator/auth/handler`, "No Google.com accounts exist in the Auth Emulator") is the emulator doing its job, but seeing it on the port you thought was the real app read as "Google is broken", three times. So the roles were swapped: `npm run dev` is the real app now, and the emulator has its own command and port.
 
 ## The three modes
 
-| Command            | Port | Firebase                 | Google popup       | Data goes to                   |
-| ------------------ | ---- | ------------------------ | ------------------ | ------------------------------ |
-| `npm run dev`      | 3000 | Local emulator           | Fake emulator page | Your machine, wiped on restart |
-| `npm run dev:live` | 3001 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
-| `npm run live`     | 3001 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
+| Command                | Port | Firebase                 | Google popup       | Data goes to                   |
+| ---------------------- | ---- | ------------------------ | ------------------ | ------------------------------ |
+| `npm run dev`          | 3000 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
+| `npm run dev:emulator` | 3100 | Local emulator           | Fake emulator page | Your machine, wiped on restart |
+| `npm run live`         | 3000 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
 
-`dev:live` gives you hot reload against the live project. `live` is a production build, which is what participants would get. The only reminder that you're on real data is the warning `dev:live` prints in the terminal when it starts, so read it. There used to be an on-screen badge as well, but it sat over the sign-up form and got cut on 11 September.
+`dev` gives you hot reload against the live project and prints a warning when it starts, so read it. `live` is a production build, which is what participants would get. `npm run dev:live` still works as an alias of `dev`.
 
-`dev` and `dev:live` can run side by side. They build into separate folders (`.next` and `.next-live`) so they don't corrupt each other.
+`dev` and `dev:emulator` can run side by side. They build into separate folders (`.next` and `.next-emulator`) so they don't corrupt each other, and each refuses to start if its port is already taken.
 
 ## What happens on a Google sign-up
 
@@ -75,4 +73,4 @@ Apple needs a paid Apple Developer membership. GitHub, Facebook and X each need 
 
 ## Keep development and research data separate
 
-Development and testing run on the emulator. The live project is reserved for real participant sessions. This is enforced by configuration: `.env.development.local` points at the emulator and plain `npm run dev` cannot reach the cloud. `dev:live` is the one sanctioned exception and it announces itself in the terminal and on screen. An earlier session leaked seven test users into the live project before this split existed; they were deleted and the split added (see `docs/DECISIONS.md`, 2026-07-16).
+Automated testing runs on the emulator: the e2e suite starts its own server on 3100 with `.env.development.local` and never reaches the cloud. The live project is what `npm run dev` and `npm run live` talk to, and `dev` announces that in the terminal when it starts. An earlier session leaked seven test users into the live project before the emulator existed; they were deleted (see `docs/DECISIONS.md`, 2026-07-16). If you want a throwaway account, use `npm run dev:emulator` on 3100.

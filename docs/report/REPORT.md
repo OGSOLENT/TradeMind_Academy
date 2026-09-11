@@ -714,15 +714,15 @@ To run it locally with Node 22 and npm 10:
 
 1. Clone the repository and run npm install.
 2. In one terminal run npm run emulators to start the Firebase Emulator Suite.
-3. In a second terminal run npm run seed to load the curriculum, then npm run dev. Open http://localhost:3000.
+3. In a second terminal run npm run seed to load the curriculum, then npm run dev:emulator. Open http://localhost:3100. (npm run dev is the live project, which needs the Firebase configuration in .env.production.local.)
 4. npm run test runs the unit suite; npm run test:rules the security-rule suite inside the emulator; npm run test:e2e the browser journeys; npx tsx scripts/simulate.ts the simulated-learner harness.
 
 Table: The three run modes and where their data goes
 
 | Command | Firebase target | Google sign-in | Data goes to |
 |---|---|---|---|
-| npm run dev | Local emulator | Emulator's fake page | Local machine, wiped on restart |
-| npm run dev:live | Live project, with hot reload and an on-screen badge | Real Google | The cloud, permanent |
+| npm run dev:emulator | Local emulator, port 3100 | Emulator's fake page | Local machine, wiped on restart |
+| npm run dev | Live project, port 3000, with hot reload | Real Google | The cloud, permanent |
 | npm run live | Live project, production build | Real Google | The cloud, permanent |
 
 A learner's own data can be exported from Settings as CSV. The researcher export, scripts/export.ts, pulls every response for one user or all users into a tidy CSV with one row per response and the columns of the response schema.
