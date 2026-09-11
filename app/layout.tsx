@@ -15,17 +15,38 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "An adaptive learning platform for trading education. Educational simulation only — no live trading, no financial advice.";
+
 export const metadata: Metadata = {
   title: {
     default: "TradeMind Academy",
     template: "%s · TradeMind Academy",
   },
-  description:
-    "An adaptive learning platform for trading education. Educational simulation only — no live trading, no financial advice.",
+  description,
+  applicationName: "TradeMind Academy",
+  // The dev and kitchen-sink routes are for me, not for search engines.
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: "TradeMind Academy",
+    title: "TradeMind Academy",
+    description,
+  },
+  twitter: {
+    card: "summary",
+    title: "TradeMind Academy",
+    description,
+  },
+  appleWebApp: {
+    title: "TradeMind",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: "#050507",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { slugify } from "@/lib/utils";
 
 /**
  * A minimal markdown renderer for lesson blocks.
@@ -85,11 +86,14 @@ export function Markdown({ md }: { md: string }) {
   };
   const flushQuote = () => {
     if (quote.length) {
+      // The definition callout. A teal spine, a small marker, and the text in
+      // the primary colour so it stands out from the surrounding prose.
       out.push(
         <blockquote
           key={key++}
-          className="rounded-control border-l-2 border-mastery bg-mastery/5 py-3 pl-4 pr-4 text-fg-primary"
+          className="relative rounded-control bg-mastery/[0.06] py-4 pl-5 pr-4 text-fg-primary shadow-[inset_0_0_0_1px_var(--mastery-glow)]"
         >
+          <span aria-hidden="true" className="absolute inset-y-3 left-0 w-0.5 rounded-pill bg-mastery" />
           {inline(quote.join(" "), 0)}
         </blockquote>,
       );
@@ -160,16 +164,24 @@ export function Markdown({ md }: { md: string }) {
     if (t.startsWith("### ")) {
       flushAll();
       out.push(
-        <h3 key={key++} className="pt-1 text-lg font-medium text-fg-primary">
+        <h3 key={key++} id={slugify(t.slice(4))} className="scroll-mt-32 pt-1 text-lg font-medium text-fg-primary">
           {t.slice(4)}
         </h3>,
       );
     } else if (t.startsWith("## ")) {
       flushAll();
+      // Every h2 gets an id so the outline in the lesson rail can jump to it,
+      // and a short teal rule above it to mark the section break.
       out.push(
-        <h2 key={key++} className="pt-2 text-headline-md text-fg-primary">
+        <h2 key={key++} id={slugify(t.slice(3))} className="group scroll-mt-32 pt-4 text-headline-md text-fg-primary">
+          <span aria-hidden="true" className="mb-3 block h-px w-8 bg-gradient-to-r from-mastery to-transparent" />
           {t.slice(3)}
         </h2>,
+      );
+    } else if (t === "---") {
+      flushAll();
+      out.push(
+        <hr key={key++} className="border-0 border-t border-hair" aria-hidden="true" />
       );
     } else if (t.startsWith("> ")) {
       flushList();
@@ -189,7 +201,7 @@ export function Markdown({ md }: { md: string }) {
       flushTable();
       flushPara();
       ordered.push(t.replace(/^\d+\.\s/, ""));
-    } else if (t === "" || t === "---") {
+    } else if (t === "") {
       flushAll();
     } else {
       flushList();

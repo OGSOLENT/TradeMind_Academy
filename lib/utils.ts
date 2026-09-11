@@ -10,3 +10,13 @@ export function cn(...classes: Array<string | false | null | undefined>): string
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
+
+/** Turn a heading into an id: "OHLC — the foundation" becomes "ohlc-the-foundation". */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}

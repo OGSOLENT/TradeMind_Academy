@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -54,34 +54,102 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
   );
 }
 
-/** The video slot, with a poster fallback for when there's no video yet. */
+/**
+ * The lecture video. A framed player with the poster showing first and a
+ * single play control over it, so the block reads as a piece of the lesson
+ * rather than a bare <video> dropped into the column. Press play and the
+ * native controls take over. With no video yet, the poster stands in.
+ */
 export function VideoBlock({
   block,
   videoUrl,
+  title,
 }: {
   block: Extract<LessonBlock, { kind: "video" }>;
   videoUrl: string | null;
+  title?: string;
 }) {
-  if (videoUrl) {
-    return (
-      <video controls poster={block.poster} className="w-full rounded-card shadow-edge-lit">
-        <source src={videoUrl} />
-      </video>
-    );
-  }
+  const reduced = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const play = () => {
+    setPlaying(true);
+    // The element is already mounted underneath the poster, so this is
+    // immediate and counts as a user gesture for autoplay policies.
+    void videoRef.current?.play();
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-card bg-bg-elevated shadow-edge-lit">
-      <Image src={block.poster} alt="Video lesson placeholder poster" width={1200} height={520} className="h-auto w-full" unoptimized />
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bg-deep/60">
-        <span
+    <figure id="lecture" className="scroll-mt-32">
+      <div className="relative isolate overflow-hidden rounded-card bg-bg-elevated shadow-lift">
+        {/* A soft wash behind the frame so it sits in light. */}
+        <div
           aria-hidden="true"
-          className="flex h-14 w-14 items-center justify-center rounded-pill bg-white/10 text-fg-primary backdrop-blur-sm"
-        >
-          ▶
-        </span>
-        <Pill tone="accent">Video coming soon</Pill>
+          className="pointer-events-none absolute -inset-px -z-10 rounded-card bg-[radial-gradient(80%_60%_at_50%_0%,rgba(94,106,210,0.22),transparent_70%)]"
+        />
+        {videoUrl ? (
+          <video
+            ref={videoRef}
+            controls={playing}
+            preload="metadata"
+            className="aspect-video w-full bg-bg-deep object-contain"
+            onPlay={() => setPlaying(true)}
+          >
+            <source src={videoUrl} />
+          </video>
+        ) : (
+          <div className="aspect-video w-full bg-bg-deep" />
+        )}
+
+        {/* The poster sits on its own layer so it can fill the frame while
+            the video underneath keeps its true aspect once it plays. */}
+        <AnimatePresence>
+          {!playing && (
+            <motion.div
+              key="overlay"
+              initial={false}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.03 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-4"
+            >
+              <Image src={block.poster} alt="" fill sizes="720px" className="object-cover" unoptimized />
+              <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg-deep/85 via-bg-deep/30 to-transparent" />
+              {videoUrl ? (
+                <button
+                  onClick={play}
+                  aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
+                  className="group relative flex h-20 w-20 items-center justify-center rounded-pill bg-white/10 text-fg-primary shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),0_0_40px_var(--accent-glow)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-300 hover:scale-105 hover:bg-white/15 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3),0_0_60px_var(--accent-glow)]"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn("absolute inset-0 rounded-pill border border-accent/40", !reduced && "tm-node-pulse")}
+                  />
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1">
+                    <path d="M8 5.5v13l11-6.5z" />
+                  </svg>
+                </button>
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="relative flex h-16 w-16 items-center justify-center rounded-pill bg-white/10 text-fg-secondary backdrop-blur-sm"
+                >
+                  ▶
+                </span>
+              )}
+              <div className="relative flex items-center gap-2">
+                <Pill tone={videoUrl ? "accent" : "neutral"} dot>
+                  {videoUrl ? "Lecture" : "Video coming soon"}
+                </Pill>
+                {title && videoUrl && (
+                  <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{title}</span>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </figure>
   );
 }
 

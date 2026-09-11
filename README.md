@@ -8,6 +8,11 @@ The adaptive loop is the research core: auth → lesson → per-topic test →
 Bayesian Knowledge Tracing mastery update → rule-based routing → dashboard,
 with an append-only response log exported for evaluation.
 
+## Running it
+
+Read [START_HERE.md](START_HERE.md). It's one page: kill everything, run the real app,
+run the practice app, open the database. [RUNNING.md](RUNNING.md) has the longer version.
+
 ## Stack
 
 Next.js 14 (App Router, TS strict) · Tailwind (custom tokens) · Framer Motion ·

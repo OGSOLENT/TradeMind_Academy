@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { RhythmTrace } from "@/components/learn/rhythm-trace";
+import { DownloadIcon, EyeIcon, GearIcon, ShieldIcon } from "@/components/learn/stat-icons";
 
 const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -158,9 +159,17 @@ export default function ProfilePage() {
             }) ?? "recently"}
           </p>
         </div>
-        <Button variant="ghost" size="sm" onClick={onSignOut}>
-          Sign out
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link href="/settings">
+            <Button variant="glass" size="sm" className="gap-1.5">
+              <GearIcon width={16} height={16} />
+              Settings
+            </Button>
+          </Link>
+          <Button variant="ghost" size="sm" onClick={onSignOut}>
+            Sign out
+          </Button>
+        </div>
       </Card>
 
       <div className="grid grid-cols-3 gap-4">
@@ -220,11 +229,43 @@ export default function ProfilePage() {
         </ul>
       </Card>
 
-      <p className="text-center text-sm text-fg-secondary">
-        <Link href="/settings" className="text-accent-bright hover:underline">
-          Settings — accessibility, your data, account
-        </Link>
-      </p>
+      {/* The three doors into settings, each straight to its own section. */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          {
+            href: "/settings#accessibility",
+            title: "Accessibility",
+            copy: "Colour-blind candles, reduced motion, font size.",
+            Icon: EyeIcon,
+            tone: "text-mastery-bright",
+          },
+          {
+            href: "/settings#data",
+            title: "Your data",
+            copy: "Download everything the tutor has recorded.",
+            Icon: DownloadIcon,
+            tone: "text-accent-bright",
+          },
+          {
+            href: "/settings#account",
+            title: "Account",
+            copy: "Delete your account, with five seconds to undo.",
+            Icon: ShieldIcon,
+            tone: "text-warning",
+          },
+        ].map(({ href, title, copy, Icon, tone }) => (
+          <Link key={href} href={href} className="block">
+            <Card level="base" interactive spotlight className="h-full p-5">
+              <span className={cn("inline-flex h-9 w-9 items-center justify-center rounded-control bg-white/5 shadow-hairline", tone)}>
+                <Icon />
+              </span>
+              <p className="mt-3 text-body-base font-medium text-fg-primary">{title}</p>
+              <p className="mt-1 text-sm text-fg-secondary">{copy}</p>
+              <p className={cn("mt-3 text-sm", tone)}>Open →</p>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </Stagger>
   );
 }

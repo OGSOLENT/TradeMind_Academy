@@ -30,8 +30,6 @@
  * `data-motion="reduced"` setting (globals.css). Everything just holds still.
  */
 
-import { PointerGlow } from "./pointer-glow";
-
 /** Deterministic pseudo-random, so the field looks identical on every render. */
 function rand(seed: number) {
   const x = Math.sin(seed * 12.9898) * 43758.5453;
@@ -198,10 +196,6 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
           }}
         />
       )}
-
-      {/* The light that follows the pointer. Ambient only: in the quiz's
-          calm mode nothing moves next to a question. */}
-      {!calm && <PointerGlow />}
 
       {/* A horizon glow behind the fixed nav, so the glass bar has something
           to refract instead of pure void. */}

@@ -13,6 +13,10 @@
  */
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { guard } from "./port-guard.mjs";
+
+const port = process.env.PORT ?? "3001";
+await guard(Number(port), "dev:live");
 
 const envFile = ".env.production.local";
 let loaded = 0;
@@ -32,6 +36,5 @@ console.log(
 console.log("     Every account you create here is real. Use npm run dev for throwaway testing.\n");
 
 process.env.NEXT_DIST_DIR = ".next-live"; // its own build folder, see next.config.mjs
-const port = process.env.PORT ?? "3001";
 const child = spawn("npx", ["next", "dev", "-p", port], { stdio: "inherit", env: process.env });
 child.on("exit", (code) => process.exit(code ?? 0));
