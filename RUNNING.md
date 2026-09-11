@@ -35,7 +35,7 @@ Open **http://localhost:3000**.
 | --- | --- |
 | Page looks broken or stuck | Just refresh the browser (⌘R) first |
 | App won't load at all | `lsof -ti:3000 \| xargs kill` then re-run the Terminal 2 command above |
-| "Port already in use" for emulators | `lsof -ti:8080,9099,4000 \| xargs kill` then re-run the Terminal 1 command |
+| "Port already in use" for emulators | `lsof -ti:8080,9099,4000,4400 \| xargs kill; sleep 2; lsof -ti:8080 \| xargs kill` then re-run the Terminal 1 command. The second kill matters: Firestore runs as a Java child that can outlive the first one and keep 8080. |
 | Weird data / want a clean slate | Stop the emulators (Ctrl+C in Terminal 1), start them again, then `npm run seed` |
 
 ## Common commands

@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Counter } from "@/components/ui/counter";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { LazyParticleField } from "@/components/three/lazy-particle-field";
+import { KnowledgeModel } from "@/components/learn/knowledge-model";
 import { ClockIcon, PulseIcon, SparkIcon } from "@/components/learn/stat-icons";
 import { motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -136,6 +137,7 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-4xl space-y-6">
         {header}
         <Skeleton className="min-h-[240px] w-full rounded-card" />
+        <Skeleton className="min-h-[380px] w-full rounded-card" />
         <div className="grid gap-4 md:grid-cols-3">
           <Skeleton className="min-h-[168px] rounded-card" />
           <Skeleton className="min-h-[168px] rounded-card" />
@@ -186,7 +188,7 @@ export default function DashboardPage() {
           spotlight
           className="flex min-h-[240px] flex-col items-center gap-6 p-8 sm:flex-row"
         >
-          <LazyParticleField count={420} wave={0.5} intensity={0.55} spread={[18, 6, 6]} />
+          <LazyParticleField count={300} wave={0.5} intensity={0.5} spread={[18, 6, 6]} />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_90%_at_18%_50%,rgba(94,106,210,0.14),transparent_70%)]"
@@ -243,6 +245,13 @@ export default function DashboardPage() {
           )}
         </Card>
       </StaggerItem>
+
+      {/* The knowledge model itself, once there is one. */}
+      {!noModel && (
+        <StaggerItem>
+          <KnowledgeModel kcs={kcs} kcStates={kcStates} />
+        </StaggerItem>
+      )}
 
       <StaggerItem className="grid gap-4 md:grid-cols-3">
         <Card level="base" interactive spotlight className="min-h-[168px] p-5">
@@ -363,12 +372,20 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-          <div className="mt-4">
+          {/* The chart wipes in from the left, and again whenever you pick a
+              different topic, so the switch reads as a redraw. */}
+          <motion.div
+            key={chartKc ?? "none"}
+            className="mt-4"
+            initial={reduced ? false : { clipPath: "inset(0 100% 0 0)" }}
+            animate={{ clipPath: "inset(0 0% 0 0)" }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
             <MasteryChart
               points={chartPoints}
               ariaLabel={`Mastery over time for ${kcs.find((k) => k.id === chartKc)?.title ?? "topic"}`}
             />
-          </div>
+          </motion.div>
         </Card>
       </StaggerItem>
     </Stagger>

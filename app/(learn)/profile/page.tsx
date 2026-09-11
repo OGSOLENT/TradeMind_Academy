@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { RhythmTrace } from "@/components/learn/rhythm-trace";
 
 const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -176,6 +177,16 @@ export default function ProfilePage() {
           </Card>
         ))}
       </div>
+
+      <Card level="elevated" spotlight className="p-6">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-body-base font-medium text-fg-primary">Your rhythm</h2>
+          <span className="text-xs text-fg-secondary">sessions per week</span>
+        </div>
+        <div className="mt-4">
+          <RhythmTrace sessionStarts={sessions.filter((s) => s.ended).map((s) => s.startedAt)} />
+        </div>
+      </Card>
 
       <Card level="elevated" className="p-6">
         <h2 className="text-body-base font-medium text-fg-primary">Badges</h2>

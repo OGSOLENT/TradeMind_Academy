@@ -126,3 +126,17 @@ export function newlyUnlocked(kcs: Kc[], before: MasteryMap, after: MasteryMap):
   const was = new Set(unlockedKcIds(kcs, before));
   return unlockedKcIds(kcs, after).filter((id) => !was.has(id));
 }
+
+export type NodeState = "locked" | "available" | "mastered" | "remediation";
+
+/**
+ * How a KC should be drawn: locked until its prerequisites are mastered,
+ * mastered at or above 0.8, in remediation below 0.4 once it's been tried,
+ * and otherwise available. The skill tree and the dashboard orb both use it.
+ */
+export function nodeStateFor(pL: number, attempts: number, unlocked: boolean): NodeState {
+  if (!unlocked) return "locked";
+  if (pL >= MASTERY_THRESHOLD) return "mastered";
+  if (attempts > 0 && pL < REMEDIATION_THRESHOLD) return "remediation";
+  return "available";
+}
