@@ -302,6 +302,32 @@
   animation: tm-scroll-cue 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
+/* ── Signed-in surfaces ────────────────────────────────────────────────────
+   An orbit ring around the dashboard's mastery ring, the slow conic spin
+   behind the profile avatar, and the pulse on anything that needs attention.
+   All transform or opacity only, all stopped under reduced motion. */
+@keyframes tm-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.tm-orbit {
+  animation: tm-orbit 26s linear infinite;
+}
+.tm-orbit-reverse {
+  animation: tm-orbit 38s linear infinite reverse;
+}
+.tm-spin-slow {
+  animation: tm-orbit 9s linear infinite;
+}
+
+@keyframes tm-pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 var(--warning); opacity: 1; }
+  70%      { box-shadow: 0 0 0 7px rgba(255, 185, 85, 0); opacity: 0.85; }
+}
+.tm-pulse-dot {
+  animation: tm-pulse-dot 2.2s ease-out infinite;
+}
+
 /* The 404 candles grow up out of their baseline one after another. */
 @keyframes tm-rise {
   from { transform: scaleY(0); opacity: 0; }
@@ -314,7 +340,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tm-marquee, .tm-scroll-cue, .tm-rise, .tm-sheen:hover::after {
+  .tm-marquee, .tm-scroll-cue, .tm-rise, .tm-sheen:hover::after,
+  .tm-orbit, .tm-orbit-reverse, .tm-spin-slow, .tm-pulse-dot {
     animation: none !important;
   }
   .tm-rise {
@@ -325,7 +352,11 @@
 [data-motion="reduced"] .tm-marquee,
 [data-motion="reduced"] .tm-scroll-cue,
 [data-motion="reduced"] .tm-rise,
-[data-motion="reduced"] .tm-sheen:hover::after {
+[data-motion="reduced"] .tm-sheen:hover::after,
+[data-motion="reduced"] .tm-orbit,
+[data-motion="reduced"] .tm-orbit-reverse,
+[data-motion="reduced"] .tm-spin-slow,
+[data-motion="reduced"] .tm-pulse-dot {
   animation: none !important;
 }
 

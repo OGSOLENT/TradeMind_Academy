@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { getKcs, getLesson, getLessonsByKc } from "@/lib/firebase/repos";
@@ -26,7 +27,9 @@ import {
  */
 export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
+  const reduced = useReducedMotion();
   const [progress, setProgress] = useState(0);
+  const [pastTitle, setPastTitle] = useState(false);
 
   // The id can be a lesson id or a knowledge-component id. A module link
   // resolves to the first lesson of that module.
@@ -58,11 +61,22 @@ export default function LessonPage() {
       const el = document.documentElement;
       const total = el.scrollHeight - el.clientHeight;
       setProgress(total > 0 ? el.scrollTop / total : 0);
+      // The floating mini-header shows once the real title has scrolled away.
+      setPastTitle(el.scrollTop > 360);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // A rough reading time. 200 words a minute, counting only the prose blocks.
+  const readingMinutes = useMemo(() => {
+    if (!lesson) return 0;
+    const words = lesson.blocks
+      .filter((b): b is Extract<typeof b, { kind: "markdown" }> => b.kind === "markdown")
+      .reduce((n, b) => n + b.md.split(/\s+/).length, 0);
+    return Math.max(1, Math.round(words / 200));
+  }, [lesson]);
 
   if (isPending) {
     return (
@@ -95,9 +109,40 @@ export default function LessonPage() {
         <ProgressBar value={progress} variant="thin" aria-label="Reading progress" />
       </div>
 
+      {/* A small floating header that appears once the title has scrolled
+          out of view, so you always know where you are and how far in. */}
+      <AnimatePresence>
+        {pastTitle && (
+          <motion.div
+            key="mini"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="pointer-events-none fixed inset-x-0 top-[84px] z-30 hidden justify-center md:flex"
+            aria-hidden="true"
+          >
+            <div className="glass-nav flex max-w-[720px] items-center gap-3 rounded-pill border border-white/10 px-4 py-2 shadow-lift">
+              <span className="text-label-caps uppercase tracking-wider text-mastery-bright">
+                {kc?.title ?? "Lesson"}
+              </span>
+              <span className="h-3 w-px bg-white/10" />
+              <span className="truncate text-sm text-fg-primary">{lesson.title}</span>
+              <span className="h-3 w-px bg-white/10" />
+              <span className="num text-xs text-fg-secondary">{Math.round(progress * 100)}%</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <article className="mx-auto max-w-[720px] space-y-8 pb-24">
         <Stagger className="space-y-4 pt-4">
-          <Pill tone="mastery">Level {kc?.level ?? 1} · {kc?.title ?? "Lesson"}</Pill>
+          <div className="flex flex-wrap items-center gap-2">
+            <Pill tone="mastery">Level {kc?.level ?? 1} · {kc?.title ?? "Lesson"}</Pill>
+            <Pill>
+              <span className="num">{readingMinutes}</span>&nbsp;min read
+            </Pill>
+          </div>
           <h1 className="text-display-lg-mobile md:text-display-lg text-fg-primary">
             {lesson.title}
           </h1>

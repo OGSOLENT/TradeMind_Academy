@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { deleteUser } from "firebase/auth";
 import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { spring } from "@/lib/motion";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
 import { useAuth } from "@/lib/firebase/auth-context";
@@ -57,15 +59,15 @@ function Toggle({
           aria-label={label}
           onClick={() => onChange(!checked)}
           className={cn(
-            "relative h-7 w-12 shrink-0 rounded-pill transition-colors duration-200",
-            checked ? "bg-accent" : "bg-white/10",
+            "relative flex h-7 w-12 shrink-0 items-center rounded-pill px-1 transition-[background-color,box-shadow] duration-200",
+            checked ? "bg-accent shadow-[0_0_14px_var(--accent-glow)]" : "bg-white/10",
           )}
         >
-          <span
-            className={cn(
-              "absolute top-1 h-5 w-5 rounded-pill bg-white transition-all duration-200",
-              checked ? "left-6" : "left-1",
-            )}
+          {/* The knob springs across instead of sliding on a linear tween. */}
+          <motion.span
+            layout
+            transition={spring.ui}
+            className={cn("h-5 w-5 rounded-pill bg-white shadow-sm", checked && "ml-auto")}
           />
         </button>
       </div>
@@ -184,7 +186,12 @@ export default function SettingsPage() {
 
   return (
     <Stagger className="mx-auto max-w-2xl space-y-6">
-      <h1 className="text-headline-md text-fg-primary">Settings</h1>
+      <div>
+        <h1 className="text-headline-md text-fg-primary">Settings</h1>
+        <p className="mt-1 text-sm text-fg-secondary">
+          Accessibility, your data, and your account. Every change saves as you make it.
+        </p>
+      </div>
 
       <Card level="elevated" className="divide-y divide-white/5 py-2">
         <Toggle
@@ -213,9 +220,9 @@ export default function SettingsPage() {
                 aria-checked={s.fontScale === scale}
                 onClick={() => update.mutate({ fontScale: scale })}
                 className={cn(
-                  "num min-h-11 rounded-control px-3 text-sm transition-colors",
+                  "num min-h-11 rounded-control px-3 text-sm transition-[color,background-color,box-shadow] duration-200",
                   s.fontScale === scale
-                    ? "bg-accent/15 text-accent-bright shadow-[inset_0_0_0_1px_var(--accent)]"
+                    ? "bg-accent/15 text-accent-bright shadow-[inset_0_0_0_1px_var(--accent),0_0_14px_var(--accent-glow)]"
                     : "text-fg-secondary shadow-hairline hover:bg-white/5",
                 )}
               >

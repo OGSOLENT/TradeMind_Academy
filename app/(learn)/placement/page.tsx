@@ -11,7 +11,8 @@ import { useQuizSession } from "@/lib/quiz/session-store";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Stagger } from "@/components/motion/stagger";
+import { LazyParticleField } from "@/components/three/lazy-particle-field";
 
 const COURSE_ID = "trading-foundations";
 
@@ -78,7 +79,12 @@ export default function PlacementPage() {
 
   return (
     <Stagger className="mx-auto max-w-xl pt-12">
-      <Card level="elevated" className="p-8 text-center">
+      <Card level="elevated" spotlight className="p-8 text-center">
+        <LazyParticleField count={320} wave={0.4} intensity={0.5} spread={[14, 8, 6]} />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_50%_0%,rgba(94,106,210,0.16),transparent_70%)]"
+        />
         <Pill tone="accent" dot>
           One-time calibration
         </Pill>

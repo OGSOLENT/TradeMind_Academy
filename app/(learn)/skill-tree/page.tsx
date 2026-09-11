@@ -13,10 +13,14 @@ import { ConstellationMap, type KcView, type NodeState } from "@/components/lear
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { Button } from "@/components/ui/button";
+import { Counter } from "@/components/ui/counter";
 import { Drawer } from "@/components/ui/drawer";
+import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { LazyParticleField } from "@/components/three/lazy-particle-field";
 import { clamp, cn } from "@/lib/utils";
 
 const COURSE_ID = "trading-foundations";
@@ -117,24 +121,45 @@ function SkillTree() {
     );
   }
 
+  // The summary numbers above the map. Mean mastery is what the route's
+  // bright stretch is drawn from, so showing it here ties the two together.
+  const mastered = views.filter((v) => v.state === "mastered").length;
+  const meanMastery = views.length ? views.reduce((n, v) => n + v.pL, 0) / views.length : 0;
+  const frontier = views.find((v) => v.state === "available" || v.state === "remediation");
+
   const panel = selected && (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <Pill
+      <div className="flex items-center gap-4">
+        <MasteryRing
+          value={selected.pL}
+          size="sm"
           tone={
             selected.state === "mastered"
               ? "mastery"
               : selected.state === "remediation"
                 ? "warning"
                 : selected.state === "locked"
-                  ? "neutral"
-                  : "accent"
+                  ? "accent"
+                  : "auto"
           }
-          dot
-        >
-          {selected.state}
-        </Pill>
-        <span className="num text-sm text-fg-secondary">{Math.round(selected.pL * 100)}% mastery</span>
+        />
+        <div className="flex flex-col gap-1.5">
+          <Pill
+            tone={
+              selected.state === "mastered"
+                ? "mastery"
+                : selected.state === "remediation"
+                  ? "warning"
+                  : selected.state === "locked"
+                    ? "neutral"
+                    : "accent"
+            }
+            dot
+          >
+            {selected.state}
+          </Pill>
+          <span className="num text-sm text-fg-secondary">{Math.round(selected.pL * 100)}% mastery</span>
+        </div>
       </div>
       <p className="text-sm leading-6 text-fg-secondary">{selected.description}</p>
       <p className="num text-xs text-fg-secondary">{selected.attempts} attempts recorded</p>
@@ -162,10 +187,12 @@ function SkillTree() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <Stagger autoWrap={false} className="mx-auto max-w-6xl">
+      <StaggerItem className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-headline-md text-fg-primary">Skill constellation</h1>
+          <h1 className="text-headline-md text-fg-primary">
+            Skill <span className="text-gradient">constellation</span>
+          </h1>
           <p className="mt-1 text-sm text-fg-secondary">
             Your visible mind — every node is a live model estimate.
           </p>
@@ -179,10 +206,49 @@ function SkillTree() {
             +
           </Button>
         </div>
-      </div>
+      </StaggerItem>
 
-      <div className="flex gap-6">
-        <div className="relative min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base-veil shadow-hairline">
+      {/* The summary strip. Three numbers that roll in, and a bar for the
+          mean, which is the same value the route's bright stretch is drawn from. */}
+      <StaggerItem className="mb-4 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-control bg-bg-base-veil px-4 py-3 shadow-hairline">
+          <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Mastered</p>
+          <p className="mt-1 text-2xl text-mastery-bright">
+            <Counter value={mastered} />
+            <span className="num text-sm text-fg-secondary">/{views.length}</span>
+          </p>
+        </div>
+        <div className="rounded-control bg-bg-base-veil px-4 py-3 shadow-hairline">
+          <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Route covered</p>
+          <p className="mt-1 text-2xl text-fg-primary">
+            <Counter value={Math.round(meanMastery * 100)} suffix="%" />
+          </p>
+          <div className="mt-1.5 h-1 w-full overflow-hidden rounded-pill bg-white/5" aria-hidden="true">
+            <motion.div
+              className="h-full rounded-pill bg-gradient-to-r from-mastery via-accent to-[#8b7cf6]"
+              initial={reduced ? false : { width: 0 }}
+              animate={{ width: `${meanMastery * 100}%` }}
+              transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </div>
+        </div>
+        <div className="rounded-control bg-bg-base-veil px-4 py-3 shadow-hairline">
+          <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
+            {frontier?.state === "remediation" ? "Needs work" : "Frontier"}
+          </p>
+          <p className="mt-1 truncate text-body-base font-medium text-fg-primary">
+            {frontier?.title ?? "Level 1 complete"}
+          </p>
+          <p className="num mt-0.5 text-xs text-fg-secondary">
+            {frontier ? `${Math.round(frontier.pL * 100)}% · ${frontier.attempts} attempts` : "Every module mastered"}
+          </p>
+        </div>
+      </StaggerItem>
+
+      <StaggerItem className="flex gap-6">
+        <div className="relative isolate min-w-0 flex-1 overflow-hidden rounded-card bg-bg-base-veil shadow-hairline">
+          {/* A slow field of stars behind the map. Desktop only, mounts on idle. */}
+          <LazyParticleField count={360} wave={0.35} intensity={0.5} scale={0.9} spread={[20, 8, 6]} />
           <div
             className="h-[520px] w-full"
             style={{ transform: `scale(${zoom})`, transformOrigin: "center center" }}
@@ -239,7 +305,7 @@ function SkillTree() {
             )}
           </AnimatePresence>
         )}
-      </div>
+      </StaggerItem>
 
       {/* On mobile the panel becomes the Vaul-style drawer */}
       {isMobile && (
@@ -247,6 +313,6 @@ function SkillTree() {
           {panel}
         </Drawer>
       )}
-    </div>
+    </Stagger>
   );
 }

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 import { useScrolled } from "@/lib/use-scrolled";
+import { useAuth } from "@/lib/firebase/auth-context";
 import { Logo } from "./logo";
 
 const links = [
@@ -25,6 +26,8 @@ export function GlassNav() {
   const pathname = usePathname();
   const reduced = useReducedMotion();
   const scrolled = useScrolled();
+  const { user } = useAuth();
+  const initial = user?.displayName?.trim().charAt(0).toUpperCase() ?? user?.email?.charAt(0).toUpperCase();
   return (
     <header
       className={cn(
@@ -65,10 +68,18 @@ export function GlassNav() {
         href="/profile"
         aria-current={pathname.startsWith("/profile") ? "page" : undefined}
         className={cn(
-          "rounded-control px-4 py-2 text-sm font-medium transition-colors duration-200 hover:bg-white/5 hover:text-fg-primary",
+          "flex items-center gap-2.5 rounded-control py-1.5 pl-1.5 pr-4 text-sm font-medium transition-colors duration-200 hover:bg-white/5 hover:text-fg-primary",
           pathname.startsWith("/profile") ? "bg-white/[0.06] text-fg-primary" : "text-fg-secondary",
         )}
       >
+        {/* The learner's initial in a small ring. Decorative, so the link's
+            accessible name stays "Profile". */}
+        <span
+          aria-hidden="true"
+          className="flex h-7 w-7 items-center justify-center rounded-pill bg-accent/15 text-xs font-semibold text-accent-bright shadow-[inset_0_0_0_1px_var(--accent-glow)]"
+        >
+          {initial ?? "·"}
+        </span>
         Profile
       </Link>
     </header>

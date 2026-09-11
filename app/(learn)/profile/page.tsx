@@ -9,10 +9,13 @@ import { MASTERY_THRESHOLD } from "@/lib/bkt";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
 import { useAuth } from "@/lib/firebase/auth-context";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Counter } from "@/components/ui/counter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { spring } from "@/lib/motion";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const COURSE_ID = "trading-foundations";
@@ -30,6 +33,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useAuth();
+  const reduced = useReducedMotion();
 
   const { data, isPending } = useQuery({
     queryKey: ["profile-page", user?.uid],
@@ -124,12 +128,23 @@ export default function ProfilePage() {
 
   return (
     <Stagger className="mx-auto max-w-2xl space-y-6">
-      <Card level="elevated" className="flex items-center gap-5 p-6">
-        <div
-          aria-hidden="true"
-          className="flex h-16 w-16 items-center justify-center rounded-pill bg-accent/15 text-2xl font-semibold text-accent-bright"
-        >
-          {profile.displayName.slice(0, 1).toUpperCase()}
+      <Card level="elevated" spotlight className="flex items-center gap-5 p-6">
+        {/* The avatar. A slow conic ring turns behind the initial, which is
+            the one bit of colour the profile card gets. */}
+        <div aria-hidden="true" className="relative h-16 w-16 shrink-0">
+          <span
+            className="tm-spin-slow absolute -inset-[3px] rounded-pill"
+            style={{
+              background:
+                "conic-gradient(from 0deg, var(--mastery) 0%, var(--accent) 40%, transparent 70%, var(--mastery) 100%)",
+              WebkitMask: "radial-gradient(circle, transparent 60%, #000 62%)",
+              mask: "radial-gradient(circle, transparent 60%, #000 62%)",
+              opacity: 0.85,
+            }}
+          />
+          <span className="flex h-full w-full items-center justify-center rounded-pill bg-bg-elevated text-2xl font-semibold text-accent-bright shadow-edge-lit">
+            {profile.displayName.slice(0, 1).toUpperCase()}
+          </span>
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="text-headline-md text-fg-primary">{profile.displayName}</h1>
@@ -153,8 +168,10 @@ export default function ProfilePage() {
           { label: "Answers", value: attempts },
           { label: "Mastered", value: mastered },
         ].map(({ label, value }) => (
-          <Card key={label} level="base" className="p-5 text-center">
-            <p className="num text-3xl text-fg-primary">{value}</p>
+          <Card key={label} level="base" spotlight className="p-5 text-center">
+            <p className="text-3xl text-fg-primary">
+              <Counter value={value} />
+            </p>
             <p className="mt-1 text-label-caps uppercase tracking-wider text-fg-secondary">{label}</p>
           </Card>
         ))}
@@ -163,21 +180,31 @@ export default function ProfilePage() {
       <Card level="elevated" className="p-6">
         <h2 className="text-body-base font-medium text-fg-primary">Badges</h2>
         <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {badges.map((badge) => (
-            <li
+          {badges.map((badge, i) => (
+            <motion.li
               key={badge.id}
+              initial={reduced ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: badge.earned ? 1 : 0.4, y: 0 }}
+              transition={{ ...spring.ui, delay: 0.25 + i * 0.05 }}
+              whileHover={badge.earned && !reduced ? { y: -3, scale: 1.02 } : undefined}
               className={cn(
-                "rounded-control p-4 text-center shadow-hairline",
-                badge.earned ? "bg-mastery/5" : "opacity-40",
+                "rounded-control p-4 text-center shadow-hairline transition-shadow duration-300",
+                badge.earned && "bg-mastery/5 hover:shadow-[inset_0_0_0_1px_var(--mastery-glow),0_0_24px_-6px_var(--mastery-glow)]",
               )}
             >
-              <p aria-hidden="true" className={cn("text-2xl", badge.earned ? "text-mastery-bright" : "text-fg-muted")}>
+              <p
+                aria-hidden="true"
+                className={cn(
+                  "text-2xl",
+                  badge.earned ? "text-mastery-bright drop-shadow-[0_0_10px_var(--mastery-glow)]" : "text-fg-muted",
+                )}
+              >
                 {badge.icon}
               </p>
               <p className="mt-2 text-sm font-medium text-fg-primary">{badge.title}</p>
               <p className="mt-0.5 text-xs text-fg-secondary">{badge.description}</p>
               <span className="sr-only">{badge.earned ? "Earned" : "Not yet earned"}</span>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </Card>

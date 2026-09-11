@@ -123,7 +123,7 @@ export default function MistakesPage() {
         </Card>
       ) : (
         groups.map((group) => (
-          <Card key={group.kcId} level="elevated" className="flex items-center justify-between gap-4">
+          <Card key={group.kcId} level="elevated" spotlight className="flex items-center justify-between gap-4">
             <div className="min-w-0">
               <h2 className="font-medium capitalize text-fg-primary">
                 {group.kcId.replace("kc-", "").replaceAll("-", " ")}
