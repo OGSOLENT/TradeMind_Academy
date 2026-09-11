@@ -9,6 +9,7 @@ import { getFirebase } from "@/lib/firebase/client";
 import { signInWithGoogle } from "@/lib/firebase/google";
 import { createUserProfile, getUserProfile } from "@/lib/firebase/repos";
 import { defaultSettings } from "@/lib/firebase/types";
+import { describeFirebaseError } from "@/lib/firebase/errors";
 import { GoogleButton, OrDivider } from "@/components/auth/google-button";
 import { PasswordStrength, scorePassword } from "@/components/auth/password-strength";
 import { Button } from "@/components/ui/button";
@@ -56,11 +57,18 @@ export default function SignUpPage() {
       router.push("/consent");
     } catch (err) {
       const code = (err as { code?: string }).code ?? "";
+      console.error("[sign-up] failed", err);
       setErrors({
         email:
           code === "auth/email-already-in-use"
             ? "An account with this email already exists."
-            : "Sign-up failed — check the email address and try again.",
+            : code === "auth/invalid-email"
+              ? "That email address doesn't look right."
+              : code === "auth/weak-password"
+                ? "Firebase rejected that password as too weak."
+                : code.startsWith("auth/")
+                  ? `Sign-up failed (${code.replace("auth/", "")}).`
+                  : `Your account was created but the profile didn't save. ${describeFirebaseError(err)}`,
       });
       setBusy(false);
     }
@@ -108,13 +116,17 @@ export default function SignUpPage() {
         settings: defaultSettings,
       });
       router.push("/consent");
-    } catch {
+    } catch (err) {
+      // Google has already signed them in at this point, so I don't strand
+      // them here. The consent page creates a missing profile on accept, and
+      // the toast says what actually went wrong instead of "try again".
+      console.error("[sign-up/google] profile step failed", err);
       toast({
-        title: "Could not create your profile",
-        description: "Please try again.",
-        variant: "danger",
+        title: "Signed in, but your profile didn't load",
+        description: `${describeFirebaseError(err)} Let's finish setting up on the next screen.`,
+        variant: "warning",
       });
-      setBusy(false);
+      router.push("/consent");
     }
   }
 

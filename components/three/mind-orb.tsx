@@ -8,22 +8,26 @@ import * as THREE from "three";
 import type { NodeState } from "@/lib/routing";
 
 /**
- * The knowledge orb. A three.js view of the learner model itself.
+ * The knowledge orb, drawn as a brain.
  *
- * The modules sit on a helix that climbs from the bottom of the orb to the
- * top in teaching order, which is the same "climb" the 2D skill map draws,
- * just wound into three dimensions. A dim tube follows the whole route and
- * a bright one is built from only the stretch the learner has covered (mean
- * mastery, the same number the skill map uses), with a travelling light at
- * its head. Each node's glow scales with its own mastery, so the orb reads
- * at a glance: dim at the bottom means work to do, bright means done.
+ * Two hemispheres of fine points make the silhouette, with a fissure down
+ * the middle and a little wrinkle in the surface so it reads as cortex and
+ * not a balloon. The modules sit inside it as neurons, placed along a path
+ * that winds up through the volume in teaching order, so it's still the
+ * climb the 2D skill map draws. The prerequisite chain is the main axon: a
+ * dim tube for the whole route, a bright one built from the stretch the
+ * learner has covered (mean mastery, same as the map), and signal pulses
+ * travelling along it, bright where it's lit and faint beyond. Thin
+ * dendrites join each neuron to its nearest neighbours. Each neuron's glow
+ * scales with its own mastery.
  *
- * It rotates slowly, tilts toward the pointer, pauses while you hover a
- * node, and shows the node's title and estimate. Clicking a node hands its
- * id back so the dashboard can open the lesson. The list beside the orb is
- * the accessible version of all this. The canvas itself is decoration.
+ * It turns slowly, leans toward the pointer, pauses while you hover a
+ * neuron, and shows that neuron's title and estimate in a label that's
+ * clamped to the canvas so it never runs off the edge. Clicking a neuron
+ * hands its id back so the dashboard can open the lesson. The list beside
+ * the orb is the accessible version; the canvas is decoration.
  *
- * Reduced motion: no rotation, no entrance, one frame on demand.
+ * Reduced motion: no rotation, no pulses, no entrance, one frame on demand.
  */
 
 export interface OrbNode {
@@ -35,7 +39,7 @@ export interface OrbNode {
 
 export interface MindOrbProps {
   nodes: OrbNode[];
-  /** Mean mastery across the route, 0 to 1. Drives the lit stretch of the tube. */
+  /** Mean mastery across the route, 0 to 1. Drives the lit stretch of the axon. */
   progress: number;
   frontierId: string | null;
   hoveredId?: string | null;
@@ -45,21 +49,45 @@ export interface MindOrbProps {
 
 const TONE: Record<NodeState, string> = {
   mastered: "#2dd4bf",
-  available: "#7f8cf0",
+  available: "#8b95ff",
   remediation: "#ffb955",
-  locked: "#4a4a5c",
+  locked: "#3b3b4a",
 };
 
-/** Node positions on the climbing helix. */
-function helixPositions(count: number): THREE.Vector3[] {
+/** Neuron positions: a squashed helix that stays inside the brain volume. */
+function neuronPositions(count: number): THREE.Vector3[] {
   const out: THREE.Vector3[] = [];
   for (let i = 0; i < count; i++) {
     const t = count > 1 ? i / (count - 1) : 0;
-    const angle = -Math.PI * 0.4 + t * Math.PI * 2.35;
-    const r = 1.5;
-    out.push(new THREE.Vector3(Math.cos(angle) * r, -1.35 + t * 2.7, Math.sin(angle) * r));
+    const a = -Math.PI * 0.45 + t * Math.PI * 2.3;
+    out.push(new THREE.Vector3(Math.cos(a) * 1.28, -0.66 + t * 1.32, Math.sin(a) * 0.92));
   }
   return out;
+}
+
+/** The brain silhouette as points: two wrinkled ellipsoids either side of a fissure. */
+function brainCloud(count: number): Float32Array {
+  const arr = new Float32Array(count * 3);
+  let i = 0;
+  while (i < count) {
+    const side = i % 2 === 0 ? -1 : 1;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    const wrinkle = 1 + 0.045 * Math.sin(ph * 6.5) * Math.cos(th * 5.5) + 0.03 * Math.sin(th * 9);
+    const rx = 1.12 * wrinkle;
+    const ry = 0.92 * wrinkle;
+    const rz = 1.36 * wrinkle;
+    const x = rx * Math.sin(ph) * Math.cos(th);
+    const y = ry * Math.cos(ph);
+    const z = rz * Math.sin(ph) * Math.sin(th);
+    // Keep the fissure open: drop points that would cross the midline.
+    if (side * x < -0.5) continue;
+    arr[i * 3] = x + side * 0.66;
+    arr[i * 3 + 1] = y;
+    arr[i * 3 + 2] = z;
+    i++;
+  }
+  return arr;
 }
 
 /** A soft radial sprite, drawn once on a 2D canvas and reused for every glow. */
@@ -88,47 +116,69 @@ function easeOutBack(x: number) {
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
 }
 
+/** Keep a label inside the canvas. Labels are centred, so the margin is half a label. */
+function clampedPosition(el: THREE.Object3D, camera: THREE.Camera, size: { width: number; height: number }): [number, number] {
+  const v = new THREE.Vector3().setFromMatrixPosition(el.matrixWorld).project(camera);
+  const x = ((v.x + 1) / 2) * size.width;
+  const y = ((1 - v.y) / 2) * size.height;
+  const mx = Math.min(110, size.width / 2);
+  const my = 18;
+  return [Math.min(size.width - mx, Math.max(mx, x)), Math.min(size.height - my, Math.max(my, y))];
+}
+
+const PULSES = 7;
+
 function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, reduced }: MindOrbProps & { reduced: boolean }) {
   const group = useRef<THREE.Group>(null);
   const nodeRefs = useRef<(THREE.Group | null)[]>([]);
+  const pulseRefs = useRef<(THREE.Sprite | null)[]>([]);
   const traveller = useRef<THREE.Group>(null);
+  const halo = useRef<THREE.Sprite>(null);
   const glow = useGlowTexture();
   const { invalidate } = useThree();
   const start = useRef<number | null>(null);
   const [localHover, setLocalHover] = useState<string | null>(null);
   const hovered = hoveredId ?? localHover;
 
-  const positions = useMemo(() => helixPositions(nodes.length), [nodes.length]);
+  const positions = useMemo(() => neuronPositions(nodes.length), [nodes.length]);
+  const cloud = useMemo(() => brainCloud(2200), []);
 
-  // The route. A dim tube for the whole climb, a bright one for the covered
-  // stretch, both built from the same Catmull-Rom curve through the nodes.
+  // The axon. A dim tube for the whole route, a bright one for the covered
+  // stretch, both built from the same Catmull-Rom curve through the neurons.
   const { track, lit, curve } = useMemo(() => {
     if (positions.length < 2) return { track: null, lit: null, curve: null };
     const curve = new THREE.CatmullRomCurve3(positions, false, "catmullrom", 0.6);
-    const track = new THREE.TubeGeometry(curve, 160, 0.012, 6, false);
+    const track = new THREE.TubeGeometry(curve, 160, 0.01, 6, false);
     const p = Math.max(0, Math.min(1, progress));
     let lit: THREE.TubeGeometry | null = null;
     if (p > 0.02) {
       const pts = curve.getSpacedPoints(240).slice(0, Math.max(2, Math.round(p * 240)));
-      lit = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, 0.02, 8, false);
+      lit = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, 0.018, 8, false);
     }
     return { track, lit, curve };
   }, [positions, progress]);
 
-  // Fine dust inside the orb so the nodes have something to float in.
-  const dust = useMemo(() => {
-    const n = 220;
-    const arr = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) {
-      const r = 1.2 + Math.random() * 1.9;
-      const th = Math.random() * Math.PI * 2;
-      const ph = Math.acos(2 * Math.random() - 1);
-      arr[i * 3] = r * Math.sin(ph) * Math.cos(th);
-      arr[i * 3 + 1] = r * Math.cos(ph) * 0.8;
-      arr[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
-    }
-    return arr;
-  }, []);
+  // Dendrites: each neuron to its two nearest that aren't already its chain
+  // neighbours. Faint, so the axon stays the story.
+  const dendrites = useMemo(() => {
+    const pairs = new Set<string>();
+    const pts: number[] = [];
+    positions.forEach((p, i) => {
+      const near = positions
+        .map((q, j) => ({ j, d: p.distanceTo(q) }))
+        .filter(({ j }) => j !== i && Math.abs(j - i) > 1)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 2);
+      for (const { j } of near) {
+        const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+        if (pairs.has(key)) continue;
+        pairs.add(key);
+        const q = positions[j]!;
+        pts.push(p.x, p.y, p.z, q.x, q.y, q.z);
+      }
+    });
+    return new Float32Array(pts);
+  }, [positions]);
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "";
@@ -145,23 +195,40 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
 
     // Slow turn, paused while hovering, and a lean toward the pointer.
     if (!reduced) {
-      if (!hovered) g.rotation.y += delta * 0.14;
-      g.rotation.x += (state.pointer.y * -0.18 - g.rotation.x) * 0.05;
-      g.rotation.z += (state.pointer.x * 0.06 - g.rotation.z) * 0.05;
+      if (!hovered) g.rotation.y += delta * 0.12;
+      g.rotation.x += (state.pointer.y * -0.16 - g.rotation.x) * 0.05;
+      g.rotation.z += (state.pointer.x * 0.05 - g.rotation.z) * 0.05;
     }
 
-    // Entrance: each node pops in on its own beat.
+    // Entrance: each neuron pops in on its own beat.
     nodeRefs.current.forEach((n, i) => {
       if (!n) return;
       const s = reduced ? 1 : easeOutBack(Math.max(0, Math.min(1, (t - 0.15 - i * 0.07) / 0.6)));
-      const hov = hovered === nodes[i]?.id ? 1.25 : 1;
+      const hov = hovered === nodes[i]?.id ? 1.3 : 1;
       n.scale.setScalar(s * hov);
     });
 
-    // The traveller breathes at the head of the lit stretch.
-    if (traveller.current && !reduced) {
+    // Signals along the axon. Bright on the lit stretch, faint past it.
+    if (curve && !reduced) {
+      pulseRefs.current.forEach((sp, i) => {
+        if (!sp) return;
+        const u = (t * 0.07 + i / PULSES) % 1;
+        sp.position.copy(curve.getPointAt(u));
+        const litPart = u <= progress;
+        const mat = sp.material as THREE.SpriteMaterial;
+        mat.opacity = litPart ? 0.9 : 0.28;
+        mat.color.set(litPart ? "#bffaf1" : "#8b95ff");
+        const k = litPart ? 0.26 : 0.16;
+        sp.scale.set(k, k, 1);
+      });
+    }
+
+    // The traveller breathes at the head of the lit stretch, and the
+    // frontier's halo pulses with it.
+    if (!reduced) {
       const k = 1 + Math.sin(state.clock.elapsedTime * 2.2) * 0.12;
-      traveller.current.scale.setScalar(k);
+      traveller.current?.scale.setScalar(k);
+      if (halo.current) halo.current.scale.setScalar(1.1 + Math.sin(state.clock.elapsedTime * 1.6) * 0.18);
     }
     if (reduced && t < 0.2) invalidate();
   });
@@ -173,16 +240,28 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
 
   return (
     <group ref={group}>
+      {/* The cortex. Two clouds, additive, faint. */}
       <points>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[dust, 3]} />
+          <bufferAttribute attach="attributes-position" args={[cloud, 3]} />
         </bufferGeometry>
-        <pointsMaterial size={0.035} color="#8b95ff" transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+        <pointsMaterial size={0.026} color="#8790ea" transparent opacity={0.5} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
       </points>
 
+      {/* Dendrites */}
+      {dendrites.length > 0 && (
+        <lineSegments>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" args={[dendrites, 3]} />
+          </bufferGeometry>
+          <lineBasicMaterial color="#9aa3ff" transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} />
+        </lineSegments>
+      )}
+
+      {/* The axon */}
       {track && (
         <mesh geometry={track}>
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.12} depthWrite={false} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.14} depthWrite={false} />
         </mesh>
       )}
       {lit && (
@@ -190,31 +269,48 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
           <mesh geometry={lit}>
             <meshBasicMaterial color="#5ee0d0" transparent opacity={0.9} depthWrite={false} />
           </mesh>
-          <mesh geometry={lit} scale={[1, 1, 1]}>
-            <meshBasicMaterial color="#2dd4bf" transparent opacity={0.25} depthWrite={false} blending={THREE.AdditiveBlending} />
+          <mesh geometry={lit}>
+            <meshBasicMaterial color="#2dd4bf" transparent opacity={0.3} depthWrite={false} blending={THREE.AdditiveBlending} />
           </mesh>
         </>
       )}
 
+      {/* Signal pulses */}
+      {curve &&
+        !reduced &&
+        Array.from({ length: PULSES }, (_, i) => (
+          <sprite
+            key={i}
+            ref={(el) => {
+              pulseRefs.current[i] = el;
+            }}
+            scale={[0.2, 0.2, 1]}
+          >
+            <spriteMaterial map={glow} color="#bffaf1" transparent opacity={0.8} depthWrite={false} blending={THREE.AdditiveBlending} />
+          </sprite>
+        ))}
+
       {travellerPos && (
         <group ref={traveller} position={travellerPos}>
-          <sprite scale={[0.7, 0.7, 1]}>
+          <sprite scale={[0.75, 0.75, 1]}>
             <spriteMaterial map={glow} color="#bdc2ff" transparent opacity={0.9} depthWrite={false} blending={THREE.AdditiveBlending} />
           </sprite>
           <mesh>
-            <sphereGeometry args={[0.045, 12, 12]} />
+            <sphereGeometry args={[0.04, 12, 12]} />
             <meshBasicMaterial color="#ffffff" />
           </mesh>
         </group>
       )}
 
+      {/* The neurons */}
       {nodes.map((node, i) => {
         const pos = positions[i]!;
         const tone = TONE[node.state];
         const isFrontier = node.id === frontierId;
         const isHovered = hovered === node.id;
-        const glowScale = node.state === "locked" ? 0.35 : 0.55 + node.pL * 1.1;
-        const glowOpacity = node.state === "locked" ? 0.25 : 0.45 + node.pL * 0.5;
+        const locked = node.state === "locked";
+        const glowScale = locked ? 0.3 : 0.5 + node.pL * 1.0;
+        const glowOpacity = locked ? 0.25 : 0.5 + node.pL * 0.45;
         return (
           <group
             key={node.id}
@@ -223,6 +319,11 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
               nodeRefs.current[i] = el;
             }}
           >
+            {isFrontier && (
+              <sprite ref={halo} scale={[1.1, 1.1, 1]}>
+                <spriteMaterial map={glow} color={tone} transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} />
+              </sprite>
+            )}
             <sprite scale={[glowScale, glowScale, 1]}>
               <spriteMaterial map={glow} color={tone} transparent opacity={glowOpacity} depthWrite={false} blending={THREE.AdditiveBlending} />
             </sprite>
@@ -241,17 +342,23 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
                 onSelect?.(node.id);
               }}
             >
-              <sphereGeometry args={[node.state === "locked" ? 0.075 : 0.105, 20, 20]} />
-              <meshBasicMaterial color={node.state === "locked" ? "#2b2b36" : tone} />
+              <sphereGeometry args={[locked ? 0.06 : 0.085, 20, 20]} />
+              <meshBasicMaterial color={locked ? "#262630" : "#ffffff"} />
             </mesh>
-            {node.state !== "locked" && (
+            {!locked && (
               <mesh>
-                <ringGeometry args={[0.15, 0.165, 40]} />
-                <meshBasicMaterial color={tone} transparent opacity={isFrontier ? 0.9 : 0.35} side={THREE.DoubleSide} depthWrite={false} />
+                <sphereGeometry args={[0.11, 20, 20]} />
+                <meshBasicMaterial color={tone} transparent opacity={0.35} depthWrite={false} blending={THREE.AdditiveBlending} />
               </mesh>
             )}
             {(isHovered || isFrontier) && (
-              <Html center position={[0, 0.34, 0]} zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
+              <Html
+                center
+                position={[0, 0.3, 0]}
+                zIndexRange={[20, 0]}
+                calculatePosition={clampedPosition}
+                style={{ pointerEvents: "none" }}
+              >
                 <div className="num flex items-center gap-2 whitespace-nowrap rounded-pill bg-bg-elevated/90 px-2.5 py-1 text-[11px] text-fg-primary shadow-lift backdrop-blur-sm">
                   <span className="h-1.5 w-1.5 rounded-pill" style={{ background: tone }} />
                   {node.title}
@@ -273,7 +380,7 @@ export function MindOrb(props: MindOrbProps) {
   const reduced = !!useReducedMotion();
   return (
     <Canvas
-      camera={{ position: [0, 0.2, 6.4], fov: 40 }}
+      camera={{ position: [0, 0.1, 4.6], fov: 40 }}
       frameloop={reduced ? "demand" : "always"}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}

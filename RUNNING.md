@@ -1,6 +1,7 @@
 # Running TradeMind Academy
 
-Quick reference. Everything runs from the project folder:
+The longer reference. For the day-to-day basics see [START_HERE.md](START_HERE.md).
+Everything runs from the project folder:
 
 ```bash
 cd ~/Documents/DIssertation/TradeMind_Academy
@@ -34,14 +35,17 @@ Open **http://localhost:3000**.
 | Problem | Fix |
 | --- | --- |
 | Page looks broken or stuck | Just refresh the browser (⌘R) first |
-| App won't load at all | `lsof -ti:3000 \| xargs kill` then re-run the Terminal 2 command above |
-| "Port already in use" for emulators | `lsof -ti:8080,9099,4000,4400 \| xargs kill; sleep 2; lsof -ti:8080 \| xargs kill` then re-run the Terminal 1 command. The second kill matters: Firestore runs as a Java child that can outlive the first one and keep 8080. |
+| App won't load at all | `npm run stop` then re-run the Terminal 2 command above |
+| "Port already in use" for emulators | `npm run stop:all` then re-run the Terminal 1 command. It kills twice with a pause, because Firestore runs as a Java child that can outlive the first kill and keep 8080. |
 | Weird data / want a clean slate | Stop the emulators (Ctrl+C in Terminal 1), start them again, then `npm run seed` |
 
 ## Common commands
 
 ```bash
-npm run dev            # start the app (local, uses emulators)
+npm run dev            # start the app (local, uses emulators). Refuses to start if 3000 is busy.
+npm run dev:live       # the real app on 3001 (real Google, real database)
+npm run stop           # kill every app server
+npm run stop:all       # kill app servers and emulators
 npm run emulators      # start local Firebase (auth + database)
 npm run seed           # load the 8 topics / 64 questions into the emulator
 

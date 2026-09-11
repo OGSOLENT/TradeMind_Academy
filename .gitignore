@@ -50,3 +50,4 @@ export/
 # service-account credentials — NEVER commit
 serviceAccountKey.json
 *-service-account*.json
+.next-audit/

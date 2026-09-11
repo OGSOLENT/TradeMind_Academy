@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import type { Course, Item, Kc, Lesson } from "@/lib/content/types";
 import { CONSENT_VERSION, defaultSettings, type UserProfile } from "./types";
+import { withRetry } from "./errors";
 
 /**
  * The Firestore repositories. Content collections are read-only from the
@@ -19,24 +20,32 @@ import { CONSENT_VERSION, defaultSettings, type UserProfile } from "./types";
  * under users/{uid}.
  */
 
+/* The three profile calls retry on transient transport errors, because they
+   are the first thing a fresh page asks Firestore for and the first attempt
+   is the one most likely to catch the connection still settling. */
+
 export async function createUserProfile(db: Firestore, uid: string, displayName: string, isAdult: boolean) {
-  await setDoc(doc(db, "users", uid), {
-    displayName,
-    createdAt: serverTimestamp(),
-    consent: null, // only ever set on the consent screen, never implied
-    isAdult,
-    settings: defaultSettings,
-  });
+  await withRetry(() =>
+    setDoc(doc(db, "users", uid), {
+      displayName,
+      createdAt: serverTimestamp(),
+      consent: null, // only ever set on the consent screen, never implied
+      isAdult,
+      settings: defaultSettings,
+    }),
+  );
 }
 
 export async function recordConsent(db: Firestore, uid: string) {
-  await updateDoc(doc(db, "users", uid), {
-    consent: { agreedAt: serverTimestamp(), version: CONSENT_VERSION },
-  });
+  await withRetry(() =>
+    updateDoc(doc(db, "users", uid), {
+      consent: { agreedAt: serverTimestamp(), version: CONSENT_VERSION },
+    }),
+  );
 }
 
 export async function getUserProfile(db: Firestore, uid: string): Promise<UserProfile | null> {
-  const snap = await getDoc(doc(db, "users", uid));
+  const snap = await withRetry(() => getDoc(doc(db, "users", uid)));
   return snap.exists() ? (snap.data() as UserProfile) : null;
 }
 

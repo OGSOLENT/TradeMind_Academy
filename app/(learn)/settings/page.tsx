@@ -193,7 +193,7 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      <Card level="elevated" className="divide-y divide-white/5 py-2">
+      <Card id="accessibility" level="elevated" className="scroll-mt-28 divide-y divide-white/5 py-2">
         <Toggle
           label="Colour-blind candles"
           description="Swap teal/red candles for blue/orange across every chart."
@@ -233,7 +233,7 @@ export default function SettingsPage() {
         </div>
       </Card>
 
-      <Card level="elevated" className="space-y-4 p-6">
+      <Card id="data" level="elevated" className="scroll-mt-28 space-y-4 p-6">
         <h2 className="text-body-base font-medium text-fg-primary">Your data</h2>
         <p className="text-sm text-fg-secondary">
           Everything the tutor has recorded about your learning, as CSV — the
@@ -244,7 +244,7 @@ export default function SettingsPage() {
         </Button>
       </Card>
 
-      <Card level="elevated" className="space-y-4 p-6">
+      <Card id="account" level="elevated" className="scroll-mt-28 space-y-4 p-6">
         <h2 className="text-body-base font-medium text-danger">Delete account</h2>
         <p className="text-sm text-fg-secondary">
           Removes your account and profile immediately; your anonymised

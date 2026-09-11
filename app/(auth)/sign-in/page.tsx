@@ -7,6 +7,7 @@ import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/aut
 import { getFirebase } from "@/lib/firebase/client";
 import { signInWithGoogle } from "@/lib/firebase/google";
 import { getUserProfile } from "@/lib/firebase/repos";
+import { describeFirebaseError } from "@/lib/firebase/errors";
 import { GoogleButton, OrDivider } from "@/components/auth/google-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,8 +23,20 @@ export default function SignInPage() {
 
   async function afterAuth(uid: string) {
     const { db } = getFirebase();
-    const profile = await getUserProfile(db, uid);
-    router.push(profile?.consent ? "/dashboard" : "/consent");
+    try {
+      const profile = await getUserProfile(db, uid);
+      router.push(profile?.consent ? "/dashboard" : "/consent");
+    } catch (err) {
+      // Auth succeeded and only the profile read failed, so send them on to
+      // the consent screen, which can cope with a missing profile, and say why.
+      console.error("[sign-in] profile read failed", err);
+      toast({
+        title: "Signed in, but your profile didn't load",
+        description: describeFirebaseError(err),
+        variant: "warning",
+      });
+      router.push("/consent");
+    }
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -34,8 +47,15 @@ export default function SignInPage() {
       const { auth } = getFirebase();
       const cred = await signInWithEmailAndPassword(auth, email, password);
       await afterAuth(cred.user.uid);
-    } catch {
-      setError("That email and password combination didn't work.");
+    } catch (err) {
+      const code = (err as { code?: string }).code ?? "";
+      setError(
+        code === "auth/too-many-requests"
+          ? "Too many attempts. Wait a minute, then try again."
+          : code === "auth/network-request-failed"
+            ? "Couldn't reach the sign-in service. Check your connection."
+            : "That email and password combination didn't work.",
+      );
       setBusy(false);
     }
   }

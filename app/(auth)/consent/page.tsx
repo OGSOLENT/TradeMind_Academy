@@ -8,6 +8,7 @@ import { getFirebase } from "@/lib/firebase/client";
 import { createUserProfile, getUserProfile, recordConsent } from "@/lib/firebase/repos";
 import { CONSENT_VERSION } from "@/lib/firebase/types";
 import { useAuth } from "@/lib/firebase/auth-context";
+import { describeFirebaseError } from "@/lib/firebase/errors";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
@@ -56,8 +57,9 @@ export default function ConsentPage() {
         consent: { agreedAt: new Date(), version: CONSENT_VERSION },
       }));
       router.push(AFTER_CONSENT);
-    } catch {
-      toast({ title: "Could not save your consent", description: "Please try again.", variant: "danger" });
+    } catch (err) {
+      console.error("[consent] save failed", err);
+      toast({ title: "Could not save your consent", description: describeFirebaseError(err), variant: "danger" });
       setBusy(false);
     }
   }
