@@ -5,7 +5,7 @@
  */
 import { chromium } from "@playwright/test";
 
-const BASE = "http://localhost:3000";
+const BASE = "http://localhost:3100";
 const OUT = "docs/screenshots";
 
 async function main() {

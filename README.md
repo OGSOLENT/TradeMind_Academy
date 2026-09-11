@@ -23,7 +23,8 @@ Emulator Suite locally) · React Query · Zustand · Vitest · Playwright.
 
 ```bash
 npm install
-npm run dev            # app on :3000
+npm run dev            # the app on :3000 (live project, real Google)
+npm run dev:emulator   # a throwaway copy on :3100 against the local emulators
 npm run emulators      # Firebase emulator suite (requires firebase-tools)
 npm run test           # unit tests (Vitest)
 npm run test:e2e       # E2E (Playwright; builds + serves automatically)

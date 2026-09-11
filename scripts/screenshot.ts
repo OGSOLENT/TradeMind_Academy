@@ -1,10 +1,10 @@
 /**
- * Capture report screenshots of the running app. It expects `npm run start`
- * to be up. Usage: npx tsx scripts/screenshot.ts
+ * Capture report screenshots of the running app. It expects the emulator
+ * server on 3100 (`npm run dev:emulator`) to be up. Usage: npx tsx scripts/screenshot.ts
  */
 import { chromium, devices } from "@playwright/test";
 
-const BASE = "http://localhost:3000";
+const BASE = "http://localhost:3100";
 const OUT = "docs/screenshots";
 
 async function main() {

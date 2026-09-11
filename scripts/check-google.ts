@@ -30,7 +30,7 @@ async function main() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         providerId: "google.com",
-        continueUri: "http://localhost:3001/__/auth/handler",
+        continueUri: "http://localhost:3000/__/auth/handler",
       }),
     },
   );
@@ -49,7 +49,7 @@ async function main() {
   if (body.authUri) {
     const clientId = /client_id=([^&]+)/.exec(body.authUri)?.[1] ?? "?";
     console.log(`\n  google.com: ENABLED ✅  (OAuth client ${clientId.slice(0, 24)}…)`);
-    console.log("\n  → Ready. Run `npm run dev:live` and open http://localhost:3001/sign-in\n");
+    console.log("\n  → Ready. Run `npm run dev` and open http://localhost:3000/sign-in\n");
     return;
   }
   console.log(`\n  google.com: NOT ENABLED ❌  (${body.error?.message ?? res.status})`);

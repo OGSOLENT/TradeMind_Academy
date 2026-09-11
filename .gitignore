@@ -12,6 +12,7 @@ blob-report/
 # next.js
 .next/
 .next-live/
+.next-emulator/
 out/
 build/
 
