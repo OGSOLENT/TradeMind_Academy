@@ -6,7 +6,7 @@ import { getFirebase } from "./client";
 
 interface AuthState {
   user: User | null;
-  /** True until the first auth callback fires. */
+  /** True until the first auth callback has fired. */
   loading: boolean;
 }
 

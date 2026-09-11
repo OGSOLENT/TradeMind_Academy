@@ -2,10 +2,10 @@ import { expect, test } from "@playwright/test";
 import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
 /**
- * Phase 3 done-criterion: full 10-question mixed-type session, offline-
- * tolerant — network killed mid-session, events flush on reconnect, and all
- * 10 responses verifiably land in the emulator's Firestore.
- * Requires emulators + seed (self-skips otherwise).
+ * The Phase 3 done criterion: a full 10-question mixed-type session that
+ * survives going offline. I kill the network mid-session, the events flush
+ * on reconnect, and all ten responses verifiably land in the emulator's
+ * Firestore. Needs the emulators and the seed, and skips itself otherwise.
  */
 
 test.describe("quiz session — mixed types, offline tolerant", () => {
@@ -24,20 +24,20 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
     await page.waitForURL(/\/quiz\//);
     await expect(page.getByText("1/10")).toBeVisible();
 
-    // Answer 4 online.
+    // Answer four while online.
     for (let i = 0; i < 4; i++) await answerCurrent(page);
 
-    // Kill the network mid-session.
+    // Now kill the network mid-session.
     await context.setOffline(true);
 
-    // Answer 3 offline — the session keeps working, events queue locally.
+    // Answer three offline. The session keeps working and the events queue locally.
     for (let i = 0; i < 3; i++) await answerCurrent(page);
     const queuedOffline = await page.evaluate(
       () => JSON.parse(localStorage.getItem("tm-response-queue") ?? "[]").length,
     );
     expect(queuedOffline).toBeGreaterThan(0);
 
-    // Reconnect: the queue must drain completely.
+    // Reconnect. The queue has to drain completely.
     await context.setOffline(false);
     await page.waitForFunction(
       () => JSON.parse(localStorage.getItem("tm-response-queue") ?? "[]").length === 0,
@@ -45,15 +45,15 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
       { timeout: 30_000 },
     );
 
-    // Finish the session — adaptive selection ends when the unlocked pool is
-    // exhausted (one unlocked KC × 8 items after a skipped placement).
+    // Finish the session. Adaptive selection ends when the unlocked pool runs
+    // out, which is one unlocked KC times eight items after a skipped placement.
     for (let i = 0; i < 8; i++) {
       if (await page.getByText("Session complete").isVisible()) break;
       await answerCurrent(page);
     }
     await expect(page.getByText("Session complete")).toBeVisible({ timeout: 15_000 });
 
-    // Verify EVERY answer landed in Firestore (append-only research log).
+    // Check that EVERY answer landed in Firestore. This is the append-only research log.
     const { uid, sessionId, answered } = await page.evaluate(() => {
       const raw = JSON.parse(localStorage.getItem("tm-quiz-session") ?? "{}");
       return {
@@ -80,7 +80,7 @@ test.describe("quiz session — mixed types, offline tolerant", () => {
       )
       .toBe(answered);
 
-    // Every logged response carries the model state (guardrail §7.2).
+    // Every logged response has to carry the model state (guardrail 7.2).
     const res = await request.get(
       `http://localhost:8080/v1/projects/demo-trademind/databases/(default)/documents/users/${uid}/sessions/${sessionId}/responses?pageSize=50`,
       { headers: { Authorization: "Bearer owner" } },

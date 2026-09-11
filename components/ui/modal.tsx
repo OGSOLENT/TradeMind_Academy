@@ -16,7 +16,7 @@ export interface ModalProps {
 const TABBABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
-/** Centered dialog with overlay, Escape-to-close, and a minimal focus trap. */
+/** A centred dialog with an overlay, Escape to close, and a small focus trap. */
 export function Modal({ open, onClose, title, children, className }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -73,7 +73,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }}
             transition={spring.ui}
             className={cn(
-              "relative w-full max-w-md rounded-card bg-bg-elevated p-6 shadow-edge-lit focus:outline-none",
+              "relative w-full max-w-md rounded-card bg-bg-elevated p-6 shadow-lift focus:outline-none",
               className,
             )}
           >

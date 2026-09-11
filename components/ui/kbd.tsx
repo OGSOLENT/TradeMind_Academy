@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Keyboard-hint chip, e.g. quiz shortcuts 1–4 / Enter. */
+/** The little keyboard-hint chip. Quiz shortcuts 1 to 4, Enter, that sort of thing. */
 export function Kbd({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (
     <kbd

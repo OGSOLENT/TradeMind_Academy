@@ -1,11 +1,11 @@
 /**
- * Constellation layout shared by the skill tree and the model-initialization
- * moment.
+ * The constellation layout, shared by the skill tree and the
+ * model-initialisation moment.
  *
- * The eight modules are a strict prerequisite chain, so the map is drawn as a
- * *climb*: a serpentine ascent from bottom-left to top-right. Reading it left
- * to right is reading the curriculum in order, and gaining altitude is gaining
- * mastery — the layout carries the meaning, not just the labels.
+ * The modules form a strict prerequisite chain, so I draw the map as a
+ * climb: a winding ascent from bottom-left to top-right. Reading it left to
+ * right is reading the curriculum in order, and gaining height is gaining
+ * mastery. The layout carries the meaning, not just the labels.
  */
 
 export interface NodePosition {
@@ -15,8 +15,8 @@ export interface NodePosition {
 
 export const CANVAS = { width: 1000, height: 470 } as const;
 
-/** In curriculum order. Each step rises overall while dipping between peaks,
- *  so consecutive nodes never sit on one flat line. */
+/** In curriculum order. Each step rises overall but dips between peaks, so
+ *  no two consecutive nodes ever sit on one flat line. */
 export const NODE_POSITIONS: Record<string, NodePosition> = {
   "kc-candle-anatomy": { x: 78, y: 396 },
   "kc-liquidity": { x: 196, y: 306 },
@@ -39,9 +39,10 @@ export function positionFor(kcId: string, index: number): NodePosition {
 }
 
 /**
- * A smooth Catmull-Rom spline through the waypoints, emitted as cubic beziers.
- * The journey has to read as one continuous route; straight segments between
- * nodes made it look like a diagram of unrelated points.
+ * A smooth Catmull-Rom spline through the waypoints, emitted as cubic
+ * beziers. The journey has to read as one continuous route. When I tried
+ * straight segments between nodes it looked like a diagram of unrelated
+ * points.
  */
 export function journeyPath(points: NodePosition[], tension = 0.5): string {
   if (points.length < 2) return "";

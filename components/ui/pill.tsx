@@ -4,7 +4,7 @@ export type PillTone = "neutral" | "accent" | "mastery" | "warning" | "danger";
 
 export interface PillProps extends React.HTMLAttributes<HTMLSpanElement> {
   tone?: PillTone;
-  /** Leading status dot. */
+  /** A little status dot in front of the text. */
   dot?: boolean;
 }
 
@@ -24,7 +24,7 @@ const dots: Record<PillTone, string> = {
   danger: "bg-danger",
 };
 
-/** Pill-shaped tag/badge (radius 999) for statuses, KC labels, "Live" chips. */
+/** The pill-shaped tag (radius 999) for statuses, KC labels and "Live" chips. */
 export function Pill({ tone = "neutral", dot = false, className, children, ...props }: PillProps) {
   return (
     <span

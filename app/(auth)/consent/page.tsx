@@ -46,9 +46,10 @@ export default function ConsentPage() {
         await createUserProfile(db, user.uid, name, true);
       }
       await recordConsent(db, user.uid);
-      // The learn-area guard reads this query. Write the consent into the
-      // cache SYNCHRONOUSLY — an invalidate-refetch races the navigation and
-      // the stale consent:null profile bounces the user straight back here.
+      // The learn-area guard reads this exact query, so I write the consent
+      // into the cache synchronously. An invalidate-and-refetch would race the
+      // navigation, and the stale consent:null profile would bounce the user
+      // straight back to this page.
       queryClient.setQueryData(["profile", user.uid], (old: unknown) => ({
         ...(typeof old === "object" && old !== null ? old : {}),
         isAdult: true,

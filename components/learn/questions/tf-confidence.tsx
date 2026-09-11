@@ -5,14 +5,14 @@ import { Kbd } from "@/components/ui/kbd";
 
 interface TfProps {
   value: boolean | null;
-  confidence: number; // 50–100
+  confidence: number; // 50 to 100
   onChange(value: boolean | null, confidence: number): void;
   disabled?: boolean;
 }
 
 const DETENTS = [50, 60, 70, 80, 90, 100];
 
-/** True/False with a detented confidence slider (logged, not graded). */
+/** True or false, with a detented confidence slider. The confidence is logged, not graded. */
 export function TfConfidence({ value, confidence, onChange, disabled }: TfProps) {
   return (
     <div className="space-y-6">

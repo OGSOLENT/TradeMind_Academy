@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
 /**
- * Sonner-style toast stack, built in-house (no extra dependency).
- * Four variants, auto-dismiss after 4s, swipe-right to dismiss, newest on top.
- * Failed response-log flushes will surface through this (guardrail §7.2), so
- * the store lives in module scope — usable from non-React code via `toast()`.
+ * A Sonner-style toast stack that I built in-house rather than adding a
+ * dependency. Four variants, auto-dismiss after four seconds, swipe right to
+ * dismiss, newest on top. Failed response-log flushes surface through this
+ * (guardrail 7.2), which is why the store lives at module scope: `toast()`
+ * has to be callable from code that isn't React.
  */
 
 export type ToastVariant = "default" | "success" | "warning" | "danger";
@@ -43,7 +44,7 @@ export const useToastStore = create<ToastStore>((set) => ({
   dismiss: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
 }));
 
-/** Imperative API: toast({ title: "Saved", variant: "success" }) */
+/** The imperative API: toast({ title: "Saved", variant: "success" }) */
 export function toast(t: { title: string; description?: string; variant?: ToastVariant }) {
   useToastStore.getState().push({ variant: "default", ...t });
 }
@@ -55,7 +56,7 @@ const variantStyles: Record<ToastVariant, { bar: string; icon: string }> = {
   danger: { bar: "bg-danger", icon: "text-danger" },
 };
 
-/** Mount once in the root layout. */
+/** Mount this once, in the root layout. */
 export function Toaster() {
   const { toasts, dismiss } = useToastStore();
   const reduced = useReducedMotion();
@@ -83,7 +84,7 @@ export function Toaster() {
             onDragEnd={(_, info) => {
               if (info.offset.x > 90 || info.velocity.x > 500) dismiss(t.id);
             }}
-            className="pointer-events-auto relative flex items-start gap-3 overflow-hidden rounded-card bg-bg-elevated p-4 shadow-edge-lit"
+            className="pointer-events-auto relative flex items-start gap-3 overflow-hidden rounded-card bg-bg-elevated p-4 shadow-lift"
           >
             <span className={cn("absolute inset-y-0 left-0 w-0.5", variantStyles[t.variant].bar)} />
             <div className="min-w-0 flex-1">
@@ -99,6 +100,15 @@ export function Toaster() {
                 <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
+            {/* A thin line along the bottom that drains as the toast's time
+                runs out, so you know it's about to leave. */}
+            <motion.span
+              aria-hidden="true"
+              className={cn("absolute bottom-0 left-0 h-px w-full origin-left opacity-50", variantStyles[t.variant].bar)}
+              initial={{ scaleX: 1 }}
+              animate={{ scaleX: 0 }}
+              transition={{ duration: AUTO_DISMISS_MS / 1000, ease: "linear" }}
+            />
           </motion.div>
         ))}
       </AnimatePresence>

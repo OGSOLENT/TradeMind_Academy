@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "./providers";
-import { LiveBadge } from "@/components/shell/live-badge";
 import "./globals.css";
 
 const inter = Inter({
@@ -38,7 +37,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans">
         <Providers>{children}</Providers>
-        <LiveBadge />
       </body>
     </html>
   );

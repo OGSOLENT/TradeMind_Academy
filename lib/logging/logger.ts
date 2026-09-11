@@ -1,13 +1,16 @@
 /**
- * The response logger — treat like a payments system (BUILD_PROMPT §0.2).
+ * The response logger. I treat it like a payments system (BUILD_PROMPT
+ * section 0.2), because the response log IS the research dataset.
  *
- * enqueue() → localStorage persist → optimistic return → background flush
- * with exponential backoff. A failed write surfaces onError (the UI shows a
- * toast) and the event is RE-QUEUED, never dropped. Unflushed events survive
- * refresh via localStorage and flush on the next start()/online event.
+ * enqueue() persists to localStorage, returns straight away so the UI can be
+ * optimistic, then flushes in the background with exponential backoff. A
+ * failed write surfaces through onError (the UI shows a toast) and the event
+ * goes BACK in the queue. Nothing is ever dropped. Anything unflushed
+ * survives a refresh via localStorage and flushes on the next start() or
+ * online event.
  *
- * Pure of Firebase: the transport is injected, so unit tests drive the queue
- * with a fake sender and the app injects a Firestore addDoc sender.
+ * No Firebase in here. The transport is injected, so the unit tests drive
+ * the queue with a fake sender and the app injects a Firestore addDoc one.
  */
 
 export interface ResponseEvent {
@@ -21,7 +24,7 @@ export interface ResponseEvent {
   latencyMs: number;
   pLBefore: number;
   pLAfter: number;
-  ts: number; // epoch ms at answer time (server timestamp added by transport)
+  ts: number; // epoch ms at the moment of answering (the transport adds a server timestamp too)
 }
 
 export type SendFn = (event: ResponseEvent) => Promise<void>;
@@ -29,7 +32,7 @@ export type SendFn = (event: ResponseEvent) => Promise<void>;
 interface LoggerOptions {
   send: SendFn;
   storageKey?: string;
-  /** Backoff base in ms (doubles per consecutive failure, capped). */
+  /** The backoff base in ms. It doubles on each consecutive failure, up to the cap. */
   backoffBaseMs?: number;
   backoffCapMs?: number;
   onError?: (error: unknown, queuedCount: number) => void;
@@ -59,19 +62,19 @@ export class ResponseLogger {
     this.restore();
   }
 
-  /** Number of events not yet confirmed written. */
+  /** How many events haven't been confirmed as written yet. */
   get pending(): number {
     return this.queue.length;
   }
 
-  /** Append an event. Returns immediately (optimistic UI). */
+  /** Append an event. Returns immediately, so the UI can carry on. */
   enqueue(event: ResponseEvent): void {
     this.queue.push({ id: `${event.ts}-${Math.random().toString(36).slice(2, 8)}`, event });
     this.persist();
     void this.flush();
   }
 
-  /** Flush the queue in order. Concurrent calls await the same in-flight run. */
+  /** Flush the queue in order. If a flush is already running, callers wait on that one. */
   flush(): Promise<void> {
     if (!this.inFlight) {
       this.inFlight = this.drain().finally(() => {
@@ -94,7 +97,7 @@ export class ResponseLogger {
         this.failures++;
         this.opts.onError?.(err, this.queue.length);
         this.scheduleRetry();
-        return; // keep head queued — never drop
+        return; // the head stays in the queue. Never drop it.
       }
     }
   }
@@ -116,7 +119,7 @@ export class ResponseLogger {
       if (typeof localStorage === "undefined") return;
       localStorage.setItem(this.opts.storageKey, JSON.stringify(this.queue));
     } catch {
-      // storage full/unavailable — the in-memory queue still guarantees order
+      // Storage is full or unavailable. The in-memory queue still keeps order.
     }
   }
 
@@ -130,7 +133,7 @@ export class ResponseLogger {
     }
   }
 
-  /** Call once on app start: resumes any persisted queue + retries on reconnect. */
+  /** Call this once when the app starts. It resumes any persisted queue and retries on reconnect. */
   start(): void {
     if (typeof window !== "undefined") {
       window.addEventListener("online", () => void this.flush());

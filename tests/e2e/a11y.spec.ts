@@ -1,8 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
 /**
- * Phase 6: keyboard-only walkthrough (quiz, skill tree) and reduced-motion
- * verification. Requires emulators + seed (self-skips otherwise).
+ * Phase 6: a keyboard-only walkthrough of the quiz and the skill tree, plus
+ * a reduced-motion check. Needs the emulators and the seed, and skips
+ * itself otherwise.
  */
 
 async function emulatorUp(): Promise<boolean> {
@@ -38,17 +39,17 @@ test.describe("accessibility", () => {
     await page.waitForURL(/\/quiz\//);
     await expect(page.getByTestId("question-type")).toHaveCount(1);
 
-    // First question is an MCQ: select option 2 with the keyboard, submit
-    // with Enter, continue with Enter — no pointer at any step.
+    // The first question is an MCQ. Select option 2 with the keyboard, submit
+    // with Enter, continue with Enter. No pointer at any step.
     await page.keyboard.press("2");
-    // Pressing "2" selects the second option, whatever its text.
+    // Pressing "2" selects the second option, whatever its text happens to be.
     await expect(page.getByRole("radio").nth(1)).toHaveAttribute("aria-checked", "true");
     await page.keyboard.press("Enter"); // submit
     await expect(page.getByText(/Correct|Not quite/)).toBeVisible();
     await page.keyboard.press("Enter"); // continue
     await expect(page.getByText("2/10")).toBeVisible();
 
-    // The live-region mastery announcement exists for screen readers.
+    // The live-region mastery announcement is there for screen readers.
     await expect(page.locator('[aria-live="polite"]').last()).toBeAttached();
   });
 
@@ -75,7 +76,7 @@ test.describe("accessibility", () => {
     ).toBeVisible();
     await expect(page.getByText("simulation only · no signals · no live money")).toBeVisible();
 
-    // Keyboard focus lands visibly on the primary CTA.
+    // Keyboard focus should land visibly on the primary CTA.
     await page.keyboard.press("Tab");
     const focused = page.locator(":focus");
     await expect(focused).toBeVisible();

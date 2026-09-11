@@ -1,11 +1,11 @@
 /**
- * Phase 6 audit runner: Lighthouse accessibility + performance across public
- * AND authenticated surfaces. Launches a headless Chrome with a debugging
- * port, signs a fresh user in via CDP (auth persists in the profile's
- * IndexedDB), then points Lighthouse at the same browser.
+ * The Phase 6 audit runner. Lighthouse accessibility and performance across
+ * the public AND the signed-in pages. It launches a headless Chrome with a
+ * debugging port, signs a fresh user in over CDP (auth persists in the
+ * profile's IndexedDB), then points Lighthouse at that same browser.
  *
- * Requires: prod server on :3000, emulators + seed. Chrome at the standard
- * macOS path. Run: npx tsx scripts/audit.ts
+ * Needs the production server on :3000, the emulators and the seed, and
+ * Chrome at the standard macOS path. Run: npx tsx scripts/audit.ts
  */
 import { execFileSync, spawn } from "node:child_process";
 import { rmSync } from "node:fs";
@@ -56,7 +56,7 @@ async function main() {
   }
 
   try {
-    // Sign a fresh user in inside THIS browser so Lighthouse tabs are authed.
+    // Sign a fresh user in inside THIS browser, so the Lighthouse tabs are signed in too.
     const browser = await chromium.connectOverCDP(`http://localhost:${PORT}`);
     const ctx = browser.contexts()[0] ?? (await browser.newContext());
     const page = await ctx.newPage();
@@ -69,7 +69,7 @@ async function main() {
     await page.getByRole("button", { name: /Skip — start from scratch/ }).click({ timeout: 20_000 });
     await page.waitForURL(/dashboard/, { timeout: 20_000 });
     await page.close();
-    // Disconnect the CDP client — a live Playwright session starves
+    // Disconnect the CDP client. A live Playwright session starves
     // Lighthouse's own connection to the same browser.
     await browser.close();
     console.log("Authenticated audit profile ready.\n");

@@ -6,13 +6,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
+import { Counter } from "@/components/ui/counter";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The pinned "visible mind" scroll section: the bento grid assembles while
- * the section holds. Reduced motion (or short viewports) skips the pin and
- * shows the grid statically.
+ * The "visible mind" scroll section. The bento grid assembles as the section
+ * comes into view, with each card rising on a short stagger, and the heading
+ * drifts up a little slower than the grid on the way through, which is what
+ * gives the section its depth. Under reduced motion (or on a short viewport)
+ * none of that runs and the grid just sits there, fully visible.
  */
 export function VisibleMind() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -24,6 +27,7 @@ export function VisibleMind() {
     if (reduced) return;
 
     const cards = section.querySelectorAll("[data-bento]");
+    const heading = section.querySelector("[data-heading]");
     const ctx = gsap.context(() => {
       gsap.fromTo(
         cards,
@@ -42,28 +46,48 @@ export function VisibleMind() {
           },
         },
       );
+      if (heading) {
+        gsap.fromTo(
+          heading,
+          { y: 0 },
+          {
+            y: -40,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              end: "bottom 20%",
+              scrub: 0.6,
+            },
+          },
+        );
+      }
     }, section);
     return () => ctx.revert();
   }, []);
 
   return (
     <section ref={sectionRef} id="visible-mind" aria-label="The visible mind" className="mx-auto max-w-5xl px-6 py-24">
-      <h2 className="text-display-lg-mobile md:text-display-lg text-fg-primary">The visible mind</h2>
-      <p className="mt-3 max-w-xl text-body-base text-fg-secondary">
-        The tutor keeps a live Bayesian estimate of what you know — and shows
-        you all of it. No black box, no vibes. Every number below is the kind
-        the model actually computes.
-      </p>
+      <div data-heading>
+        <h2 className="text-display-lg-mobile md:text-display-lg text-fg-primary">
+          The <span className="text-gradient">visible</span> mind
+        </h2>
+        <p className="mt-3 max-w-xl text-body-base text-fg-secondary">
+          The tutor keeps a live Bayesian estimate of what you know — and shows
+          you all of it. No black box, no vibes. Every number below is the kind
+          the model actually computes.
+        </p>
+      </div>
 
       <div className="mt-10 grid gap-4 md:grid-cols-3">
-        <Card data-bento level="elevated" className="flex flex-col items-center py-8">
+        <Card data-bento level="elevated" spotlight className="flex flex-col items-center py-8">
           <p className="mb-4 text-label-caps uppercase tracking-wider text-fg-secondary">
             Pattern recognition
           </p>
           <MasteryRing value={0.78} size="lg" label="mastery" />
         </Card>
 
-        <Card data-bento level="elevated" className="md:col-span-2">
+        <Card data-bento level="elevated" spotlight className="md:col-span-2">
           <div className="flex items-center justify-between">
             <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
               Adaptive routing
@@ -93,27 +117,33 @@ export function VisibleMind() {
           </p>
         </Card>
 
-        <Card data-bento level="elevated" className="md:col-span-2">
+        <Card data-bento level="elevated" spotlight className="md:col-span-2">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
             Session metrics
           </p>
           <div className="num mt-5 grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-3xl text-fg-primary">1,402</p>
+              <p className="text-3xl text-fg-primary">
+                <Counter value={1402} inView />
+              </p>
               <p className="mt-1 text-xs text-fg-secondary">decisions logged</p>
             </div>
             <div>
-              <p className="text-3xl text-mastery-bright">+4.2%</p>
+              <p className="text-3xl text-mastery-bright">
+                +<Counter value={4} inView />.2%
+              </p>
               <p className="mt-1 text-xs text-fg-secondary">weekly accuracy</p>
             </div>
             <div>
-              <p className="text-3xl text-warning">3</p>
+              <p className="text-3xl text-warning">
+                <Counter value={3} inView />
+              </p>
               <p className="mt-1 text-xs text-fg-secondary">skills fading</p>
             </div>
           </div>
         </Card>
 
-        <Card data-bento level="elevated">
+        <Card data-bento level="elevated" spotlight>
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
             Spaced repetition
           </p>
@@ -121,7 +151,7 @@ export function VisibleMind() {
             {[0.9, 0.2, 0.5, 0.05, 0.7, 1, 0.3, 0.6, 0.1, 0.8, 0.4, 0.9, 0.15, 0.55].map((v, i) => (
               <span
                 key={i}
-                className="aspect-square rounded"
+                className="aspect-square rounded transition-transform duration-300 hover:scale-110"
                 style={{ backgroundColor: `rgba(45,212,191,${0.08 + v * 0.6})` }}
               />
             ))}

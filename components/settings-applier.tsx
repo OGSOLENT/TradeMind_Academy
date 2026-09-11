@@ -7,10 +7,10 @@ import { getUserProfile } from "@/lib/firebase/repos";
 import { useAuth } from "@/lib/firebase/auth-context";
 
 /**
- * Applies persisted user settings to the document root:
- * - data-candles="colorblind" swaps --bull/--bear (globals.css)
- * - font scale on <html> so rem-based type scales app-wide
- * - data-motion="reduced" collapses CSS animation (globals.css) — framer
+ * Applies the saved user settings to the document root:
+ * - data-candles="colorblind" swaps --bull and --bear (globals.css)
+ * - the font scale goes on <html>, so rem-based type scales everywhere
+ * - data-motion="reduced" collapses CSS animation (globals.css). The framer
  *   components already respect prefers-reduced-motion via useReducedMotion.
  */
 export function SettingsApplier() {

@@ -20,14 +20,15 @@ import {
 } from "@/components/learn/lesson-blocks";
 
 /**
- * Lesson view per trademind_lesson_view: fixed-width reading column, 2px
- * reading-progress line at the very top, figure/video/check blocks inline.
+ * The lesson view, per trademind_lesson_view. A fixed-width reading column,
+ * a 2px reading-progress line right at the top, and figure, video and check
+ * blocks inline with the prose.
  */
 export default function LessonPage() {
   const { id } = useParams<{ id: string }>();
   const [progress, setProgress] = useState(0);
 
-  // The id may be a lesson id, or a knowledge-component id — a module link
+  // The id can be a lesson id or a knowledge-component id. A module link
   // resolves to the first lesson of that module.
   const { data: lesson, isPending } = useQuery({
     queryKey: ["lesson", id],
@@ -40,7 +41,7 @@ export default function LessonPage() {
     },
   });
 
-  // Sibling lessons in the same module, for in-module navigation.
+  // The other lessons in the same module, for the footer navigation.
   const { data: siblings } = useQuery({
     queryKey: ["lessons-by-kc", lesson?.kcId],
     enabled: !!lesson?.kcId,
@@ -89,7 +90,7 @@ export default function LessonPage() {
 
   return (
     <>
-      {/* Floating 2px reading-progress line (DESIGN.md "Learning Progress") */}
+      {/* The floating 2px reading-progress line (DESIGN.md "Learning Progress") */}
       <div className="fixed inset-x-0 top-0 z-40">
         <ProgressBar value={progress} variant="thin" aria-label="Reading progress" />
       </div>
@@ -141,7 +142,7 @@ export default function LessonPage() {
                         href={`/lesson/${s.id}`}
                         aria-current={current ? "page" : undefined}
                         className={cn(
-                          "flex min-h-11 items-center gap-3 rounded-control px-4 py-2.5 text-sm transition-colors",
+                          "flex min-h-11 items-center gap-3 rounded-control px-4 py-2.5 text-sm transition-[color,background-color,box-shadow,transform] duration-200 hover:translate-x-0.5",
                           current
                             ? "bg-accent/15 text-fg-primary shadow-[inset_0_0_0_1px_var(--accent)]"
                             : "text-fg-secondary shadow-hairline hover:bg-white/5 hover:text-fg-primary",

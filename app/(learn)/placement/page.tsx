@@ -16,9 +16,9 @@ import { Stagger, StaggerItem } from "@/components/motion/stagger";
 const COURSE_ID = "trading-foundations";
 
 /**
- * Placement flow (onboarding_placement_test): a short pretest across all
- * Level-1 KCs seeds the learner model. Skipping starts everyone at the
- * default prior — a legitimate, logged choice.
+ * The placement flow (onboarding_placement_test). A short pretest across
+ * every Level-1 KC seeds the learner model. Skipping is a perfectly valid
+ * choice, and a logged one: it just starts everything at the default prior.
  */
 export default function PlacementPage() {
   const router = useRouter();

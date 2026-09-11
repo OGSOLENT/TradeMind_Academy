@@ -33,7 +33,7 @@ interface MistakeGroup {
   lastMissed: number;
 }
 
-/** Mistake bank: everything you've missed, grouped by KC, re-drillable. */
+/** The mistake bank. Everything you've missed, grouped by KC, ready to re-drill. */
 export default function MistakesPage() {
   const router = useRouter();
   const { user } = useAuth();

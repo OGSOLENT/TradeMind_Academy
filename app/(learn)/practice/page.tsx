@@ -15,9 +15,10 @@ const COURSE_ID = "trading-foundations";
 const SESSION_LENGTH = 10;
 
 /**
- * Practice launcher: the adaptive loop's entry point. Routing decides every
- * question — the pool is restricted to UNLOCKED KCs, then /lib/routing picks
- * lowest-mastery KC + difficulty ladder per answer.
+ * The practice launcher, which is the entry point to the adaptive loop.
+ * Routing decides every single question: the pool is restricted to UNLOCKED
+ * KCs, and then /lib/routing picks the lowest-mastery KC and walks the
+ * difficulty ladder after each answer.
  */
 export default function PracticePage() {
   const router = useRouter();

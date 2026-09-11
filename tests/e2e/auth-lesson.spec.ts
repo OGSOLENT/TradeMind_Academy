@@ -1,13 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * Phase 2 done-criterion: a user can sign up (18+ gate), give GDPR consent,
- * and read a full seeded lesson with the video placeholder.
+ * The Phase 2 done criterion: someone can sign up (through the 18+ gate),
+ * give GDPR consent, and read a full seeded lesson with the video slot.
  *
- * Requires the Firebase Emulator Suite + seeded content:
- *   npm run emulators   (auth :9099, firestore :8080)
+ * It needs the Firebase Emulator Suite and seeded content:
+ *   npm run emulators   (auth on :9099, firestore on :8080)
  *   npm run seed
- * The suite self-skips when the emulator isn't reachable (e.g. default CI).
+ * The suite skips itself when the emulator isn't reachable, which is what
+ * happens on default CI.
  */
 
 async function emulatorUp(): Promise<boolean> {
@@ -32,19 +33,19 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByLabel("Email address").fill(email);
     await page.getByLabel("Password").fill("correct-horse-battery-staple-9!");
 
-    // The 18+ attestation is a hard gate: submitting without it must fail.
+    // The 18+ attestation is a hard gate, so submitting without it has to fail.
     await page.getByRole("button", { name: "Create account" }).click();
     await expect(page.getByText(/18\+\) only/)).toBeVisible();
 
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Create account" }).click();
 
-    // Consent screen with real GDPR copy and a real Decline button.
+    // The consent screen, with real GDPR copy and a Decline button that actually works.
     await expect(page.getByRole("heading", { name: "Research participation & data" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Decline" })).toBeEnabled();
     await page.getByRole("button", { name: "I consent — start learning" }).click();
 
-    // Placement offer comes first (Phase 4); skipping starts at the prior.
+    // The placement offer comes first (Phase 4). Skipping starts you at the prior.
     await expect(
       page.getByRole("heading", { name: /map what you already know/i }),
     ).toBeVisible({ timeout: 20_000 });
@@ -53,20 +54,20 @@ test.describe("auth → consent → lesson journey", () => {
 
     await page.goto("/lesson/kc-candle-anatomy");
 
-    // Lesson view: real curriculum content, video, figure describe-toggle.
+    // The lesson view: real curriculum content, the video, the figure describe toggle.
     await expect(
       page.getByRole("heading", { level: 1, name: "Reading a Single Candle" }),
     ).toBeVisible();
-    // The lesson plays its real video rather than a placeholder poster.
+    // The lesson plays its real video rather than the placeholder poster.
     await expect(page.locator("video")).toHaveCount(1);
-    // Markdown extras the curriculum relies on render.
+    // The markdown extras the curriculum relies on should render.
     await expect(page.locator("table").first()).toBeVisible();
     await expect(page.locator("blockquote").first()).toBeVisible();
 
     await page.getByRole("button", { name: "Describe this chart" }).click();
     await expect(page.getByText(/Text alternative: a simulated candlestick series/)).toBeVisible();
 
-    // Inline knowledge check → answer correctly → collapses to ✓ chip.
+    // Inline knowledge check: answer it correctly and it collapses to the tick chip.
     await page.getByRole("radio", { name: /Open, High, Low, Close/ }).click();
     await page.getByRole("button", { name: "Check answer" }).click();
     await expect(page.getByText(/^Correct\./)).toBeVisible();
@@ -90,7 +91,7 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByRole("button", { name: "Decline" }).click();
     await expect(page).toHaveURL(/\/$/);
 
-    // Learn area must bounce a signed-out visitor back to sign-in.
+    // The learn area has to bounce a signed-out visitor back to sign-in.
     await page.goto("/lesson/kc-candle-anatomy");
     await expect(page).toHaveURL(/sign-in/);
   });

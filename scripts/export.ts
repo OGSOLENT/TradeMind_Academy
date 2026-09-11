@@ -1,10 +1,11 @@
 /**
- * Research-dataset export: responses → tidy CSV, one row per response,
- * columns matching the schema (§4) — ready for the Python evaluation
- * notebook. Admin tool; targets the emulator unless --allow-prod.
+ * The research-dataset export. Responses go out as a tidy CSV, one row per
+ * response, with columns matching the schema in section 4, ready for the
+ * Python evaluation notebook. It's an admin tool and it targets the emulator
+ * unless you pass --allow-prod.
  *
  * Usage:
- *   npx tsx scripts/export.ts                 # all users → export/responses.csv
+ *   npx tsx scripts/export.ts                 # every user, to export/responses.csv
  *   npx tsx scripts/export.ts --uid <uid>     # one user
  *   npx tsx scripts/export.ts --out my.csv
  */

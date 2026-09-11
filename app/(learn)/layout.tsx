@@ -10,11 +10,14 @@ import { useAuth } from "@/lib/firebase/auth-context";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
 
-/** Learn-area guard: must be signed in AND consented (research ethics gate). */
+/**
+ * The learn-area guard. You have to be signed in AND have given consent to
+ * get past this, because that's the research ethics gate.
+ */
 export default function LearnLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  // Quiz sessions run in focus mode: no nav chrome, nothing but the question.
+  // Quiz sessions run in focus mode. No nav chrome, nothing but the question.
   const focusMode = pathname.startsWith("/quiz");
   const { user, loading } = useAuth();
 
@@ -29,16 +32,17 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
     if (user && !isPending && !profile?.consent) router.replace("/consent");
   }, [loading, user, isPending, profile, router]);
 
-  // Render children immediately — pages show their own skeletons while auth
-  // resolves, so the profile check and page data load in PARALLEL instead of
-  // chaining (this halved dashboard LCP in the Phase 6 audit). The redirect
-  // effect above still enforces the auth + consent gate; data queries are
-  // all keyed on `user` and fetch nothing while signed out.
+  // I render the children straight away. Every page shows its own skeleton
+  // while auth resolves, so the profile check and the page data load in
+  // PARALLEL instead of one after the other. That change alone halved the
+  // dashboard LCP in the Phase 6 audit. The redirect effect above still
+  // enforces the auth and consent gate, and every data query is keyed on
+  // `user`, so nothing fetches while you're signed out.
   if (focusMode) {
     return (
       <div data-drawer-scale className="min-h-dvh">
-        {/* Focus mode: a still, half-strength field. Anything drifting beside
-            a question would confound the response latency we log. */}
+        {/* Focus mode gets a still, half-strength field. Anything drifting
+            next to a question would contaminate the response latency I log. */}
         <AmbientBackground variant="calm" />
         {children}
         <Toaster />

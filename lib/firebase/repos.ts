@@ -14,15 +14,16 @@ import type { Course, Item, Kc, Lesson } from "@/lib/content/types";
 import { CONSENT_VERSION, defaultSettings, type UserProfile } from "./types";
 
 /**
- * Firestore repositories. Content collections are read-only from the client
- * (rules enforce admin-only writes); user docs live under users/{uid}.
+ * The Firestore repositories. Content collections are read-only from the
+ * client (the rules only let an admin write them), and user docs all live
+ * under users/{uid}.
  */
 
 export async function createUserProfile(db: Firestore, uid: string, displayName: string, isAdult: boolean) {
   await setDoc(doc(db, "users", uid), {
     displayName,
     createdAt: serverTimestamp(),
-    consent: null, // set on the consent screen, never implicitly
+    consent: null, // only ever set on the consent screen, never implied
     isAdult,
     settings: defaultSettings,
   });
@@ -49,7 +50,7 @@ export async function getKcs(db: Firestore, courseId: string): Promise<Kc[]> {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
 }
 
-/** All lessons in a knowledge component, in curriculum order. */
+/** Every lesson in a knowledge component, in curriculum order. */
 export async function getLessonsByKc(db: Firestore, kcId: string): Promise<Lesson[]> {
   const snap = await getDocs(query(collection(db, "lessons"), where("kcId", "==", kcId)));
   return snap.docs

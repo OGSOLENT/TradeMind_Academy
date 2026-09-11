@@ -7,11 +7,11 @@ import {
 } from "firebase/auth";
 
 /**
- * Google sign-in with honest failure reasons. The raw SDK collapses "the
+ * Google sign-in with honest failure reasons. The raw SDK throws "the
  * provider is switched off in the console" and "the learner closed the
- * popup" into one catch block, and the first of those was being reported as
- * a cancellation. Both callers (sign-in and sign-up) share this so the
- * messages can't drift apart.
+ * popup" into the same catch block, and for a while I was reporting the
+ * first of those as a cancellation. Both callers (sign-in and sign-up) go
+ * through this so the messages can't drift apart.
  */
 
 export type GoogleSignInResult =

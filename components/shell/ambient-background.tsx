@@ -1,34 +1,36 @@
 /**
- * Ambient background.
+ * The ambient background.
  *
- * Three parallax layers over the void:
- *   1. a drifting graph-paper grid — the surface every chart is drawn on
- *   2. aurora blobs in the brand's indigo / violet / mastery-teal
+ * Three layers of parallax over the void:
+ *   1. a drifting graph-paper grid, the surface every chart gets drawn on
+ *   2. aurora blobs in the brand indigo, violet and mastery teal
  *   3. a slow field of candlestick silhouettes at three depths
  *
- * The candles are the point. A gradient could belong to any product; a market
- * drifting past behind the glass belongs to this one. The three layers move at
- * different speeds so the field has depth rather than sliding as one sheet.
+ * The candles are the whole point. A gradient could belong to any product.
+ * A market drifting past behind the glass belongs to this one. The three
+ * layers move at different speeds so the field has depth instead of sliding
+ * around as one flat sheet.
  *
- * Cost, measured rather than assumed. Each animated full-screen layer costs
- * roughly 18fps of compositor budget; the same layers held still are free
- * (120fps, identical to no background at all). So the field is STATIC except
- * one drifting blob. The motion budget goes where it is actually perceptible —
- * entrance choreography, hover, counters, scroll reveals — instead of into a
- * 40-second drift nobody can see. An earlier blurred rotating sweep measured
- * 120fps → 19fps and was cut outright (docs/DECISIONS.md).
+ * I measured the cost rather than guessing at it. Each animated full-screen
+ * layer eats roughly 18fps of compositor budget, but the same layers held
+ * still are free (120fps, same as no background at all). So the field is
+ * STATIC apart from one drifting blob. The motion budget goes where people
+ * can actually see it: entrance choreography, hover, counters, scroll
+ * reveals. Not into a 40-second drift nobody notices. An earlier blurred
+ * rotating sweep took me from 120fps to 19fps and got cut outright
+ * (docs/DECISIONS.md).
  *
  * Variants
- * - `ambient` (default): the full field. Reading and navigation.
- * - `calm`: grid + one static blob, no candles, no motion. Quiz focus mode,
- *   where movement beside a question would confound the response latency we
- *   record as research data.
+ * - `ambient` (default): the full field, for reading and navigation.
+ * - `calm`: grid plus one static blob, no candles, no motion. This is for
+ *   quiz focus mode, because movement next to a question would contaminate
+ *   the response latency I record as research data.
  *
  * Motion respects both `prefers-reduced-motion` and the in-app
- * `data-motion="reduced"` setting (globals.css) — everything simply holds still.
+ * `data-motion="reduced"` setting (globals.css). Everything just holds still.
  */
 
-/** Deterministic pseudo-random so the field is identical on every render. */
+/** Deterministic pseudo-random, so the field looks identical on every render. */
 function rand(seed: number) {
   const x = Math.sin(seed * 12.9898) * 43758.5453;
   return x - Math.floor(x);
@@ -38,9 +40,10 @@ function rand(seed: number) {
  * A tileable candlestick field, emitted as an SVG data URI and used as a CSS
  * background image.
  *
- * Live <svg> was the first attempt and it cost ~19fps: the browser re-rasterises
- * ~100 vector nodes on every animation frame. As a background image it is
- * rasterised once, after which the drift is pure compositing.
+ * My first attempt was a live <svg> and it cost about 19fps, because the
+ * browser re-rasterises a hundred vector nodes on every animation frame. As a
+ * background image it gets rasterised once, and after that the drift is pure
+ * compositing.
  */
 function candleFieldUrl(count: number, seed: number, bull: string, bear: string) {
   const W = 1600;
@@ -64,9 +67,9 @@ function candleFieldUrl(count: number, seed: number, bull: string, bear: string)
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
-/* Resolved hex rather than var() — a data URI has no access to the document's
-   custom properties. Colour-blind mode swaps --bull/--bear for charts; this
-   decorative field keeps the canonical pair. */
+/* Resolved hex rather than var(), because a data URI can't see the document's
+   custom properties. Colour-blind mode swaps --bull and --bear for the real
+   charts. This decorative field keeps the canonical pair. */
 const BULL = "#2DD4BF";
 const BEAR = "#FFB4AB";
 
@@ -106,8 +109,8 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
       data-ambient={variant}
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Graph paper, drifting diagonally so the field reads as moving even
-          where nothing else is happening. */}
+      {/* Graph paper. It drifts diagonally so the field reads as moving even
+          where nothing else is going on. */}
       <div
         className="tm-grid"
         style={{
@@ -117,7 +120,7 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         }}
       />
 
-      {/* Indigo — the action colour, top-left. */}
+      {/* Indigo, the action colour, top-left. */}
       <div
         className="tm-blob"
         style={{
@@ -133,7 +136,7 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
 
       {!calm && (
         <>
-          {/* Mastery teal — progress colour, bottom-right. */}
+          {/* Mastery teal, the progress colour, bottom-right. */}
           <div
             className="tm-blob"
             style={{
@@ -145,7 +148,7 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
                 "radial-gradient(circle, rgba(45,212,191,0.30) 0%, rgba(45,212,191,0.10) 44%, transparent 72%)",
             }}
           />
-          {/* Violet bridge between the two poles. */}
+          {/* A violet bridge between the two poles. */}
           <div
             className={calm ? "tm-blob tm-blob-centre" : "tm-blob tm-blob-centre tm-blob-drift-c"}
             style={{
@@ -157,7 +160,7 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
                 "radial-gradient(circle, rgba(139,124,246,0.26) 0%, rgba(139,124,246,0.08) 45%, transparent 70%)",
             }}
           />
-          {/* A warm ember low-left so the palette isn't only cool. */}
+          {/* A warm ember low-left, so the palette isn't only cool tones. */}
           <div
             className="tm-blob"
             style={{
@@ -177,9 +180,9 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         </>
       )}
 
-      {/* Shafts of light from the upper left, as though the field were lit
-          from a single source. Static: costs nothing, kills the flatness that
-          uniform gradients leave behind. */}
+      {/* Shafts of light from the upper left, as if the whole field were lit
+          from one source. Static, so it costs nothing, and it kills the
+          flatness that uniform gradients leave behind. */}
       {!calm && (
         <div
           className="absolute inset-0"
@@ -194,8 +197,8 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         />
       )}
 
-      {/* Horizon glow behind the fixed nav, so the glass bar refracts
-          something instead of pure void. */}
+      {/* A horizon glow behind the fixed nav, so the glass bar has something
+          to refract instead of pure void. */}
       <div
         className="absolute inset-x-0 top-0 h-72"
         style={{
@@ -204,9 +207,9 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         }}
       />
 
-      {/* Film grain. A single fractal-noise tile, rendered once by the
-          browser and tiled — static, so it costs nothing, and it stops large
-          dark gradients banding into flat bands. */}
+      {/* Film grain. One fractal-noise tile, rendered once by the browser and
+          repeated. Static, so free, and it stops the big dark gradients from
+          banding into flat steps. */}
       <div
         className="absolute inset-0 opacity-[0.16] mix-blend-overlay"
         style={{
@@ -217,7 +220,7 @@ export function AmbientBackground({ variant = "ambient" }: { variant?: "ambient"
         }}
       />
 
-      {/* Vignette: pulls attention back to the reading column. */}
+      {/* The vignette. It pulls your eye back to the reading column. */}
       <div
         className="absolute inset-0"
         style={{

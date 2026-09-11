@@ -1,5 +1,6 @@
 /**
- * Security-rules tests (BUILD_PROMPT §4). Run inside the Firestore emulator:
+ * The security-rules tests (BUILD_PROMPT section 4). They run inside the
+ * Firestore emulator:
  *   npm run test:rules
  * which wraps: firebase emulators:exec --only firestore "vitest run --config vitest.rules.config.ts"
  */

@@ -1,11 +1,12 @@
 import { expect, type Page } from "@playwright/test";
 
 /**
- * Shared E2E helpers.
+ * The shared E2E helpers.
  *
- * Answers are looked up from the seeded Firestore item rather than hardcoded,
- * so these tests keep passing when the curriculum copy changes. The quiz page
- * exposes the current item id via data-item-id on the question-type badge.
+ * Answers get looked up from the seeded Firestore item rather than hardcoded,
+ * so these tests keep passing when I change the curriculum copy. The quiz
+ * page exposes the current item id via data-item-id on the question-type
+ * badge, which is what makes that possible.
  */
 
 const FIRESTORE = "http://localhost:8080/v1/projects/demo-trademind/databases/(default)/documents";
@@ -19,7 +20,7 @@ export async function emulatorUp(): Promise<boolean> {
   }
 }
 
-/** Firestore REST values are typed wrappers; unwrap the ones we need. */
+/** Firestore REST values come back as typed wrappers. This unwraps the ones I need. */
 type RestValue = Record<string, unknown>;
 function unwrap(v: RestValue): unknown {
   if ("integerValue" in v) return Number(v.integerValue);
@@ -56,11 +57,12 @@ export async function fetchAnswerKey(itemId: string): Promise<AnswerKey> {
 }
 
 /**
- * Answer the on-screen question. `correct: false` deliberately answers wrong
- * where the type allows it (used to exercise the remediation path).
+ * Answer whatever question is on screen. `correct: false` deliberately gets
+ * it wrong where the type allows, which is how I exercise the remediation
+ * path.
  */
 export async function answerCurrent(page: Page, correct = true): Promise<void> {
-  // Card transitions briefly render two cards; wait for the settled one.
+  // Card transitions briefly render two cards, so wait for things to settle.
   await expect(page.getByTestId("question-type")).toHaveCount(1);
   const badge = page.getByTestId("question-type");
   const type = (await badge.textContent())?.trim();
@@ -87,7 +89,7 @@ export async function answerCurrent(page: Page, correct = true): Promise<void> {
       break;
     }
     case "ordering":
-      // Seeded keys use the presented order, so submitting as-is is correct.
+      // The seeded keys use the presented order, so submitting as-is is correct.
       break;
     case "annotation": {
       const pane = page.locator(".cursor-crosshair");
@@ -113,7 +115,7 @@ export async function answerCurrent(page: Page, correct = true): Promise<void> {
   await page.getByRole("button", { name: /Continue|Finish session/ }).click();
 }
 
-/** Sign up, consent, and skip placement — the shortest path into the app. */
+/** Sign up, consent, skip placement. The shortest path into the app. */
 export async function signUpAndConsent(page: Page, opts: { placement?: boolean } = {}) {
   const email = `e2e-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
   await page.goto("/sign-up");

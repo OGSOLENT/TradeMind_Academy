@@ -1,6 +1,7 @@
 /**
- * Phase 3 report screenshots: quiz shell, feedback panel, session summary.
- * Requires dev server + emulators + seed. Run: npx tsx scripts/screenshot-phase3.ts
+ * The Phase 3 report screenshots: quiz shell, feedback panel, session
+ * summary. Needs the dev server, emulators and seed.
+ * Run: npx tsx scripts/screenshot-phase3.ts
  */
 import { chromium } from "@playwright/test";
 
@@ -26,7 +27,7 @@ async function main() {
   await settle();
   await page.screenshot({ path: `${OUT}/quiz-question.png` });
 
-  // Answer the first (mcq) to show the feedback panel.
+  // Answer the first question (an MCQ) so the feedback panel shows.
   await page.getByRole("radio", { name: /option B/ }).click();
   await page.getByRole("button", { name: "Submit answer" }).click();
   await settle();

@@ -25,9 +25,9 @@ interface FadingKc {
 }
 
 /**
- * Review queue (amber "fading skills" framing): a card stack of topics you
- * haven't touched in a while and haven't mastered. Swipe a card away to
- * defer it (fly-off spring), or re-drill now.
+ * The review queue, framed in amber as "fading skills". It's a card stack of
+ * topics you haven't touched in a while and haven't mastered yet. Swipe a
+ * card away to defer it (it flies off on a spring), or re-drill it now.
  */
 export default function ReviewPage() {
   const { user } = useAuth();
@@ -105,7 +105,7 @@ export default function ReviewPage() {
               .slice(0, 3)
               .reverse()
               .map((entry, revIndex, arr) => {
-                const stackIndex = arr.length - 1 - revIndex; // 0 = top card
+                const stackIndex = arr.length - 1 - revIndex; // 0 is the top card
                 const isTop = stackIndex === 0;
                 return (
                   <motion.div

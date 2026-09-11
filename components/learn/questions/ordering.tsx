@@ -5,15 +5,16 @@ import { cn } from "@/lib/utils";
 
 interface OrderingProps {
   entries: string[];
-  /** Current order as indices into entries. */
+  /** The current order, as indices into entries. */
   order: number[];
   onChange(order: number[]): void;
   disabled?: boolean;
 }
 
 /**
- * Drag-to-order with spring layout (framer-motion Reorder). Keyboard
- * fallback: each row has move up/down buttons — drag is never the only way.
+ * Drag to reorder, with spring layout from framer-motion's Reorder. Each row
+ * also has move up and move down buttons for the keyboard, because dragging
+ * is never allowed to be the only way.
  */
 export function OrderingList({ entries, order, onChange, disabled }: OrderingProps) {
   const reduced = useReducedMotion();

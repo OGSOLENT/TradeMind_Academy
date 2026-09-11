@@ -11,34 +11,39 @@ import {
 import { cn, clamp } from "@/lib/utils";
 
 /**
- * MasteryRing — the flagship design-system component.
+ * MasteryRing. The flagship component of the design system, and the one I'd
+ * point a marker at first.
  *
- * ANIMATION TIMELINE (per docs/BUILD_PROMPT.md §3):
- *   t=0        value prop changes (e.g. 0.62 → 0.71)
- *   t=0..~600ms ring arc animates via stroke-dashoffset driven by a spring:
- *              GAINS  use spring.gain (stiffness 300, damping 18) → visible
- *              overshoot past the target before settling — celebratory.
- *              LOSSES use spring.loss (stiffness 170, damping 26) → slower,
- *              softer, no bounce, arc tinted amber during the move.
- *   t=0..~600ms the centre percentage ROLLS through intermediate integers
- *              (62, 63 … 71) on the same spring — numbers never pop (§7.8).
- *   settle     arc + number rest together; aria-label updates for SRs.
- *   reduced    prefers-reduced-motion: spring replaced by a 150ms tween,
- *              number jumps straight to target (single announcement).
+ * How the animation plays out (docs/BUILD_PROMPT.md section 3):
+ *   t=0          the value prop changes, say 0.62 to 0.71
+ *   t=0 to ~600ms the arc moves via stroke-dashoffset on a spring.
+ *                GAINS use spring.gain (stiffness 300, damping 18), so the
+ *                arc visibly overshoots the target before settling. It's meant
+ *                to feel like a small celebration.
+ *                LOSSES use spring.loss (stiffness 170, damping 26). Slower,
+ *                softer, no bounce, and the arc tints amber while it moves.
+ *   t=0 to ~600ms the centre percentage ROLLS through the integers in between
+ *                (62, 63 ... 71) on the same spring. Numbers never pop (7.8).
+ *   settle       arc and number come to rest together, and the aria-label
+ *                updates for screen readers.
+ *   reduced      under prefers-reduced-motion the spring becomes a 150ms
+ *                tween and the number jumps straight to the target, so there's
+ *                a single announcement instead of a stream of them.
  *
- * Colour follows the BKT bands unless `tone` is forced:
- *   pL ≥ 0.8 mastery teal · 0.4–0.8 accent indigo · < 0.4 warning amber.
+ * Colour follows the BKT bands unless `tone` overrides it:
+ *   pL at or above 0.8 is mastery teal, 0.4 to 0.8 is accent indigo, and
+ *   anything below 0.4 is warning amber.
  */
 
 export type RingTone = "auto" | "mastery" | "accent" | "warning";
 export type RingSize = "sm" | "md" | "lg";
 
 export interface MasteryRingProps {
-  /** Mastery probability 0..1. */
+  /** Mastery probability, 0 to 1. */
   value: number;
   size?: RingSize;
   tone?: RingTone;
-  /** Optional label under the number (md/lg only). */
+  /** An optional label under the number (md and lg only). */
   label?: string;
   className?: string;
 }
@@ -74,7 +79,7 @@ export function MasteryRing({
   const r = (px - stroke) / 2;
   const circumference = 2 * Math.PI * r;
 
-  // Direction decides the emotional spring: gains overshoot, losses soften.
+  // The direction of travel picks the spring: gains overshoot, losses soften.
   const [prev, setPrev] = useState(v);
   const gaining = v >= prev;
 

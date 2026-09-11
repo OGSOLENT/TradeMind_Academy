@@ -4,11 +4,11 @@ import { useEffect, useRef } from "react";
 import { AreaSeries, createChart, type Time } from "lightweight-charts";
 
 export interface HistoryPoint {
-  ts: number; // epoch ms
+  ts: number; // epoch milliseconds
   pL: number;
 }
 
-/** Mastery-over-time area chart (lightweight-charts, teal on void). */
+/** The mastery-over-time area chart. lightweight-charts, teal on the void. */
 export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ariaLabel: string }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -37,7 +37,7 @@ export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ar
       priceFormat: { type: "percent" },
     });
 
-    // De-duplicate timestamps (lightweight-charts requires ascending unique).
+    // De-duplicate the timestamps. lightweight-charts insists they're ascending and unique.
     const seen = new Set<number>();
     const data = points
       .slice()

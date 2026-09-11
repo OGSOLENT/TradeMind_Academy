@@ -10,7 +10,7 @@ import {
 } from "@/lib/bkt";
 
 /**
- * Hand-computed fixtures (defaults pL0=0.25, pT=0.12, pG=0.20, pS=0.10):
+ * Fixtures I worked out by hand (defaults pL0=0.25, pT=0.12, pG=0.20, pS=0.10):
  *
  * CORRECT from 0.25:
  *   num = 0.25·0.9 = 0.225 ; den = 0.225 + 0.75·0.2 = 0.375
@@ -52,7 +52,7 @@ describe("updateMastery — hand-computed fixtures", () => {
     expect(pL).toBeLessThanOrEqual(1);
     for (let i = 0; i < 50; i++) pL = updateMastery(pL, false).pL;
     expect(pL).toBeGreaterThanOrEqual(0);
-    // pT keeps a floor: pL' ≥ pT even after endless wrongs
+    // pT keeps a floor under it. pL' stays at or above pT even after endless wrongs
     expect(pL).toBeGreaterThanOrEqual(DEFAULT_PARAMS.pT - 1e-12);
   });
 });

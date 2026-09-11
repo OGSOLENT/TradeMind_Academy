@@ -2,9 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 import { answerCurrent } from "./helpers";
 
 /**
- * Phase 5: settings (incl. colour-blind + font scale + delete-undo),
- * answer review, mistake bank, review queue, profile.
- * Requires emulators + seed (self-skips otherwise).
+ * Phase 5: settings (including colour-blind candles, font scale and the
+ * delete-then-undo flow), answer review, the mistake bank, the review queue
+ * and the profile. Needs the emulators and the seed, and skips itself
+ * otherwise.
  */
 
 async function emulatorUp(): Promise<boolean> {
@@ -45,11 +46,11 @@ test.describe("learner support", () => {
     await signUpSkipPlacement(page);
     await page.goto("/settings");
 
-    // Colour-blind mode flips the CSS vars via data attribute (live preview).
+    // Colour-blind mode flips the CSS vars through a data attribute, which is the live preview.
     await page.getByRole("switch", { name: "Colour-blind candles" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-candles", "colorblind");
 
-    // Font scale applies to the root element.
+    // The font scale lands on the root element.
     await page.getByRole("radio", { name: "115%" }).click();
     await expect(page.locator("html")).toHaveAttribute("style", /font-size: 115%/);
 
@@ -57,13 +58,13 @@ test.describe("learner support", () => {
     await page.getByRole("switch", { name: "Reduce motion" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-motion", "reduced");
 
-    // Download-my-data produces a CSV download.
+    // Download my data should produce a CSV download.
     const downloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: "Download my data" }).click();
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toBe("trademind-my-data.csv");
 
-    // Delete flow: type-DELETE gate + 5s undo.
+    // The delete flow: the type-DELETE gate, then five seconds to undo.
     await page.getByRole("button", { name: "Delete my account" }).click();
     const dialog = page.getByRole("dialog", { name: "Delete account?" });
     await expect(dialog.getByRole("button", { name: "Delete account" })).toBeDisabled();
@@ -78,7 +79,7 @@ test.describe("learner support", () => {
   test("answer review, mistake bank, review queue, profile badges", async ({ page }) => {
     await signUpSkipPlacement(page);
 
-    // Complete a session (numeric answered wrong on purpose).
+    // Complete a session, with the numeric question answered wrong on purpose.
     await page.goto("/practice");
     await page.waitForURL(/\/quiz\//);
     for (let i = 0; i < 10; i++) {
@@ -87,26 +88,26 @@ test.describe("learner support", () => {
     }
     await expect(page.getByText("Session complete")).toBeVisible({ timeout: 15_000 });
 
-    // Answer review shows per-item verdicts + explanations.
+    // Answer review shows a verdict and an explanation for each item.
     await page.getByRole("link", { name: "Review answers" }).click();
     await page.waitForURL(/\/review$/);
     await expect(page.getByRole("heading", { name: "Answer review" })).toBeVisible();
     await expect(page.getByText("missed").first()).toBeVisible();
     await expect(page.getByText("correct").first()).toBeVisible();
-    // Each reviewed item carries its authored explanation.
+    // Each reviewed item carries the explanation I wrote for it.
     await expect(page.getByTestId("review-explanation").first()).toBeVisible();
 
-    // Mistake bank groups the missed numeric item by KC.
+    // The mistake bank groups the missed numeric item under its KC.
     await page.goto("/mistakes");
     await expect(page.getByRole("heading", { name: "Mistake bank" })).toBeVisible();
     await expect(page.getByText(/missed/).first()).toBeVisible({ timeout: 15_000 });
     await expect(page.getByRole("button", { name: "Re-drill" }).first()).toBeVisible();
 
-    // Review queue: nothing fading yet on a fresh account.
+    // The review queue: nothing's fading yet on a fresh account.
     await page.goto("/review");
     await expect(page.getByText("Nothing is fading")).toBeVisible();
 
-    // Profile: stats + earned badges.
+    // The profile: stats and the badges earned so far.
     await page.goto("/profile");
     await expect(page.getByRole("heading", { name: "Phase Five" })).toBeVisible();
     await expect(page.getByText("First steps")).toBeVisible();

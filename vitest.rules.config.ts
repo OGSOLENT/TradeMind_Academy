@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 import path from "node:path";
 
-/** Rules tests run in node against the Firestore emulator (npm run test:rules). */
+/** The rules tests run in node against the Firestore emulator (npm run test:rules). */
 export default defineConfig({
   resolve: {
     alias: { "@": path.resolve(__dirname) },

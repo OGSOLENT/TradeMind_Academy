@@ -1,12 +1,13 @@
 /**
- * Build content/level1.json from the REAL curriculum.
+ * Build content/level1.json from the real curriculum.
  *
- * Source of truth: content/lessons/*.md — the 25 written lessons derived from
- * the video series. Edit the markdown, re-run this script, re-seed.
+ * The source of truth is content/lessons/*.md, the written lessons I derived
+ * from the video series. Edit the markdown, run this again, reseed. That's
+ * the whole workflow.
  *
- * Structure: 8 knowledge components (the curriculum's 8 modules) in a strict
- * prerequisite chain, 25 lessons distributed across them, and 64 authored
- * questions (8 per KC) from scripts/level1-items.ts.
+ * The structure is the knowledge components (one per module) in a strict
+ * prerequisite chain, the lessons spread across them, and the authored
+ * questions from scripts/level1-items.ts.
  *
  * Run: npx tsx scripts/generate-content.ts
  */
@@ -18,7 +19,7 @@ import { ITEMS } from "./level1-items";
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
-/** The eight modules, in teaching order. Prerequisites chain strictly. */
+/** The modules, in teaching order. Each one requires the one before it. */
 const MODULES: Array<{ id: string; title: string; description: string; lessons: string[] }> = [
   {
     id: "kc-candle-anatomy",
@@ -86,7 +87,7 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
 ];
 
 interface ParsedLesson {
-  /** Filename prefix — "07", "07a" — the key MODULES refers to. */
+  /** The filename prefix ("07", "07a"), which is the key MODULES refers to. */
   key: string;
   slug: string;
   title: string;
@@ -95,7 +96,7 @@ interface ParsedLesson {
   tail: string;
 }
 
-/** Split a lesson markdown into a body and a reference tail, dropping meta. */
+/** Split a lesson's markdown into the body and the reference tail, dropping the meta lines. */
 function parseLesson(file: string): ParsedLesson {
   const raw = readFileSync(path.join(LESSON_DIR, file), "utf8");
   const lines = raw.split("\n");
@@ -105,9 +106,9 @@ function parseLesson(file: string): ParsedLesson {
   const key = /^([0-9]{2}[a-z]?)-/.exec(file)?.[1] ?? file.slice(0, 2);
   const video = /Video:\s*`([^`]+\.mp4)`/.exec(raw)?.[1] ?? null;
 
-  // Drop: h1, the meta line, the standing disclaimer (the app renders its own
-  // banner), the "Next:" navigation link, and the self-check section (those
-  // questions became real items).
+  // I drop the h1, the meta line, the standing disclaimer (the app renders
+  // its own banner), the "Next:" navigation link, and the self-check section
+  // because those questions became real items.
   const kept: string[] = [];
   let section = "";
   for (const line of lines) {
@@ -188,7 +189,7 @@ function main() {
   const lessons: Lesson[] = [];
   MODULES.forEach((m, mi) => {
     const kc = kcs[mi]!;
-    // Use a different pretest-eligible MCQ as each lesson's inline check.
+    // Each lesson gets a different pretest-eligible MCQ as its inline check.
     const checks = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
     m.lessons.forEach((key, li) => {
       const p = parsed.get(key);

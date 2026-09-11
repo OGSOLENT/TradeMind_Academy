@@ -1,7 +1,7 @@
 rules_version = '2';
 
-// TradeMind Academy — deny-by-default (BUILD_PROMPT §4, §7.5).
-// The response log is a research dataset: responses are CREATE-ONLY, ever.
+// TradeMind Academy. Deny by default (BUILD_PROMPT sections 4 and 7.5).
+// The response log is a research dataset, so responses are CREATE-ONLY. Always.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -17,11 +17,11 @@ service cloud.firestore {
       return signedIn() && request.auth.token.admin == true;
     }
 
-    // ---- User subtree: owner-only -------------------------------------
+    // ---- The user subtree. Owner only. --------------------------------
     match /users/{uid} {
       allow read: if isOwner(uid);
       allow create: if isOwner(uid)
-        && request.resource.data.isAdult == true; // 18+ is a hard gate
+        && request.resource.data.isAdult == true; // 18+ is a hard gate, not a checkbox
       allow update: if isOwner(uid);
       allow delete: if isOwner(uid);
 
@@ -33,7 +33,7 @@ service cloud.firestore {
         allow read, create, update: if isOwner(uid);
         allow delete: if false;
 
-        // APPEND-ONLY research log (guardrail §7.2)
+        // The APPEND-ONLY research log (guardrail 7.2)
         match /responses/{rid} {
           allow read: if isOwner(uid);
           allow create: if isOwner(uid);
@@ -42,7 +42,7 @@ service cloud.firestore {
       }
     }
 
-    // ---- Content: authed read, admin-claim write ----------------------
+    // ---- Content. Anyone signed in can read, only an admin claim can write. ----
     match /courses/{courseId} {
       allow read: if signedIn();
       allow write: if isAdmin();

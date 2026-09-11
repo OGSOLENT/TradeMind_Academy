@@ -9,9 +9,10 @@ import {
 import { connectStorageEmulator, getStorage, type FirebaseStorage } from "firebase/storage";
 
 /**
- * Firebase client singleton. With NEXT_PUBLIC_USE_FIREBASE_EMULATORS=true the
- * SDK talks to the local Emulator Suite (ports in firebase.json); the
- * `demo-` project prefix keeps the emulator fully offline — no prod risk.
+ * The Firebase client singleton. With NEXT_PUBLIC_USE_FIREBASE_EMULATORS=true
+ * the SDK talks to the local Emulator Suite (ports are in firebase.json),
+ * and the `demo-` project prefix keeps the emulator completely offline. So
+ * there's no way for local testing to touch production.
  */
 
 const config = {
@@ -34,13 +35,13 @@ let connected = false;
 export function getFirebase(): { app: FirebaseApp; auth: Auth; db: Firestore; storage: FirebaseStorage } {
   const app = createApp();
   const auth = getAuth(app);
-  // Safari/WebKit hangs on Firestore's fetch-stream transport against the
-  // emulator for larger result sets — auto-detect falls back to long-polling.
+  // Safari and WebKit hang on Firestore's fetch-stream transport against the
+  // emulator once result sets get bigger. Auto-detect falls back to long polling.
   let db: Firestore;
   try {
     db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
   } catch {
-    db = getFirestore(app); // already initialised (HMR)
+    db = getFirestore(app); // already initialised, which happens under HMR
   }
   const storage = getStorage(app);
 

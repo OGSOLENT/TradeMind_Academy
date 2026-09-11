@@ -27,14 +27,14 @@ const TONE: Record<NodeState, string> = {
 /**
  * The skill constellation, drawn as a climb rather than a scatter.
  *
- * A single spline runs through all eight modules in curriculum order. A dim
- * "track" shows the whole route; a bright path on top is clipped to the
- * learner's overall progress, with a travelling light at its head and energy
- * flowing along the completed stretch. Mastery is therefore visible as
- * *distance covered*, which is the thing the BKT model actually estimates.
+ * One spline runs through all the modules in curriculum order. A dim track
+ * shows the whole route, and a bright path on top is clipped to the learner's
+ * overall progress, with a travelling light at its head and energy flowing
+ * along the stretch they've already covered. So mastery shows up as distance
+ * travelled, which is the thing the BKT model is actually estimating.
  *
- * Motion is deliberately localised — a handful of small SVG elements, not
- * full-screen layers, which measured cheap (see docs/DECISIONS.md).
+ * The motion is deliberately local. A handful of small SVG elements, not
+ * full-screen layers, and I measured it as cheap (docs/DECISIONS.md).
  */
 export function ConstellationMap({
   views,
@@ -53,9 +53,10 @@ export function ConstellationMap({
   const [hovered, setHovered] = useState<string | null>(null);
 
   /**
-   * Walk the prerequisite chain from the root. Sorting by prereq *count* was
-   * wrong — every module after the first has exactly one prerequisite, so the
-   * order came out arbitrary and the route zig-zagged.
+   * Walk the prerequisite chain from the root. I originally sorted by prereq
+   * count, and that was wrong: every module after the first has exactly one
+   * prerequisite, so the order came out arbitrary and the route zig-zagged
+   * all over the place.
    */
   const ordered = useMemo(() => {
     const byId = new Map(views.map((k) => [k.id, k]));
@@ -75,7 +76,7 @@ export function ConstellationMap({
       seen.add(nxt.id);
       cur = nxt;
     }
-    // Anything off the main chain keeps a stable position at the end.
+    // Anything that isn't on the main chain keeps a stable spot at the end.
     for (const k of views) if (!seen.has(k.id)) chain.push(k);
     void byId;
     return chain;
@@ -86,13 +87,13 @@ export function ConstellationMap({
   );
   const path = useMemo(() => journeyPath(points), [points]);
 
-  /** Overall progress along the route: the mean mastery across all modules. */
+  /** Overall progress along the route. It's the mean mastery across every module. */
   const progress = useMemo(() => {
     if (ordered.length === 0) return 0;
     return ordered.reduce((n, kc) => n + kc.pL, 0) / ordered.length;
   }, [ordered]);
 
-  // Put the travelling light exactly on the spline at the progress point.
+  // Put the travelling light exactly on the spline, at the progress point.
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
@@ -123,7 +124,7 @@ export function ConstellationMap({
         </filter>
       </defs>
 
-      {/* Faint depth field behind the route. */}
+      {/* A faint field of stars behind the route, for depth. */}
       <g className="tm-const-stars" aria-hidden="true">
         {Array.from({ length: 46 }, (_, i) => {
           const x = ((i * 79) % 97) / 97;
@@ -151,8 +152,8 @@ export function ConstellationMap({
         strokeLinecap="round"
       />
 
-      {/* Distance covered. pathLength=1 normalises the dash maths regardless of
-          how long the spline actually is. */}
+      {/* Distance covered. pathLength=1 normalises the dash maths, so it doesn't
+          matter how long the spline actually is. */}
       <motion.path
         d={path}
         fill="none"
@@ -166,7 +167,7 @@ export function ConstellationMap({
         transition={reduced ? { duration: 0.15 } : { duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
         opacity={0.95}
       />
-      {/* Glow beneath the covered stretch. */}
+      {/* The glow underneath the covered stretch. */}
       <motion.path
         d={path}
         fill="none"
@@ -182,8 +183,8 @@ export function ConstellationMap({
         opacity={0.35}
       />
 
-      {/* Energy flowing forward along the covered stretch — the sense of
-          travelling from one level to the next. */}
+      {/* Energy flowing forward along the covered stretch. It's what gives
+          the sense of travelling from one level to the next. */}
       {!reduced && progress > 0.01 && (
         <path
           className="tm-route-flow"
@@ -199,7 +200,7 @@ export function ConstellationMap({
         />
       )}
 
-      {/* The learner's position on the route. */}
+      {/* Where the learner is on the route right now. */}
       {traveller && progress > 0.005 && (
         <g className={reduced ? undefined : "tm-traveller"}>
           <circle cx={traveller.x} cy={traveller.y} r="13" fill="var(--accent)" opacity="0.25" filter="url(#tm-soft)" />
@@ -208,7 +209,7 @@ export function ConstellationMap({
         </g>
       )}
 
-      {/* Nodes */}
+      {/* The nodes */}
       {ordered.map((kc, i) => {
         const pos = points[i]!;
         const isNew = justUnlocked.includes(kc.id);
@@ -238,7 +239,7 @@ export function ConstellationMap({
             animate={{ scale: active ? 1.08 : 1, opacity: locked ? 0.55 : 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 18, delay: isNew ? 0.9 : 0 }}
           >
-            {/* Halo — breathing while the module is the live frontier. */}
+            {/* The halo. It breathes while this module is the live frontier. */}
             {kc.state === "available" && !reduced && (
               <circle
                 className="tm-node-pulse"
@@ -257,11 +258,11 @@ export function ConstellationMap({
               <circle className="tm-node-pulse" cx={pos.x} cy={pos.y} r={R + 11} fill="var(--warning)" opacity="0.16" filter="url(#tm-soft)" />
             )}
 
-            {/* Core disc + track ring */}
+            {/* The core disc and the track ring */}
             <circle cx={pos.x} cy={pos.y} r={R} fill="url(#tm-node-core)" stroke="rgba(255,255,255,0.10)" strokeWidth="1.5" />
             <circle cx={pos.x} cy={pos.y} r={R - 5} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="4" />
 
-            {/* Mastery arc */}
+            {/* The mastery arc */}
             <motion.circle
               cx={pos.x}
               cy={pos.y}
@@ -277,7 +278,7 @@ export function ConstellationMap({
               transition={reduced ? { duration: 0.15 } : { duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 + i * 0.06 }}
             />
 
-            {/* Centre glyph */}
+            {/* The centre glyph */}
             {locked ? (
               <g opacity="0.85">
                 <rect x={pos.x - 6} y={pos.y - 2} width="12" height="10" rx="2" fill="#6b6b7d" />
@@ -298,7 +299,7 @@ export function ConstellationMap({
               </text>
             )}
 
-            {/* Step number, above */}
+            {/* The step number, above */}
             <text
               x={pos.x}
               y={pos.y - R - 10}
@@ -309,7 +310,7 @@ export function ConstellationMap({
               {String(i + 1).padStart(2, "0")}
             </text>
 
-            {/* Title, below */}
+            {/* The title, below */}
             <text
               x={pos.x}
               y={pos.y + R + 20}
@@ -319,7 +320,7 @@ export function ConstellationMap({
               {kc.title}
             </text>
 
-            {/* Unlock burst */}
+            {/* The unlock burst */}
             {isNew &&
               !reduced &&
               Array.from({ length: 14 }, (_, pi) => (

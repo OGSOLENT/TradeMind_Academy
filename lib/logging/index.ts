@@ -6,15 +6,15 @@ import { toast } from "@/components/ui/toast";
 import { ResponseLogger, type ResponseEvent } from "./logger";
 
 /**
- * App-wide logger singleton: Firestore transport + toast surfacing.
- * Responses land in users/{uid}/sessions/{sid}/responses (create-only by
- * security rules — the append-only research log).
+ * The app-wide logger singleton: the Firestore transport plus toast
+ * surfacing. Responses land in users/{uid}/sessions/{sid}/responses, which
+ * the security rules make create-only. That's the append-only research log.
  */
 
 async function firestoreSend(event: ResponseEvent): Promise<void> {
-  // Fail fast when offline so OUR queue is the single retry authority —
-  // letting the SDK's internal queue hold the write too would double-deliver
-  // on reconnect and contaminate the research dataset with duplicates.
+  // Fail fast when offline so that MY queue is the only thing retrying. If I
+  // let the SDK's internal queue hold the write as well, it would deliver
+  // twice on reconnect and fill the research dataset with duplicates.
   if (typeof navigator !== "undefined" && !navigator.onLine) {
     throw new Error("offline — event stays in the local queue");
   }

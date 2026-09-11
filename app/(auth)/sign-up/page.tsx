@@ -42,9 +42,10 @@ export default function SignUpPage() {
       const name = displayName.trim() || email.split("@")[0] || "Learner";
       await updateProfile(cred.user, { displayName: name });
       await createUserProfile(db, cred.user.uid, name, true);
-      // Prime the shared profile cache: the root SettingsApplier races this
-      // write on real-network latency and would otherwise cache null for 60s,
-      // making the consent page demand a redundant 18+ re-attestation.
+      // I prime the shared profile cache here on purpose. The root
+      // SettingsApplier races this write on real network latency, and without
+      // this it would cache null for 60 seconds and the consent page would
+      // ask for the 18+ attestation all over again.
       queryClient.setQueryData(["profile", cred.user.uid], {
         displayName: name,
         createdAt: new Date(),
@@ -66,8 +67,9 @@ export default function SignUpPage() {
   }
 
   // Google goes through the same 18+ gate as the form. The Firestore rule
-  // refuses a profile without isAdult=true, so the checkbox has to come first
-  // here too; a returning Google user skips profile creation entirely.
+  // refuses any profile without isAdult=true, so the checkbox has to be
+  // ticked before the popup opens. A returning Google user already has a
+  // profile and skips creation entirely.
   async function onGoogle() {
     if (!isAdult) {
       setErrors({ adult: "Please confirm you are 18 or older before continuing with Google." });

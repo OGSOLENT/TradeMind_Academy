@@ -1,11 +1,12 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Design tokens extracted from design/prototype (Stitch export).
- * Sources: trademind_design_system/DESIGN.md, trademind_landing_page/code.html,
- * trademind_dashboard/code.html. Conflicts resolved in docs/DECISIONS.md.
- * All colors resolve through CSS variables (app/globals.css) so colour-blind
- * mode can swap --bull/--bear at runtime.
+ * Design tokens, pulled out of the Stitch prototype in design/prototype.
+ * I read trademind_design_system/DESIGN.md first, then checked the landing and
+ * dashboard HTML to see how the values were really used. Any conflicts I
+ * resolved in docs/DECISIONS.md. Every colour here goes through a CSS variable
+ * in app/globals.css, and that's deliberate: it's what lets colour-blind mode
+ * swap --bull and --bear at runtime without touching a single component.
  */
 const config: Config = {
   content: [
@@ -57,7 +58,7 @@ const config: Config = {
         mono: ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
-        // Type scale from trademind_design_system/DESIGN.md
+        // The type scale, straight from trademind_design_system/DESIGN.md.
         "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }],
         "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
         "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500" }],
@@ -79,6 +80,8 @@ const config: Config = {
         "edge-lit": "inset 0 1px 0 0 var(--border-edge), inset 0 0 0 1px rgba(255,255,255,0.03)",
         "glow-accent": "0 0 20px var(--accent-glow)",
         "glow-mastery": "0 0 20px var(--mastery-glow)",
+        // A lifted card: the hairline stays, and a soft drop shadow sits under it.
+        lift: "inset 0 1px 0 0 var(--border-edge), inset 0 0 0 1px rgba(255,255,255,0.05), 0 18px 40px -22px rgba(0,0,0,0.75), 0 0 24px -6px var(--accent-glow)",
       },
       backdropBlur: {
         glass: "20px",

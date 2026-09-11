@@ -5,9 +5,9 @@ import { cn, clamp } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
 export interface ProgressBarProps {
-  /** 0..1 */
+  /** 0 to 1 */
   value: number;
-  /** "thin" is the 2px floating reading-progress line from DESIGN.md. */
+  /** "thin" is the 2px floating reading-progress line DESIGN.md describes. */
   variant?: "default" | "thin";
   tone?: "accent" | "mastery" | "warning";
   className?: string;
@@ -43,7 +43,15 @@ export function ProgressBar({
       )}
     >
       <motion.div
-        className={cn("h-full", variant === "default" && "rounded-pill", toneClass[tone])}
+        className={cn(
+          "h-full",
+          variant === "default" && "rounded-pill",
+          // The thin reading line gets a gradient and a glow so it reads as a
+          // trace of light along the top of the page instead of a plain rule.
+          variant === "thin" && tone === "mastery"
+            ? "bg-gradient-to-r from-mastery via-mastery-bright to-accent-bright shadow-[0_0_10px_var(--mastery-glow)]"
+            : toneClass[tone],
+        )}
         initial={false}
         animate={{ width: `${v * 100}%` }}
         transition={reduced ? { duration: 0.15 } : spring.ui}
@@ -54,14 +62,14 @@ export function ProgressBar({
 
 export interface SegmentedProgressProps {
   total: number;
-  /** Number of completed segments. */
+  /** How many segments are done. */
   completed: number;
-  /** Index of the active segment, highlighted in accent. */
+  /** The segment you're on, shown in accent. */
   current?: number;
   className?: string;
 }
 
-/** Segmented progress for quiz sessions — one segment per question. */
+/** Segmented progress for quiz sessions. One segment per question. */
 export function SegmentedProgress({ total, completed, current, className }: SegmentedProgressProps) {
   return (
     <div

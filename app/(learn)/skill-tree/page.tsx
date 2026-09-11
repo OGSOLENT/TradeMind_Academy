@@ -56,7 +56,8 @@ function SkillTree() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Unlock ceremony queue: one toast per newly-unlocked KC, staggered.
+  // The unlock ceremony queue. One toast per newly unlocked KC, staggered so
+  // they don't all land at once.
   useEffect(() => {
     if (ceremonyIndex >= justUnlocked.length) return;
     const t = setTimeout(() => {
@@ -194,7 +195,7 @@ function SkillTree() {
             />
           </div>
 
-          {/* Route legend — the map's own key. */}
+          {/* The route legend, the map's own key. */}
           <div className="pointer-events-none absolute right-5 top-4 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-label-caps uppercase tracking-wider text-fg-secondary">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-pill bg-mastery" /> mastered
@@ -211,7 +212,7 @@ function SkillTree() {
           </div>
         </div>
 
-        {/* Desktop side panel */}
+        {/* The desktop side panel */}
         {!isMobile && (
           <AnimatePresence>
             {selected && (
@@ -228,7 +229,7 @@ function SkillTree() {
                   <button
                     onClick={() => setSelected(null)}
                     aria-label="Close panel"
-                    className="rounded p-1 text-fg-muted hover:text-fg-primary"
+                    className="rounded p-1 text-fg-muted transition-colors duration-200 hover:text-fg-primary"
                   >
                     ✕
                   </button>
@@ -240,7 +241,7 @@ function SkillTree() {
         )}
       </div>
 
-      {/* Mobile: Vaul-style drawer */}
+      {/* On mobile the panel becomes the Vaul-style drawer */}
       {isMobile && (
         <Drawer open={!!selected} onClose={() => setSelected(null)} title={selected?.title ?? ""}>
           {panel}

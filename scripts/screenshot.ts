@@ -1,7 +1,6 @@
 /**
- * Capture report screenshots of the running app (expects `npm run start`).
- * Usage: npx tsx scripts/screenshot.ts — or via playwright's node:
- *   node --loader ts-node/esm … (we run it with npx playwright's runtime instead)
+ * Capture report screenshots of the running app. It expects `npm run start`
+ * to be up. Usage: npx tsx scripts/screenshot.ts
  */
 import { chromium, devices } from "@playwright/test";
 

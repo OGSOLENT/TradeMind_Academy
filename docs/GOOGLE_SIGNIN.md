@@ -31,7 +31,7 @@ Real Google sign-in only appears when the app points at the live project, `trade
 | `npm run dev:live` | 3001 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
 | `npm run live`     | 3001 | Live `trademind-academy` | Real Google        | The cloud, permanent           |
 
-`dev:live` gives you hot reload against the live project. `live` is a production build, which is what participants would get. Both show a small amber badge at the bottom of every page, **"Live project: trademind-academy. Real data."**, so you can't mistake which database you're writing to. The badge never renders in a production build and never renders on the emulator.
+`dev:live` gives you hot reload against the live project. `live` is a production build, which is what participants would get. The only reminder that you're on real data is the warning `dev:live` prints in the terminal when it starts, so read it. There used to be an on-screen badge as well, but it sat over the sign-up form and got cut on 11 September.
 
 `dev` and `dev:live` can run side by side. They build into separate folders (`.next` and `.next-live`) so they don't corrupt each other.
 

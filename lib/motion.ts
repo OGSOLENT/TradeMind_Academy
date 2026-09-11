@@ -1,48 +1,51 @@
 import type { Transition, Variants } from "framer-motion";
 
 /**
- * Motion constants — the only place animation magic numbers may live.
+ * Motion constants. This is the only file where animation magic numbers are
+ * allowed to live, and everything else imports from here.
  *
- * Rules (docs/BUILD_PROMPT.md §3):
- * - micro interactions 150–250ms, panels 300–500ms, landing set-pieces ≤800ms
- * - entrances are fade + 12–24px rise, stagger 0.06, max 8 staggered children
- * - all animations interruptible
- * - emotional rule: gains overshoot (spring), losses run slower/softer in amber;
- *   wrong answers never flash red, never shake
- * - prefers-reduced-motion: use framer's useReducedMotion at call sites; CSS
- *   transitions collapse globally in globals.css
+ * The rules I set myself (docs/BUILD_PROMPT.md section 3):
+ * - micro interactions sit in the 150 to 250ms band, panels in 300 to 500ms,
+ *   and nothing on the landing page runs longer than 800ms
+ * - entrances are a fade plus a 12 to 24px rise, staggered at 0.06, and I
+ *   never stagger more than eight children
+ * - every animation can be interrupted
+ * - the emotional rule: gains overshoot on a spring, losses run slower and
+ *   softer in amber. A wrong answer never flashes red and never shakes.
+ * - reduced motion is handled at the call site with framer's
+ *   useReducedMotion, and CSS transitions collapse globally in globals.css
  */
 
 export const spring = {
   /** State changes, presses, toggles. */
   ui: { type: "spring", stiffness: 260, damping: 24 } as Transition,
-  /** Mastery gains — visible overshoot. */
+  /** Mastery gains. I want a visible overshoot here. */
   gain: { type: "spring", stiffness: 300, damping: 18 } as Transition,
-  /** Losses — softer, slower, no bounce. */
+  /** Losses. Softer, slower, and no bounce at all. */
   loss: { type: "spring", stiffness: 170, damping: 26 } as Transition,
 } as const;
 
 export const ease = {
-  /** Choreographed entrances/exits. */
+  /** The curve behind every choreographed entrance and exit. */
   choreo: [0.16, 1, 0.3, 1] as const,
 };
 
 export const duration = {
-  micro: 0.2, // 150–250ms band
-  panel: 0.4, // 300–500ms band
-  setPiece: 0.8, // landing ceiling
+  micro: 0.2, // the 150 to 250ms band
+  panel: 0.4, // the 300 to 500ms band
+  setPiece: 0.8, // the landing page ceiling
 } as const;
 
-/** Scale applied to pressable surfaces while active. */
+/** How far a pressable surface shrinks while it's held down. */
 export const pressScale = 0.97;
 
 export const stagger = {
   children: 0.06,
-  /** Never stagger more than this many children; batch the rest. */
+  /** Past this many children I stop staggering and batch the rest. */
   maxChildren: 8,
 } as const;
 
-/** Standard entrance: fade + rise. Rise stays within the 12–24px band. */
+/** The standard entrance: fade plus rise. The rise stays inside the 12 to 24px band. */
 export const entrance: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: {
@@ -52,13 +55,13 @@ export const entrance: Variants = {
   },
 };
 
-/** Parent wrapper that staggers `entrance` children. */
+/** A parent wrapper that staggers its `entrance` children. */
 export const entranceStagger: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: stagger.children } },
 };
 
-/** Reduced-motion variant: transforms collapse to a fast fade. */
+/** The reduced-motion version. Transforms collapse to a quick fade. */
 export const entranceReduced: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.15 } },

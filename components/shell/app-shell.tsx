@@ -4,9 +4,9 @@ import { AmbientBackground } from "./ambient-background";
 import { Toaster } from "@/components/ui/toast";
 
 /**
- * App shell: glass nav (desktop) + bottom tab bar with Practice FAB (mobile).
- * The inner wrapper carries data-drawer-scale so open drawers can push the
- * page back to 0.97 for depth.
+ * The app shell: glass nav on desktop, bottom tab bar with the Practice FAB
+ * on mobile. The inner wrapper carries data-drawer-scale so an open drawer
+ * can push the whole page back to 0.97 and give the sheet some depth.
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
