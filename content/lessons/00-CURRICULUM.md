@@ -1,5 +1,7 @@
 # TradeMind Academy — Level 1 Curriculum
 
+> **Extended 12 September 2026.** Six new modules and 23 new lessons (26 to 48) cover the ICT and TTrades material the original video series didn't reach: market structure and delivery, PD arrays, time and sessions, entry models, higher-timeframe context, and execution and review. They sit in the chain where their prerequisites land, so the running order is now fifteen modules. Sources for every new lesson, for making the videos, are in [docs/LESSON_SOURCES.md](../../docs/LESSON_SOURCES.md).
+
 **Source:** 29 unique video lessons in `/Lessons` (~3.4 hours total).
 **Written from:** the on-screen content of every video (slides extracted and read frame-by-frame).
 **Status:** written lessons complete for all 29 videos. Updated 2026-09-09 with four new videos — Fair Value Gaps, Let the Wick Form, and two on position sizing — which closed two of the three high-priority gaps. Remaining gaps at the end.
@@ -171,3 +173,18 @@ kc-weekly-profiles     → Module 9   Weekly Profiles
 ```
 
 Prerequisites run strictly in sequence (1 → 2 → … → 9), which matches the platform's existing single-chain prerequisite structure — so `scripts/generate-content.ts` needs only the ids, titles and lesson bodies swapped, not its shape.
+
+---
+
+## The extension (September 2026)
+
+| # | Module | Lessons | Question it answers |
+|---|---|---|---|
+| 6 | Market Structure & Delivery | 26, 27, 28 | What do BOS, CHoCH and MSS mean, what phase is price in, and is this price good or expensive? |
+| 7 | PD Arrays | 29 to 33 | What are all the levels, how do I rank them, and what are breakers, mitigation blocks, inversions, unicorns and opening gaps? |
+| 9 | Time & Sessions | 34 to 39 | When does the market actually deliver? Power of Three, the Judas swing, sessions, macros, the Silver Bullet, news. |
+| 10 | Entry Models | 40 to 43 | How do the pieces become a trade? The 2022 model, turtle soup, the market maker model, top-down analysis. |
+| 13 | Higher-Timeframe Context | 44, 45 | What range is the daily living in? IPDA ranges and correlations. |
+| 15 | Execution & Review | 46, 47, 48 | What happens after the entry? Management, the journal and backtest, psychology. |
+
+Modules 8, 11, 12 and 14 are the original Daily Bias, Fractal Model, SMT Divergence and Weekly Profiles, renumbered by their new place in the chain. None of the new lessons has a recording yet; each one shows a "Video coming soon" slot until one is added.

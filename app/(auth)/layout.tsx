@@ -1,6 +1,7 @@
 import { Logo } from "@/components/shell/logo";
 import { AmbientBackground } from "@/components/shell/ambient-background";
 import { AsideArt } from "@/components/auth/aside-art";
+import { BackLink } from "@/components/auth/back-link";
 import { Stagger } from "@/components/motion/stagger";
 import { Toaster } from "@/components/ui/toast";
 
@@ -36,8 +37,12 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </p>
         </Stagger>
       </aside>
-      <main className="flex flex-1 items-center justify-center px-4 py-10">
-        <Stagger className="w-full max-w-md">
+      <main className="relative flex flex-1 items-center justify-center px-4 py-10">
+        {/* The way back. Top-left on every auth screen, on every size. */}
+        <div className="absolute left-4 top-4 md:left-8 md:top-6">
+          <BackLink />
+        </div>
+        <Stagger className="w-full max-w-md pt-10 md:pt-0">
           <div className="mb-8">
             <Logo />
           </div>

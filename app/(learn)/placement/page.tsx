@@ -92,7 +92,7 @@ export default function PlacementPage() {
           Let&apos;s map what you already know
         </h1>
         <p className="mx-auto mt-3 max-w-md text-body-base text-fg-secondary">
-          Eight quick questions — one per topic — seed your personal knowledge
+          Fifteen quick questions — one per module — seed your personal knowledge
           model. There&apos;s no pass or fail; wrong answers are just as
           informative as right ones.
         </p>
@@ -105,7 +105,7 @@ export default function PlacementPage() {
           </Button>
         </div>
         <p className="mt-4 text-xs text-fg-secondary">
-          Skipping starts every topic at the default prior (25%).
+          Skipping starts every module at the default prior (25%).
         </p>
       </Card>
     </Stagger>

@@ -286,7 +286,7 @@
 .tm-marquee {
   display: flex;
   width: max-content;
-  animation: tm-marquee 48s linear infinite;
+  animation: tm-marquee 78s linear infinite;
 }
 .tm-marquee:hover {
   animation-play-state: paused;

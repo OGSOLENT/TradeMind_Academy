@@ -458,7 +458,7 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
                 calculatePosition={clampedPosition}
                 style={{ pointerEvents: "none" }}
               >
-                <div className="num flex items-center gap-2 whitespace-nowrap rounded-pill bg-bg-elevated/95 px-2.5 py-1 text-[11px] text-fg-primary shadow-lift backdrop-blur-sm">
+                <div className="num flex items-center gap-2 whitespace-nowrap rounded-pill bg-[rgba(16,16,24,0.96)] px-2.5 py-1 text-[11px] text-fg-primary shadow-lift backdrop-blur-sm">
                   <span className="h-1.5 w-1.5 rounded-pill" style={{ background: tone }} />
                   {node.title}
                   <span style={{ color: tone }}>{Math.round(node.pL * 100)}%</span>

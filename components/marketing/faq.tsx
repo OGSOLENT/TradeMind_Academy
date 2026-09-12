@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: "Do I need any trading experience?",
-    a: "None. The placement test estimates your starting point in eight questions; if you're brand new, the tutor simply starts every topic from the beginning.",
+    a: "None. The placement test estimates your starting point with one question per module; if you're brand new, the tutor simply starts every topic from the beginning.",
   },
 ];
 

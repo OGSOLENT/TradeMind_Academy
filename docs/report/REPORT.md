@@ -42,7 +42,7 @@ Table: Abbreviations used in this report
 
 # Abstract
 
-Trading education online is mostly video with no model of what the learner actually knows. Everyone gets the same content in the same order, in a domain where the market itself is a poor teacher and most retail traders lose money. This project asked whether a Bayesian Knowledge Tracing (BKT) student model can drive a genuinely adaptive learning loop for trading concepts, and whether such a system can produce interaction data good enough to evaluate that adaptation. The answer was built rather than argued. TradeMind Academy is a working web application: a nine-module, 33-lesson curriculum written from four hours of original video, 72 assessment items across six question types, a pure BKT engine that updates a per-concept mastery estimate after every answer, a rule-based router that decides whether to teach, practise or remediate, and an append-only response log recording the model's estimate before and after each response. The learner can inspect the model at any time, including a "why this question?" explanation. Ethics is enforced structurally: simulated data only, an 18+ gate in the database rules, real consent with a working decline, and strict separation between development and research databases. Verification covers 54 unit tests against hand-computed BKT arithmetic, 14 security-rule tests, 24 browser journeys including one that survives a network cut, and a 200-learner simulation confirming the three mastery behaviours committed to at the progress-report stage. The simulation also exposed a real limit: the prior parameter is barely identifiable from 40 responses, which is reported rather than hidden. The planned study with human learners was not completed inside the project window, because the curriculum only reached its final form in September, so learning gain and usability remain the recommended next step. The artefact, its instruments and its dataset design are ready for it.
+Trading education online is mostly video with no model of what the learner actually knows. Everyone gets the same content in the same order, in a domain where the market itself is a poor teacher and most retail traders lose money. This project asked whether a Bayesian Knowledge Tracing (BKT) student model can drive a genuinely adaptive learning loop for trading concepts, and whether such a system can produce interaction data good enough to evaluate that adaptation. The answer was built rather than argued. TradeMind Academy is a working web application: a fifteen-module, 56-lesson curriculum (nine modules written from four hours of original video, six more from cited public teaching), 108 assessment items across six question types, a pure BKT engine that updates a per-concept mastery estimate after every answer, a rule-based router that decides whether to teach, practise or remediate, and an append-only response log recording the model's estimate before and after each response. The learner can inspect the model at any time, including a "why this question?" explanation. Ethics is enforced structurally: simulated data only, an 18+ gate in the database rules, real consent with a working decline, and strict separation between development and research databases. Verification covers 54 unit tests against hand-computed BKT arithmetic, 14 security-rule tests, 24 browser journeys including one that survives a network cut, and a 200-learner simulation confirming the three mastery behaviours committed to at the progress-report stage. The simulation also exposed a real limit: the prior parameter is barely identifiable from 40 responses, which is reported rather than hidden. The planned study with human learners was not completed inside the project window, because the curriculum only reached its final form in September, so learning gain and usability remain the recommended next step. The artefact, its instruments and its dataset design are ready for it.
 
 [[PAGEBREAK]]
 
@@ -347,9 +347,11 @@ One detail deserves explanation because it's the kind of bug that never shows in
 
 ## 5.6 Curriculum and content pipeline
 
-The curriculum is nine modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and eight assessment items. It was built from 36 original video lessons by extracting each video's slides with scene detection and writing each lesson up as structured text with definitions, worked examples, tables, common mistakes and check questions. The written lessons are markdown files that a generator script parses into the seed JSON, so the markdown is the single source of truth. Videos stream over HTTP range requests rather than loading whole.
+The curriculum is fifteen modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and six or eight assessment items. The first nine modules were built from 36 original video lessons by extracting each video's slides with scene detection and writing each lesson up as structured text with definitions, worked examples, tables, common mistakes and check questions. The written lessons are markdown files that a generator script parses into the seed JSON, so the markdown is the single source of truth. Videos stream over HTTP range requests rather than loading whole.
 
-Table: The nine-module curriculum
+Six further modules and 23 lessons were written on 12 September 2026 to cover the ICT and TTrades material the video series didn't reach: market structure and the four phases of delivery, the full set of PD arrays, time and sessions, the assembled entry models, higher-timeframe context, and execution and review. Each was written from cited public teaching (docs/LESSON_SOURCES.md lists every source) and sits in the chain where its prerequisites land, so Daily Bias, for instance, now follows PD Arrays rather than Confirmation and Structure. These lessons have no recording yet and show a placeholder in the lecture slot.
+
+Table: The fifteen-module curriculum
 
 | Module | Knowledge component | Prerequisite | Lessons | Items |
 |---|---|---|---|---|
@@ -358,10 +360,16 @@ Table: The nine-module curriculum
 | 3 | Risk and Position Sizing | 2 | 3 | 8 |
 | 4 | Reversal Patterns | 3 | 2 | 8 |
 | 5 | Confirmation and Structure | 4 | 7 | 8 |
-| 6 | Daily Bias | 5 | 7 | 8 |
-| 7 | The Fractal Model | 6 | 4 | 8 |
-| 8 | SMT Divergence | 7 | 1 | 8 |
-| 9 | Weekly Profiles | 8 | 5 | 8 |
+| 6 | Market Structure and Delivery | 5 | 3 | 6 |
+| 7 | PD Arrays | 6 | 5 | 6 |
+| 8 | Daily Bias | 7 | 7 | 8 |
+| 9 | Time and Sessions | 8 | 6 | 6 |
+| 10 | Entry Models | 9 | 4 | 6 |
+| 11 | The Fractal Model | 10 | 4 | 8 |
+| 12 | SMT Divergence | 11 | 1 | 8 |
+| 13 | Higher-Timeframe Context | 12 | 2 | 6 |
+| 14 | Weekly Profiles | 13 | 5 | 8 |
+| 15 | Execution and Review | 14 | 3 | 6 |
 
 Sequencing was decided by building the actual dependency graph of the concepts rather than keeping the recording order, and that changed things. Several videos quoted risk multiples such as "2R" before position sizing had been taught, so Risk and Position Sizing was inserted as Module 3 rather than appended at the end, and three videos covering the same topic were consolidated. This is the decomposition from Section 2.7 done in practice: each module's items are objectively checkable even though the whole activity isn't.
 
@@ -369,7 +377,7 @@ A lesson as delivered is shown in Figure 5.3, with the video, the on-page text a
 
 ![A lesson: video, structured text and the module's lesson list](docs/report-figures/08-lesson.png)
 
-The item bank holds 72 questions across six types: 37 multiple choice, 9 multi-select, 9 numeric, 9 ordering, 7 true/false with a confidence slider and 1 chart annotation, with 14 easy, 37 medium and 21 hard so the difficulty ladder has rungs to climb. Every item has an explanation shown in feedback and review. Twenty-one items are flagged eligible for the pre-test and post-test.
+The item bank holds 108 questions across six types: 52 multiple choice, 15 multi-select, 13 numeric, 14 ordering, 13 true/false with a confidence slider and 1 chart annotation, with 21 easy, 56 medium and 31 hard so the difficulty ladder has rungs to climb. Every item has an explanation shown in feedback and review. Thirty-three items are flagged eligible for the pre-test and post-test, at least one per module, so the placement asks one question per module.
 
 ## 5.7 The assessment engine
 
@@ -383,7 +391,7 @@ The interface was built from a 43-screen high-fidelity prototype, with palette, 
 
 ![The dashboard: the routed next action, mastery per module and mastery over time](docs/report-figures/06-dashboard.png)
 
-![The skill constellation: nine modules on one route, lit to the learner's mastery](docs/report-figures/07-skill-tree.png)
+![The skill constellation: the modules on one route, lit to the learner's mastery. The figure shows the nine-module layout; with fifteen the route becomes a switchback](docs/report-figures/07-skill-tree.png)
 
 ![A practice question with the live mastery HUD and the "why this question?" popover](docs/report-figures/10-why-this-question.png)
 
@@ -423,7 +431,7 @@ The pattern is that the problems that mattered most were invisible in normal use
 
 ## 6.1 The artefact delivered
 
-TradeMind Academy is a working application of about 11,800 lines of TypeScript across 17 routes, with 33 lessons, 72 items, nine knowledge components, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and a design system of twelve primitives. It's public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 49 recorded decisions; Appendix B gives the running instructions. The live Firebase project holds the seeded curriculum and, at the time of writing, no participant accounts.
+TradeMind Academy is a working application of about 11,800 lines of TypeScript across 17 routes, with 56 lessons, 108 items, fifteen knowledge components, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and a design system of twelve primitives. It's public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 49 recorded decisions; Appendix B gives the running instructions. The live Firebase project holds the seeded curriculum and, at the time of writing, no participant accounts.
 
 ## 6.2 Technical verification
 
@@ -495,7 +503,7 @@ Table: Evaluation against the five objectives
 | Objective | Outcome | Evidence |
 |---|---|---|
 | 1. Review the literature to ground the design | Met | Chapter 2; about 240 records screened and 61 retained in the full review; every design decision traced to evidence in Appendix J |
-| 2. Design the architecture and content structure | Met | Six-component architecture (5.1); nine-module prerequisite chain with 33 lessons and 72 items (5.6); data model and rules (5.2) |
+| 2. Design the architecture and content structure | Met | Six-component architecture (5.1); fifteen-module prerequisite chain with 56 lessons and 108 items (5.6); data model and rules (5.2) |
 | 3. Build the vertical slice end to end with BKT and routing | Met and exceeded | The full loop works and is exercised by a browser test from placement to unlock; learner-support features beyond the slice were also delivered |
 | 4. Validate the engine technically | Met | 54 unit tests against hand-computed maths; 200-learner harness passing all three committed behaviours; identifiability limit found and reported |
 | 5. Evaluate with real users for learning gain and usability | Not met | Ethics approved and instruments ready; study not run because content reached final form in September (4.3) |

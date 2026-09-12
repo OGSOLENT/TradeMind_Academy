@@ -29,6 +29,40 @@ export const NODE_POSITIONS: Record<string, NodePosition> = {
   "kc-weekly-profiles": { x: 952, y: 96 },
 };
 
+/**
+ * Where every node goes, given the modules in teaching order.
+ *
+ * Nine modules use the hand-tuned climb above, which is what the report's
+ * figures show. Anything longer switches to a switchback: the first half
+ * climbs left to right along the bottom, the route hairpins at the right
+ * edge, and the second half climbs back right to left along the top. It
+ * keeps the "gaining height is gaining mastery" reading, and it keeps the
+ * nodes far enough apart for their titles.
+ */
+export function layoutPositions(ids: string[]): Record<string, NodePosition> {
+  const out: Record<string, NodePosition> = {};
+  if (ids.length <= 9 && ids.every((id) => NODE_POSITIONS[id])) {
+    for (const id of ids) out[id] = NODE_POSITIONS[id]!;
+    return out;
+  }
+  const n = ids.length;
+  const perRow = Math.ceil(n / 2);
+  const left = 78;
+  const right = 922;
+  ids.forEach((id, i) => {
+    const row = i < perRow ? 0 : 1;
+    const idx = row === 0 ? i : i - perRow;
+    const count = row === 0 ? perRow : n - perRow;
+    const t = count > 1 ? idx / (count - 1) : 0;
+    const x = row === 0 ? left + t * (right - left) : right - t * (right - left);
+    const baseY = row === 0 ? 378 : 150;
+    const wave = Math.sin(idx * 1.9 + row) * 30;
+    const climb = -t * 36;
+    out[id] = { x: Math.round(x), y: Math.round(baseY + wave + climb) };
+  });
+  return out;
+}
+
 export function positionFor(kcId: string, index: number): NodePosition {
   return (
     NODE_POSITIONS[kcId] ?? {

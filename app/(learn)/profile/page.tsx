@@ -71,6 +71,8 @@ export default function ProfilePage() {
 
   const { profile, kcStates, sessions } = data;
   const mastered = Object.values(kcStates).filter((s) => s.pL >= MASTERY_THRESHOLD).length;
+  const totalKcs = Object.keys(kcStates).length;
+  const halfway = Math.max(4, Math.ceil(totalKcs / 2));
   const attempts = Object.values(kcStates).reduce((n, s) => n + s.attempts, 0);
   const activeDays = new Set(
     sessions.filter((s) => Date.now() - s.startedAt < 7 * DAY_MS).map((s) => Math.floor(s.startedAt / DAY_MS)),
@@ -102,8 +104,8 @@ export default function ProfilePage() {
       id: "half-way",
       icon: "◈",
       title: "Halfway there",
-      description: "Mastered 4 Level-1 topics",
-      earned: mastered >= 4,
+      description: `Mastered ${halfway} Level-1 modules`,
+      earned: mastered >= halfway,
     },
     {
       id: "hundred",

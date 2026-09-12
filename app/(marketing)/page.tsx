@@ -21,21 +21,27 @@ const HeroParticles = dynamic(
   { ssr: false },
 );
 
-/** The nine Level-1 modules, in the order they're taught. Drives the ticker. */
+/** The fifteen Level-1 modules, in the order they're taught. Drives the ticker. */
 const MODULES = [
   "The Candle",
   "Liquidity & Wicks",
   "Risk & Position Sizing",
   "Reversal Patterns",
   "Confirmation & Structure",
+  "Market Structure & Delivery",
+  "PD Arrays",
   "Daily Bias",
+  "Time & Sessions",
+  "Entry Models",
   "The Fractal Model",
   "SMT Divergence",
+  "Higher-Timeframe Context",
   "Weekly Profiles",
+  "Execution & Review",
 ];
 
 const STEPS = [
-  ["01", "Placement", "Eight questions calibrate a per-topic Bayesian estimate of what you already know."],
+  ["01", "Placement", "One question per module calibrates a Bayesian estimate of what you already know."],
   ["02", "Adaptive practice", "Routing rules serve your weakest unlocked topic at the difficulty you've earned — and always explain themselves."],
   ["03", "Visible mastery", "Cross 80% and the constellation unlocks the next topic. Skip practice and skills fade back into review."],
 ] as const;

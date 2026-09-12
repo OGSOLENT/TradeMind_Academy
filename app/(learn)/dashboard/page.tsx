@@ -202,7 +202,7 @@ export default function DashboardPage() {
                 Calibrate your knowledge map
               </h1>
               <p className="mt-2 text-body-base text-fg-secondary">
-                Eight quick questions seed your personal model — or skip and
+                One quick question per module seeds your personal model — or skip and
                 start from scratch.
               </p>
               <Link href="/placement" className="mt-5 inline-block">
