@@ -32,7 +32,7 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
         <button
           onClick={() => setDescribe((d) => !d)}
           aria-expanded={describe}
-          className="absolute right-3 top-3 rounded-pill bg-bg-deep/80 px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm transition-[background-color,box-shadow] duration-200 hover:bg-bg-deep hover:shadow-[inset_0_0_0_1px_var(--mastery-glow)]"
+          className="absolute right-3 top-3 rounded-pill bg-[rgba(5,5,7,0.8)] px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm transition-[background-color,box-shadow] duration-200 hover:bg-bg-deep hover:shadow-[inset_0_0_0_1px_var(--mastery-glow)]"
         >
           {describe ? "Hide description" : "Describe this chart"}
         </button>

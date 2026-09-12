@@ -103,7 +103,7 @@ export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ar
             strokeLinecap="round"
           />
         </svg>
-        <p className="relative rounded-pill bg-bg-elevated/80 px-4 py-2 text-sm text-fg-secondary shadow-hairline backdrop-blur-sm">
+        <p className="relative rounded-pill bg-[rgba(16,16,24,0.85)] px-4 py-2 text-sm text-fg-secondary shadow-hairline backdrop-blur-sm">
           Complete a practice session to see your mastery curve.
         </p>
       </div>

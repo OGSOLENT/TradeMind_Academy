@@ -19,7 +19,7 @@ import { ITEMS } from "./level1-items";
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
-/** The modules, in teaching order. Each one requires the one before it. */
+/** The modules, in teaching order. Each one requires the one before it. Fifteen since September 2026. */
 const MODULES: Array<{ id: string; title: string; description: string; lessons: string[] }> = [
   {
     id: "kc-candle-anatomy",
@@ -57,11 +57,39 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     lessons: ["07", "07a", "08", "09", "10", "11", "11a"],
   },
   {
+    id: "kc-market-structure",
+    title: "Market Structure & Delivery",
+    description:
+      "The shared vocabulary of structure: BOS, CHoCH and the Market Structure Shift, the four phases of delivery, and premium, discount and the OTE band.",
+    lessons: ["26", "27", "28"],
+  },
+  {
+    id: "kc-pd-arrays",
+    title: "PD Arrays",
+    description:
+      "The complete menu of levels and how to rank them: the matrix, breaker and mitigation blocks, the rejection block, the inversion gap, the unicorn and opening gaps.",
+    lessons: ["29", "30", "31", "32", "33"],
+  },
+  {
     id: "kc-daily-bias",
     title: "Daily Bias",
     description:
       "Decide direction for the day using PDH, PDL and equilibrium — let the wick form, and know what to do when the bias is wrong.",
     lessons: ["12", "13", "13a", "14", "14a", "14b", "15"],
+  },
+  {
+    id: "kc-time-sessions",
+    title: "Time & Sessions",
+    description:
+      "When the market actually delivers: Power of Three, the Judas swing, session anatomy and the true day open, macros, the Silver Bullet, and high-impact news.",
+    lessons: ["34", "35", "36", "37", "38", "39"],
+  },
+  {
+    id: "kc-entry-models",
+    title: "Entry Models",
+    description:
+      "The models assembled from everything before them: the 2022 model, turtle soup, the market maker model, and top-down analysis as the routine that ties them together.",
+    lessons: ["40", "41", "42", "43"],
   },
   {
     id: "kc-fractal-model",
@@ -78,11 +106,25 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     lessons: ["20"],
   },
   {
+    id: "kc-htf-context",
+    title: "Higher-Timeframe Context",
+    description:
+      "The range the daily lives inside: IPDA data ranges over 20, 40 and 60 days, and the correlations between the dollar, the indices and risk.",
+    lessons: ["44", "45"],
+  },
+  {
     id: "kc-weekly-profiles",
     title: "Weekly Profiles",
     description:
       "The four shapes a week takes, and which day to act on in each: expansion, midweek reversal, Thursday counter, consolidation.",
     lessons: ["21", "22", "23", "24", "25"],
+  },
+  {
+    id: "kc-execution-review",
+    title: "Execution & Review",
+    description:
+      "Everything after the entry: partials, break-even and structure-based trailing, the journal and the backtest, and thinking in probabilities.",
+    lessons: ["46", "47", "48"],
   },
 ];
 
@@ -134,9 +176,10 @@ function parseLesson(file: string): ParsedLesson {
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
   const blocks: LessonBlock[] = [];
 
-  if (parsed.video) {
-    blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
-  }
+  // Every lesson gets a lecture slot. Where there's no recording yet the
+  // block shows the poster and "Video coming soon", and the file drops in
+  // later by adding a Video: line to the markdown.
+  blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
   blocks.push({ kind: "markdown", md: parsed.main });
   blocks.push({
     kind: "figure",

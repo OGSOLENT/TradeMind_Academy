@@ -176,7 +176,7 @@ export function AnnotationChart({
         <button
           onClick={() => setShowDescribe((d) => !d)}
           aria-expanded={showDescribe}
-          className="absolute right-3 top-3 rounded-pill bg-bg-deep/80 px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm"
+          className="absolute right-3 top-3 rounded-pill bg-[rgba(5,5,7,0.8)] px-3 py-1.5 text-label-caps uppercase tracking-wider text-mastery-bright shadow-hairline backdrop-blur-sm"
         >
           Describe this chart
         </button>

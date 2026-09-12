@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Kc } from "@/lib/content/types";
-import { CANVAS, journeyPath, orderByChain, positionFor } from "@/lib/constellation";
+import { CANVAS, journeyPath, layoutPositions, orderByChain } from "@/lib/constellation";
 import { cn } from "@/lib/utils";
 
 export type { NodeState } from "@/lib/routing";
@@ -54,10 +54,10 @@ export function ConstellationMap({
   const [hovered, setHovered] = useState<string | null>(null);
 
   const ordered = useMemo(() => orderByChain(views), [views]);
-  const points = useMemo(
-    () => ordered.map((kc, i) => positionFor(kc.id, i)),
-    [ordered],
-  );
+  const points = useMemo(() => {
+    const layout = layoutPositions(ordered.map((kc) => kc.id));
+    return ordered.map((kc) => layout[kc.id]!);
+  }, [ordered]);
   const path = useMemo(() => journeyPath(points), [points]);
 
   /** Overall progress along the route. It's the mean mastery across every module. */
@@ -189,6 +189,8 @@ export function ConstellationMap({
         const tone = TONE[kc.state];
         const active = hovered === kc.id || selectedId === kc.id;
         const locked = kc.state === "locked";
+        const dense = ordered.length > 9;
+        const flip = dense && i % 2 === 1;
 
         return (
           <motion.g
@@ -272,23 +274,22 @@ export function ConstellationMap({
               </text>
             )}
 
-            {/* The step number, above */}
+            {/* The step number and the title. With many nodes the labels
+                alternate sides so neighbours don't collide. */}
             <text
               x={pos.x}
-              y={pos.y - R - 10}
+              y={flip ? pos.y + R + 18 : pos.y - R - 10}
               textAnchor="middle"
               className="num fill-[#5B5B6B] text-[10px]"
               style={{ letterSpacing: "0.12em" }}
             >
               {String(i + 1).padStart(2, "0")}
             </text>
-
-            {/* The title, below */}
             <text
               x={pos.x}
-              y={pos.y + R + 20}
+              y={flip ? pos.y - R - 12 : pos.y + R + 20}
               textAnchor="middle"
-              className={cn("text-[12px]", active ? "fill-[#E4E1ED]" : "fill-[#908F9E]")}
+              className={cn(dense ? "text-[11px]" : "text-[12px]", active ? "fill-[#E4E1ED]" : "fill-[#908F9E]")}
             >
               {kc.title}
             </text>

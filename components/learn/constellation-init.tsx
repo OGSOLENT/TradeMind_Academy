@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Kc } from "@/lib/content/types";
-import { CANVAS, positionFor } from "@/lib/constellation";
+import { CANVAS, layoutPositions, orderByChain } from "@/lib/constellation";
 import { Button } from "@/components/ui/button";
 import { ease, stagger } from "@/lib/motion";
 
@@ -24,7 +24,9 @@ const CIRCUMFERENCE = 2 * Math.PI * R;
  */
 export function ConstellationInit({ kcs, mastery, onContinue }: ConstellationInitProps) {
   const reduced = useReducedMotion();
-  const ordered = [...kcs].sort((a, b) => a.prereqIds.length - b.prereqIds.length);
+  const ordered = orderByChain(kcs);
+  const layout = layoutPositions(ordered.map((kc) => kc.id));
+  const dense = ordered.length > 9;
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-bg-deep px-4">
@@ -39,8 +41,8 @@ export function ConstellationInit({ kcs, mastery, onContinue }: ConstellationIni
         {/* The edges draw in first */}
         {ordered.map((kc) =>
           kc.prereqIds.map((p, j) => {
-            const a = positionFor(p, 0);
-            const b = positionFor(kc.id, 0);
+            const a = layout[p] ?? { x: 0, y: 0 };
+            const b = layout[kc.id]!;
             return (
               <motion.line
                 key={`${p}-${kc.id}-${j}`}
@@ -58,8 +60,9 @@ export function ConstellationInit({ kcs, mastery, onContinue }: ConstellationIni
           }),
         )}
         {ordered.map((kc, i) => {
-          const pos = positionFor(kc.id, i);
+          const pos = layout[kc.id]!;
           const pL = mastery[kc.id] ?? 0;
+          const flip = dense && i % 2 === 1;
           const delay = reduced ? 0 : 0.4 + i * stagger.children;
           return (
             <motion.g
@@ -91,15 +94,15 @@ export function ConstellationInit({ kcs, mastery, onContinue }: ConstellationIni
               <circle cx={pos.x} cy={pos.y} r={4} fill="var(--accent-bright)" />
               <text
                 x={pos.x}
-                y={pos.y + R + 18}
+                y={flip ? pos.y - R - 10 : pos.y + R + 18}
                 textAnchor="middle"
-                className="fill-[#908F9E] text-[11px]"
+                className={dense ? "fill-[#908F9E] text-[10px]" : "fill-[#908F9E] text-[11px]"}
               >
                 {kc.title}
               </text>
               <text
                 x={pos.x}
-                y={pos.y - R - 8}
+                y={flip ? pos.y + R + 16 : pos.y - R - 8}
                 textAnchor="middle"
                 className="num fill-[#44E2CD] text-[11px]"
               >

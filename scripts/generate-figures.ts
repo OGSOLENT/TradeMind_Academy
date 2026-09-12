@@ -22,14 +22,24 @@ function candleGlyphs(seed: number): string {
   return out;
 }
 
+/** Titles go into XML text nodes, so the five special characters have to be escaped. */
+function esc(text: string): string {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
 function svg(title: string, subtitle: string, seed: number): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
   <rect width="1200" height="520" fill="#0A0A0F"/>
   <rect x="1" y="1" width="1198" height="518" rx="16" fill="none" stroke="rgba(255,255,255,0.08)"/>
   ${candleGlyphs(seed)}
   <rect x="0" y="400" width="1200" height="120" fill="#050507" opacity="0.85"/>
-  <text x="48" y="452" font-family="Menlo, monospace" font-size="26" fill="#E4E1ED">${title}</text>
-  <text x="48" y="486" font-family="Menlo, monospace" font-size="16" fill="#908F9E">${subtitle}</text>
+  <text x="48" y="452" font-family="Menlo, monospace" font-size="26" fill="#E4E1ED">${esc(title)}</text>
+  <text x="48" y="486" font-family="Menlo, monospace" font-size="16" fill="#908F9E">${esc(subtitle)}</text>
   <text x="1152" y="452" text-anchor="end" font-family="Menlo, monospace" font-size="14" fill="#FFB955">SIMULATED DATA · EDUCATION ONLY</text>
 </svg>\n`;
 }
