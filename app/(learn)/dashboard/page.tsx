@@ -211,7 +211,8 @@ export default function DashboardPage() {
             </div>
           ) : targetKc ? (
             <>
-              <div className="relative shrink-0">
+              {/* The margin keeps the orbit rings inside the card's padding. */}
+              <div className="relative m-6 shrink-0">
                 <OrbitRings />
                 <MasteryRing value={targetState?.pL ?? 0} size="lg" label={targetKc.title} />
               </div>
@@ -233,7 +234,7 @@ export default function DashboardPage() {
             </>
           ) : (
             <div className="flex-1 text-center">
-              <div className="relative mx-auto inline-block">
+              <div className="relative mx-auto my-6 inline-block">
                 <OrbitRings />
                 <MasteryRing value={1} size="lg" label="Level 1" />
               </div>
@@ -402,11 +403,11 @@ function OrbitRings() {
     <>
       <span
         aria-hidden="true"
-        className="tm-orbit pointer-events-none absolute -inset-4 rounded-pill border border-dashed border-accent/25"
+        className="tm-orbit pointer-events-none absolute -inset-3 rounded-pill border border-dashed border-accent/25"
       />
       <span
         aria-hidden="true"
-        className="tm-orbit-reverse pointer-events-none absolute -inset-8 rounded-pill border border-dotted border-mastery/15"
+        className="tm-orbit-reverse pointer-events-none absolute -inset-6 rounded-pill border border-dotted border-mastery/15"
       />
     </>
   );

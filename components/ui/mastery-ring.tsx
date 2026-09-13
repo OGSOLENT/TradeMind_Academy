@@ -140,7 +140,13 @@ export function MasteryRing({
           <span className="opacity-70">%</span>
         </span>
         {label && (
-          <span className={cn("mt-0.5 uppercase tracking-wider text-fg-secondary", sub)}>
+          // The label lives inside the ring, so it's clamped to the inner
+          // width and allowed two short lines. "Market Structure & Delivery"
+          // has to fit as well as "Daily Bias".
+          <span
+            className={cn("mt-0.5 line-clamp-2 text-center uppercase leading-tight tracking-wider text-fg-secondary", sub)}
+            style={{ maxWidth: px * 0.66 }}
+          >
             {label}
           </span>
         )}

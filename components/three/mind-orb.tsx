@@ -332,9 +332,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
     const forWidth = 1.95 / (Math.tan(halfFov) * aspect);
     const forHeight = 1.55 / Math.tan(halfFov);
     cam.position.z = Math.min(9.5, Math.max(forWidth, forHeight, 4.6));
-    // In the wide hero layout the heading sits top-left, so the brain shifts
-    // a touch right of centre to give it room. Narrow columns stay centred.
-    cam.position.x = aspect > 1.7 ? -0.32 : 0;
     cam.updateProjectionMatrix();
     invalidate();
   }, [camera, size.width, size.height, invalidate]);

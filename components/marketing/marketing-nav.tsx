@@ -15,7 +15,8 @@ import { cn } from "@/lib/utils";
  * spring-loaded pill that follows whichever section you're reading (a
  * scroll spy on the landing page) or whichever link you're hovering. On
  * the right, Sign in as a quiet link and Start free as the one filled
- * button. On phones everything lives behind a hamburger that opens a
+ * button. Below the lg breakpoint (four labelled links plus two buttons
+ * don't fit a tablet) everything lives behind a hamburger that opens a
  * full-screen sheet with the items staggering in.
  */
 
@@ -135,7 +136,7 @@ export function MarketingNav() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-1 md:flex"
+          className="hidden items-center gap-1 lg:flex"
           onMouseLeave={() => setHover(null)}
         >
           {sections.map(({ id, label, Icon }) => {
@@ -198,7 +199,7 @@ export function MarketingNav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}
-            className="flex h-11 w-11 items-center justify-center rounded-control text-fg-primary transition-colors hover:bg-white/5 md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-control text-fg-primary transition-colors hover:bg-white/5 lg:hidden"
           >
             <span className="relative block h-3.5 w-5" aria-hidden="true">
               <span className={cn("absolute left-0 top-0 h-0.5 w-5 rounded-pill bg-current transition-transform duration-300", open && "translate-y-1.5 rotate-45")} />
@@ -217,7 +218,7 @@ export function MarketingNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.15 } }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-20 flex flex-col bg-[rgba(5,5,7,0.96)] px-6 pb-10 pt-24 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-20 flex flex-col bg-[rgba(5,5,7,0.96)] px-6 pb-10 pt-24 backdrop-blur-xl lg:hidden"
           >
             <nav aria-label="Menu" className="flex flex-col gap-1">
               {sections.map(({ id, label, Icon }, i) => (
