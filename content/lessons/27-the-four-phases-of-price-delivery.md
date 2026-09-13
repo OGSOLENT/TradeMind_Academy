@@ -1,6 +1,6 @@
 # Lesson 27 — The Four Phases of Price Delivery
 
-**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Prerequisites: Lesson 26
+**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Walkthrough: `four-phases` · Prerequisites: Lesson 26
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

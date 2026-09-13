@@ -1,6 +1,6 @@
 # Lesson 38 — The Silver Bullet
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Prerequisites: Lesson 37
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `silver-bullet` · Prerequisites: Lesson 37
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

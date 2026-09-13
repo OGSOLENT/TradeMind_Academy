@@ -1,6 +1,6 @@
 # Lesson 48 — Psychology: Thinking in Probabilities
 
-**Module 15: Execution & Review** · Video: `to be recorded` · Prerequisites: Lesson 47
+**Module 15: Execution & Review** · Video: `to be recorded` · Walkthrough: `psychology-probabilities` · Prerequisites: Lesson 47
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

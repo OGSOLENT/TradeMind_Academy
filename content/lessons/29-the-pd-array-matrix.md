@@ -1,6 +1,6 @@
 # Lesson 29 — The PD Array Matrix
 
-**Module 7: PD Arrays** · Video: `to be recorded` · Prerequisites: Lesson 28
+**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `pd-array-matrix` · Prerequisites: Lesson 28
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

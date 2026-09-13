@@ -1,6 +1,6 @@
 # Lesson 40 — The 2022 Model: Sweep, Shift, Gap
 
-**Module 10: Entry Models** · Video: `to be recorded` · Prerequisites: Lessons 34 to 39
+**Module 10: Entry Models** · Video: `to be recorded` · Walkthrough: `model-2022` · Prerequisites: Lessons 34 to 39
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

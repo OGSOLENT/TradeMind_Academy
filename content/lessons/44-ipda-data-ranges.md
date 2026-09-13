@@ -1,6 +1,6 @@
 # Lesson 44 — IPDA Data Ranges: 20, 40 and 60 Days
 
-**Module 13: Higher-Timeframe Context** · Video: `to be recorded` · Prerequisites: Lesson 20
+**Module 13: Higher-Timeframe Context** · Video: `to be recorded` · Walkthrough: `ipda-ranges` · Prerequisites: Lesson 20
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

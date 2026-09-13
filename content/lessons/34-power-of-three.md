@@ -1,6 +1,6 @@
 # Lesson 34 — Power of Three: Accumulation, Manipulation, Distribution
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Prerequisites: Lessons 12 to 15
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `power-of-three` · Prerequisites: Lessons 12 to 15
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

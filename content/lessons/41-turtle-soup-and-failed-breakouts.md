@@ -1,6 +1,6 @@
 # Lesson 41 — Turtle Soup and Failed Breakouts
 
-**Module 10: Entry Models** · Video: `to be recorded` · Prerequisites: Lesson 40
+**Module 10: Entry Models** · Video: `to be recorded` · Walkthrough: `turtle-soup` · Prerequisites: Lesson 40
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

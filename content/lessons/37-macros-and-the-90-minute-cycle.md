@@ -1,6 +1,6 @@
 # Lesson 37 — Macros and the 90-Minute Cycle
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Prerequisites: Lesson 36
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `macros` · Prerequisites: Lesson 36
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

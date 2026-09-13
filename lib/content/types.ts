@@ -33,6 +33,8 @@ export type LessonBlock =
       describe: string;
     }
   | { kind: "video"; poster: string }
+  /** A stepped, annotated synthetic chart. The spec lives in lib/walkthroughs, keyed by id. */
+  | { kind: "walkthrough"; id: string }
   | { kind: "checkQuestion"; itemId: string };
 
 export interface Lesson {

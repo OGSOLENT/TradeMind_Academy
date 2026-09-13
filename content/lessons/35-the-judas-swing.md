@@ -1,6 +1,6 @@
 # Lesson 35 — The Judas Swing
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Prerequisites: Lesson 34
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `judas-swing` · Prerequisites: Lesson 34
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

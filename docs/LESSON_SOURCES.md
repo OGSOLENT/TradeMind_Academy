@@ -192,3 +192,14 @@ The official channels:
 ## Making the videos
 
 Each lesson's markdown already has the shape a video needs: the "What you'll learn" list is the cold open, the sections are the beats, the tables are the slides, the key terms are the recap, and the common mistakes are the outro. A six to nine minute video per lesson matches the length of the originals in Level 1. Once a recording exists, add one line to the lesson's markdown, `Video: \`File_Name.mp4\``, drop the file in `public/videos/`, and run `npx tsx scripts/generate-content.ts` followed by `npm run seed`. The lecture slot on the lesson page picks it up.
+
+
+## Walkthroughs
+
+Every lesson above without a recording now opens on a stepped chart walkthrough instead (see `lib/walkthroughs/`). The chart is synthetic and built to show the idea exactly, so a recording is optional rather than required. If you do record one later, add the `Video:` line as described and the recording takes the hero slot; the walkthrough moves below the prose.
+
+Rendered previews of every step are in `docs/walkthroughs/<id>/step-N.png`, with all 25 final frames on `docs/walkthroughs/contact-sheet.png`. Regenerate them with:
+
+```bash
+npx tsx --tsconfig tsconfig.scripts.json scripts/render-walkthroughs.tsx
+```
