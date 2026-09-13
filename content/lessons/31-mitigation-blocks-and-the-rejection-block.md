@@ -1,6 +1,6 @@
 # Lesson 31 — Mitigation Blocks and the Rejection Block
 
-**Module 7: PD Arrays** · Video: `to be recorded` · Prerequisites: Lesson 30
+**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `mitigation-block`, `rejection-block` · Prerequisites: Lesson 30
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

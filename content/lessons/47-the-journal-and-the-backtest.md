@@ -1,6 +1,6 @@
 # Lesson 47 — The Journal and the Backtest
 
-**Module 15: Execution & Review** · Video: `to be recorded` · Prerequisites: Lesson 46
+**Module 15: Execution & Review** · Video: `to be recorded` · Walkthrough: `journal-backtest` · Prerequisites: Lesson 46
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

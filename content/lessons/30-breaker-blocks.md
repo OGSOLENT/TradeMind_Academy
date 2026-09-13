@@ -1,6 +1,6 @@
 # Lesson 30 — Breaker Blocks
 
-**Module 7: PD Arrays** · Video: `to be recorded` · Prerequisites: Lesson 29
+**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `breaker-block` · Prerequisites: Lesson 29
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

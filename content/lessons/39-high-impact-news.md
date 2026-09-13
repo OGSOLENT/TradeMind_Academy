@@ -1,6 +1,6 @@
 # Lesson 39 — High-Impact News: CPI, NFP and FOMC
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Prerequisites: Lesson 38
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `high-impact-news` · Prerequisites: Lesson 38
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

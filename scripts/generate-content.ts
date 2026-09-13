@@ -15,6 +15,7 @@ import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
 import { ITEMS } from "./level1-items";
+import { WALKTHROUGHS } from "../lib/walkthroughs";
 
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
@@ -134,6 +135,8 @@ interface ParsedLesson {
   slug: string;
   title: string;
   video: string | null;
+  /** Walkthrough ids from the meta line, in order. */
+  walkthroughs: string[];
   main: string;
   tail: string;
 }
@@ -147,6 +150,15 @@ function parseLesson(file: string): ParsedLesson {
   const title = (titleLine.split("—")[1] ?? titleLine.replace(/^#\s*/, "")).trim();
   const key = /^([0-9]{2}[a-z]?)-/.exec(file)?.[1] ?? file.slice(0, 2);
   const video = /Video:\s*`([^`]+\.mp4)`/.exec(raw)?.[1] ?? null;
+  // Walkthrough: `id` or Walkthrough: `id`, `id`. Each id has to exist in
+  // lib/walkthroughs, and the check below fails the build if it doesn't.
+  const walkthroughs = (/Walkthrough:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
+    .split(",")
+    .map((s) => s.replace(/`/g, "").trim())
+    .filter(Boolean);
+  for (const id of walkthroughs) {
+    if (!WALKTHROUGHS[id]) throw new Error(`${file}: unknown walkthrough "${id}"`);
+  }
 
   // I drop the h1, the meta line, the standing disclaimer (the app renders
   // its own banner), the "Next:" navigation link, and the self-check section
@@ -170,23 +182,32 @@ function parseLesson(file: string): ParsedLesson {
   const main = (splitAt === -1 ? body : body.slice(0, splitAt)).trim();
   const tail = splitAt === -1 ? "" : body.slice(splitAt).trim();
 
-  return { key, slug: file.replace(/\.md$/, ""), title, video, main, tail };
+  return { key, slug: file.replace(/\.md$/, ""), title, video, walkthroughs, main, tail };
 }
 
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
   const blocks: LessonBlock[] = [];
 
-  // Every lesson gets a lecture slot. Where there's no recording yet the
-  // block shows the poster and "Video coming soon", and the file drops in
-  // later by adding a Video: line to the markdown.
-  blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
+  // The hero slot. A recording if there is one; otherwise the lesson's first
+  // walkthrough, which is the visual aid for the lessons that were written
+  // rather than filmed; otherwise the poster and "Video coming soon". A
+  // lesson with both gets the video first and its walkthroughs after the
+  // prose, where a figure would go.
+  const [heroWalkthrough, ...moreWalkthroughs] = parsed.video ? [] : parsed.walkthroughs;
+  const laterWalkthroughs = parsed.video ? parsed.walkthroughs : moreWalkthroughs;
+  if (parsed.video || !heroWalkthrough) blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
+  if (heroWalkthrough) blocks.push({ kind: "walkthrough", id: heroWalkthrough });
   blocks.push({ kind: "markdown", md: parsed.main });
-  blocks.push({
-    kind: "figure",
-    src: `/figures/${kc.id}.svg`,
-    caption: `Fig: ${kc.title} — simulated illustration.`,
-    describe: `Text alternative: a simulated candlestick series illustrating ${kc.title.toLowerCase()}. Prices are generated for teaching purposes and do not represent any real market.`,
-  });
+  for (const id of laterWalkthroughs) blocks.push({ kind: "walkthrough", id });
+  // The generic module figure only where there's no walkthrough to do the job properly.
+  if (parsed.walkthroughs.length === 0) {
+    blocks.push({
+      kind: "figure",
+      src: `/figures/${kc.id}.svg`,
+      caption: `Fig: ${kc.title} — simulated illustration.`,
+      describe: `Text alternative: a simulated candlestick series illustrating ${kc.title.toLowerCase()}. Prices are generated for teaching purposes and do not represent any real market.`,
+    });
+  }
   if (checkItemId) blocks.push({ kind: "checkQuestion", itemId: checkItemId });
   if (parsed.tail) blocks.push({ kind: "markdown", md: parsed.tail });
 
@@ -257,7 +278,11 @@ function main() {
     console.log(`  ${kc.id.padEnd(24)} ${n} lesson(s), ${ITEMS[kc.id]!.length} items`);
   }
   const missingVideo = lessons.filter((l) => !l.videoUrl);
-  if (missingVideo.length) console.log(`  note: ${missingVideo.length} lesson(s) without video`);
+  const withWalkthrough = missingVideo.filter((l) => l.blocks.some((b) => b.kind === "walkthrough"));
+  if (missingVideo.length)
+    console.log(
+      `  note: ${missingVideo.length} lesson(s) without video, ${withWalkthrough.length} of them with a walkthrough, ${missingVideo.length - withWalkthrough.length} with neither`,
+    );
 }
 
 main();

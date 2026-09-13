@@ -1,6 +1,6 @@
 # Lesson 46 — Trade Management: Partials, Break-Even and Trailing
 
-**Module 15: Execution & Review** · Video: `to be recorded` · Prerequisites: Lessons 21 to 25
+**Module 15: Execution & Review** · Video: `to be recorded` · Walkthrough: `trade-management` · Prerequisites: Lessons 21 to 25
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

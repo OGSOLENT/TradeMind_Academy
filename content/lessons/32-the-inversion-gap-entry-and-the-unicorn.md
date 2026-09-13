@@ -1,6 +1,6 @@
 # Lesson 32 — The Inversion Gap Entry and the Unicorn
 
-**Module 7: PD Arrays** · Video: `to be recorded` · Prerequisites: Lesson 31
+**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `inversion-fvg`, `unicorn` · Prerequisites: Lesson 31
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

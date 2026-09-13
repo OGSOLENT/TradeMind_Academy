@@ -1,6 +1,6 @@
 # Lesson 43 — Top-Down Analysis: Bias, Narrative, Confirmation
 
-**Module 10: Entry Models** · Video: `to be recorded` · Prerequisites: Lesson 42
+**Module 10: Entry Models** · Video: `to be recorded` · Walkthrough: `top-down-analysis` · Prerequisites: Lesson 42
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

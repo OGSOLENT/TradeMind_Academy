@@ -77,6 +77,17 @@ test.describe("auth → consent → lesson journey", () => {
     await expect(page.getByText("Lesson complete")).toBeVisible();
     // Every lesson in the module is reachable from the footer.
     await expect(page.locator('nav[aria-label="Lessons in this module"] a')).toHaveCount(2);
+
+    // A lesson without a recording opens on a stepped walkthrough instead of
+    // a placeholder, and the steps advance from the keyboard and the button.
+    await page.goto("/lesson/26-break-of-structure-and-the-market-structure-shift");
+    const walkthrough = page.locator("#walkthrough");
+    await expect(walkthrough).toBeVisible();
+    await expect(walkthrough.getByText(/Step 1 of 6/)).toBeVisible();
+    await walkthrough.getByRole("button", { name: "Next →" }).click();
+    await expect(walkthrough.getByText(/Step 2 of 6/)).toBeVisible();
+    await walkthrough.getByRole("button", { name: "Describe this walkthrough" }).click();
+    await expect(page.getByText(/Step 6, Internal versus external structure/)).toBeVisible();
   });
 
   test("declining consent signs the user out", async ({ page }) => {

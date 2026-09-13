@@ -17,6 +17,8 @@ import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Markdown } from "@/components/learn/markdown";
 import { LessonCheck } from "@/components/learn/lesson-check";
+import { Walkthrough } from "@/components/learn/walkthrough";
+import { getWalkthrough } from "@/lib/walkthroughs";
 import {
   CheckQuestionBlock,
   FigureBlock,
@@ -281,6 +283,12 @@ export default function LessonPage() {
                   return <FigureBlock block={block} />;
                 case "video":
                   return <VideoBlock block={block} videoUrl={lesson.videoUrl} title={lesson.title} />;
+                case "walkthrough": {
+                  const spec = getWalkthrough(block.id);
+                  if (!spec) return null;
+                  const nth = blocks.slice(0, i).filter((b) => b.kind === "walkthrough").length;
+                  return <Walkthrough spec={spec} anchor={nth === 0 ? "walkthrough" : `walkthrough-${nth + 1}`} />;
+                }
                 case "checkQuestion":
                   return <CheckQuestionBlock itemId={block.itemId} />;
               }
@@ -442,6 +450,16 @@ export default function LessonPage() {
                         className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-fg-secondary transition-colors hover:text-fg-primary"
                       >
                         Lecture
+                      </a>
+                    </li>
+                  )}
+                  {blocks.some((b) => b.kind === "walkthrough") && (
+                    <li>
+                      <a
+                        href="#walkthrough"
+                        className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-fg-secondary transition-colors hover:text-fg-primary"
+                      >
+                        Walkthrough
                       </a>
                     </li>
                   )}

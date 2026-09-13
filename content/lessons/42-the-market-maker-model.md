@@ -1,6 +1,6 @@
 # Lesson 42 — The Market Maker Model
 
-**Module 10: Entry Models** · Video: `to be recorded` · Prerequisites: Lesson 41
+**Module 10: Entry Models** · Video: `to be recorded` · Walkthrough: `market-maker-model` · Prerequisites: Lesson 41
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

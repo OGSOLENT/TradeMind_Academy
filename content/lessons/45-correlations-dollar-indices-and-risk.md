@@ -1,6 +1,6 @@
 # Lesson 45 — Correlations: The Dollar, Indices and Risk
 
-**Module 13: Higher-Timeframe Context** · Video: `to be recorded` · Prerequisites: Lesson 44
+**Module 13: Higher-Timeframe Context** · Video: `to be recorded` · Walkthrough: `correlations` · Prerequisites: Lesson 44
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 
