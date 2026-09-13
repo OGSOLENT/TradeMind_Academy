@@ -38,7 +38,7 @@ test.describe("report figures", () => {
     await page.screenshot({ path: `${OUT}/04-placement.png` });
 
     // A mixed placement, ten right and five wrong, so the starting map isn't flat.
-    const pattern = [true, true, false, true, true, false, true, false, true, true, false, true, true, false, true];
+    const pattern = [true, true, false, true, true, false, true, false, true, true, false, true, true, false, true, true];
     for (const c of pattern) await answerCurrent(page, c);
     await page.getByText("Your starting map.").waitFor({ timeout: 20_000 });
     await page.waitForTimeout(2500);

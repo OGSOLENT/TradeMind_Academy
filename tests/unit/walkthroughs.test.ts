@@ -90,9 +90,10 @@ describe("synthetic series", () => {
 describe("walkthrough specs", () => {
   const all = Object.values(WALKTHROUGHS);
 
-  it("cover every lesson that has no recording", () => {
-    // 23 lessons, two of which carry two walkthroughs each.
-    expect(all).toHaveLength(25);
+  it("cover every lesson that has no recording, and the recorded core", () => {
+    // 25 for the unrecorded lessons 26 to 48, 11 for the fractal model,
+    // 10 for the recorded foundations, 2 for the instruments module.
+    expect(all).toHaveLength(48);
   });
 
   it.each(all.map((w) => [w.id, w] as const))(

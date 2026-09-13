@@ -1,6 +1,6 @@
 # Lesson 16 — The Fractal Model & the T-Spot
 
-**Module 6: The Fractal Model** · Video: `Decoding_the_Fractal_Model.mp4` (6:43) · Prerequisites: Modules 1–5
+**Module 6: The Fractal Model** · Video: `Decoding_the_Fractal_Model.mp4` (6:43) · Walkthrough: `t-spot` · Prerequisites: Modules 1–5
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

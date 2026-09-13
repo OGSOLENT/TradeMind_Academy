@@ -187,4 +187,13 @@ Prerequisites run strictly in sequence (1 → 2 → … → 9), which matches th
 | 13 | Higher-Timeframe Context | 44, 45 | What range is the daily living in? IPDA ranges and correlations. |
 | 15 | Execution & Review | 46, 47, 48 | What happens after the entry? Management, the journal and backtest, psychology. |
 
-Modules 8, 11, 12 and 14 are the original Daily Bias, Fractal Model, SMT Divergence and Weekly Profiles, renumbered by their new place in the chain. None of the new lessons has a recording yet; each one shows a "Video coming soon" slot until one is added.
+Modules 8, 11, 12 and 14 are the original Daily Bias, Fractal Model, SMT Divergence and Weekly Profiles, renumbered by their new place in the chain.
+
+### The second extension (13 September 2026)
+
+| # | Module | Lessons | What it adds |
+|---|---|---|---|
+| 11 | The Fractal Model (deepened) | 49 to 54 | Candle counting C1 to C4, the three candle profiles, timeframe pairings and sessions, the 1-minute inversion entry, intracandle CISD and continuations, and two trades end to end. Written from the TTrades education centre and the TTFM articles listed in docs/LESSON_SOURCES.md. |
+| 16 | Markets, Instruments & Funding | 55 to 58 | Futures contract mechanics, CFDs and spread betting, which fits which trader, and how prop-firm evaluations work and how to judge them (facts dated September 2026). |
+
+None of the lessons from 26 onwards has a recording. Every one of them, and every recorded lesson in the core, now opens on or carries a stepped chart walkthrough instead (`lib/walkthroughs/`), which is the visual aid the course relies on.

@@ -347,11 +347,13 @@ One detail deserves explanation because it's the kind of bug that never shows in
 
 ## 5.6 Curriculum and content pipeline
 
-The curriculum is fifteen modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and six or eight assessment items. The first nine modules were built from 36 original video lessons by extracting each video's slides with scene detection and writing each lesson up as structured text with definitions, worked examples, tables, common mistakes and check questions. The written lessons are markdown files that a generator script parses into the seed JSON, so the markdown is the single source of truth. Videos stream over HTTP range requests rather than loading whole.
+The curriculum is sixteen modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and six or eight assessment items. The first nine modules were built from 36 original video lessons by extracting each video's slides with scene detection and writing each lesson up as structured text with definitions, worked examples, tables, common mistakes and check questions. The written lessons are markdown files that a generator script parses into the seed JSON, so the markdown is the single source of truth. Videos stream over HTTP range requests rather than loading whole.
+
+A further pass on 13 September 2026 took the Fractal Model module from four lessons to ten, following the published TTrades material (ttrades.com) on candle counting, candle profiles, timeframe pairings, the 1-minute inversion entry, intracandle CISD and two worked trades, and added a sixteenth module, Markets, Instruments and Funding, on futures and CFDs, the differences between them, and how to read a prop firm's rules. That last module is the one place the course looks past the chart to the account behind it, and it is written as a framework with dated facts and no recommendation, because the artefact's ethics position does not allow one. Every lesson now carries a walkthrough, including the 33 recorded ones, so the visual aid no longer depends on whether a recording exists.
 
 Six further modules and 23 lessons were written on 12 September 2026 to cover the ICT and TTrades material the video series didn't reach: market structure and the four phases of delivery, the full set of PD arrays, time and sessions, the assembled entry models, higher-timeframe context, and execution and review. Each was written from cited public teaching (docs/LESSON_SOURCES.md lists every source) and sits in the chain where its prerequisites land, so Daily Bias, for instance, now follows PD Arrays rather than Confirmation and Structure. These lessons have no recording. Instead of a placeholder, each opens on a stepped chart walkthrough: a synthetic price series generated from control points so that the sweep, the structural break and the gap the lesson is about are at exactly the bars the captions name, with annotation layers (levels, zones, session windows, markers, notes) added one step at a time and a caption for each. Twenty-five walkthroughs cover the 23 lessons. They are more precise than a screen recording for structural concepts, they respect the colour-blind and motion settings because they are drawn from the same design tokens, and every step reads out as text, which no video does. A unit test checks that every annotation in every step lies inside its chart, and a render harness produces a still of every step for review (Appendix figures in docs/walkthroughs).
 
-Table: The fifteen-module curriculum
+Table: The sixteen-module curriculum
 
 | Module | Knowledge component | Prerequisite | Lessons | Items |
 |---|---|---|---|---|
@@ -365,11 +367,12 @@ Table: The fifteen-module curriculum
 | 8 | Daily Bias | 7 | 7 | 8 |
 | 9 | Time and Sessions | 8 | 6 | 6 |
 | 10 | Entry Models | 9 | 4 | 6 |
-| 11 | The Fractal Model | 10 | 4 | 8 |
+| 11 | The Fractal Model | 10 | 10 | 8 |
 | 12 | SMT Divergence | 11 | 1 | 8 |
 | 13 | Higher-Timeframe Context | 12 | 2 | 6 |
 | 14 | Weekly Profiles | 13 | 5 | 8 |
 | 15 | Execution and Review | 14 | 3 | 6 |
+| 16 | Markets, Instruments and Funding | 15 | 4 | 8 |
 
 Sequencing was decided by building the actual dependency graph of the concepts rather than keeping the recording order, and that changed things. Several videos quoted risk multiples such as "2R" before position sizing had been taught, so Risk and Position Sizing was inserted as Module 3 rather than appended at the end, and three videos covering the same topic were consolidated. This is the decomposition from Section 2.7 done in practice: each module's items are objectively checkable even though the whole activity isn't.
 
@@ -377,7 +380,7 @@ A lesson as delivered is shown in Figure 5.3, with the video, the on-page text a
 
 ![A lesson: video, structured text and the module's lesson list](docs/report-figures/08-lesson.png)
 
-The item bank holds 108 questions across six types: 52 multiple choice, 15 multi-select, 13 numeric, 14 ordering, 13 true/false with a confidence slider and 1 chart annotation, with 21 easy, 56 medium and 31 hard so the difficulty ladder has rungs to climb. Every item has an explanation shown in feedback and review. Thirty-three items are flagged eligible for the pre-test and post-test, at least one per module, so the placement asks one question per module.
+The item bank holds 116 questions across six types: 55 multiple choice, 16 multi-select, 14 numeric, 15 ordering, 15 true/false with a confidence slider and 1 chart annotation, with 23 easy, 60 medium and 33 hard so the difficulty ladder has rungs to climb. Every item has an explanation shown in feedback and review. Thirty-six items are flagged eligible for the pre-test and post-test, at least one per module, so the placement asks one question per module.
 
 ## 5.7 The assessment engine
 
@@ -391,7 +394,7 @@ The interface was built from a 43-screen high-fidelity prototype, with palette, 
 
 ![The dashboard: the routed next action, mastery per module and mastery over time](docs/report-figures/06-dashboard.png)
 
-![The skill constellation: the modules on one route, lit to the learner's mastery. The figure shows the nine-module layout; with fifteen the route becomes a switchback](docs/report-figures/07-skill-tree.png)
+![The skill constellation: the modules on one route, lit to the learner's mastery. The figure shows the nine-module layout; with sixteen the route becomes a switchback](docs/report-figures/07-skill-tree.png)
 
 ![A practice question with the live mastery HUD and the "why this question?" popover](docs/report-figures/10-why-this-question.png)
 
@@ -431,7 +434,7 @@ The pattern is that the problems that mattered most were invisible in normal use
 
 ## 6.1 The artefact delivered
 
-TradeMind Academy is a working application of about 11,800 lines of TypeScript across 17 routes, with 56 lessons, 108 items, fifteen knowledge components, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and a design system of twelve primitives. It's public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 49 recorded decisions; Appendix B gives the running instructions. The live Firebase project holds the seeded curriculum and, at the time of writing, no participant accounts.
+TradeMind Academy is a working application of about 11,800 lines of TypeScript across 17 routes, with 66 lessons, 116 items, sixteen knowledge components, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and a design system of twelve primitives. It's public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 49 recorded decisions; Appendix B gives the running instructions. The live Firebase project holds the seeded curriculum and, at the time of writing, no participant accounts.
 
 ## 6.2 Technical verification
 
@@ -519,7 +522,7 @@ Table: Evaluation against the five objectives
 | Objective | Outcome | Evidence |
 |---|---|---|
 | 1. Review the literature to ground the design | Met | Chapter 2; about 240 records screened and 61 retained in the full review; every design decision traced to evidence in Appendix J |
-| 2. Design the architecture and content structure | Met | Six-component architecture (5.1); fifteen-module prerequisite chain with 56 lessons and 108 items (5.6); data model and rules (5.2) |
+| 2. Design the architecture and content structure | Met | Six-component architecture (5.1); sixteen-module prerequisite chain with 66 lessons and 116 items (5.6); data model and rules (5.2) |
 | 3. Build the vertical slice end to end with BKT and routing | Met and exceeded | The full loop works and is exercised by a browser test from placement to unlock; learner-support features beyond the slice were also delivered |
 | 4. Validate the engine technically | Met | 54 unit tests against hand-computed maths; 200-learner harness passing all three committed behaviours; identifiability limit found and reported |
 | 5. Evaluate with real users for learning gain and usability | Not met | Ethics approved and instruments ready; study not run because content reached final form in September (4.3) |

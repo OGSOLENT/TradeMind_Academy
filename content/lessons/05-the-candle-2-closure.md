@@ -1,6 +1,6 @@
 # Lesson 5 — The Candle 2 Closure
 
-**Module 3: Reversal Patterns** · Video: `Candle_2_Closures.mp4` (8:02) · Prerequisites: Lessons 1–4
+**Module 3: Reversal Patterns** · Video: `Candle_2_Closures.mp4` (8:02) · Walkthrough: `candle-2-closure` · Prerequisites: Lessons 1–4
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

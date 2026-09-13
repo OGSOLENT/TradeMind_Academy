@@ -25,18 +25,33 @@ export const CURRICULUM = [
   { title: "Daily Bias", blurb: "Direction for the day from PDH, PDL and equilibrium.", lessons: 7 },
   { title: "Time & Sessions", blurb: "Power of Three, the Judas swing, macros and the Silver Bullet.", lessons: 6 },
   { title: "Entry Models", blurb: "The 2022 model, turtle soup, and the market maker model.", lessons: 4 },
-  { title: "The Fractal Model", blurb: "The T-Spot, deviation projections and the TTFM playbook.", lessons: 4 },
+  { title: "The Fractal Model", blurb: "The T-Spot, projections, candle counting, the 1-minute inversion and two trades end to end.", lessons: 10 },
   { title: "SMT Divergence", blurb: "Confluence from correlated markets, framework first.", lessons: 1 },
   { title: "Higher-Timeframe Context", blurb: "IPDA ranges and the dollar, index and risk correlations.", lessons: 2 },
   { title: "Weekly Profiles", blurb: "The four shapes a week takes and which day to act on.", lessons: 5 },
   { title: "Execution & Review", blurb: "Partials, trailing, the journal, and thinking in probabilities.", lessons: 3 },
+  { title: "Markets, Instruments & Funding", blurb: "Futures, CFDs, which fits you, and how to judge a prop firm.", lessons: 4 },
 ] as const;
 
 const LESSONS = CURRICULUM.reduce((n, m) => n + m.lessons, 0);
-const QUESTIONS = 108;
+const QUESTIONS = 116;
 
 /**
- * The curriculum, laid out as the route it is. Fifteen numbered cards in
+ * The route, read as stages. Same modules, grouped by what a learner can do
+ * at the end of each stage. The dashboard and the landing both show it so
+ * "where am I on the path" has one answer.
+ */
+export const PATH = [
+  { stage: "Foundations", outcome: "Read a candle, find liquidity, size a trade", modules: [1, 2, 3] },
+  { stage: "Reversal and structure", outcome: "Confirm a turn, name every array on the chart", modules: [4, 5, 6, 7] },
+  { stage: "Bias and time", outcome: "Decide direction for the day and know when it delivers", modules: [8, 9] },
+  { stage: "The models", outcome: "Run the ICT entry models and the TTrades Fractal Model end to end", modules: [10, 11, 12] },
+  { stage: "Context and execution", outcome: "Frame the day inside the week, manage the trade, keep the record", modules: [13, 14, 15] },
+  { stage: "The account", outcome: "Choose the instrument and judge a funding route with open eyes", modules: [16] },
+] as const;
+
+/**
+ * The curriculum, laid out as the route it is. Sixteen numbered cards in
  * teaching order, with a thin line threading through the numbers so the
  * grid still reads as a sequence. Hover a card and its number lights teal,
  * the same colour a mastered module gets inside the app.
@@ -49,7 +64,7 @@ export function Curriculum() {
         <p className="num text-label-caps uppercase tracking-[0.2em] text-mastery-bright">Curriculum</p>
         <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <h2 className="max-w-2xl text-display-lg-mobile md:text-display-lg text-fg-primary">
-            Fifteen modules, <span className="text-gradient">one route</span>.
+            Sixteen modules, <span className="text-gradient">one route</span>.
           </h2>
           <dl className="num flex gap-8 text-sm">
             {[
@@ -67,14 +82,34 @@ export function Curriculum() {
           </dl>
         </div>
         <p className="mt-4 max-w-2xl text-body-base text-fg-secondary">
-          From reading one candle to running a full playbook. Each module is a
+          From reading one candle to running the TTrades Fractal Model end to
+          end, and then choosing the account to run it on. Each module is a
           knowledge component the model tracks on its own, and every module
           unlocks the next once your estimate crosses 80%. Every lesson ends
           with a short check that feeds straight back into the model.
         </p>
       </Reveal>
 
-      <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {/* The path: six stages, each a group of modules with an outcome. */}
+      <Reveal className="mt-10">
+        <ol className="grid gap-2 md:grid-cols-3 lg:grid-cols-6">
+          {PATH.map((p, i) => (
+            <li key={p.stage} className="relative rounded-card bg-white/[0.03] p-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]">
+              <p className="num text-[10px] uppercase tracking-[0.2em] text-fg-muted">stage {i + 1}</p>
+              <p className="mt-1 text-sm font-medium text-fg-primary">{p.stage}</p>
+              <p className="mt-1 text-xs leading-5 text-fg-secondary">{p.outcome}</p>
+              <p className="num mt-2 text-[10px] tracking-widest text-mastery-bright">
+                {p.modules.map((m) => String(m).padStart(2, "0")).join(" · ")}
+              </p>
+              {i < PATH.length - 1 && (
+                <span aria-hidden="true" className="absolute -right-1.5 top-1/2 hidden h-px w-3 bg-white/15 lg:block" />
+              )}
+            </li>
+          ))}
+        </ol>
+      </Reveal>
+
+      <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {CURRICULUM.map((m, i) => (
           <motion.li
             key={m.title}
@@ -105,7 +140,7 @@ export function Curriculum() {
 
       <Reveal className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-fg-secondary">
-          Every lesson is written, and comes with a chart you can ask the page to describe in words.
+          Every lesson is written, most open on a stepped chart walkthrough, and every chart can be read out as text.
         </p>
         <Link
           href="/sign-up"
