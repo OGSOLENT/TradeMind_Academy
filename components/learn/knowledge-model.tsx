@@ -81,7 +81,9 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
             <BrainMark size={150} animate={false} />
           </div>
         )}
-        <LazyMount>
+        {/* The canvas starts to the right of the heading column, so the two
+            can't overlap at any width. */}
+        <LazyMount className="md:left-[300px]">
           <MindOrb
             nodes={rows}
             progress={progress}
@@ -98,7 +100,7 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
               live
             </Pill>
           </div>
-          <p className="mt-1 max-w-sm text-sm text-fg-secondary">
+          <p className="mt-1 max-w-[250px] text-sm text-fg-secondary">
             One estimate per module, straight from the Bayesian model. Nothing here is decorative.
           </p>
         </div>

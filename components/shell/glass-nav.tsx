@@ -134,19 +134,20 @@ export function GlassNav() {
             : "border-white/10",
         )}
       >
-        <Logo />
+        <Logo compact />
 
         <nav aria-label="Primary" className="flex items-center gap-1">
-          <Link href="/dashboard" aria-current={pathname.startsWith("/dashboard") ? "page" : undefined} className={itemClass(pathname.startsWith("/dashboard"))}>
+          <Link href="/dashboard" aria-label="Dashboard" aria-current={pathname.startsWith("/dashboard") ? "page" : undefined} className={itemClass(pathname.startsWith("/dashboard"))}>
             {pathname.startsWith("/dashboard") && pill}
             <HomeIcon width={17} height={17} />
-            Dashboard
+            <span className="hidden lg:inline">Dashboard</span>
           </Link>
 
           {/* Learn opens the module panel. */}
           <div className="relative" onMouseEnter={hoverOpen} onMouseLeave={hoverClose}>
             <button
               type="button"
+              aria-label="Learn"
               aria-haspopup="true"
               aria-expanded={learnOpen}
               aria-controls="learn-menu"
@@ -155,7 +156,7 @@ export function GlassNav() {
             >
               {learnActive && pill}
               <ConstellationIcon width={17} height={17} />
-              Learn
+              <span className="hidden lg:inline">Learn</span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={cn("transition-transform duration-200", learnOpen && "rotate-180")}>
                 <path d="M3 4.5 6 7.5l3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -181,10 +182,10 @@ export function GlassNav() {
           {rightLinks.map(({ href, label, Icon }) => {
             const active = pathname.startsWith(href) || (href === "/practice" && pathname.startsWith("/quiz"));
             return (
-              <Link key={href} href={href} aria-current={active ? "page" : undefined} className={itemClass(active)}>
+              <Link key={href} href={href} aria-label={label} aria-current={active ? "page" : undefined} className={itemClass(active)}>
                 {active && pill}
                 <Icon width={17} height={17} />
-                {label}
+                <span className="hidden lg:inline">{label}</span>
               </Link>
             );
           })}
