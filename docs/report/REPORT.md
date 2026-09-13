@@ -478,6 +478,22 @@ The parameter recovery result is the honest part of this table, and Figure 6.2 s
 
 ![Parameter recovery for 200 simulated learners: learn rate recovers, the prior collapses to the grid edges](docs/report-figures/fig-recovery.png)
 
+### Calibration
+
+Recovery asks whether the parameters can be found; calibration asks whether the numbers the engine shows a learner mean what they say, which is the property an open learner model actually depends on. Every logged answer carries the estimate the engine held before it (pLBefore), and through the BKT emission model that is a forecast of a correct answer. `scripts/calibration.ts` bins those forecasts into deciles and compares each bin's mean forecast with its observed accuracy, and scores the forecasts with the Brier score against a baseline that always predicts the cohort's overall accuracy. Table 6.3 gives the result for the same 200 simulated learners with the engine's fixed priors, and for a held-out comparison in which (P(L0), P(T)) were fitted to each learner's first twenty answers by maximum likelihood and used to forecast the second twenty.
+
+Table: Calibration of the engine's forecasts (seed 42, reproducible)
+
+| Model | Answers | Accuracy | Brier | Brier (baseline) | Skill | ECE |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Fixed priors, all answers | 8000 | 79.2% | 0.1220 | 0.1647 | 26.0% | 0.43 pp |
+| Fixed priors, held-out second half | 4000 | 87.5% | 0.0994 | 0.1090 | 8.9% | 0.68 pp |
+| Fitted per learner, held-out second half | 4000 | 87.5% | 0.1011 | 0.1090 | 7.3% | 1.17 pp |
+
+With the fixed priors the engine is well calibrated: the expected calibration error is under half a percentage point, and every bin with more than a handful of answers sits within about two points of the diagonal (Figure 6.3). The forecasts remove 26 per cent of the baseline's error over the full sequences. Fitting parameters per learner does not help. On the held-out half the fitted model's Brier score is slightly worse (0.1011 against 0.0994) and its calibration error nearly doubles, because twenty answers are too few to estimate a prior that Section 6.4 already showed is weakly identified, and a wrong fitted prior does more damage than a fixed one. The practical decision follows: the engine keeps its fixed priors until the pilot has produced enough answers per learner for fitting to pay, and the same script scores the real log when it has (`--csv`). The limit is that the simulated learners share the engine's guess and slip values, so this run tests wrong priors on initial knowledge and learning rate, not the emission model itself. That test needs real answers.
+
+![Reliability diagram: predicted P(correct) against observed accuracy, fixed priors against fitted](docs/report-figures/17-calibration.png)
+
 ## 6.5 Audits
 
 Lighthouse accessibility scored 95 to 100 on every page at the July audit against a gate of 95, the landing and legal pages held back by a colour-contrast failure; after the September token fix both score 100. Dashboard performance is 86 against a gate of 85, up from 68 after the changes in Table 5.2; the landing page scores 88. Keyboard and reduced-motion behaviour are asserted by tests rather than audited by hand: the quiz is fully keyboard operable with correct ARIA states and live announcements, skill map nodes are focusable and open their panel with Enter, and under reduced motion the landing and dashboard render completely with the focus ring visible on the primary action.

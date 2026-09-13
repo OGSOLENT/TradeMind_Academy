@@ -35,7 +35,8 @@ people in.
    npm run deploy
    ```
 
-   It prints the production URL (something like `https://trademind-academy.vercel.app`).
+   It prints the production URL. The project's is
+   **https://trademind-academy.vercel.app**.
 
 4. Allow that domain in Firebase Auth, or Google sign-in will refuse with
    `auth/unauthorized-domain`. Firebase console → Authentication → Settings
@@ -63,6 +64,26 @@ cd ~/Documents/DIssertation/TradeMind_Academy && npm run deploy
 
 `npm run deploy:preview` builds a preview URL instead, for checking a change
 before it goes to participants.
+
+Both go through `scripts/deploy.mjs`, which copies the source into a
+temporary folder without `.git` and deploys that. Plain `vercel --prod` sat
+BLOCKED forever on 13 Sept: a Hobby account refuses to build a deployment
+whose commit author email isn't the account's own, and my commits are
+signed as ogeadama@icloud.com while the Vercel login is the gmail address.
+With no git metadata attached there's nothing to check. (Connecting the
+GitHub repo in the Vercel dashboard is the other fix, and gives automatic
+deploys on push.)
+
+## The lesson videos
+
+`public/videos` is a symlink to `~/Documents/DIssertation/Lessons`, 1.1 GB
+of recordings. They are NOT deployed: Vercel caps a file at 100 MB and
+charges for bandwidth, so `.vercelignore` leaves them out. On the live site
+those lessons show the poster with the "Video coming soon" frame until the
+recordings are hosted somewhere built for video (Firebase Storage in the
+same project is the obvious choice, and the lesson component only needs a
+base URL to prefix). Locally, `npm run dev` still serves them through the
+symlink.
 
 ## What the build needs to know
 

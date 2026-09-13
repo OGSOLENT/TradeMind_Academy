@@ -1,0 +1,28 @@
+# What the Vercel CLI must not upload. It doesn't read .gitignore, and the
+# first attempt shipped 485 MB of local build caches before failing on a
+# 100 MB file. The build happens on Vercel, so only the source goes up.
+# Anchored with a leading slash where a bare name would also match a
+# folder deeper in the tree (lib/content is source and has to go up).
+/.next
+/.next-*
+/.git
+/node_modules
+/test-results
+/playwright-report
+/coverage
+/docs
+/design
+/content
+/tests
+/export
+/emulator-data
+*.log
+*.tsbuildinfo
+serviceAccountKey.json
+*-service-account*.json
+.env*
+!.env.example
+# The lesson videos are a 1.1 GB symlink to a folder outside the repo.
+# Vercel isn't the place for them (100 MB per-file limit, bandwidth cost),
+# so the deployed site serves them from Firebase Storage instead.
+/public/videos
