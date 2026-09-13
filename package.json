@@ -16,6 +16,8 @@
     "build": "next build",
     "start": "next start",
     "live": "next build && next start -p 3000",
+    "deploy": "npx vercel@latest --prod",
+    "deploy:preview": "npx vercel@latest",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",

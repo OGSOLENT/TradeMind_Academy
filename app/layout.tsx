@@ -28,7 +28,15 @@ const atkinson = Atkinson_Hyperlegible({
 const description =
   "An adaptive learning platform for trading education. Educational simulation only — no live trading, no financial advice.";
 
+// Absolute URLs for the open-graph tags. Vercel sets VERCEL_URL on every
+// deployment; NEXT_PUBLIC_SITE_URL wins when it's set (the production
+// domain), and localhost is the fallback for a local build.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "TradeMind Academy",
     template: "%s · TradeMind Academy",
