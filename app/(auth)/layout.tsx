@@ -37,7 +37,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </p>
         </Stagger>
       </aside>
-      <main className="relative flex flex-1 items-center justify-center px-4 py-10">
+      <main id="main" className="relative flex flex-1 items-center justify-center px-4 py-10">
         {/* The way back. Top-left on every auth screen, on every size. */}
         <div className="absolute left-4 top-4 md:left-8 md:top-6">
           <BackLink />

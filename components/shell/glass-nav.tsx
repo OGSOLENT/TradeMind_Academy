@@ -15,6 +15,7 @@ import { Kbd } from "@/components/ui/kbd";
 import { Logo } from "./logo";
 import { LearnMenu } from "./learn-menu";
 import { CommandPalette, useCommandPalette } from "./command-palette";
+import { ShortcutsSheet, useShortcutsSheet } from "./shortcuts-sheet";
 import { CardsIcon, ConstellationIcon, HomeIcon, TargetIcon } from "./icons";
 
 /**
@@ -43,6 +44,7 @@ export function GlassNav() {
   const scrolled = useScrolled();
   const { user } = useAuth();
   const { open: paletteOpen, setOpen: setPaletteOpen } = useCommandPalette();
+  const { open: shortcutsOpen, setOpen: setShortcutsOpen } = useShortcutsSheet();
   const [learnOpen, setLearnOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -256,6 +258,16 @@ export function GlassNav() {
                       {item.label}
                     </Link>
                   ))}
+                  <button
+                    onClick={() => {
+                      setAccountOpen(false);
+                      setShortcutsOpen(true);
+                    }}
+                    className="flex w-full items-center justify-between rounded-control px-3 py-2 text-left text-sm text-fg-secondary transition-colors hover:bg-white/5 hover:text-fg-primary"
+                  >
+                    Keyboard shortcuts
+                    <Kbd>?</Kbd>
+                  </button>
                   <div className="my-1 h-px bg-hair" />
                   <button
                     onClick={onSignOut}
@@ -271,6 +283,7 @@ export function GlassNav() {
       </header>
 
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <ShortcutsSheet open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
     </>
   );
 }

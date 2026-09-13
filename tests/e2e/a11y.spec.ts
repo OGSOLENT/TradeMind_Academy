@@ -21,7 +21,7 @@ async function signUpSkipPlacement(page: Page): Promise<void> {
     .getByLabel("Email address")
     .fill(`a11y-${Date.now()}-${Math.random().toString(36).slice(2, 6)}@example.com`);
   await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /18 or older/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("button", { name: "I consent — start learning" }).click();
   await page.getByRole("button", { name: /Skip — start from scratch/ }).click({ timeout: 20_000 });
@@ -74,12 +74,16 @@ test.describe("accessibility", () => {
     await expect(
       page.getByRole("heading", { name: /Learn trading like your brain/ }),
     ).toBeVisible();
-    await expect(page.getByText("simulation only · no signals · no live money")).toBeVisible();
+    // The same line sits in the footer too, so scope it to the hero.
+    await expect(
+      page.getByLabel("Introduction").getByText("simulation only · no signals · no live money"),
+    ).toBeVisible();
 
-    // Keyboard focus should land visibly on the primary CTA.
+    // The first Tab lands on the skip link, which only shows once focused.
     await page.keyboard.press("Tab");
     const focused = page.locator(":focus");
     await expect(focused).toBeVisible();
+    await expect(focused).toHaveText("Skip to content");
 
     await signUpSkipPlacement(page);
     await expect(page.getByRole("heading", { name: "Your dashboard" })).toBeVisible();

@@ -41,9 +41,13 @@ export function Faq() {
   const groupId = useId();
 
   return (
-    <section id="faq" aria-label="Frequently asked questions" className="mx-auto max-w-3xl px-6 py-24">
+    <section id="faq" aria-label="Frequently asked questions" className="mx-auto max-w-3xl scroll-mt-24 px-6 py-24">
       <Reveal>
-        <h2 className="text-display-lg-mobile md:text-display-lg text-fg-primary">Questions</h2>
+        <p className="num text-label-caps uppercase tracking-[0.2em] text-mastery-bright">FAQ</p>
+        <h2 className="mt-3 text-display-lg-mobile md:text-display-lg text-fg-primary">Questions</h2>
+        <p className="mt-3 max-w-xl text-body-base text-fg-secondary">
+          The things people ask before they sign up. If yours isn&apos;t here, the legal page has the long version.
+        </p>
       </Reveal>
       <div className="mt-8 space-y-3">
         {FAQS.map(({ q, a }, i) => {

@@ -14,6 +14,14 @@ export interface UserSettings {
   reducedMotion: boolean;
   colorBlindCandles: boolean;
   fontScale: 1 | 1.15 | 1.3;
+  /** Brighter text, solid panels, stronger borders and underlined links. */
+  highContrast?: boolean;
+  /** Atkinson Hyperlegible instead of Inter, for low vision and dyslexia. */
+  readableFont?: boolean;
+  /** Looser line height and letter spacing in the lessons. */
+  comfortableReading?: boolean;
+  /** Turns off the ambient field, the particles and the 3D scenes. */
+  calmMode?: boolean;
 }
 
 export const CONSENT_VERSION = "2026-07-15.v1";
@@ -23,4 +31,8 @@ export const defaultSettings: UserSettings = {
   reducedMotion: false,
   colorBlindCandles: false,
   fontScale: 1,
+  highContrast: false,
+  readableFont: false,
+  comfortableReading: false,
+  calmMode: false,
 };

@@ -10,6 +10,7 @@ import { spring } from "@/lib/motion";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
 import { useAuth } from "@/lib/firebase/auth-context";
+import { applyPersistence, readKeepSignedIn } from "@/lib/firebase/persistence";
 import type { UserSettings } from "@/lib/firebase/types";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,6 +20,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Kbd } from "@/components/ui/kbd";
+import { ShortcutsSheet } from "@/components/shell/shortcuts-sheet";
 
 /** A mini candle pair drawn from the live CSS vars. This is the colour-blind preview. */
 function CandlePreview() {
@@ -29,6 +32,26 @@ function CandlePreview() {
       <line x1="52" y1="2" x2="52" y2="42" stroke="var(--bear)" strokeWidth="2" />
       <rect x="44" y="10" width="16" height="22" rx="2" fill="var(--bear)" />
     </svg>
+  );
+}
+
+/** A two-word sample in the readable typeface, so the choice is visible before it's made. */
+function FontPreview() {
+  return (
+    <span
+      aria-hidden="true"
+      className="hidden shrink-0 rounded-control bg-white/[0.04] px-3 py-1.5 text-sm text-fg-primary shadow-hairline sm:inline-block"
+      style={{ fontFamily: "var(--font-atkinson), system-ui, sans-serif" }}
+    >
+      Il1 O0 rn
+    </span>
+  );
+}
+
+/** A small heading inside the accessibility card. */
+function GroupHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="pb-1 pt-4 text-label-caps uppercase tracking-[0.18em] text-fg-muted">{children}</p>
   );
 }
 
@@ -83,6 +106,10 @@ export default function SettingsPage() {
   const [deleteText, setDeleteText] = useState("");
   const [countdown, setCountdown] = useState<number | null>(null);
   const deleteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  // Device-level, not on the profile: whether the session outlives the browser.
+  const [keepSignedIn, setKeepSignedIn] = useState(true);
+  useEffect(() => setKeepSignedIn(readKeepSignedIn()), []);
 
   const { data: profile, isPending } = useQuery({
     queryKey: ["profile", user?.uid],
@@ -193,43 +220,92 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      <Card id="accessibility" level="elevated" className="scroll-mt-28 divide-y divide-white/5 py-2">
-        <Toggle
-          label="Colour-blind candles"
-          description="Swap teal/red candles for blue/orange across every chart."
-          checked={s.colorBlindCandles}
-          onChange={(v) => update.mutate({ colorBlindCandles: v })}
-          preview={<CandlePreview />}
-        />
-        <Toggle
-          label="Reduce motion"
-          description="Collapse animations to quick fades, independent of your OS setting."
-          checked={s.reducedMotion}
-          onChange={(v) => update.mutate({ reducedMotion: v })}
-        />
+      <Card id="accessibility" level="elevated" className="scroll-mt-28 px-6 py-2">
+        <GroupHeading>Seeing</GroupHeading>
+        <div className="divide-y divide-white/5">
+          <Toggle
+            label="Colour-blind candles"
+            description="Swap teal/red candles for blue/orange across every chart."
+            checked={s.colorBlindCandles}
+            onChange={(v) => update.mutate({ colorBlindCandles: v })}
+            preview={<CandlePreview />}
+          />
+          <Toggle
+            label="High contrast"
+            description="White text on true black, solid panels, visible borders, underlined links."
+            checked={!!s.highContrast}
+            onChange={(v) => update.mutate({ highContrast: v })}
+          />
+          <div className="flex items-center justify-between gap-4 py-4">
+            <div>
+              <p className="font-medium text-fg-primary">Font scale</p>
+              <p className="mt-0.5 text-sm text-fg-secondary">Applies across the whole app.</p>
+            </div>
+            <div role="radiogroup" aria-label="Font scale" className="flex gap-1.5">
+              {([1, 1.15, 1.3] as const).map((scale) => (
+                <button
+                  key={scale}
+                  role="radio"
+                  aria-checked={s.fontScale === scale}
+                  onClick={() => update.mutate({ fontScale: scale })}
+                  className={cn(
+                    "num min-h-11 rounded-control px-3 text-sm transition-[color,background-color,box-shadow] duration-200",
+                    s.fontScale === scale
+                      ? "bg-accent/15 text-accent-bright shadow-[inset_0_0_0_1px_var(--accent),0_0_14px_var(--accent-glow)]"
+                      : "text-fg-secondary shadow-hairline hover:bg-white/5",
+                  )}
+                >
+                  {scale === 1 ? "100%" : scale === 1.15 ? "115%" : "130%"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <GroupHeading>Reading</GroupHeading>
+        <div className="divide-y divide-white/5">
+          <Toggle
+            label="Readable typeface"
+            description="Atkinson Hyperlegible, designed so similar letters can't be confused."
+            checked={!!s.readableFont}
+            onChange={(v) => update.mutate({ readableFont: v })}
+            preview={<FontPreview />}
+          />
+          <Toggle
+            label="Comfortable reading"
+            description="Looser line spacing and a shorter line length in lessons."
+            checked={!!s.comfortableReading}
+            onChange={(v) => update.mutate({ comfortableReading: v })}
+          />
+        </div>
+
+        <GroupHeading>Motion and noise</GroupHeading>
+        <div className="divide-y divide-white/5">
+          <Toggle
+            label="Reduce motion"
+            description="Collapse animations to quick fades, independent of your OS setting."
+            checked={s.reducedMotion}
+            onChange={(v) => update.mutate({ reducedMotion: v })}
+          />
+          <Toggle
+            label="Calm mode"
+            description="Switch off the background field, the particles and the 3D scenes. The numbers stay."
+            checked={!!s.calmMode}
+            onChange={(v) => update.mutate({ calmMode: v })}
+          />
+        </div>
+
+        <GroupHeading>Keyboard</GroupHeading>
         <div className="flex items-center justify-between gap-4 py-4">
           <div>
-            <p className="font-medium text-fg-primary">Font scale</p>
-            <p className="mt-0.5 text-sm text-fg-secondary">Applies across the whole app.</p>
+            <p className="font-medium text-fg-primary">Shortcuts</p>
+            <p className="mt-0.5 text-sm text-fg-secondary">
+              Everything works without a mouse. Press <Kbd>?</Kbd> anywhere for the list.
+            </p>
           </div>
-          <div role="radiogroup" aria-label="Font scale" className="flex gap-1.5">
-            {([1, 1.15, 1.3] as const).map((scale) => (
-              <button
-                key={scale}
-                role="radio"
-                aria-checked={s.fontScale === scale}
-                onClick={() => update.mutate({ fontScale: scale })}
-                className={cn(
-                  "num min-h-11 rounded-control px-3 text-sm transition-[color,background-color,box-shadow] duration-200",
-                  s.fontScale === scale
-                    ? "bg-accent/15 text-accent-bright shadow-[inset_0_0_0_1px_var(--accent),0_0_14px_var(--accent-glow)]"
-                    : "text-fg-secondary shadow-hairline hover:bg-white/5",
-                )}
-              >
-                {scale === 1 ? "100%" : scale === 1.15 ? "115%" : "130%"}
-              </button>
-            ))}
-          </div>
+          <Button variant="secondary" onClick={() => setShortcutsOpen(true)}>
+            Show shortcuts
+          </Button>
         </div>
       </Card>
 
@@ -244,7 +320,23 @@ export default function SettingsPage() {
         </Button>
       </Card>
 
-      <Card id="account" level="elevated" className="scroll-mt-28 space-y-4 p-6">
+      <Card id="account" level="elevated" className="scroll-mt-28 px-6 py-2">
+        <Toggle
+          label="Stay signed in on this device"
+          description="Off means you're signed out when the browser closes. Use that on a shared computer."
+          checked={keepSignedIn}
+          onChange={async (v) => {
+            setKeepSignedIn(v);
+            await applyPersistence(getFirebase().auth, v);
+            toast({
+              title: v ? "You'll stay signed in here" : "You'll be signed out when the browser closes",
+              variant: "success",
+            });
+          }}
+        />
+      </Card>
+
+      <Card level="elevated" className="space-y-4 p-6">
         <h2 className="text-body-base font-medium text-danger">Delete account</h2>
         <p className="text-sm text-fg-secondary">
           Removes your account and profile immediately; your anonymised
@@ -270,6 +362,8 @@ export default function SettingsPage() {
           </Button>
         )}
       </Card>
+
+      <ShortcutsSheet open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
 
       <Modal open={deleteOpen} onClose={() => setDeleteOpen(false)} title="Delete account?">
         <p className="text-sm text-fg-secondary">

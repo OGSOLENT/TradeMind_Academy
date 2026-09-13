@@ -222,7 +222,7 @@ Table: Non-functional requirements
 | N4 | Rules deny by default; responses create-only even for the owner; rules tested in the emulator | Met, 14 tests |
 | N5 | Accessibility: keyboard operable, visible focus, 44 px targets, live announcements, chart text alternatives; Lighthouse at least 95 | Met, 95 to 100 |
 | N6 | Dashboard Lighthouse performance at least 85 | Met, 86 |
-| N7 | Reduced-motion and colour-blind modes from the OS setting or an in-app toggle | Met |
+| N7 | Reduced-motion and colour-blind modes from the OS setting or an in-app toggle | Met, and extended with high contrast, a readable typeface, comfortable reading and calm mode |
 | N8 | Responsive to phone width, tested on desktop and Pixel 7 | Met |
 | N9 | Development can never write to the research database, enforced by configuration | Met after one incident, 5.10 |
 | N10 | Every design decision recorded with its reason | Met, 49 entries |
@@ -395,11 +395,11 @@ The interface was built from a 43-screen high-fidelity prototype, with palette, 
 
 ![A practice question with the live mastery HUD and the "why this question?" popover](docs/report-figures/10-why-this-question.png)
 
-Accessibility was a gate from the first phase. Every interactive element is keyboard reachable with a visible focus ring; targets are at least 44 pixels; mastery changes are announced through a live region; every chart has a "describe this chart" text alternative; a colour-blind mode swaps the bull and bear palette; and reduced motion, from the operating system or the in-app toggle, collapses transforms to short fades and renders the landing hero as one static frame. The token policy reserves the muted foreground colour for decorative text because it fails WCAG AA contrast at body size. Learner-support screens (answer review, review queue, mistake bank, profile and settings) complete the slice a participant would use (Figures 5.8 and 5.9).
+Accessibility was a gate from the first phase. Every interactive element is keyboard reachable with a visible focus ring; targets are at least 44 pixels; mastery changes are announced through a live region; every chart has a "describe this chart" text alternative; a colour-blind mode swaps the bull and bear palette; and reduced motion, from the operating system or the in-app toggle, collapses transforms to short fades and renders the landing hero as one static frame. A later pass widened the settings beyond those three: a high-contrast mode that pushes the palette apart on true black with solid panels and underlined links, a readable typeface (Atkinson Hyperlegible) for low vision and dyslexia, a comfortable-reading mode that loosens the leading and shortens the measure in lessons, a calm mode that removes the ambient field and every three-dimensional scene while leaving the numbers in place, a skip-to-content link, and a keyboard shortcuts sheet on the ? key. Preferences are saved on the profile so they follow the learner between devices, and mirrored to the browser so they apply before first paint and on the signed-out pages. The token policy reserves the muted foreground colour for decorative text because it fails WCAG AA contrast at body size. Learner-support screens (answer review, review queue, mistake bank, profile and settings) complete the slice a participant would use (Figures 5.8 and 5.9).
 
 ![Post-session answer review: the learner's answer against the key, with explanations](docs/report-figures/13-answer-review.png)
 
-![Settings: colour-blind candles, font scale, reduced motion, download and delete](docs/report-figures/15-settings.png)
+![Settings: seeing, reading, motion and keyboard groups, download and delete](docs/report-figures/15-settings.png)
 
 ## 5.9 Testing
 

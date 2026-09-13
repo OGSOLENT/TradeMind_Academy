@@ -12,7 +12,7 @@ export default function LegalPage() {
       </header>
 
       <Reveal>
-        <section className="space-y-3">
+        <section id="research" className="scroll-mt-24 space-y-3">
           <h2 className="text-headline-md text-fg-primary">What this is</h2>
           <p className="text-body-base leading-7 text-fg-secondary">
             TradeMind Academy is a research artefact built for a BSc dissertation (Solent
@@ -25,7 +25,7 @@ export default function LegalPage() {
       </Reveal>
 
       <Reveal>
-        <section className="space-y-3">
+        <section id="data" className="scroll-mt-24 space-y-3">
           <h2 className="text-headline-md text-fg-primary">Data we process (UK GDPR)</h2>
           <ul className="list-disc space-y-2 pl-5 text-body-base leading-7 text-fg-secondary">
             <li>

@@ -12,6 +12,8 @@ import { Card } from "@/components/ui/card";
 import { Counter } from "@/components/ui/counter";
 import { Pill } from "@/components/ui/pill";
 import { LazyMount } from "@/components/three/lazy-mount";
+import { BrainMark } from "@/components/shell/brain-mark";
+import { useA11yPrefs } from "@/lib/a11y-prefs";
 import { cn } from "@/lib/utils";
 
 const MindOrb = dynamic(() => import("@/components/three/mind-orb").then((m) => m.MindOrb), {
@@ -42,6 +44,7 @@ const rowTone: Record<NodeState, { text: string; bar: string; dot: string; label
 export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<string, KcState> }) {
   const router = useRouter();
   const reduced = useReducedMotion();
+  const { calmMode } = useA11yPrefs();
   const [hovered, setHovered] = useState<string | null>(null);
 
   const rows = useMemo(() => {
@@ -66,99 +69,113 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
 
   return (
     <Card level="elevated" className="p-0">
-      <div className="grid md:grid-cols-[1.05fr_1fr]">
-        {/* The orb. Desktop only, and the gradient behind it gives the
-            canvas a horizon so the nodes aren't floating in flat black. */}
-        <div className="relative hidden min-h-[380px] md:block">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_70%_at_50%_55%,rgba(94,106,210,0.16),transparent_70%)]"
-          />
-          <LazyMount>
-            <MindOrb
-              nodes={rows}
-              progress={progress}
-              frontierId={frontier?.id ?? null}
-              hoveredId={hovered}
-              onHover={setHovered}
-              onSelect={(id) => router.push(`/lesson/${id}`)}
-            />
-          </LazyMount>
-          <div className="pointer-events-none absolute bottom-4 left-5 flex items-center gap-2">
-            <span className="num text-label-caps uppercase tracking-[0.18em] text-fg-muted">route covered</span>
-            <span className="num text-sm text-fg-primary">
-              <Counter value={Math.round(progress * 100)} suffix="%" />
-            </span>
+      {/* The brain, wide, as the card's hero. Desktop only. On phones the
+          header sits on its own and the list follows. */}
+      <div className={cn("relative hidden md:block", calmMode ? "h-[240px]" : "h-[400px]")}>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_50%_55%,rgba(94,106,210,0.16),transparent_70%)]"
+        />
+        {calmMode && (
+          <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 opacity-60">
+            <BrainMark size={150} animate={false} />
           </div>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-6 right-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"
+        )}
+        <LazyMount>
+          <MindOrb
+            nodes={rows}
+            progress={progress}
+            frontierId={frontier?.id ?? null}
+            hoveredId={hovered}
+            onHover={setHovered}
+            onSelect={(id) => router.push(`/lesson/${id}`)}
           />
-        </div>
-
-        <div className="p-6">
-          <div className="flex items-center justify-between">
+        </LazyMount>
+        <div className="pointer-events-none absolute left-6 top-6">
+          <div className="flex items-center gap-3">
             <h2 className="text-headline-md text-fg-primary">Your knowledge model</h2>
             <Pill tone="accent" dot>
               live
             </Pill>
           </div>
-          <p className="mt-1 text-sm text-fg-secondary">
+          <p className="mt-1 max-w-sm text-sm text-fg-secondary">
             One estimate per module, straight from the Bayesian model. Nothing here is decorative.
           </p>
-
-          <ol className="mt-4 space-y-1">
-            {rows.map((row, i) => {
-              const tone = rowTone[row.state];
-              const active = hovered === row.id;
-              return (
-                <motion.li
-                  key={row.id}
-                  initial={reduced ? false : { opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Link
-                    href={`/lesson/${row.id}`}
-                    onMouseEnter={() => setHovered(row.id)}
-                    onMouseLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(row.id)}
-                    onBlur={() => setHovered(null)}
-                    className={cn(
-                      "group flex items-center gap-3 rounded-control px-2.5 py-2 transition-[background-color,transform] duration-200",
-                      active ? "translate-x-0.5 bg-white/[0.06]" : "hover:bg-white/[0.04]",
-                    )}
-                  >
-                    <span className="num w-5 text-[10px] tracking-widest text-fg-muted">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className={cn("h-1.5 w-1.5 shrink-0 rounded-pill", tone.dot, active && "shadow-[0_0_8px_currentColor]")}
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className={cn("block truncate text-sm", row.state === "locked" ? "text-fg-secondary" : "text-fg-primary")}>
-                        {row.title}
-                      </span>
-                      <span className="mt-1 block h-0.5 w-full overflow-hidden rounded-pill bg-white/5" aria-hidden="true">
-                        <motion.span
-                          className={cn("block h-full rounded-pill", tone.bar)}
-                          initial={reduced ? false : { width: 0 }}
-                          animate={{ width: `${row.pL * 100}%` }}
-                          transition={{ duration: 0.9, delay: 0.35 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                        />
-                      </span>
-                    </span>
-                    <span className={cn("num w-11 text-right text-sm", tone.text)}>
-                      <Counter value={Math.round(row.pL * 100)} suffix="%" />
-                    </span>
-                    <span className="sr-only">, {tone.label}</span>
-                  </Link>
-                </motion.li>
-              );
-            })}
-          </ol>
         </div>
+        <div className="pointer-events-none absolute bottom-5 left-6 flex items-center gap-2">
+          <span className="num text-label-caps uppercase tracking-[0.18em] text-fg-muted">route covered</span>
+          <span className="num text-sm text-fg-primary">
+            <Counter value={Math.round(progress * 100)} suffix="%" />
+          </span>
+        </div>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+        />
+      </div>
+
+      <div className="p-6">
+        <div className="flex items-center justify-between md:hidden">
+          <h2 className="text-headline-md text-fg-primary">Your knowledge model</h2>
+          <Pill tone="accent" dot>
+            live
+          </Pill>
+        </div>
+        <p className="mt-1 text-sm text-fg-secondary md:hidden">
+          One estimate per module, straight from the Bayesian model.
+        </p>
+
+        <ol className="mt-4 grid gap-x-8 gap-y-0 sm:grid-cols-2 md:mt-0">
+          {rows.map((row, i) => {
+            const tone = rowTone[row.state];
+            const active = hovered === row.id;
+            return (
+              <motion.li
+                key={row.id}
+                initial={reduced ? false : { opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link
+                  href={`/lesson/${row.id}`}
+                  onMouseEnter={() => setHovered(row.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  onFocus={() => setHovered(row.id)}
+                  onBlur={() => setHovered(null)}
+                  className={cn(
+                    "group flex items-center gap-2.5 rounded-control px-2.5 py-1.5 transition-[background-color,transform] duration-200",
+                    active ? "translate-x-0.5 bg-white/[0.06]" : "hover:bg-white/[0.04]",
+                  )}
+                >
+                  <span className="num w-5 text-[10px] tracking-widest text-fg-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={cn("h-1.5 w-1.5 shrink-0 rounded-pill", tone.dot, active && "shadow-[0_0_8px_currentColor]")}
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className={cn("block truncate text-[13px]", row.state === "locked" ? "text-fg-secondary" : "text-fg-primary")}>
+                      {row.title}
+                    </span>
+                    <span className="mt-1 block h-0.5 w-full overflow-hidden rounded-pill bg-white/5" aria-hidden="true">
+                      <motion.span
+                        className={cn("block h-full rounded-pill", tone.bar)}
+                        initial={reduced ? false : { width: 0 }}
+                        animate={{ width: `${row.pL * 100}%` }}
+                        transition={{ duration: 0.9, delay: 0.35 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                    </span>
+                  </span>
+                  <span className={cn("num w-10 text-right text-xs", tone.text)}>
+                    <Counter value={Math.round(row.pL * 100)} suffix="%" />
+                  </span>
+                  <span className="sr-only">, {tone.label}</span>
+                </Link>
+              </motion.li>
+            );
+          })}
+        </ol>
       </div>
     </Card>
   );

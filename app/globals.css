@@ -51,6 +51,119 @@
   --bear: #f59e0b;
 }
 
+/* The body typeface. Inter by default, Atkinson Hyperlegible when the
+   readable-font setting is on (users/{uid}.settings.readableFont). Tailwind's
+   font-sans reads this variable, so the whole app follows. */
+:root {
+  --font-sans: var(--font-inter);
+}
+[data-font="readable"] {
+  --font-sans: var(--font-atkinson);
+}
+
+/* ── High contrast ─────────────────────────────────────────────────────────
+   users/{uid}.settings.highContrast. The palette gets pushed apart: a
+   true-black ground, white text, secondary text lifted well past AA, solid
+   panels instead of veils, borders you can actually see, and no blur. Links
+   inside prose are underlined so colour isn't the only cue. */
+[data-contrast="high"] {
+  --bg-deep: #000000;
+  --bg-base: #07070b;
+  --bg-elevated: #121219;
+  --bg-base-veil: #07070b;
+  --bg-elevated-veil: #121219;
+  --surface-glass: rgba(255, 255, 255, 0.08);
+  --glass-nav: rgba(7, 7, 11, 0.97);
+  --border-hair: rgba(255, 255, 255, 0.32);
+  --border-edge: rgba(255, 255, 255, 0.22);
+  --fg-primary: #ffffff;
+  --fg-secondary: #d8d6e3;
+  --fg-muted: #b0aec2;
+  --accent: #7f8bff;
+  --accent-bright: #dfe2ff;
+  --accent-glow: rgba(127, 139, 255, 0.45);
+  --mastery: #3ee6cf;
+  --mastery-bright: #8cf8e8;
+  --mastery-glow: rgba(62, 230, 207, 0.45);
+  --warning: #ffd08a;
+  --danger: #ffc9c2;
+  --bull: #3ee6cf;
+  --bear: #ffc9c2;
+}
+[data-contrast="high"][data-candles='colorblind'] {
+  --bull: #6ea8ff;
+  --bear: #ffb547;
+}
+[data-contrast="high"] .glass-nav,
+[data-contrast="high"] .surface-glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-contrast="high"] [data-prose] a,
+[data-contrast="high"] p a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+[data-contrast="high"] :focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ── Comfortable reading ───────────────────────────────────────────────────
+   users/{uid}.settings.comfortableReading. Looser leading, a touch more
+   letter and word spacing, and a shorter measure on the lesson prose. */
+[data-reading="comfortable"] [data-prose] {
+  line-height: 1.9;
+  letter-spacing: 0.012em;
+  word-spacing: 0.06em;
+  max-width: 62ch;
+}
+[data-reading="comfortable"] [data-prose] p,
+[data-reading="comfortable"] [data-prose] li {
+  line-height: 1.9;
+  margin-bottom: 0.35em;
+}
+[data-reading="comfortable"] [data-prose] h2,
+[data-reading="comfortable"] [data-prose] h3 {
+  margin-top: 2em;
+}
+
+/* ── Calm mode ─────────────────────────────────────────────────────────────
+   users/{uid}.settings.calmMode. The decorative layers go: the aurora and
+   candle field, the marquee, the sheen. The 3D scenes check the same flag
+   in code and render their still versions instead. */
+[data-calm="on"] [data-ambient],
+[data-calm="on"] [data-decor] {
+  display: none !important;
+}
+[data-calm="on"] .tm-marquee,
+[data-calm="on"] .tm-scroll-cue,
+[data-calm="on"] .tm-sheen:hover::after {
+  animation: none !important;
+}
+
+/* The skip link. Off screen until it's focused, then it drops in at the
+   top-left over everything else. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-200%);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.8);
+  transition: transform 150ms ease-out;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-color: #ffffff;
+}
+
 @layer base {
   html {
     color-scheme: dark;
