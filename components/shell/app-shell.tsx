@@ -14,7 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div data-drawer-scale className="min-h-dvh origin-center">
       <AmbientBackground />
       <GlassNav />
-      <main className="px-4 pb-28 pt-6 md:px-margin-safe md:pb-12 md:pt-[96px]">
+      <main id="main" className="px-4 pb-28 pt-6 md:px-margin-safe md:pb-12 md:pt-[96px]">
         <PageTransition>{children}</PageTransition>
       </main>
       <TabBar />

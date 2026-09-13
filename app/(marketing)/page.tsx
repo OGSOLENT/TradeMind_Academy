@@ -11,6 +11,7 @@ import { Pill } from "@/components/ui/pill";
 import { SplitHeadline } from "@/components/marketing/split-headline";
 import { VisibleMind } from "@/components/marketing/visible-mind";
 import { Faq } from "@/components/marketing/faq";
+import { Curriculum, CURRICULUM } from "@/components/marketing/curriculum";
 import { Reveal } from "@/components/motion/stagger";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,24 +22,8 @@ const HeroParticles = dynamic(
   { ssr: false },
 );
 
-/** The fifteen Level-1 modules, in the order they're taught. Drives the ticker. */
-const MODULES = [
-  "The Candle",
-  "Liquidity & Wicks",
-  "Risk & Position Sizing",
-  "Reversal Patterns",
-  "Confirmation & Structure",
-  "Market Structure & Delivery",
-  "PD Arrays",
-  "Daily Bias",
-  "Time & Sessions",
-  "Entry Models",
-  "The Fractal Model",
-  "SMT Divergence",
-  "Higher-Timeframe Context",
-  "Weekly Profiles",
-  "Execution & Review",
-];
+/** The module titles, in teaching order. Drives the ticker. */
+const MODULES = CURRICULUM.map((m) => m.title);
 
 const STEPS = [
   ["01", "Placement", "One question per module calibrates a Bayesian estimate of what you already know."],
@@ -150,11 +135,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <VisibleMind />
-
       {/* How it works */}
-      <section aria-label="How it works" className="mx-auto max-w-5xl px-6 pb-8">
-        <div className="relative grid gap-4 md:grid-cols-3">
+      <section id="how" aria-label="How it works" className="mx-auto max-w-5xl scroll-mt-24 px-6 pb-8 pt-24">
+        <Reveal>
+          <p className="num text-label-caps uppercase tracking-[0.2em] text-mastery-bright">How it works</p>
+          <h2 className="mt-3 max-w-xl text-display-lg-mobile md:text-display-lg text-fg-primary">
+            Three moves, <span className="text-gradient">every session</span>.
+          </h2>
+        </Reveal>
+        <div className="relative mt-10 grid gap-4 md:grid-cols-3">
           {/* The connecting line behind the three steps on desktop. */}
           <div
             aria-hidden="true"
@@ -180,6 +169,10 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      <VisibleMind />
+
+      <Curriculum />
 
       <Faq />
 

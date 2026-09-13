@@ -20,7 +20,7 @@ async function main() {
   await page.getByLabel("Password").fill("correct-horse-battery-staple-9!");
   await page.screenshot({ path: `${OUT}/sign-up.png` });
 
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /18 or older/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("heading", { name: "Research participation & data" }).waitFor();
   await settle();

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
+import { useA11yPrefs } from "@/lib/a11y-prefs";
 import { cn } from "@/lib/utils";
 
 /**
@@ -10,6 +11,11 @@ import { cn } from "@/lib/utils";
  * wide, and motion isn't reduced (unless `allowReduced`). The three.js
  * pieces all sit behind this, which keeps them off the dashboard's critical
  * path. The perf gate on that page is 85, so it matters.
+ *
+ * Calm mode (the accessibility setting) wins over everything: nothing
+ * mounts, and anything already mounted comes down the moment it's switched
+ * on. The accessible version of the information is always in ordinary DOM
+ * beside the slot, so nothing is lost.
  */
 export function LazyMount({
   children,
@@ -25,6 +31,7 @@ export function LazyMount({
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "0px 0px 10% 0px" });
   const reduced = useReducedMotion();
+  const { calmMode } = useA11yPrefs();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -48,7 +55,7 @@ export function LazyMount({
   // of the information always lives in ordinary DOM beside it.
   return (
     <div ref={ref} aria-hidden="true" className={cn("absolute inset-0", className)}>
-      {ready && children}
+      {ready && !calmMode && children}
     </div>
   );
 }

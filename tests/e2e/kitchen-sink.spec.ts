@@ -41,7 +41,10 @@ test.describe("kitchen sink — design system smoke", () => {
 
   test("landing shows the ethics strip and full disclaimer", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("simulation only · no signals · no live money")).toBeVisible();
+    // The strip is in the hero and again in the footer, so check the hero's.
+    await expect(
+      page.getByLabel("Introduction").getByText("simulation only · no signals · no live money"),
+    ).toBeVisible();
     await expect(page.getByText(/Risk & purpose disclaimer/)).toBeVisible();
     await expect(page.getByText(/Nothing here is financial advice/)).toBeVisible();
   });

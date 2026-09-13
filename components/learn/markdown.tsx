@@ -213,5 +213,9 @@ export function Markdown({ md }: { md: string }) {
   }
   flushAll();
 
-  return <div className="space-y-4 text-body-base leading-7 text-fg-secondary">{out}</div>;
+  return (
+    <div data-prose className="space-y-4 text-body-base leading-7 text-fg-secondary">
+      {out}
+    </div>
+  );
 }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Atkinson_Hyperlegible, Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "./providers";
+import { PREFS_BOOT_SCRIPT } from "@/lib/a11y-boot";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +13,15 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
+  display: "swap",
+});
+
+// The readable typeface, for the accessibility setting. Loaded up front so
+// switching it on is instant, but it's only used when data-font="readable".
+const atkinson = Atkinson_Hyperlegible({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-atkinson",
   display: "swap",
 });
 
@@ -55,8 +65,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+    // suppressHydrationWarning because the boot script below stamps the
+    // learner's saved accessibility choices onto <html> before React loads,
+    // and React would otherwise complain about attributes it didn't render.
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${atkinson.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: PREFS_BOOT_SCRIPT }} />
+      </head>
       <body className="font-sans">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <Providers>{children}</Providers>
       </body>
     </html>

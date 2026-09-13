@@ -64,7 +64,7 @@ async function main() {
     await page.goto(`${BASE}/sign-up`);
     await page.getByLabel("Email address").fill(`audit-${Date.now()}@example.com`);
     await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-    await page.getByRole("checkbox").check();
+    await page.getByRole("checkbox", { name: /18 or older/ }).check();
     await page.getByRole("button", { name: "Create account" }).click();
     await page.getByRole("button", { name: "I consent — start learning" }).click();
     await page.getByRole("button", { name: /Skip — start from scratch/ }).click({ timeout: 20_000 });

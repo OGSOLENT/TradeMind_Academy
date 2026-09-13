@@ -67,7 +67,7 @@ export function VisibleMind() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="visible-mind" aria-label="The visible mind" className="mx-auto max-w-5xl px-6 py-24">
+    <section ref={sectionRef} id="visible-mind" aria-label="The visible mind" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
       <div data-heading>
         <h2 className="text-display-lg-mobile md:text-display-lg text-fg-primary">
           The <span className="text-gradient">visible</span> mind

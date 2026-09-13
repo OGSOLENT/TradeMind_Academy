@@ -121,7 +121,7 @@ export async function signUpAndConsent(page: Page, opts: { placement?: boolean }
   await page.goto("/sign-up");
   await page.getByLabel("Email address").fill(email);
   await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /18 or older/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("button", { name: "I consent — start learning" }).click({ timeout: 25_000 });
 

@@ -24,7 +24,7 @@ async function signUpSkipPlacement(page: Page): Promise<void> {
     .getByLabel("Email address")
     .fill(`p5-${Date.now()}-${Math.random().toString(36).slice(2, 6)}@example.com`);
   await page.getByLabel("Password").fill("a-long-strong-passphrase-3!");
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /18 or older/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("button", { name: "I consent — start learning" }).click();
   await expect(

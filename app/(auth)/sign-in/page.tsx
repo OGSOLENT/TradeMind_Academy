@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirebase } from "@/lib/firebase/client";
 import { signInWithGoogle } from "@/lib/firebase/google";
+import { applyPersistence, readKeepSignedIn } from "@/lib/firebase/persistence";
 import { getUserProfile } from "@/lib/firebase/repos";
 import { describeFirebaseError } from "@/lib/firebase/errors";
 import { GoogleButton, OrDivider } from "@/components/auth/google-button";
+import { KeepSignedIn } from "@/components/auth/keep-signed-in";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +22,9 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // The device remembers the last choice. Default is on.
+  const [keep, setKeep] = useState(true);
+  useEffect(() => setKeep(readKeepSignedIn()), []);
 
   async function afterAuth(uid: string) {
     const { db } = getFirebase();
@@ -45,6 +50,7 @@ export default function SignInPage() {
     setBusy(true);
     try {
       const { auth } = getFirebase();
+      await applyPersistence(auth, keep);
       const cred = await signInWithEmailAndPassword(auth, email, password);
       await afterAuth(cred.user.uid);
     } catch (err) {
@@ -63,6 +69,7 @@ export default function SignInPage() {
   async function onGoogle() {
     setBusy(true);
     const { auth } = getFirebase();
+    await applyPersistence(auth, keep);
     const result = await signInWithGoogle(auth);
     if (!result.ok) {
       toast({
@@ -121,6 +128,7 @@ export default function SignInPage() {
             Forgot password?
           </button>
         </div>
+        <KeepSignedIn checked={keep} onChange={setKeep} />
         <Button type="submit" loading={busy} className="w-full">
           Sign in
         </Button>

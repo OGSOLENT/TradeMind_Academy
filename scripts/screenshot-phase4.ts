@@ -16,7 +16,7 @@ async function main() {
   await page.goto(`${BASE}/sign-up`);
   await page.getByLabel("Email address").fill(`shots4-${Date.now()}@example.com`);
   await page.getByLabel("Password").fill("correct-horse-battery-staple-9!");
-  await page.getByRole("checkbox").check();
+  await page.getByRole("checkbox", { name: /18 or older/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await page.getByRole("button", { name: "I consent — start learning" }).click();
 

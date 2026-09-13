@@ -37,7 +37,7 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByRole("button", { name: "Create account" }).click();
     await expect(page.getByText(/18\+\) only/)).toBeVisible();
 
-    await page.getByRole("checkbox").check();
+    await page.getByRole("checkbox", { name: /18 or older/ }).check();
     await page.getByRole("button", { name: "Create account" }).click();
 
     // The consent screen, with real GDPR copy and a Decline button that actually works.
@@ -85,7 +85,7 @@ test.describe("auth → consent → lesson journey", () => {
     await page.goto("/sign-up");
     await page.getByLabel("Email address").fill(email);
     await page.getByLabel("Password").fill("another-strong-passphrase-7!");
-    await page.getByRole("checkbox").check();
+    await page.getByRole("checkbox", { name: /18 or older/ }).check();
     await page.getByRole("button", { name: "Create account" }).click();
 
     await page.getByRole("button", { name: "Decline" }).click();

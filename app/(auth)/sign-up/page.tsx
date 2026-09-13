@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useQueryClient } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { signInWithGoogle } from "@/lib/firebase/google";
+import { applyPersistence, readKeepSignedIn } from "@/lib/firebase/persistence";
 import { createUserProfile, getUserProfile } from "@/lib/firebase/repos";
 import { defaultSettings } from "@/lib/firebase/types";
 import { describeFirebaseError } from "@/lib/firebase/errors";
 import { GoogleButton, OrDivider } from "@/components/auth/google-button";
+import { KeepSignedIn } from "@/components/auth/keep-signed-in";
 import { PasswordStrength, scorePassword } from "@/components/auth/password-strength";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,6 +28,8 @@ export default function SignUpPage() {
   const [isAdult, setIsAdult] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; adult?: string }>({});
   const [busy, setBusy] = useState(false);
+  const [keep, setKeep] = useState(true);
+  useEffect(() => setKeep(readKeepSignedIn()), []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,6 +43,7 @@ export default function SignUpPage() {
     setBusy(true);
     try {
       const { auth, db } = getFirebase();
+      await applyPersistence(auth, keep);
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       const name = displayName.trim() || email.split("@")[0] || "Learner";
       await updateProfile(cred.user, { displayName: name });
@@ -86,6 +91,7 @@ export default function SignUpPage() {
     setErrors({});
     setBusy(true);
     const { auth, db } = getFirebase();
+    await applyPersistence(auth, keep);
     const result = await signInWithGoogle(auth);
     if (!result.ok) {
       toast({
@@ -184,6 +190,7 @@ export default function SignUpPage() {
             {errors.adult}
           </p>
         )}
+        <KeepSignedIn checked={keep} onChange={setKeep} />
 
         <Button type="submit" loading={busy} className="w-full">
           Create account
