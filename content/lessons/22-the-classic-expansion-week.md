@@ -1,6 +1,6 @@
 # Lesson 22 — The Classic Expansion Week
 
-**Module 8: Weekly Profiles** · Video: `Classic_Expansion_Week.mp4` (7:19) · Prerequisites: Lesson 21
+**Module 8: Weekly Profiles** · Video: `Classic_Expansion_Week.mp4` (7:19) · Walkthrough: `expansion-week` · Prerequisites: Lesson 21
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

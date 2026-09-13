@@ -1,6 +1,6 @@
 # Lesson 1 — Reading a Single Candle
 
-**Module 1: The Candle** · Video: `Decoding_Market_Candles.mp4` (6:10) · Prerequisites: none
+**Module 1: The Candle** · Video: `Decoding_Market_Candles.mp4` (6:10) · Walkthrough: `candle-anatomy` · Prerequisites: none
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

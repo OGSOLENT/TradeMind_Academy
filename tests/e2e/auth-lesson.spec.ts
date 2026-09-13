@@ -64,8 +64,10 @@ test.describe("auth → consent → lesson journey", () => {
     await expect(page.locator("table").first()).toBeVisible();
     await expect(page.locator("blockquote").first()).toBeVisible();
 
-    await page.getByRole("button", { name: "Describe this chart" }).click();
-    await expect(page.getByText(/Text alternative: a simulated candlestick series/)).toBeVisible();
+    // The recorded lesson also carries a walkthrough after the prose, and
+    // its text alternative is the chart's accessible version.
+    await page.getByRole("button", { name: "Describe this walkthrough" }).click();
+    await expect(page.getByText(/Simulated prices built to show the idea/)).toBeVisible();
 
     // Inline knowledge check: answer it correctly and it collapses to the tick chip.
     await page.getByRole("radio", { name: /Open, High, Low, Close/ }).click();

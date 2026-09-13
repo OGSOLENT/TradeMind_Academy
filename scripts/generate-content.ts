@@ -20,7 +20,7 @@ import { WALKTHROUGHS } from "../lib/walkthroughs";
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
-/** The modules, in teaching order. Each one requires the one before it. Fifteen since September 2026. */
+/** The modules, in teaching order. Each one requires the one before it. Sixteen since September 2026. */
 const MODULES: Array<{ id: string; title: string; description: string; lessons: string[] }> = [
   {
     id: "kc-candle-anatomy",
@@ -96,8 +96,8 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     id: "kc-fractal-model",
     title: "The Fractal Model",
     description:
-      "The complete system: the T-Spot, standard deviation projections, fractal targets and the TTFM playbook.",
-    lessons: ["16", "17", "18", "19"],
+      "The complete system: the T-Spot, standard deviation projections, fractal targets, the playbook, and then the deep end: candle counting, profiles, timeframe pairs, the 1-minute inversion, intracandle CISD and two trades end to end.",
+    lessons: ["16", "17", "18", "19", "49", "50", "51", "52", "53", "54"],
   },
   {
     id: "kc-smt-divergence",
@@ -126,6 +126,13 @@ const MODULES: Array<{ id: string; title: string; description: string; lessons: 
     description:
       "Everything after the entry: partials, break-even and structure-based trailing, the journal and the backtest, and thinking in probabilities.",
     lessons: ["46", "47", "48"],
+  },
+  {
+    id: "kc-instruments",
+    title: "Markets, Instruments & Funding",
+    description:
+      "The account behind the chart: how futures and CFDs work, which fits which trader, and how to judge a prop firm's rules before paying for an evaluation.",
+    lessons: ["55", "56", "57", "58"],
   },
 ];
 
@@ -199,8 +206,10 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
   if (heroWalkthrough) blocks.push({ kind: "walkthrough", id: heroWalkthrough });
   blocks.push({ kind: "markdown", md: parsed.main });
   for (const id of laterWalkthroughs) blocks.push({ kind: "walkthrough", id });
-  // The generic module figure only where there's no walkthrough to do the job properly.
-  if (parsed.walkthroughs.length === 0) {
+  // The generic module figure only where there's no walkthrough to do the
+  // job properly, and never for the instruments module, where a simulated
+  // candle chart would illustrate nothing.
+  if (parsed.walkthroughs.length === 0 && kc.id !== "kc-instruments") {
     blocks.push({
       kind: "figure",
       src: `/figures/${kc.id}.svg`,

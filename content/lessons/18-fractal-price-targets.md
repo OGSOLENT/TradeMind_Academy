@@ -1,6 +1,6 @@
 # Lesson 18 — Fractal Price Targets
 
-**Module 6: The Fractal Model** · Video: `Fractal_Price_Targets.mp4` (7:18) · Prerequisites: Lesson 17
+**Module 6: The Fractal Model** · Video: `Fractal_Price_Targets.mp4` (7:18) · Walkthrough: `fractal-targets` · Prerequisites: Lesson 17
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

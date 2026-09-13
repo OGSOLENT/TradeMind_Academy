@@ -1,6 +1,6 @@
 # Lesson 19 — The TTFM Playbook
 
-**Module 6: The Fractal Model** · Video: `TTFM_Trading_Strategy.mp4` (7:04) · Prerequisites: Lessons 1–18
+**Module 6: The Fractal Model** · Video: `TTFM_Trading_Strategy.mp4` (7:04) · Walkthrough: `ttfm-playbook` · Prerequisites: Lessons 1–18
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

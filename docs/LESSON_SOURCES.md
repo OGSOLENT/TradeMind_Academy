@@ -189,6 +189,58 @@ The official channels:
 
 ---
 
+## Module 11: The Fractal Model (the deep end, lessons 49 to 54)
+
+These six lessons are written from TTrades' own published material. The mechanics quoted in the lessons (the C2/C3/C4 count, "Candle 3's equilibrium is critical. Expansions do not tolerate deep retracements", wick size as a fuel gauge, the 1-minute inversion entry with the stop on the invalidation point, the three exits, the timeframe pairings and the "auto bias one timeframe up" rule) are taken from these pages, checked on 13 September 2026.
+
+### Lesson 49. Candle Counting: C1 to C4 and the Swing Formation
+- TTrades, "TTrades Fractal Model – Candle 4": https://ttrades.com/ttrades-fractal-model-candle-4/
+- TTrades, "How to Trade Candle 2 in the Fractal Model": https://ttrades.com/how-to-trade-candle-2-ttrades-fractal-model/
+- TTrades education centre, TTFM overview: https://ttrades.com/trading-education-center/ttfm/
+
+### Lesson 50. Expansion, Retracement and Reversal Profiles
+- TTrades, "How to Trade Candle 2 in the Fractal Model" (wick size, expansion vs retracement, targets by wick): https://ttrades.com/how-to-trade-candle-2-ttrades-fractal-model/
+- TTrades, "Refining Entries with the Fractal Model – 1-Minute Inversion Precision" (the T-Spot without a wick, late inversions): https://ttrades.com/refining-entries-with-the-fractal-model-precision-with-1-minute-inversions/
+
+### Lesson 51. Timeframe Pairings and Session Selection
+- TTrades, "TTrades Fractal Model Indicator – Full Guide" (auto bias one timeframe up, the 1H/5m lock): https://ttrades.com/ttrades-fractal-model-indicator-full-guide/
+- TTrades, "How to Trade Candle 2" (session recommendations: Asia, London, New York): https://ttrades.com/how-to-trade-candle-2-ttrades-fractal-model/
+
+### Lesson 52. Entry Refinement: the 1-Minute Inversion inside the T-Spot
+- TTrades, "Refining Entries with the Fractal Model – 1-Minute Inversion Precision": https://ttrades.com/refining-entries-with-the-fractal-model-precision-with-1-minute-inversions/
+
+### Lesson 53. Intracandle CISD and Trading Continuations
+- TTrades education centre (IC-CISD, order blocks and equilibrium for continuation refinement): https://ttrades.com/trading-education-center/ttfm/
+- TTrades, "TTrades Fractal Model – Candle 4": https://ttrades.com/ttrades-fractal-model-candle-4/
+
+### Lesson 54. The TTFM Trade, End to End
+- Synthesis of the above. The two trades are constructed examples, drawn to the rules in lessons 49 to 53.
+
+## Module 16: Markets, Instruments & Funding (lessons 55 to 58)
+
+### Lesson 55. Futures: How the Contract Works
+- CME Group, Micro E-mini S&P 500 contract specifications: https://www.cmegroup.com/markets/equities/sp/micro-e-mini-sandp-500.contractSpecs.html
+- CME Group, Micro E-mini equity index products overview: https://www.cmegroup.com/education/courses/micro-e-mini-futures/micro-e-mini-futures-products-overview
+- Charles Schwab, "Stock Index Futures Tick Values Explained": https://www.schwab.com/learn/story/stock-index-futures-tick-values
+- NinjaTrader, E-mini S&P 500 contract specs: https://ninjatrader.com/futures/futures-contracts/equity-index/e-mini-s-p-500/
+
+### Lesson 56. CFDs and Spread Betting
+- ESMA, product intervention on CFDs (leverage limits, margin close-out, negative balance protection): https://www.esma.europa.eu/press-news/esma-news/esma-reminds-firms-their-obligations-under-cfd-product-intervention-measures
+- Liquidity Finder, CFD leverage limits by regulator (2026 comparison): https://liquidityfinder.com/insight/industry/comparison-of-cfd-retail-broker-leverage-limits-by-regulator
+- Trade Nation, "Is spread betting tax-free in the UK?": https://tradenation.com/en-gb/articles/spread-betting-tax-in-uk/
+- Track360, forex leverage regulation by region (ESMA, ASIC, CFTC): https://track360.io/blog/forex-leverage-regulation-by-region-esma-asic-cftc-2026
+
+### Lesson 57. Futures or CFDs: Which Fits You
+- Synthesis of the sources for lessons 55 and 56.
+
+### Lesson 58. Prop Firms: How Evaluations Work and How to Judge Them
+- PropFirmMap, "Prop Firm News Q2 2026: Shutdowns, 8 New Firms & Rule Changes": https://propfirmmap.com/blog/prop-firm-industry-news-shutdowns-rebrands-new-firms-q2-2026
+- FuturesHive, futures prop firm rule changes 2025 to 2026 (Topstep, Apex, MyFundedFutures): https://www.futureshive.com/blog/best-futures-prop-firm-2026
+- The Industry Spread, "How regulators are closing in on retail prop trading in 2026": https://theindustryspread.com/retail-prop-trading-regulation-2026-my-forex-funds-cftc/
+- Quinn Emanuel, the My Forex Funds dismissal (13 May 2025): https://www.quinnemanuel.com/media/dhfipuqn/lotw-qe-judge-tosses-cftc-s-forex-funds-case-052025.pdf
+- Finance Magnates, My Forex Funds after the ruling: https://www.financemagnates.com/forex/myforexfunds-hints-at-comeback-after-winning-legal-battle-against-cftc/
+- CFTC, report and recommendation on sanctions (May 2025): https://www.cftc.gov/media/12106/ogc_KazmiReportRecommendationSactions051325/download
+
 ## Making the videos
 
 Each lesson's markdown already has the shape a video needs: the "What you'll learn" list is the cold open, the sections are the beats, the tables are the slides, the key terms are the recap, and the common mistakes are the outro. A six to nine minute video per lesson matches the length of the originals in Level 1. Once a recording exists, add one line to the lesson's markdown, `Video: \`File_Name.mp4\``, drop the file in `public/videos/`, and run `npx tsx scripts/generate-content.ts` followed by `npm run seed`. The lecture slot on the lesson page picks it up.

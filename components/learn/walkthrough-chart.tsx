@@ -49,23 +49,30 @@ function annoPrices(a: Anno): number[] {
   }
 }
 
+/**
+ * A label on the chart: a rounded pill behind the text so it reads over
+ * candles and other layers. Width is estimated from the character count,
+ * which is close enough for the sans face at these sizes.
+ */
 function Label({ x, y, text, tone, anchor = "start", size = 12 }: { x: number; y: number; text: string; tone: Tone; anchor?: "start" | "middle" | "end"; size?: number }) {
+  const w = text.length * size * 0.56 + 12;
+  const h = size + 8;
+  const left = anchor === "start" ? x - 6 : anchor === "end" ? x - w + 6 : x - w / 2;
   return (
-    <text
-      x={x}
-      y={y}
-      textAnchor={anchor}
-      fontSize={size}
-      fontWeight={500}
-      fill={STROKE[tone]}
-      stroke="rgba(5,5,7,0.9)"
-      strokeWidth={3.5}
-      paintOrder="stroke"
-      strokeLinejoin="round"
-      style={{ fontFamily: "var(--font-sans)" }}
-    >
-      {text}
-    </text>
+    <g>
+      <rect x={left} y={y - size - 1} width={w} height={h} rx={h / 2} fill="rgba(8,8,12,0.82)" stroke={STROKE[tone]} strokeOpacity={0.35} strokeWidth={1} />
+      <text
+        x={x}
+        y={y}
+        textAnchor={anchor}
+        fontSize={size}
+        fontWeight={500}
+        fill={STROKE[tone]}
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {text}
+      </text>
+    </g>
   );
 }
 

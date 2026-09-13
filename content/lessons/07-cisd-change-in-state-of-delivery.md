@@ -1,6 +1,6 @@
 # Lesson 7 — CISD: Change in State of Delivery
 
-**Module 4: Confirmation & Structure** · Video: `Mastering_the_CISD.mp4` (6:41) · Prerequisites: Lessons 1–6
+**Module 4: Confirmation & Structure** · Video: `Mastering_the_CISD.mp4` (6:41) · Walkthrough: `cisd` · Prerequisites: Lessons 1–6
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

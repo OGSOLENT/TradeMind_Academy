@@ -1,6 +1,6 @@
 # Lesson 9 — Protected Swings & Trend Structure
 
-**Module 4: Confirmation & Structure** · Video: `Decoding_Market_Trends.mp4` (8:25) · Prerequisites: Lessons 1–8
+**Module 4: Confirmation & Structure** · Video: `Decoding_Market_Trends.mp4` (8:25) · Walkthrough: `protected-swings` · Prerequisites: Lessons 1–8
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

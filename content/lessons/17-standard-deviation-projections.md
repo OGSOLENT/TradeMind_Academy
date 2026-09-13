@@ -1,6 +1,6 @@
 # Lesson 17 — Standard Deviation Projections
 
-**Module 6: The Fractal Model** · Video: `Fractal_Model_Projections.mp4` (9:25) · Prerequisites: Lesson 16
+**Module 6: The Fractal Model** · Video: `Fractal_Model_Projections.mp4` (9:25) · Walkthrough: `std-projections` · Prerequisites: Lesson 16
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

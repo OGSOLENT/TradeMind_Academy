@@ -1,6 +1,6 @@
 # Lesson 7a — How Fair Value Gaps Work
 
-**Module 4: Confirmation & Structure** · Video: `How_Fair_Value_Gaps_Work.mp4` (8:35) · Prerequisites: Lessons 1–7
+**Module 4: Confirmation & Structure** · Video: `How_Fair_Value_Gaps_Work.mp4` (8:35) · Walkthrough: `fair-value-gap` · Prerequisites: Lessons 1–7
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

@@ -92,7 +92,7 @@ export default function PlacementPage() {
           Let&apos;s map what you already know
         </h1>
         <p className="mx-auto mt-3 max-w-md text-body-base text-fg-secondary">
-          Fifteen quick questions — one per module — seed your personal knowledge
+          Sixteen quick questions — one per module — seed your personal knowledge
           model. There&apos;s no pass or fail; wrong answers are just as
           informative as right ones.
         </p>
