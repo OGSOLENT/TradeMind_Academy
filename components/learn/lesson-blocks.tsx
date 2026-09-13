@@ -59,7 +59,21 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
  * single play control over it, so the block reads as a piece of the lesson
  * rather than a bare <video> dropped into the column. Press play and the
  * native controls take over. With no video yet, the poster stands in.
+ *
+ * The recordings live outside the repo (public/videos is a symlink) and
+ * aren't part of the Vercel deployment, so a lesson can have a videoUrl the
+ * server can't serve. If the file fails to load the block falls back to the
+ * poster and says so, instead of a dead player. NEXT_PUBLIC_VIDEO_BASE, when
+ * set, points /videos/... at wherever the recordings are hosted.
  */
+const VIDEO_BASE = process.env.NEXT_PUBLIC_VIDEO_BASE?.replace(/\/$/, "");
+
+function resolveVideo(url: string | null): string | null {
+  if (!url) return null;
+  if (VIDEO_BASE && url.startsWith("/videos/")) return `${VIDEO_BASE}/${url.slice("/videos/".length)}`;
+  return url;
+}
+
 export function VideoBlock({
   block,
   videoUrl,
@@ -72,6 +86,8 @@ export function VideoBlock({
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [unavailable, setUnavailable] = useState(false);
+  const src = unavailable ? null : resolveVideo(videoUrl);
 
   const play = () => {
     setPlaying(true);
@@ -88,16 +104,19 @@ export function VideoBlock({
           aria-hidden="true"
           className="pointer-events-none absolute -inset-px -z-10 rounded-card bg-[radial-gradient(80%_60%_at_50%_0%,rgba(94,106,210,0.22),transparent_70%)]"
         />
-        {videoUrl ? (
+        {src ? (
           <video
             ref={videoRef}
+            src={src}
             controls={playing}
             preload="metadata"
             className="aspect-video w-full bg-bg-deep object-contain"
             onPlay={() => setPlaying(true)}
-          >
-            <source src={videoUrl} />
-          </video>
+            onError={() => {
+              setUnavailable(true);
+              setPlaying(false);
+            }}
+          />
         ) : (
           <div className="aspect-video w-full bg-bg-deep" />
         )}
@@ -115,7 +134,7 @@ export function VideoBlock({
             >
               <Image src={block.poster} alt="" fill sizes="720px" className="object-cover" unoptimized />
               <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg-deep/85 via-bg-deep/30 to-transparent" />
-              {videoUrl ? (
+              {src ? (
                 <button
                   onClick={play}
                   aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
@@ -138,10 +157,10 @@ export function VideoBlock({
                 </span>
               )}
               <div className="relative flex items-center gap-2">
-                <Pill tone={videoUrl ? "accent" : "neutral"} dot>
-                  {videoUrl ? "Lecture" : "Video coming soon"}
+                <Pill tone={src ? "accent" : "neutral"} dot>
+                  {src ? "Lecture" : unavailable ? "Recording not available here yet" : "Video coming soon"}
                 </Pill>
-                {title && videoUrl && (
+                {title && src && (
                   <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{title}</span>
                 )}
               </div>
