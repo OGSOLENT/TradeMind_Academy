@@ -20,6 +20,15 @@ import { LessonCheck } from "@/components/learn/lesson-check";
 import { Walkthrough } from "@/components/learn/walkthrough";
 import { getWalkthrough } from "@/lib/walkthroughs";
 import { getCaseStudy } from "@/lib/case-studies";
+import { Diagram } from "@/components/learn/diagram";
+
+/**
+ * Whether the lesson recordings are reachable from this deployment. They
+ * live outside the repo (a symlink locally) and aren't part of the Vercel
+ * upload, so production sets NEXT_PUBLIC_VIDEOS_AVAILABLE=false until they
+ * are hosted somewhere. Anything but "false" means yes.
+ */
+const VIDEOS_AVAILABLE = process.env.NEXT_PUBLIC_VIDEOS_AVAILABLE !== "false";
 import {
   CheckQuestionBlock,
   FigureBlock,
@@ -113,12 +122,18 @@ export default function LessonPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Recordings only render where the video files are actually hosted. On a
+  // deployment without them the video block is dropped entirely, and the
+  // walkthrough behind it becomes the hero, so the lesson reads like one
+  // that never had a video rather than one with a broken player.
+  const videoUrl = VIDEOS_AVAILABLE ? lesson?.videoUrl ?? null : null;
+
   // The prose, with the objectives lifted out of the first markdown block.
   const { blocks, objectives, sections } = useMemo(() => {
     if (!lesson) return { blocks: [], objectives: [] as string[], sections: [] as Section[] };
     let objectives: string[] = [];
     let lifted = false;
-    const blocks = lesson.blocks.map((b) => {
+    const blocks = lesson.blocks.filter((b) => b.kind !== "video" || videoUrl).map((b) => {
       if (b.kind !== "markdown" || lifted) return b;
       lifted = true;
       const split = splitObjectives(b.md);
@@ -127,7 +142,7 @@ export default function LessonPage() {
     });
     const sections = blocks.flatMap((b) => (b.kind === "markdown" ? sectionsOf(b.md) : []));
     return { blocks, objectives, sections };
-  }, [lesson]);
+  }, [lesson, videoUrl]);
 
   // A rough reading time. 200 words a minute, counting only the prose blocks.
   const readingMinutes = useMemo(() => {
@@ -283,7 +298,7 @@ export default function LessonPage() {
                 case "figure":
                   return <FigureBlock block={block} />;
                 case "video":
-                  return <VideoBlock block={block} videoUrl={lesson.videoUrl} title={lesson.title} />;
+                  return <VideoBlock block={block} videoUrl={videoUrl} title={lesson.title} />;
                 case "walkthrough": {
                   const spec = getWalkthrough(block.id);
                   if (!spec) return null;
@@ -295,6 +310,8 @@ export default function LessonPage() {
                   if (!spec) return null;
                   return <Walkthrough spec={spec} anchor="case-study" />;
                 }
+                case "diagram":
+                  return <Diagram id={block.id} />;
                 case "checkQuestion":
                   return <CheckQuestionBlock itemId={block.itemId} />;
               }
@@ -406,6 +423,21 @@ export default function LessonPage() {
                         >
                           <span className="num text-fg-muted">{String(i + 1).padStart(2, "0")}</span>
                           <span className="flex-1">{s.title}</span>
+                          {/* What each lesson comes with, so the visual aids are findable from the list. */}
+                          <span className="hidden items-center gap-1 sm:flex" aria-hidden="true">
+                            {s.blocks.some((b) => b.kind === "video") && VIDEOS_AVAILABLE && (
+                              <span className="rounded-pill bg-white/5 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-fg-muted">video</span>
+                            )}
+                            {s.blocks.some((b) => b.kind === "walkthrough") && (
+                              <span className="rounded-pill bg-[rgba(45,212,191,0.12)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-mastery-bright">walkthrough</span>
+                            )}
+                            {s.blocks.some((b) => b.kind === "caseStudy") && (
+                              <span className="rounded-pill bg-[rgba(255,185,85,0.12)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-warning">real chart</span>
+                            )}
+                            {s.blocks.some((b) => b.kind === "diagram") && (
+                              <span className="rounded-pill bg-[rgba(94,106,210,0.15)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-accent-bright">diagram</span>
+                            )}
+                          </span>
                           {current && (
                             <span className="text-label-caps uppercase tracking-wider text-accent-bright">
                               Reading
@@ -449,7 +481,7 @@ export default function LessonPage() {
               <div className="rounded-card bg-bg-base-veil p-5 shadow-hairline">
                 <p className="text-label-caps uppercase tracking-wider text-fg-secondary">On this page</p>
                 <ol className="mt-3 space-y-0.5 border-l border-hair">
-                  {lesson.videoUrl && (
+                  {videoUrl && (
                     <li>
                       <a
                         href="#lecture"
@@ -469,6 +501,16 @@ export default function LessonPage() {
                       </a>
                     </li>
                   )}
+                  {blocks.filter((b) => b.kind === "diagram").map((b) => (
+                    <li key={b.kind === "diagram" ? b.id : ""}>
+                      <a
+                        href={`#diagram-${b.kind === "diagram" ? b.id : ""}`}
+                        className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-fg-secondary transition-colors hover:text-fg-primary"
+                      >
+                        Diagram
+                      </a>
+                    </li>
+                  ))}
                   {blocks.some((b) => b.kind === "caseStudy") && (
                     <li>
                       <a

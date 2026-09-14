@@ -1,6 +1,6 @@
 # Lesson 36 — Session Anatomy and the True Day Open
 
-**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `session-anatomy` · Prerequisites: Lesson 35
+**Module 9: Time & Sessions** · Video: `to be recorded` · Walkthrough: `session-anatomy` · Diagram: `session-clock` · Prerequisites: Lesson 35
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

@@ -1,6 +1,6 @@
 # Lesson 55 — Futures: How the Contract Works
 
-**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Walkthrough: `tick-value` · Prerequisites: Lesson 3b
+**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Walkthrough: `tick-value` · Diagram: `instrument-map` · Prerequisites: Lesson 3b
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice. Contract specifications and fees change; the numbers here were checked in September 2026 and you should confirm them with the exchange and your broker before you rely on them.
 

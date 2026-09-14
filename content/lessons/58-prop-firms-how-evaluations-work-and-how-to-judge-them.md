@@ -1,6 +1,6 @@
 # Lesson 58 — Prop Firms: How Evaluations Work and How to Judge Them
 
-**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Walkthrough: `drawdown-types` · Prerequisites: Lessons 3c and 57
+**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Walkthrough: `drawdown-types` · Diagram: `prop-firm-funnel` · Prerequisites: Lessons 3c and 57
 
 > Educational content only. Not financial advice, and not a recommendation to buy an evaluation from anyone. Firms named here are examples; their rules change often and some close without warning. Every fact with a date was checked in September 2026. Verify the current terms yourself before paying a fee you can't afford to lose.
 

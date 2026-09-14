@@ -76,6 +76,13 @@ deploys on push.)
 
 ## The lesson videos
 
+`NEXT_PUBLIC_VIDEOS_AVAILABLE=false` is set on Vercel. With it, the lesson
+page drops the recording block entirely and the walkthrough is the hero, so
+a lesson whose file isn't hosted looks like one that never had a video.
+Locally the variable is unset and the symlinked files play. Flip it to
+`true` once the recordings are hosted (see below).
+
+
 `public/videos` is a symlink to `~/Documents/DIssertation/Lessons`, 1.1 GB
 of recordings. They are NOT deployed: Vercel caps a file at 100 MB and
 charges for bandwidth, so `.vercelignore` leaves them out. On the live site

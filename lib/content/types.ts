@@ -37,6 +37,8 @@ export type LessonBlock =
   | { kind: "walkthrough"; id: string }
   /** A real-chart case study: the same stepped chart, cut from dated historical bars. Specs in lib/case-studies. */
   | { kind: "caseStudy"; id: string }
+  /** A named SVG diagram from components/learn/diagram.tsx, for the lessons that aren't about a chart. */
+  | { kind: "diagram"; id: string }
   | { kind: "checkQuestion"; itemId: string };
 
 export interface Lesson {
