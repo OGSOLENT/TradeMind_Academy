@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { collection, doc, getDoc, getDocs, orderBy, query, limit } from "firebase/firestore";
@@ -59,6 +60,7 @@ function greetingFor(date: Date): string {
 }
 
 export default function DashboardPage() {
+  useTitle("Dashboard");
   const { user } = useAuth();
   const reduced = useReducedMotion();
   const [selectedKc, setSelectedKc] = useState<string | null>(null);

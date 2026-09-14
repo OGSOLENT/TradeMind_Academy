@@ -1,8 +1,9 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteUser } from "firebase/auth";
+import { deleteUser, sendEmailVerification } from "firebase/auth";
 import { collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -99,6 +100,7 @@ function Toggle({
 }
 
 export default function SettingsPage() {
+  useTitle("Settings");
   const router = useRouter();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -320,7 +322,30 @@ export default function SettingsPage() {
         </Button>
       </Card>
 
-      <Card id="account" level="elevated" className="scroll-mt-28 px-6 py-2">
+      <Card id="account" level="elevated" className="scroll-mt-28 divide-y divide-white/5 px-6 py-2">
+        {user && !user.emailVerified && user.providerData.some((p) => p.providerId === "password") && (
+          <div className="flex items-center justify-between gap-4 py-4">
+            <div>
+              <p className="font-medium text-fg-primary">Email not verified</p>
+              <p className="mt-0.5 text-sm text-fg-secondary">
+                We sent a link to {user.email}. Verifying lets you reset your password later.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                try {
+                  await sendEmailVerification(user);
+                  toast({ title: "Verification email sent", description: `Check ${user.email}.`, variant: "success" });
+                } catch {
+                  toast({ title: "Couldn't send it just now", description: "Try again in a minute.", variant: "warning" });
+                }
+              }}
+            >
+              Resend
+            </Button>
+          </div>
+        )}
         <Toggle
           label="Stay signed in on this device"
           description="Off means you're signed out when the browser closes. Use that on a shared computer."

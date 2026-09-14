@@ -118,9 +118,12 @@ export function VisibleMind() {
         </Card>
 
         <Card data-bento level="elevated" spotlight className="md:col-span-2">
-          <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
-            Session metrics
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-label-caps uppercase tracking-wider text-fg-secondary">
+              Session metrics
+            </p>
+            <span className="num text-[10px] uppercase tracking-wider text-fg-muted">example figures</span>
+          </div>
           <div className="num mt-5 grid grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-3xl text-fg-primary">

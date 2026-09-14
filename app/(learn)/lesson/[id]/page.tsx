@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -96,6 +97,7 @@ export default function LessonPage() {
       return byKc[0] ?? null;
     },
   });
+  useTitle(lesson?.title);
 
   // The other lessons in the same module, for the rail and the footer.
   const { data: siblings } = useQuery({

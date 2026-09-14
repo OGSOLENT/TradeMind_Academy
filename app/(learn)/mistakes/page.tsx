@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -35,6 +36,7 @@ interface MistakeGroup {
 
 /** The mistake bank. Everything you've missed, grouped by KC, ready to re-drill. */
 export default function MistakesPage() {
+  useTitle("Mistake bank");
   const router = useRouter();
   const { user } = useAuth();
   const startFixed = useQuizSession((s) => s.startFixed);

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -31,6 +32,7 @@ interface FadingKc {
  * card away to defer it (it flies off on a spring), or re-drill it now.
  */
 export default function ReviewPage() {
+  useTitle("Review");
   const { user } = useAuth();
   const reduced = useReducedMotion();
   const [deferred, setDeferred] = useState<string[]>([]);

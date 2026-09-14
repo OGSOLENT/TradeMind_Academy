@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
@@ -22,6 +23,7 @@ const COURSE_ID = "trading-foundations";
  * choice, and a logged one: it just starts everything at the default prior.
  */
 export default function PlacementPage() {
+  useTitle("Placement");
   const router = useRouter();
   const { user } = useAuth();
   const startFixed = useQuizSession((s) => s.startFixed);

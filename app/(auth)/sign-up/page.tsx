@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { useQueryClient } from "@tanstack/react-query";
 import { getFirebase } from "@/lib/firebase/client";
 import { signInWithGoogle } from "@/lib/firebase/google";
@@ -48,6 +48,9 @@ export default function SignUpPage() {
       const name = displayName.trim() || email.split("@")[0] || "Learner";
       await updateProfile(cred.user, { displayName: name });
       await createUserProfile(db, cred.user.uid, name, true);
+      // A verification email, sent and forgotten. It never blocks the
+      // sign-up; Settings shows whether it's been acted on.
+      sendEmailVerification(cred.user).catch(() => undefined);
       // I prime the shared profile cache here on purpose. The root
       // SettingsApplier races this write on real network latency, and without
       // this it would cache null for 60 seconds and the consent page would

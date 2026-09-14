@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -25,6 +26,7 @@ import { clamp, cn } from "@/lib/utils";
 const COURSE_ID = "trading-foundations";
 
 export default function SkillTreePage() {
+  useTitle("Skill map");
   return (
     <Suspense fallback={<Skeleton className="h-96 w-full rounded-card" />}>
       <SkillTree />

@@ -11,12 +11,19 @@
  *
  * Run: npx tsx scripts/generate-content.ts
  */
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
 import { ITEMS } from "./level1-items";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
 import { CASE_STUDIES } from "../lib/case-studies";
+
+// Where the recordings are hosted. scripts/upload-videos.mjs writes this
+// after pushing the files to Vercel Blob; without it, videoUrl stays the
+// local /videos/ path the dev server serves through the symlink.
+const VIDEO_URLS: Record<string, string> = existsSync("content/video-urls.json")
+  ? (JSON.parse(readFileSync("content/video-urls.json", "utf8")) as Record<string, string>)
+  : {};
 
 // The diagram component is a client module with framer in it, so the
 // generator keeps its own list of ids rather than importing it.
@@ -252,7 +259,7 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
     kcId: kc.id,
     title: parsed.title,
     blocks,
-    videoUrl: parsed.video ? `/videos/${parsed.video}` : null,
+    videoUrl: parsed.video ? VIDEO_URLS[parsed.video] ?? `/videos/${parsed.video}` : null,
     videoFallbackUrl: null,
   };
 }

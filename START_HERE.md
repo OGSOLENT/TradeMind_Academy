@@ -48,6 +48,16 @@ npm run users
 
 Everything lives on the Settings page (avatar menu, top right, then Accessibility). Colour-blind candles, high contrast, font scale, the readable typeface, comfortable reading, reduce motion, calm mode (no background field or 3D), and the keyboard shortcuts list (press `?` anywhere). Choices save to the account and to the browser, so they apply before the page paints and on the sign-in page too. "Stay signed in on this device" is under Account.
 
+## Add or change a lesson
+
+Edit the markdown in `content/lessons/`, then push it everywhere:
+
+```bash
+npx tsx scripts/generate-content.ts && npm run seed:live && npm run deploy
+```
+
+Added a recording? Put the file in `~/Documents/DIssertation/Lessons`, add its `Video:` line, and run `node scripts/upload-videos.mjs` first.
+
 ## Deploy the live site
 
 The public copy is at **https://tmacademyuk.vercel.app**. After you change something and want it live:
