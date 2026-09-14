@@ -18,6 +18,10 @@ import { ITEMS } from "./level1-items";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
 import { CASE_STUDIES } from "../lib/case-studies";
 
+// The diagram component is a client module with framer in it, so the
+// generator keeps its own list of ids rather than importing it.
+const DIAGRAM_IDS = new Set(["timeframe-stack", "session-clock", "instrument-map", "prop-firm-funnel"]);
+
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
@@ -147,6 +151,8 @@ interface ParsedLesson {
   walkthroughs: string[];
   /** Real-chart case study ids from the meta line. */
   caseStudies: string[];
+  /** Diagram ids from the meta line. */
+  diagrams: string[];
   main: string;
   tail: string;
 }
@@ -178,6 +184,14 @@ function parseLesson(file: string): ParsedLesson {
   for (const id of caseStudies) {
     if (!CASE_STUDIES[id]) throw new Error(`${file}: unknown case study "${id}"`);
   }
+  // Diagram: `id`. The ids are the keys of DIAGRAMS in components/learn/diagram.tsx.
+  const diagrams = (/Diagram:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
+    .split(",")
+    .map((s) => s.replace(/`/g, "").trim())
+    .filter(Boolean);
+  for (const id of diagrams) {
+    if (!DIAGRAM_IDS.has(id)) throw new Error(`${file}: unknown diagram "${id}"`);
+  }
 
   // I drop the h1, the meta line, the standing disclaimer (the app renders
   // its own banner), the "Next:" navigation link, and the self-check section
@@ -201,30 +215,28 @@ function parseLesson(file: string): ParsedLesson {
   const main = (splitAt === -1 ? body : body.slice(0, splitAt)).trim();
   const tail = splitAt === -1 ? "" : body.slice(splitAt).trim();
 
-  return { key, slug: file.replace(/\.md$/, ""), title, video, walkthroughs, caseStudies, main, tail };
+  return { key, slug: file.replace(/\.md$/, ""), title, video, walkthroughs, caseStudies, diagrams, main, tail };
 }
 
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
   const blocks: LessonBlock[] = [];
 
-  // The hero slot. A recording if there is one; otherwise the lesson's first
-  // walkthrough, which is the visual aid for the lessons that were written
-  // rather than filmed; otherwise the poster and "Video coming soon". A
-  // lesson with both gets the video first and its walkthroughs after the
-  // prose, where a figure would go.
-  const [heroWalkthrough, ...moreWalkthroughs] = parsed.video ? [] : parsed.walkthroughs;
-  const laterWalkthroughs = parsed.video ? parsed.walkthroughs : moreWalkthroughs;
-  if (parsed.video || !heroWalkthrough) blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
-  if (heroWalkthrough) blocks.push({ kind: "walkthrough", id: heroWalkthrough });
-  blocks.push({ kind: "markdown", md: parsed.main });
-  for (const id of laterWalkthroughs) blocks.push({ kind: "walkthrough", id });
-  // The real chart comes after the taught version: first the idea drawn
-  // exactly, then the same idea as it actually printed.
+  // The order is visuals first, then the prose. A recording, if there is
+  // one; then every walkthrough; then the real-chart case study; then the
+  // lesson. The page hides the recording where the video files aren't
+  // hosted, and because the walkthrough sits right behind it, a lesson
+  // whose video is missing looks exactly like a lesson that never had one.
+  // There is no "coming soon" slot any more: a lesson with no video and no
+  // walkthrough simply starts with its prose.
+  if (parsed.video) blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
+  for (const id of parsed.walkthroughs) blocks.push({ kind: "walkthrough", id });
   for (const id of parsed.caseStudies) blocks.push({ kind: "caseStudy", id });
+  for (const id of parsed.diagrams) blocks.push({ kind: "diagram", id });
+  blocks.push({ kind: "markdown", md: parsed.main });
   // The generic module figure only where there's no walkthrough to do the
   // job properly, and never for the instruments module, where a simulated
   // candle chart would illustrate nothing.
-  if (parsed.walkthroughs.length === 0 && kc.id !== "kc-instruments") {
+  if (parsed.walkthroughs.length === 0 && parsed.caseStudies.length === 0 && kc.id !== "kc-instruments") {
     blocks.push({
       kind: "figure",
       src: `/figures/${kc.id}.svg`,
@@ -305,7 +317,7 @@ function main() {
   const withWalkthrough = missingVideo.filter((l) => l.blocks.some((b) => b.kind === "walkthrough"));
   if (missingVideo.length)
     console.log(
-      `  note: ${missingVideo.length} lesson(s) without video, ${withWalkthrough.length} of them with a walkthrough, ${missingVideo.length - withWalkthrough.length} with neither`,
+      `  note: ${missingVideo.length} lesson(s) without video, ${withWalkthrough.length} of them with a walkthrough, ${missingVideo.length - withWalkthrough.length} text-first`,
     );
 }
 

@@ -59,6 +59,8 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
         id: kc.id,
         title: kc.title,
         pL,
+        /** No answers yet: the number is the model's prior, not evidence. */
+        prior: (st?.attempts ?? 0) === 0,
         state: nodeStateFor(pL, st?.attempts ?? 0, unlocked.has(kc.id)),
       };
     });
@@ -101,7 +103,8 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
             </Pill>
           </div>
           <p className="mt-1 max-w-[250px] text-sm text-fg-secondary">
-            One estimate per module, straight from the Bayesian model. Nothing here is decorative.
+            One estimate per module, straight from the Bayesian model. Greyed numbers are the
+            starting assumption for modules you haven&apos;t answered on yet.
           </p>
         </div>
         <div className="pointer-events-none absolute bottom-5 left-6 flex items-center gap-2">
@@ -169,10 +172,10 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
                       />
                     </span>
                   </span>
-                  <span className={cn("num w-10 text-right text-xs", tone.text)}>
+                  <span className={cn("num w-10 text-right text-xs", row.prior ? "text-fg-muted" : tone.text)} title={row.prior ? "Starting assumption: no answers yet" : undefined}>
                     <Counter value={Math.round(row.pL * 100)} suffix="%" />
                   </span>
-                  <span className="sr-only">, {tone.label}</span>
+                  <span className="sr-only">, {tone.label}{row.prior ? ", starting assumption, no answers yet" : ""}</span>
                 </Link>
               </motion.li>
             );

@@ -1,6 +1,6 @@
 # Lesson 57 — Futures or CFDs: Which Fits You
 
-**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Prerequisites: Lesson 56
+**Module 16: Markets, Instruments & Funding** · Video: `to be recorded` · Diagram: `instrument-map` · Prerequisites: Lesson 56
 
 > Educational content only. Not financial advice. This lesson is a framework for choosing an instrument type for practice and study; it is not a recommendation to trade real money.
 

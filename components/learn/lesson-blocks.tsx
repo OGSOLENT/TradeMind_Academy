@@ -61,10 +61,11 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
  * native controls take over. With no video yet, the poster stands in.
  *
  * The recordings live outside the repo (public/videos is a symlink) and
- * aren't part of the Vercel deployment, so a lesson can have a videoUrl the
- * server can't serve. If the file fails to load the block falls back to the
- * poster and says so, instead of a dead player. NEXT_PUBLIC_VIDEO_BASE, when
- * set, points /videos/... at wherever the recordings are hosted.
+ * aren't part of the Vercel deployment. The page already drops the block
+ * where recordings aren't hosted; if a file still fails to load, the block
+ * removes itself rather than showing a dead player, and the walkthrough
+ * behind it takes the top of the page. NEXT_PUBLIC_VIDEO_BASE, when set,
+ * points /videos/... at wherever the recordings are hosted.
  */
 const VIDEO_BASE = process.env.NEXT_PUBLIC_VIDEO_BASE?.replace(/\/$/, "");
 
@@ -88,6 +89,7 @@ export function VideoBlock({
   const [playing, setPlaying] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const src = unavailable ? null : resolveVideo(videoUrl);
+  if (unavailable || !src) return null;
 
   const play = () => {
     setPlaying(true);
@@ -104,22 +106,18 @@ export function VideoBlock({
           aria-hidden="true"
           className="pointer-events-none absolute -inset-px -z-10 rounded-card bg-[radial-gradient(80%_60%_at_50%_0%,rgba(94,106,210,0.22),transparent_70%)]"
         />
-        {src ? (
-          <video
-            ref={videoRef}
-            src={src}
-            controls={playing}
-            preload="metadata"
-            className="aspect-video w-full bg-bg-deep object-contain"
-            onPlay={() => setPlaying(true)}
-            onError={() => {
-              setUnavailable(true);
-              setPlaying(false);
-            }}
-          />
-        ) : (
-          <div className="aspect-video w-full bg-bg-deep" />
-        )}
+        <video
+          ref={videoRef}
+          src={src}
+          controls={playing}
+          preload="metadata"
+          className="aspect-video w-full bg-bg-deep object-contain"
+          onPlay={() => setPlaying(true)}
+          onError={() => {
+            setUnavailable(true);
+            setPlaying(false);
+          }}
+        />
 
         {/* The poster sits on its own layer so it can fill the frame while
             the video underneath keeps its true aspect once it plays. */}
@@ -134,35 +132,24 @@ export function VideoBlock({
             >
               <Image src={block.poster} alt="" fill sizes="720px" className="object-cover" unoptimized />
               <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg-deep/85 via-bg-deep/30 to-transparent" />
-              {src ? (
-                <button
-                  onClick={play}
-                  aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
-                  className="group relative flex h-20 w-20 items-center justify-center rounded-pill bg-white/10 text-fg-primary shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),0_0_40px_var(--accent-glow)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-300 hover:scale-105 hover:bg-white/15 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3),0_0_60px_var(--accent-glow)]"
-                >
-                  <span
-                    aria-hidden="true"
-                    className={cn("absolute inset-0 rounded-pill border border-accent/40", !reduced && "tm-node-pulse")}
-                  />
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1">
-                    <path d="M8 5.5v13l11-6.5z" />
-                  </svg>
-                </button>
-              ) : (
+              <button
+                onClick={play}
+                aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
+                className="group relative flex h-20 w-20 items-center justify-center rounded-pill bg-white/10 text-fg-primary shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),0_0_40px_var(--accent-glow)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-300 hover:scale-105 hover:bg-white/15 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3),0_0_60px_var(--accent-glow)]"
+              >
                 <span
                   aria-hidden="true"
-                  className="relative flex h-16 w-16 items-center justify-center rounded-pill bg-white/10 text-fg-secondary backdrop-blur-sm"
-                >
-                  ▶
-                </span>
-              )}
+                  className={cn("absolute inset-0 rounded-pill border border-accent/40", !reduced && "tm-node-pulse")}
+                />
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1">
+                  <path d="M8 5.5v13l11-6.5z" />
+                </svg>
+              </button>
               <div className="relative flex items-center gap-2">
-                <Pill tone={src ? "accent" : "neutral"} dot>
-                  {src ? "Lecture" : unavailable ? "Recording not available here yet" : "Video coming soon"}
+                <Pill tone="accent" dot>
+                  Lecture
                 </Pill>
-                {title && src && (
-                  <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{title}</span>
-                )}
+                {title && <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{title}</span>}
               </div>
             </motion.div>
           )}

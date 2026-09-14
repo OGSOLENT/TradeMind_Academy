@@ -32,6 +32,26 @@ function esc(text: string): string {
     .replaceAll("'", "&apos;");
 }
 
+/**
+ * The lecture poster: the module title centred over the glyphs, nothing
+ * else. The lesson page draws its own play button and label on top, so the
+ * poster stays quiet, and it's object-cover'd into a 16:9 frame so the
+ * text sits where the crop can't reach it.
+ */
+function poster(title: string, seed: number): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1a1a30"/>
+      <stop offset="100%" stop-color="#07070c"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#g)"/>
+  <g transform="translate(0 80)" opacity="0.55">${candleGlyphs(seed)}</g>
+  <text x="600" y="600" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="30" font-weight="600" fill="#E4E1ED">${esc(title)}</text>
+</svg>\n`;
+}
+
 function svg(title: string, subtitle: string, seed: number): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
   <rect width="1200" height="520" fill="#0A0A0F"/>
@@ -48,8 +68,8 @@ mkdirSync("public/figures", { recursive: true });
 mkdirSync("public/posters", { recursive: true });
 
 content.kcs.forEach((kc, i) => {
-  writeFileSync(`public/figures/${kc.id}.svg`, svg(kc.title, "Placeholder figure — final artwork lands with author copy", i + 1));
-  writeFileSync(`public/posters/${kc.id}.svg`, svg(kc.title, "Video lesson poster — NotebookLM video slots in later", i + 5));
+  writeFileSync(`public/figures/${kc.id}.svg`, svg(kc.title, "Simulated candles, for illustration", i + 1));
+  writeFileSync(`public/posters/${kc.id}.svg`, poster(kc.title, i + 5));
 });
 
 console.log(`Wrote ${content.kcs.length} figures + ${content.kcs.length} posters to public/`);

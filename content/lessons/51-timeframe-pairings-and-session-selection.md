@@ -1,6 +1,6 @@
 # Lesson 51 — Timeframe Pairings and Session Selection
 
-**Module 11: The Fractal Model** · Video: `to be recorded` · Walkthrough: `timeframe-pairing` · Prerequisites: Lesson 50
+**Module 11: The Fractal Model** · Video: `to be recorded` · Walkthrough: `timeframe-pairing` · Diagram: `timeframe-stack` · Prerequisites: Lesson 50
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

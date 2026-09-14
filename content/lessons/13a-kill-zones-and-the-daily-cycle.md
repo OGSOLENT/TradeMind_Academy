@@ -1,6 +1,6 @@
 # Lesson 13a — Kill Zones & the Daily Cycle
 
-**Module 6: Daily Bias** · Video: `Mastering_ICT_Killzones.mp4` (8:41) · Prerequisites: Lessons 1–13
+**Module 6: Daily Bias** · Video: `Mastering_ICT_Killzones.mp4` (8:41) · Diagram: `session-clock` · Prerequisites: Lessons 1–13
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

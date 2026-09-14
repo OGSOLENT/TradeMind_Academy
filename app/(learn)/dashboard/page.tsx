@@ -222,6 +222,12 @@ export default function DashboardPage() {
                 </Pill>
                 <h1 className="mt-3 text-headline-md text-fg-primary">{targetKc.title}</h1>
                 <p className="mt-2 text-body-base text-fg-secondary">{targetKc.description}</p>
+                {(targetState?.attempts ?? 0) === 0 && (
+                  <p className="num mt-2 text-xs text-fg-muted">
+                    {Math.round((targetState?.pL ?? 0) * 100)}% is the model&apos;s starting assumption for a module you
+                    haven&apos;t answered anything on yet. It moves with your first answer.
+                  </p>
+                )}
                 <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
                   <Link href={actionCopy[action].href(targetKc.id)}>
                     <Button>{actionCopy[action].label}</Button>
