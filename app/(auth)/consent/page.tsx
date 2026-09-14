@@ -89,7 +89,11 @@ export default function ConsentPage() {
         <ul className="list-disc space-y-1 pl-5">
           <li>your answers to questions, response times, and estimated skill mastery;</li>
           <li>your display name and email, used only to operate your account;</li>
-          <li>no financial data — every chart and price in the app is simulated.</li>
+          <li>
+            no financial data of yours. The charts you learn on are simulated, apart from
+            clearly labelled historical case studies drawn from a public data provider; nothing
+            is live.
+          </li>
         </ul>
         <p>
           Under UK GDPR the lawful basis is your <span className="text-fg-primary">consent</span>.
@@ -98,7 +102,8 @@ export default function ConsentPage() {
           Settings, and you may withdraw consent without giving a reason.
         </p>
         <p>
-          This platform teaches concepts using simulated markets. It provides{" "}
+          This platform teaches concepts using simulated markets and dated historical examples.
+          It provides{" "}
           <span className="text-fg-primary">no financial advice, no signals, and no live trading</span>.
           It is available only to adults (18+).
         </p>

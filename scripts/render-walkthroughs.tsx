@@ -16,9 +16,12 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { chromium } from "@playwright/test";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
+import { CASE_STUDIES } from "../lib/case-studies";
 import { WalkthroughChart } from "../components/learn/walkthrough-chart";
 
 const only = process.argv[2];
+/** Synthetic walkthroughs and real-chart case studies, one registry for the harness. */
+const EVERYTHING = { ...WALKTHROUGHS, ...CASE_STUDIES };
 
 const CSS = `
   :root {
@@ -37,21 +40,21 @@ const CSS = `
 `;
 
 function page(id: string, step: number): string {
-  const spec = WALKTHROUGHS[id]!;
+  const spec = EVERYTHING[id]!;
   const svg = renderToStaticMarkup(createElement(WalkthroughChart, { spec, step }));
   const s = spec.steps[step]!;
   return `<!doctype html><html><head><meta charset="utf-8"><style>${CSS}</style></head><body>
-  <div class="frame"><p class="title">${spec.title}</p><p class="sub">${spec.frame}</p>${svg}
+  <div class="frame"><p class="title">${spec.source ? "REAL CHART · " : ""}${spec.title}</p><p class="sub">${spec.frame}${spec.source ? ` · ${spec.source.provider}, retrieved ${spec.source.retrieved}` : ""}</p>${svg}
   <p class="cap"><b>Step ${step + 1} of ${spec.steps.length} · ${s.title}.</b> ${s.caption}</p></div></body></html>`;
 }
 
 async function main() {
-  const ids = only ? [only] : Object.keys(WALKTHROUGHS);
+  const ids = only ? [only] : Object.keys(EVERYTHING);
   const browser = await chromium.launch();
   const pg = await browser.newPage({ viewport: { width: 820, height: 700 }, deviceScaleFactor: 1 });
   const finals: string[] = [];
   for (const id of ids) {
-    const spec = WALKTHROUGHS[id];
+    const spec = EVERYTHING[id];
     if (!spec) throw new Error(`unknown walkthrough ${id}`);
     const dir = `docs/walkthroughs/${id}`;
     mkdirSync(dir, { recursive: true });

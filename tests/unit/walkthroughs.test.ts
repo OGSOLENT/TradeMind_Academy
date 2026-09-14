@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { WALKTHROUGHS } from "@/lib/walkthroughs";
+import { CASE_STUDIES } from "@/lib/case-studies";
 import { build } from "@/lib/walkthroughs/synth";
 import type { Anno } from "@/lib/walkthroughs/types";
 
@@ -160,5 +161,45 @@ describe("walkthrough specs", () => {
         }
       }
     }
+  });
+});
+
+describe("real-chart case studies", () => {
+  const all = Object.values(CASE_STUDIES);
+
+  it("exist for the sixteen concepts and carry their source", () => {
+    expect(all).toHaveLength(16);
+    for (const w of all) {
+      expect(w.source?.kind).toBe("real");
+      expect(w.source?.provider).toBeTruthy();
+      expect(w.source?.retrieved).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(w.frame).toContain("futures");
+    }
+  });
+
+  it.each(all.map((w) => [w.id, w] as const))("%s: annotations sit inside the real bars", (_id, w) => {
+    const n = w.candles.length;
+    let lo = Infinity;
+    let hi = -Infinity;
+    for (const c of w.candles) {
+      lo = Math.min(lo, c.l);
+      hi = Math.max(hi, c.h);
+    }
+    for (const step of w.steps) {
+      expect(step.caption.length).toBeGreaterThan(40);
+      for (const a of step.annos) {
+        for (const b of bars(a)) {
+          expect(b).toBeGreaterThanOrEqual(0);
+          expect(b).toBeLessThan(n);
+        }
+        if (a.kind === "marker") {
+          const c = w.candles[a.bar]!;
+          // Real markers are placed on actual highs and lows, so they sit exactly on the bar.
+          expect(a.price).toBeGreaterThanOrEqual(c.l - (hi - lo) * 0.02);
+          expect(a.price).toBeLessThanOrEqual(c.h + (hi - lo) * 0.02);
+        }
+      }
+    }
+    if (w.overlay) expect(w.overlay.values).toHaveLength(n);
   });
 });

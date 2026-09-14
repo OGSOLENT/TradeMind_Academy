@@ -1,6 +1,6 @@
 # Lesson 33 — Opening Gaps: NWOG and NDOG
 
-**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `opening-gaps` · Prerequisites: Lesson 32
+**Module 7: PD Arrays** · Video: `to be recorded` · Walkthrough: `opening-gaps` · CaseStudy: `real-nwog` · Prerequisites: Lesson 32
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

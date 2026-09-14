@@ -1,6 +1,6 @@
 # Lesson 20 — SMT Divergence
 
-**Module 7: SMT Divergence** · Video: `SMT_Divergence_Explained.mp4` (6:48) · Walkthrough: `smt-divergence` · Prerequisites: Lesson 19
+**Module 7: SMT Divergence** · Video: `SMT_Divergence_Explained.mp4` (6:48) · Walkthrough: `smt-divergence` · CaseStudy: `real-smt` · Prerequisites: Lesson 19
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

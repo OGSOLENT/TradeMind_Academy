@@ -16,6 +16,7 @@ import path from "node:path";
 import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
 import { ITEMS } from "./level1-items";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
+import { CASE_STUDIES } from "../lib/case-studies";
 
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
@@ -144,6 +145,8 @@ interface ParsedLesson {
   video: string | null;
   /** Walkthrough ids from the meta line, in order. */
   walkthroughs: string[];
+  /** Real-chart case study ids from the meta line. */
+  caseStudies: string[];
   main: string;
   tail: string;
 }
@@ -165,6 +168,15 @@ function parseLesson(file: string): ParsedLesson {
     .filter(Boolean);
   for (const id of walkthroughs) {
     if (!WALKTHROUGHS[id]) throw new Error(`${file}: unknown walkthrough "${id}"`);
+  }
+  // CaseStudy: `id`. A real-chart example, cut from history by
+  // scripts/find-case-studies.ts; it has to exist in lib/case-studies.
+  const caseStudies = (/CaseStudy:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
+    .split(",")
+    .map((s) => s.replace(/`/g, "").trim())
+    .filter(Boolean);
+  for (const id of caseStudies) {
+    if (!CASE_STUDIES[id]) throw new Error(`${file}: unknown case study "${id}"`);
   }
 
   // I drop the h1, the meta line, the standing disclaimer (the app renders
@@ -189,7 +201,7 @@ function parseLesson(file: string): ParsedLesson {
   const main = (splitAt === -1 ? body : body.slice(0, splitAt)).trim();
   const tail = splitAt === -1 ? "" : body.slice(splitAt).trim();
 
-  return { key, slug: file.replace(/\.md$/, ""), title, video, walkthroughs, main, tail };
+  return { key, slug: file.replace(/\.md$/, ""), title, video, walkthroughs, caseStudies, main, tail };
 }
 
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
@@ -206,6 +218,9 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
   if (heroWalkthrough) blocks.push({ kind: "walkthrough", id: heroWalkthrough });
   blocks.push({ kind: "markdown", md: parsed.main });
   for (const id of laterWalkthroughs) blocks.push({ kind: "walkthrough", id });
+  // The real chart comes after the taught version: first the idea drawn
+  // exactly, then the same idea as it actually printed.
+  for (const id of parsed.caseStudies) blocks.push({ kind: "caseStudy", id });
   // The generic module figure only where there's no walkthrough to do the
   // job properly, and never for the instruments module, where a simulated
   // candle chart would illustrate nothing.

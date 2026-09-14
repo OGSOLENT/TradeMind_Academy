@@ -89,7 +89,8 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
           <div className="mt-12 rounded-card bg-white/[0.03] p-5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]">
             <p className="text-sm leading-6 text-fg-secondary">
               <span className="font-medium text-warning">Risk & purpose disclaimer.</span>{" "}
-              Every chart, price, and scenario on TradeMind Academy is <em>simulated</em>. Nothing
+              Every chart, price, and scenario on TradeMind Academy is <em>simulated</em>, or a
+              clearly labelled historical case study; nothing is live. Nothing
               here is financial advice, a trading signal, or an inducement to trade. Trading real
               money carries substantial risk of loss. This platform never connects to a broker,
               never handles funds, and makes no claims about profitability. For adults 18+.

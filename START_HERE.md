@@ -50,7 +50,7 @@ Everything lives on the Settings page (avatar menu, top right, then Accessibilit
 
 ## Deploy the live site
 
-The public copy is at **https://trademind-academy.vercel.app**. After you change something and want it live:
+The public copy is at **https://tmacademyuk.vercel.app**. After you change something and want it live:
 
 ```bash
 npm run deploy

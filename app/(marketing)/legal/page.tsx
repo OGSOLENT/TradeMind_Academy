@@ -17,7 +17,9 @@ export default function LegalPage() {
           <p className="text-body-base leading-7 text-fg-secondary">
             TradeMind Academy is a research artefact built for a BSc dissertation (Solent
             University, unit QHO634). It is an educational platform about trading concepts, running
-            entirely on simulated data. It is not a financial service, does not provide investment
+            on simulated data, apart from clearly labelled historical case studies drawn from a
+            public data provider (Yahoo Finance) with the date and symbol shown; no market data is
+            live. It is not a financial service, does not provide investment
             advice or signals, holds no client money, and connects to no broker. Content must not be
             relied upon for real trading decisions. The service is restricted to adults (18+).
           </p>

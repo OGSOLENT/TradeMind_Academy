@@ -53,3 +53,4 @@ serviceAccountKey.json
 *-service-account*.json
 .next-audit/
 .env*
+content/bars/

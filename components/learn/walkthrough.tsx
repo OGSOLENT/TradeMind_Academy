@@ -55,12 +55,17 @@ export function Walkthrough({ spec, anchor = "walkthrough" }: { spec: Spec; anch
         <div className="flex flex-wrap items-center justify-between gap-2 px-5 pt-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <Pill tone="mastery" dot>
-                Walkthrough
+              <Pill tone={spec.source ? "warning" : "mastery"} dot>
+                {spec.source ? "Real chart" : "Walkthrough"}
               </Pill>
               <span className="truncate text-sm font-medium text-fg-primary">{spec.title}</span>
             </div>
-            <p className="mt-1 text-xs text-fg-muted">{spec.frame} · simulated data</p>
+            <p className="mt-1 text-xs text-fg-muted">
+              {spec.frame}
+              {spec.source
+                ? ` · historical ${spec.source.symbol} bars from ${spec.source.provider}, retrieved ${spec.source.retrieved}. Not live, not a signal.`
+                : " · simulated data"}
+            </p>
           </div>
           <button
             onClick={() => setDescribe((d) => !d)}
@@ -155,7 +160,10 @@ export function Walkthrough({ spec, anchor = "walkthrough" }: { spec: Spec; anch
             className="mt-2 space-y-2 overflow-hidden rounded-control bg-white/5 p-4 text-sm leading-6 text-fg-secondary"
           >
             <li className="text-fg-primary">
-              {spec.title}. {spec.frame}. Simulated prices built to show the idea; not a real market.
+              {spec.title}. {spec.frame}.{" "}
+              {spec.source
+                ? `Historical ${spec.source.symbol} bars from ${spec.source.provider}, ${spec.source.from} to ${spec.source.to}, retrieved ${spec.source.retrieved}. Shown for education; not live data and not a signal.`
+                : "Simulated prices built to show the idea; not a real market."}
             </li>
             {spec.steps.map((s, i) => (
               <li key={i}>
