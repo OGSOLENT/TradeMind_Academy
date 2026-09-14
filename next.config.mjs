@@ -20,6 +20,11 @@ const nextConfig = {
   // stale 404s.
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   poweredByHeader: false,
+  // Every image on the site is already served as-is (SVG posters and
+  // figures, the OG image). Turning the optimizer off removes its API route,
+  // which is where the image cache-key advisory for this Next major lives,
+  // and costs nothing here.
+  images: { unoptimized: true },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

@@ -76,21 +76,29 @@ deploys on push.)
 
 ## The lesson videos
 
-`NEXT_PUBLIC_VIDEOS_AVAILABLE=false` is set on Vercel. With it, the lesson
-page drops the recording block entirely and the walkthrough is the hero, so
-a lesson whose file isn't hosted looks like one that never had a video.
-Locally the variable is unset and the symlinked files play. Flip it to
-`true` once the recordings are hosted (see below).
+The recordings live in a public Vercel Blob store attached to the project
+(`tmacademy-lessons`; Hobby includes 5 GB of storage and 100 GB of transfer
+a month, and the 36 files are 1.1 GB). `scripts/upload-videos.mjs` pushes
+anything new from `public/videos` (the symlink to
+`~/Documents/DIssertation/Lessons`) and writes `content/video-urls.json`,
+which the content generator uses for each lesson's `videoUrl`. So adding a
+recording is:
 
+```bash
+# drop File.mp4 into ~/Documents/DIssertation/Lessons, add the Video: line
+node scripts/upload-videos.mjs
+npx tsx scripts/generate-content.ts
+npm run seed:live      # or npm run seed for the emulator
+npm run deploy
+```
 
-`public/videos` is a symlink to `~/Documents/DIssertation/Lessons`, 1.1 GB
-of recordings. They are NOT deployed: Vercel caps a file at 100 MB and
-charges for bandwidth, so `.vercelignore` leaves them out. On the live site
-those lessons show the poster with the "Video coming soon" frame until the
-recordings are hosted somewhere built for video (Firebase Storage in the
-same project is the obvious choice, and the lesson component only needs a
-base URL to prefix). Locally, `npm run dev` still serves them through the
-symlink.
+It needs `BLOB_READ_WRITE_TOKEN` in `.env.local`, which `vercel blob
+create-store` (or `vercel env pull`) writes. The store is public so the
+`<video>` element can stream the files directly from Vercel's CDN.
+
+If the recordings ever have to come down (`NEXT_PUBLIC_VIDEOS_AVAILABLE=false`
+on Vercel), the lesson page drops the recording block and the walkthrough
+becomes the hero, so nothing shows a dead player.
 
 ## What the build needs to know
 

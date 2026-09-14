@@ -2,45 +2,39 @@
 
 **Ogechukwu Adama, 10440379**
 Module QHO656 Dissertation Project · Supervisor: Prashant Bikram Shah
-Artefact: https://github.com/OGSOLENT/TradeMind_Academy
+Live: https://tmacademyuk.vercel.app · Source: https://github.com/OGSOLENT/TradeMind_Academy
 
-Target length 15 minutes plus Q&A. Timings in the margin. There's a 10 minute cut and a 20 minute extended version at the bottom if the slot is different.
+Written for a 15 minute slot plus Q&A. Timings are in the margin. There's a 10 minute cut and a 20 minute extended version at the bottom if the slot turns out to be different.
 
-**What this presentation is.** A demonstration that the artefact works, plus a walkthrough of how it was built. It is not about how I managed the project. That's in the report.
+**What this presentation is.** A demonstration that the artefact works, plus a walkthrough of how it was built and what the evidence actually shows. It is not a summary of the report. The report covers the process; this covers the thing.
 
 ---
 
 ## Before you hit record
 
-Run through this list every time, including the real take. Most demo failures are environment failures, not nerves.
+Run this list every time, including the real take. Most demo failures are environment failures, not nerves.
 
 **About 20 minutes before**
 
-1. Restart the machine, or at least quit everything you don't need. The dev server degrades after long uptime and pages start timing out. I've had that happen mid session.
-2. Open a terminal and start the emulator:
+1. Restart the machine, or at least quit everything you don't need. The dev server degrades after long uptime and pages start timing out. You've had that happen mid session.
+2. One terminal, one command:
    ```bash
-   cd ~/Documents/DIssertation/TradeMind_Academy && npm run emulators
+   cd ~/Documents/DIssertation/TradeMind_Academy && npm run stop && npm run dev
    ```
-   Wait for "All emulators ready".
-3. Second terminal, seed and start the app:
-   ```bash
-   cd ~/Documents/DIssertation/TradeMind_Academy && npm run seed && npm run dev
-   ```
-4. Confirm only one server is running. Two will fight over the build folder and serve stale pages:
-   ```bash
-   ps aux | grep -c "[n]ext-server"
-   ```
-   You want 2 there (that's one server, it spawns a child). If you see 4, kill everything with `pkill -f "next dev"` and start over.
+   That's the real app: live database, real Google sign-in, port 3000. The port guard refuses to start if something's already on 3000, which is what you want.
+3. Wait for the compile, then open `http://localhost:3000`.
+
+**Demo locally, not on Vercel.** The deployed site is real and you should show the URL, but the lesson recordings aren't hosted yet, so on Vercel a recorded lesson opens on its walkthrough instead. Locally the videos play. Run the demo on localhost and put the live URL on screen once, near the end, as proof it ships.
 
 **Tabs to have open, in this order**
 
 1. `localhost:3000` on the landing page
-2. `localhost:4000` (the emulator UI, for the database section)
+2. The Firebase console on the Firestore tab (`npm run db` opens it)
 3. The GitHub repo
 4. VS Code with `lib/bkt/index.ts` already open
-5. `docs/EVALUATION.md`
+5. `docs/report/CALIBRATION.md`
 
-**Do a throwaway run.** Sign up with a junk email, click through the whole flow once, then close that tab. It warms up every route so nothing compiles on camera. This is the single highest value thing on this list.
+**Do a throwaway run.** Sign in, click through a lesson and a practice session, then close that tab. It warms every route so nothing compiles on camera. This is the single highest value thing on the list.
 
 **Recording setup**
 
@@ -48,7 +42,7 @@ Run through this list every time, including the real take. Most demo failures ar
 - Zoom the browser to about 125%. Text that's readable on your monitor is unreadable in a compressed recording.
 - Close Slack, mail, notifications. Do not skip this.
 - Test your mic for 10 seconds and play it back before the real take.
-- Have a glass of water off camera.
+- Water off camera.
 
 ---
 
@@ -56,185 +50,217 @@ Run through this list every time, including the real take. Most demo failures ar
 
 ### 1. Opening (0:00 to 1:15)
 
-> Hi, I'm Ogechukwu Adama. This is TradeMind Academy, an intelligent tutoring system for trading education, and it's the artefact for my dissertation project.
+> Hi, I'm Ogechukwu Adama. This is TradeMind Academy, an intelligent tutoring system for trading education, and it's the artefact for my dissertation.
 >
 > I want to start with the problem, because it shapes everything you're about to see.
 >
-> Trading education online is mostly video. You watch someone explain a concept, you nod along, and then you've got no idea whether you've actually learned it. There's no model of what you know. Nothing adapts. Everybody gets the same content in the same order regardless of what they already understand, and the feedback loop is basically absent.
+> Trading education online is a content pipe. Everyone gets the same videos in the same order, nothing in the system holds any idea of who you are, and progression is governed by what you click rather than by what you've shown you know. That matters more here than in most subjects, because the research on retail trading is blunt. Most day traders lose money, and performance doesn't improve with experience. Markets are a terrible teacher. Feedback arrives late, it's buried in variance, and quite often it's wrong, because a bad decision can be paid and a good one can lose.
 >
-> So the research question I set was this. Can a Bayesian Knowledge Tracing model drive a genuinely adaptive learning loop in this domain, and can that system produce interaction data good enough to evaluate whether the adaptation actually works?
+> So the research question I set was this. Can a Bayesian Knowledge Tracing model drive a genuinely adaptive learning loop in this domain, and can that system produce evidence good enough to evaluate whether the adaptation actually works?
 >
-> That second half matters as much as the first. It's not enough to build something that feels adaptive. It has to record evidence.
+> That second half matters as much as the first. It isn't enough to build something that feels adaptive. It has to record what it did and let somebody else check.
 >
-> What I'll do now is demonstrate the full loop working, then take you into the code that drives it, then show you the evidence it produces. About fifteen minutes, and then I'm happy to take questions.
+> I'll demonstrate the loop end to end, take you into the code that drives it, then show you the evidence. About fifteen minutes, then I'm happy to take questions.
 
 **Delivery note.** Don't rush this. It's the only part where you set up why anything else matters. Slow down on the research question.
 
 ---
 
-### 2. The ethics gate (1:15 to 2:30)
+### 2. The ethics gate (1:15 to 2:15)
 
 Screen: `localhost:3000`, then click through to sign up.
 
-> Before I show you the learning, I want to show you the gate in front of it, because this is a research artefact and that shaped the design.
+> Before the learning, the gate in front of it, because this is a research artefact and that shaped the design.
 >
-> Here's the landing page. The disclaimer is not buried in a footer. Every chart in this system is simulated. There's no broker connection, no live market data, no signals, and it's eighteen plus.
+> Here's the landing page. The disclaimer is not buried in a footer. Every chart in this system is either simulated or a clearly labelled historical case study, there's no broker connection, no signals, no live data, and it's eighteen plus.
 
-Click **Start free**. Fill the sign up form.
+Click **Start free**. Fill the form.
 
-> Sign up. Notice the eighteen plus checkbox. Let me try to submit without it.
+> Sign up. Note the eighteen plus checkbox. Let me try to submit without it.
 
 *(Submit without ticking. Let the error show.)*
 
-> That's blocked in the interface, and it's also blocked in the database rules, so you can't get past it by manipulating the client. I'll show you that rule later.
+> That's blocked in the interface, and it's also blocked in the database rules, so you can't get past it from a console. Same gate on the Google button, which matters because a Google user skips the form entirely.
 
-*(Tick the box, submit.)*
+*(Tick, submit.)*
 
-> And then consent. This is real GDPR copy. It tells the learner exactly what's recorded, that the lawful basis is consent, and that they can withdraw. And Decline is a real button, it isn't decoration. If you click it you get signed out and nothing is collected.
+> Then consent. This is real GDPR copy. It tells the learner exactly what's recorded, that the lawful basis is consent, and that they can withdraw. Decline is a real button. If you click it you're signed out and nothing is collected.
 >
-> I'm going to accept, because otherwise this is a very short demonstration.
+> I'm going to accept, otherwise this is a very short demonstration.
 
 **Delivery note.** The failed submit is worth doing live. It proves the gate rather than describing it. Practise it so the timing is smooth.
 
 ---
 
-### 3. Placement and the model initialising (2:30 to 4:15)
+### 3. Placement and the model initialising (2:15 to 3:45)
 
-> Now the interesting part. Before I've read anything, the system needs a starting estimate of what I know. So it runs a short placement test, one question per module.
+> Now the interesting part. Before I've read anything, the system needs a starting estimate of what I know. So it runs a placement test, one question per module.
 
 Click **Start placement**. Answer the first two out loud.
 
-> These are real questions written from the course content. I'll answer a few correctly and get a couple wrong deliberately, so you can see the model respond rather than just go up.
+> Sixteen modules, so sixteen questions, drawn from the thirty-six items I marked as pretest-eligible. I'll get a couple wrong deliberately so you can see the model respond rather than just climb.
 
-*(Answer the rest quickly. Get roughly two wrong on purpose.)*
+*(Answer the rest quickly. Miss two on purpose.)*
 
-> And this is what I think is the nicest moment in the product.
+> And this is the moment I think is the nicest in the product.
 
-*(Constellation initialisation plays.)*
+*(Model initialisation plays.)*
 
-> That's the model initialising. Every node is a knowledge component, and the ring around each one is the probability that I know it, estimated from the answers I just gave. The caption says "your starting map", and that's literally what it is. The learner can see the model that's about to make decisions for them.
+> That's the model initialising. Every node is a module, and the ring around it is the probability I know it, estimated from the answers I just gave. The caption says "your starting map", and that's literally what it is.
 >
-> That's a deliberate design position. A lot of adaptive systems are a black box. This one shows its working, and you'll see that again in a minute.
+> That's a deliberate position. Most adaptive systems are a black box. This one shows its working, and you'll see that again in a minute.
 
 ---
 
-### 4. The dashboard and the routing decision (4:15 to 5:30)
+### 4. The dashboard and the routing decision (3:45 to 5:15)
 
-Click through to the dashboard.
+Dashboard.
 
-> Here's the dashboard. Top of the page, the system has picked what I should do next. It's chosen The Candle, because that's my lowest mastery unlocked module, and it's telling me to read the lesson rather than practise, because I haven't attempted it yet.
+> Here's the dashboard. Top of the page, the system has already picked what I do next. It's chosen this module because it's my lowest-mastery unlocked one, and it's telling me to read rather than practise because I haven't attempted it yet.
 >
-> That's not a menu I'm browsing. That's a routing decision, made by rules I'll show you in the code.
+> That isn't a menu I'm browsing. It's a routing decision made by rules I'll show you in the code.
+
+Point at the knowledge panel.
+
+> And this is the learner model as an object. It's a brain, built as a point cloud, with the sixteen modules as neurons inside it, the curriculum chain as an axon running through them, and the covered stretch lit to my actual mastery. Hovering a node gives you the real estimate. Clicking one takes you to the lesson.
 >
-> Underneath, the mastery estimate per module over time, and a review queue for anything that's fading.
+> Beside it, the same sixteen estimates as a list, which is the accessible version. The canvas is hidden from screen readers and only mounts on desktop when motion isn't reduced. That pattern runs through the whole build: nothing decorative is load-bearing.
+
+*(Point at a greyed estimate.)*
+
+> One detail worth having. Where a module still sits at the 25% prior, it's greyed and the page says so. The model saying "I don't know yet" and the model saying "I estimate 25%" are different claims, and the interface shouldn't blur them.
 
 Click **Skill Tree**.
 
-> And this is the whole curriculum as a route. Nine modules in a strict prerequisite chain. The lit part of the path is how far I've actually got, and that light at the head is my current position. Everything ahead is locked until I master what comes before it.
->
-> Nine modules, thirty three lessons, seventy two assessment questions, all written from a real trading curriculum.
+> And this is the curriculum as a route. Sixteen modules in a strict prerequisite chain, sixty-six lessons, a hundred and sixteen questions. Everything ahead is locked until you master what comes before it.
 
 ---
 
-### 5. A lesson (5:30 to 6:45)
+### 5. A lesson (5:15 to 7:00)
 
-Click into the current lesson.
+Open the current lesson.
 
-> Here's a lesson. Reading column, progress bar at the top, and the actual video embedded.
+> Here's a lesson, and this is where most of the work since the progress report has gone.
 >
-> This content is real. I built the curriculum from a set of video lessons, roughly four hours of material, and I wrote each one up as a structured written lesson so the platform has both formats.
->
-> Two accessibility things worth pointing out. Every figure has a "describe this chart" toggle, so a screen reader user gets a text alternative rather than a decorative image.
+> Visuals come first. The recording, then the walkthrough, then the real chart, then the prose. That ordering is deliberate and it was a fix: I had the charts below the text and couldn't find them myself.
 
-*(Click the toggle.)*
+Play a couple of seconds of the video, then stop.
 
-> And there's an inline knowledge check partway through, which collapses to a tick once you've got it.
+> The recording, where there is one. Thirty-three of the sixty-six lessons have one.
+
+Scroll to the walkthrough. Step through three or four steps with the arrow keys.
+
+> And this is what the other thirty-three have instead, and honestly what I'd now argue is better. It's a stepped, annotated chart. The price series is built from control points rather than recorded, so the sweep and the break and the gap are exactly where the caption says they are. Each step lays one thing on top: a level, a zone, a session window, an arrow. Earlier layers dim, the current one is bright.
 >
-> At the bottom, every lesson in this module, so nothing is unreachable.
+> Arrow keys step it. The caption is a live region so a screen reader announces each step. And there's a Describe button that lays the whole sequence out as text.
+
+*(Click Describe, show it, close it.)*
+
+> Forty-eight of these across the curriculum. For a structure concept this is more precise than a screen recording, and it's accessible in a way a video never was.
+
+Scroll to the real chart block.
+
+> And then, after the built example, a real one. Sixteen lessons carry a historical case study cut from actual ES and NASDAQ futures bars. The caption quotes the real date and the real prices, and the frame says historical, attributed, not live, not a signal.
+>
+> These were found by code, not by me hunting for a chart that flattered the idea. There's a detector per concept that encodes the lesson's own rule, scores every instance in the data, and keeps the cleanest one. That distinction matters: if I'd picked them by eye, they'd be cherry-picked.
+
+Scroll to the end-of-lesson check.
+
+> Every lesson ends on a check. Three questions from that module's bank. Get one wrong and it shows you the answer, explains the idea, and gives you a similar question. Miss that one too and it shows the answer and moves on rather than grinding you.
+>
+> Every answer in there, retries included, goes into the same log as everything else.
 
 ---
 
-### 6. The adaptive loop, and the visible mind (6:45 to 9:30)
+### 6. The adaptive loop, and the visible mind (7:00 to 9:30)
 
 Click **Practise**.
 
-> Now the core of it. This is a practice session, and every question in it is chosen by the model.
+> Now the core. Watch the launcher for a second.
+
+*(The routing readout plays.)*
+
+> That's the engine narrating its own decision. Which modules are unlocked, which has the lowest estimate, what band that puts me in, what difficulty that earns. Then the session starts.
 >
-> Top of the screen you can see my live mastery for this topic. Watch that number as I answer.
+> Top of the screen is my live mastery for this topic. Watch that number as I answer.
 
 *(Answer one correctly.)*
 
-> Correct, and the estimate moves up. Now this is the bit I'd point to if you asked me what's original about this project.
+> Correct, and the estimate moves. Now this is the bit I'd point at if you asked what's original here.
 
 *(Click **Why this question?**)*
 
-> The learner can ask the system why. And these are the real values the routing engine used. My current estimate, which band that puts me in, the difficulty it chose as a result, and the probability the model thinks I'll get this right. None of that is generated for display. It's the actual decision object.
+> The learner can ask the system why. And these are the real values the routing engine used: my current estimate, the band it puts me in, the difficulty it chose as a result, and the probability the model thinks I'll get this right.
 >
-> That's the "visible mind" idea. If a system is going to model you, you should be able to inspect the model.
+> None of that is generated for display. It's the actual decision object the engine returned. Which means the explanation is structurally incapable of disagreeing with the behaviour, because there's only one of them.
 
 *(Answer two deliberately wrong.)*
 
-> Now I'll get a couple wrong on purpose. Notice the feedback is amber, not red. It doesn't shake, it doesn't flash. That's deliberate. Wrong answers in a learning system shouldn't feel like punishment, and after two consecutive misses the router drops me into remediation and serves an easier question rather than pushing on.
+> Two wrong on purpose. Notice the feedback is amber, not red. It doesn't shake and it doesn't flash. Wrong answers in a learning system shouldn't feel like punishment. And after two consecutive misses the router drops into remediation and serves an easier question instead of pushing on.
 
-*(Finish the session. Let the mastery ceremony fire if it does.)*
+*(Finish the session. Let the ceremony fire if it does.)*
 
-> And when a module crosses the mastery threshold, which is 0.8, you get the ceremony, and the next module unlocks. Back on the map you can see the route has extended and the next node has opened up.
+> When a module crosses 0.8 you get the ceremony and the next one unlocks. Back on the map, the route has extended.
 
-**Delivery note.** This section is the heart. If you're running long, cut from elsewhere, not here.
+**Delivery note.** This section is the heart. If you're running long, cut from elsewhere.
 
 ---
 
 ### 7. The research data (9:30 to 10:30)
 
-Click **Review answers**, then switch to the emulator UI at `localhost:4000`.
+Click **Review answers**, then switch to the Firebase console.
 
-> Post session review. Every question, what I answered, what was correct, and the explanation.
+> Post-session review. Every question, what I answered, what was right, and why.
 >
-> But underneath that, this is what the project is actually for.
+> But underneath that, here's what the project is actually for.
 
-*(In the emulator UI, open a user's `sessions` then `responses`.)*
+*(Open a user's sessions, then responses.)*
 
-> Every answer I just gave is a record here. Question, topic, whether I got it right, how long I took in milliseconds, and critically, the model's estimate before the answer and after it.
+> Every answer I just gave is a record. The question, the module, whether I was right, how long I took in milliseconds, and critically the model's estimate before the answer and after it.
 >
-> That last pair is what makes this a research dataset rather than an app log. With those two numbers on every response I can reconstruct the entire learning trajectory and test whether the model's estimates actually track performance.
+> That last pair is what makes this a research dataset rather than an app log. With the prior and the posterior on every row I can reconstruct a whole learning trajectory and test whether the model's estimates actually track performance. Which is exactly what I'll show you in a minute.
 >
-> Two things about how this is built. The log is append only, enforced in the database rules, so not even the account owner can edit or delete a response. And the writes are queued locally, so if the network drops mid session nothing is lost. I test that by actually killing the connection during a session.
+> Two things about how it's built. The log is append-only, enforced in the database rules, so not even the account that wrote a row can edit or delete it. And writes are queued locally first, so if the network drops mid session nothing is lost. There's an end-to-end test that kills the connection halfway through a session and then counts the rows.
 
 ---
 
-### 8. Into the code (10:30 to 13:15)
+### 8. Into the code (10:30 to 12:45)
 
-Switch to VS Code, `lib/bkt/index.ts`.
+VS Code, `lib/bkt/index.ts`.
 
-> Let me show you what's driving it. This is the Bayesian Knowledge Tracing engine, and it's the centre of the whole project.
+> Let me show you what's driving it. This is the Bayesian Knowledge Tracing engine and it's the centre of the project.
 >
-> BKT is Corbett and Anderson, 1994. It models the probability a learner knows a skill, and updates that probability after every observation. Four parameters. The prior, the probability of learning on a given attempt, the probability of guessing correctly while not knowing, and the probability of slipping while knowing.
+> BKT is Corbett and Anderson, 1994. It models the probability a learner knows a skill and updates it after every answer. Four parameters: the prior, the chance of learning on a given attempt, the chance of guessing right while not knowing, and the chance of slipping while knowing.
 >
-> Here's the update. When a learner answers, you condition on the evidence, then apply the learning step. It's about fifteen lines of actual maths.
+> Here's the update. Condition on the evidence, then apply the learning step. About fifteen lines of actual maths.
 >
-> Two design decisions I'd defend. First, this file has zero dependencies and zero Firebase imports. It's pure TypeScript. That means it's trivially unit testable, and it means the model is portable if the platform changes. Second, the thresholds are constants, not magic numbers scattered around the codebase, because they're the same 0.8 and 0.4 that the report cites.
+> Two decisions I'd defend. First, this file has zero dependencies and zero Firebase imports. Pure TypeScript. That makes it trivially testable and it means the model is portable if the platform changes. Second, the thresholds are constants in one file rather than magic numbers scattered about, because they're the same 0.8 and 0.4 the report cites and drift between the two would be a defect.
 
 Open `tests/unit/bkt.test.ts`.
 
-> And the tests for it are hand computed. I worked the arithmetic out by hand and asserted against those figures, so if the implementation drifts the test fails against maths rather than against itself.
+> The tests for it are hand-computed. I worked the arithmetic out by hand and asserted against those figures, so if the implementation drifts the test fails against maths rather than against itself.
 
 Open `lib/routing/index.ts`.
 
-> Routing is the other pure module. Given a mastery map and the prerequisite graph, it decides what happens next. Which modules are unlocked, whether to teach, practise or remediate, and which specific question to serve.
+> Routing is the other pure module. Given a mastery map and the prerequisite graph it decides what happens next: which modules are unlocked, whether to teach, practise or remediate, and which specific question to serve.
 >
-> That's the object the "why this question" popover displays. Same data, no translation layer, which is why the explanation can't drift out of sync with the decision.
+> That's the object the "why this question" panel displays. Same data, no translation layer.
+
+Open `lib/walkthroughs/synth.ts` briefly.
+
+> And this is the one people don't expect. The walkthrough charts aren't recorded data and they aren't random. It's a seeded generator that takes control points and forces specific candles, so when a caption says "price sweeps the high here and leaves a gap there", the bars do exactly that. There's a unit test that checks every step's markers land inside its own chart and sit on the candle they name, which is how I found the label collisions.
 
 Open `lib/logging/logger.ts`.
 
-> And this is the response logger. I'll be honest about why it looks like this. The obvious implementation just writes to the database and hopes. But the Firebase SDK has its own retry queue, and if you let both queues hold the same write you get duplicates on reconnect, which would silently corrupt the research dataset. So this fails fast when the browser is offline and keeps my queue as the single authority.
+> Last one, the response logger. I'll be honest about why it looks like this. The obvious version just writes and hopes. But the Firebase SDK keeps its own retry queue, so if you put a queue in front of it, both hold the same write when the connection drops and both deliver on reconnect. That's duplicate rows in the research data, silently, months later. So this fails fast when the browser reports itself offline and my queue is the single authority.
 >
-> That's the kind of bug that doesn't show up in a demo. It shows up six months later in the data.
+> That's the class of bug that never shows up in a demo.
 
-**Delivery note.** Don't scroll fast. Land on one screenful, point at it, talk. If you're short on time cut the routing file and keep BKT and the logger.
+**Delivery note.** Don't scroll fast. Land on one screenful, point at it, talk. If you're short, cut routing and the synth generator and keep BKT and the logger.
 
 ---
 
-### 9. Evidence (13:15 to 14:30)
+### 9. Evidence (12:45 to 14:15)
 
 Terminal.
 
@@ -242,31 +268,41 @@ Terminal.
 npm run test
 ```
 
-> Fifty four unit tests on the engine, the routing rules, the grading and the logger.
+> Unit tests across the engine, the routing rules, grading, the logger and the walkthrough geometry.
 
 *(While it runs, or after.)*
 
-> On top of that there are fourteen tests on the database security rules, which check that the append only guarantee actually holds, and twenty four browser tests that drive the real user journeys end to end. One of those completes a full session with the network killed halfway through and then verifies every response still arrived.
+> On top of that, fourteen tests on the database security rules, which check the append-only guarantee actually holds against a caller who never touches the interface. And end-to-end tests driving real browsers through the real journeys on desktop and mobile, one of which completes a session with the network killed halfway and then verifies every response still arrived.
 
-Open `docs/EVALUATION.md`.
+Open `docs/report/CALIBRATION.md`.
 
-> And this is the validation of the model itself. I built a simulated learner harness. It generates two hundred synthetic learners with known parameters, has them answer through the true generative model, then runs the real engine over their responses and checks three things. That a correct streak crosses the mastery threshold in a sensible number of attempts. That a wrong streak stays in the remediation band. And that improving learners climb. All three pass, and there's a parameter recovery table showing how closely the engine recovers the parameters it was never told.
+> And this is the evidence I'd most want you to see, because it's the part that tests the model rather than the code.
 >
-> Accessibility is audited too, and it scores a hundred on Lighthouse, which matters because an educational tool that excludes people isn't much of an educational tool.
+> Every logged answer carries the model's estimate from before the answer. Push that through the emission model and it becomes a forecast: this learner has a 70% chance of getting this right. A calibrated model's forecasts come true at the rate they claim.
+>
+> Across eight thousand simulated answers, the expected calibration error is 0.43 of a percentage point. The Brier skill score against a base-rate baseline is 26%. In the reliability table, the bin where the model predicts about 30% comes in at 29.8% observed.
+>
+> And here's the result I didn't expect. I tested whether fitting the parameters per learner beats the fixed literature defaults, which is the obvious next step everyone assumes you should take. On held-out data, fitting makes the forecasts slightly worse. Brier goes from 0.0994 to 0.1011 and calibration error nearly doubles.
+>
+> So the defaults stay, and that's now an evidence-based decision rather than a convenience. I'm also clear about the limit: the simulation shares the engine's own guess and slip parameters, so this tests wrong priors, not the emission model. Real learner data is what settles that.
 
 ---
 
-### 10. Limitations and close (14:30 to 15:00)
+### 10. Limitations and close (14:15 to 15:00)
 
-> I want to be straight about the limits.
+Show the live URL on screen.
+
+> It's deployed, at tmacademyuk.vercel.app, running against the real database.
 >
-> This is validated against simulated learners, not human ones. That's the honest boundary of the evaluation, and it's the obvious next step.
+> Now the limits, because I'd rather state them than have them drawn out of me.
 >
-> The BKT parameters are the standard literature defaults rather than fitted per knowledge component, which is a known improvement path.
+> This is validated against simulated learners, not human ones. Everything I've shown you is about correctness, behaviour and calibration. None of it is about whether anybody learns. That's the honest boundary, and it's the obvious next step.
 >
-> And I deliberately cut features. There was a mentor marketplace and a trading simulator in the original design. I cut both, documented why, and that's in the repository as future work. The marketplace in particular introduced paid guidance risks that don't belong in an educational research artefact.
+> The parameters are literature defaults rather than values fitted to real responses, which the calibration work says is the right call for now but not forever.
 >
-> So, to close. The loop works end to end, it's tested, the model is validated against simulated learners, and it produces an exportable research dataset. The whole thing is on GitHub, and the link's in the report.
+> And I cut things deliberately. There was a mentor marketplace and a trading simulator in the original design. Both are documented, with the reasoning, in the repository. The marketplace in particular introduced paid-guidance risks that don't belong in an educational research artefact.
+>
+> So, to close. The loop works end to end, it's tested at four levels, the model is calibrated and the calibration is reported honestly, it produces an exportable research dataset, and it's live. The whole thing is on GitHub and the link's in the report.
 >
 > Thanks for watching. Happy to take questions.
 
@@ -274,65 +310,77 @@ Open `docs/EVALUATION.md`.
 
 ## Question and answer preparation
 
-Answer in three parts. Say the direct answer, give one piece of evidence, then stop. The commonest mistake is not being wrong, it's carrying on talking past a perfectly good answer.
+Answer in three parts. Direct answer, one piece of evidence, then stop. The commonest mistake isn't being wrong, it's carrying on talking past a perfectly good answer.
 
 ### About the model
 
 **Why Bayesian Knowledge Tracing rather than a neural approach like Deep Knowledge Tracing?**
-Interpretability and data volume. DKT usually beats BKT on raw predictive accuracy, but it needs far more interaction data than a single project can gather, and it can't tell a learner why it made a decision. Since one of my aims was that the model be inspectable, a four parameter model I can display in a popover was the right trade.
+Interpretability and data volume. DKT usually beats BKT on raw predictive accuracy, but it needs far more interaction data than a single project can gather, and it can't tell a learner why it made a decision. Since one of my aims was that the model be inspectable, a four-parameter model I can display in a panel was the right trade.
 
-**Where do the parameters come from?**
-Literature standard defaults. 0.25 prior, 0.12 learn rate, 0.2 guess, 0.1 slip. The schema supports per component parameters, so fitting them from real learner data is a straightforward extension. I didn't fit them because I don't have human data yet, and fitting to simulated data would just recover what I put in.
-
-**Why 0.8 and 0.4 for the thresholds?**
-0.8 is a conventional mastery threshold in the BKT literature and it's what my AE1 report committed to. 0.4 for remediation was my own decision, chosen so that a learner who genuinely doesn't know something drops into support quickly rather than grinding. They're constants in one file, so they're easy to change and easy to justify or revise.
+**Where do the parameters come from, and shouldn't you fit them?**
+Literature defaults: 0.25 prior, 0.12 learn rate, 0.2 guess, 0.1 slip. And I tested exactly that question. The calibration report fits the prior and the learn rate per learner on twenty answers and scores the held-out half, and the fitted model comes out slightly worse than the fixed defaults. So fitting is the right thing to do eventually, but not at this data volume, and I have the number rather than the opinion.
 
 **How do you know the engine is correct?**
-Two ways. The unit tests assert against arithmetic I worked out by hand, so they test the maths rather than the code's opinion of itself. And the simulation harness generates learners with known parameters and checks the engine recovers sensible behaviour from their responses.
+Two ways. The unit tests assert against arithmetic I worked out by hand, so they test the maths rather than the code's opinion of itself. And the calibration report checks the model's forecasts against observed outcomes, which is a different question from whether the code runs.
+
+**Why 0.8 and 0.4?**
+0.8 is a conventional mastery threshold in the BKT literature and it's what my progress report committed to. 0.4 for remediation was my decision, chosen so a learner who genuinely doesn't know something drops into support quickly rather than grinding. They're constants in one file, so they're easy to revise and easy to justify.
+
+**What does the calibration result actually mean?**
+That when the model says 70%, it's right about 70% of the time. Expected calibration error of 0.43 of a percentage point across eight thousand answers. That matters more than raw accuracy for a system that acts on its predictions, because the routing reads the probability, not a label.
 
 ### About the evaluation
 
 **You haven't tested this with real learners. Isn't that a problem?**
-It's the main limitation and I'd rather state it than have it drawn out of me. What I have is a system that's verified to behave correctly and instrumented to collect exactly the data a human study would need. Ethics approval, recruitment and a pre post design would be the next phase. The artefact is the thing that makes that study possible.
+It's the main limitation and I'd rather say it than have it dragged out. What I have is a system verified to behave correctly, calibrated against a simulated cohort, and instrumented to collect exactly the data a human study would need. Ethics approval, recruitment and a pre-post design are the next phase. The artefact is what makes that study possible.
 
-**What would you actually measure with real learners?**
-Normalised learning gain between a pretest and a posttest, and whether the model's predicted probability of a correct answer matches observed accuracy. The response log has the model's estimate before every answer, and the predicted probability follows directly from that, so calibration is computable from the log. I'd also want time to mastery per component against a non adaptive control.
+**What would you measure with real learners?**
+Normalised learning gain between a pre-test and a post-test, and whether the model's predicted probability matches observed accuracy on real answers. The log carries predicted and actual on every row, so calibration is directly computable. I'd also want time-to-mastery against a non-adaptive control.
 
-**How many participants would you need?**
-For a within subjects pre post design, somewhere around thirty to forty gets you reasonable power for a medium effect. A controlled comparison against a fixed order version of the same content would need more, probably double.
+**How many participants?**
+For a within-subjects pre-post design, thirty to forty gets reasonable power for a medium effect. A controlled comparison against a fixed-order version of the same content would need roughly double, and that's the more valuable study because it isolates the adaptation rather than the content.
 
 ### About the build
 
 **Why Next.js and Firebase?**
-Firebase gave me authentication, a database and security rules that are themselves testable, which mattered because the append only guarantee on the response log is a rule, not a convention. Next.js because the app is content heavy and the framework handles routing and rendering without much ceremony. Neither choice is load bearing for the research. The engine is deliberately isolated from both.
+Firebase gave me authentication, a database and security rules that are themselves testable, which mattered because the append-only guarantee on the response log is a rule, not a convention. Next.js because the app is content-heavy. Neither choice is load-bearing for the research, which is why the engine and the routing are isolated from both.
 
 **How much of this did you write?**
-All of the design decisions and the architecture. I used AI assistance during implementation, which is declared in the methodology chapter of the report. What I'd point to as mine is the decisions record. There are around fifty documented decisions in the repository, each with the reasoning, including several where I built something, measured it, and removed it.
+All of the design decisions and the architecture. I used AI assistance during implementation, declared in the report. What I'd point at as mine is the decisions record: over seventy documented decisions with the reasoning, including the ones I reversed.
 
-**Can you give an example of that?**
-Yes. I built an animated background effect that looked good, then measured it and found it dropped the dashboard from 120 frames per second to 19. I cut it and got the same visual result from static layers at no cost. That's in the decisions file with the numbers.
+**Give me an example of a reversal.**
+Two good ones. I built an animated background effect, measured it, found it dropped the dashboard from 120 frames per second to 19, and deleted it. And I reversed the whole dev-server arrangement: `npm run dev` used to be the emulator with the real app on a second port, I landed on the emulator's fake Google page three times in one day reading it as a bug, and two servers sharing a build folder corrupted it three times. Now `npm run dev` is the real app and the emulator moved to its own port and its own build folder.
 
 **What was the hardest bug?**
-The duplicate write problem in the logger. My retry queue and the Firebase SDK's internal queue would both hold the same write when the connection dropped, and both would deliver on reconnect. It doesn't show up in normal use. It shows up as duplicate rows in the research data much later. The fix was to fail fast when offline so my queue is the only authority.
+The duplicate-write problem in the logger. My retry queue and the Firebase SDK's internal queue would both hold the same write when the connection dropped, and both would deliver on reconnect. It doesn't show up in normal use. It shows up as duplicate rows in the research data, much later. The fix was to fail fast when offline so my queue is the only authority.
 
-**Why nine modules? Where did the content come from?**
-The content is a real trading curriculum, about four hours of video across thirty three lessons. I sequenced it by building the actual dependency graph of the concepts rather than keeping the recording order, because several videos used terms that hadn't been defined yet. The modules fell out of that dependency analysis.
+**Why sixteen modules? Where did the content come from?**
+Two sources, and they're separated in the repository. The first nine modules came from a video curriculum of about three and a half hours that I transcribed and rewrote as structured lessons. The remaining seven were written from cited public ICT and TTrades teaching, with ninety-three sources listed per lesson in `docs/LESSON_SOURCES.md`. None invented. The sequencing came out of a dependency analysis rather than the recording order, which is why risk and position sizing sits third: every module from five onward quotes risk multiples that are meaningless before sizing is taught.
+
+**Why build walkthroughs instead of just recording the missing videos?**
+Partly time, honestly. But having built them I'd defend them on the merits. A stepped chart is more precise than a screen recording for a structure concept, because the bars are constructed so the thing being described is exactly where the caption says. It's keyboard operable, it announces each step to a screen reader, and it has a full text description. A video has none of that.
+
+**Aren't the walkthrough charts fake data?**
+They're constructed, and the interface says so on every one. That's the point rather than a weakness: a randomly generated chart wouldn't reliably contain the pattern being taught, and a real chart cherry-picked by me to show the pattern would be worse science than one I built openly. And the sixteen real-chart case studies are genuine historical bars, attributed and dated, found by detectors rather than by eye.
 
 ### About ethics
 
-**Trading education is a sensitive area. How did you handle that?**
-By making the constraints structural rather than cosmetic. Simulated data only, no broker connection, no signals, eighteen plus enforced in the database rules as well as the interface, real GDPR consent with a working decline, and download or delete your data in settings. I also cut a mentor marketplace from the design specifically because paid trading guidance carries risks that don't belong in an educational artefact.
+**Trading education is sensitive. How did you handle that?**
+By making the constraints structural rather than cosmetic. Simulated or clearly labelled historical data only, no broker connection, no signals, eighteen plus enforced in the database rules as well as the interface, real GDPR consent with a working decline, and download or delete your data in settings. I also cut a mentor marketplace specifically because paid trading guidance carries risks that don't belong here.
 
-**Where's the data stored and is it separated?**
-Two databases. Development and testing run against a local emulator that wipes on restart, and there's a separate live project reserved for real participants. That split is enforced by configuration, so a test account can't reach the research database. That's a lesson learned the hard way, actually. Early on some test users did leak into the live project. I deleted them and then made it impossible by construction, and that's documented.
+**Did you ever have to say no to yourself?**
+Twice, and both are in the decision log. I wanted copy about producing profitable traders, and that's a claim the site can't make: the FCA's financial-promotions rules bite on exactly that language and no course can honestly promise it. The path is framed as competence instead. And when I first wanted real market data, the consent screen and the ethics application both said everything was simulated, so I didn't do it. The real charts only went in after the consent wording, the legal page and the report were changed to say "simulated or clearly labelled historical".
+
+**Where's the data stored, and is it separated?**
+Two projects. Development and tests run against a local emulator on its own port with its own build folder, and a separate live project holds real users. Every automated path is pinned to the emulator by construction. That's a lesson learned the hard way: early on some test accounts did reach the live project. I deleted them, verified, and then made it impossible by design rather than by discipline.
 
 ### If something breaks
 
 **If the demo fails live.** Say "let me show you this from the recording instead" and switch to your backup video. Do not debug on camera. Have the backup ready before you start.
 
-**If you're asked something you don't know.** "I don't know, and I'd want to check before I gave you a wrong answer" is a completely acceptable response at this level. Then say what you'd do to find out. Guessing is much worse.
+**If you're asked something you don't know.** "I don't know, and I'd want to check before giving you a wrong answer" is completely acceptable at this level. Then say how you'd find out. Guessing is much worse.
 
-**If a question challenges a decision.** Don't defend reflexively. "That's fair, and here's why I went the other way" is stronger than pretending there was no trade off.
+**If a question challenges a decision.** Don't defend reflexively. "That's fair, and here's why I went the other way" is stronger than pretending there was no trade-off.
 
 ---
 
@@ -340,34 +388,36 @@ Two databases. Development and testing run against a local emulator that wipes o
 
 Four rehearsals. Don't do them all in one day.
 
-**Run one, script in hand, no recording.** Read it aloud at the pace you'd actually speak. Time each section and write the real timings in the margin. You'll find some sections are twice as long as you thought.
+**Run one, script in hand, no recording.** Read it aloud at the pace you'd actually speak. Time each section and write the real timings in the margin. Some sections will be twice as long as you think.
 
 **Run two, bullet points only.** Reduce each section to about five words. "Ethics gate, 18 plus, consent, decline is real." Deliver from those. This is where it stops sounding read.
 
-**Run three, full recording, no stopping.** Whatever goes wrong, keep going. The point is to find out what breaks under pressure, and to get used to recovering without stopping. Watch it back with the sound on, which is uncomfortable and useful.
+**Run three, full recording, no stopping.** Whatever goes wrong, keep going. The point is to find what breaks under pressure and to get used to recovering without stopping. Watch it back with the sound on.
 
 **Run four, the real take.** Do this when you're fresh, not at eleven at night.
 
-**Q&A practice, separately.** Get someone to read you the questions above in a random order. Answer out loud. The written answers are for you to internalise, not to memorise. Reciting them will sound like reciting them.
+**Q&A practice, separately.** Get someone to read you the questions above in random order. Answer out loud. The written answers are to internalise, not to memorise. Reciting them will sound like reciting them.
 
 ### Things that go wrong, and what to do
 
 | Problem | What to do |
-|---|---|
+| --- | --- |
 | A page hangs | Refresh once. If it hangs again, switch to the backup recording. |
+| Port 3000 is busy | `npm run stop && npm run dev`. The guard will tell you if something's still holding it. |
+| A video won't play | Skip to the walkthrough. It's the better demo anyway and you have a line ready. |
 | You lose your place | Stop. Breathe. "Let me pick that up again." It reads as composure. |
-| You're running long | Cut the routing file walkthrough and the review queue. Never cut section 6. |
-| You're running short | Open `docs/DECISIONS.md` and talk through two decisions. There's plenty there. |
+| Running long | Cut section 8's routing and synth files, and the review queue. Never cut section 6. |
+| Running short | Open the decision log and talk through two reversals. There's plenty there. |
 | A question runs away | "That's probably a longer conversation than we've got, but the short answer is X." |
 
 ### Record a backup
 
-Do this the day before. Record a clean run of just the demo, sections 2 through 7, with no talking. If anything fails on the day you can play that and narrate over it. It takes twenty minutes and it removes almost all of the risk.
+Do this the day before. Record a clean run of just the demo, sections 2 through 7, with no talking. If anything fails on the day you play that and narrate over it. Twenty minutes, and it removes almost all of the risk.
 
 ---
 
 ## Alternative timings
 
-**Ten minute version.** Sections 1, 2 (compressed to the consent screen only), 3, 6, 8 (BKT only), 9, 10. Drop the dashboard tour, the lesson, and the routing and logger code.
+**Ten minute version.** Sections 1, 2 (consent screen only), 3, 5 (walkthrough only), 6, 9 (calibration only), 10. Drop the dashboard tour, the code walkthrough and the database.
 
-**Twenty minute version.** Everything above, plus: walk the constellation route and explain the prerequisite chain properly, open `firestore.rules` and read the append only rule out loud, run the simulated learner harness live so the output prints on screen, and talk through two entries from the decisions record.
+**Twenty minute version.** Everything above, plus: step a full walkthrough end to end with the Describe panel open, open `firestore.rules` and read the append-only rule aloud, run the simulated-learner harness live so the output prints on screen, and talk through two entries from the decision log.

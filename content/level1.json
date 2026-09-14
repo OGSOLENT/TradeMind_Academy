@@ -193,7 +193,7 @@
           "md": "## Key terms\n\n- **OHLC** — Open, High, Low, Close: the four data points of a candle\n- **Body** — the distance between open and close\n- **Wick** — price covered beyond the body but not held\n- **Expansion** — a directional move with intent (large body, small wicks)\n- **Rejection** — price reaching a level and being pushed away (a large wick)\n\n## Common mistakes\n\n- **Reading colour instead of shape.** A green candle with a huge upper wick is not bullish. Body-to-wick ratio tells you more than colour.\n- **Ignoring the close.** The high of a candle is where price *failed*. The close is where price *agreed*.\n- **Treating one candle as a signal.** A candle is context, not an instruction."
         }
       ],
-      "videoUrl": "/videos/Decoding_Market_Candles.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Decoding_Market_Candles.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -224,7 +224,7 @@
           "md": "## Key terms\n\n- **Fractal** — the same structures repeating across all timeframes\n- **Displacement** — an aggressive, one-sided move away from a level\n- **Accumulation** — a sideways, range-bound phase where positions build\n- **Expansion sequence** — consecutive directional days in the same direction\n\n## Common mistakes\n\n- **Treating a wick as decoration.** The wick is the most information-dense part of the candle. It marks where the lower-timeframe reversal happened.\n- **Analysing only one timeframe.** The daily tells you *what* happened; the 15-minute tells you *how and when*.\n- **Forcing a story onto noise.** Not every candle is meaningful. The sequences worth reading are the ones at levels that matter — which is Module 2."
         }
       ],
-      "videoUrl": "/videos/Decoding_Candlesticks.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Decoding_Candlesticks.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -257,7 +257,7 @@
           "md": "## Key terms\n\n- **Liquidity** — clusters of resting orders that attract price\n- **Buyside liquidity** — buy stops above old highs\n- **Sellside liquidity** — sell stops below old lows\n- **Equal highs / equal lows** — repeated touches at one price, stacking orders\n- **Liquidity pool** — a concentration of resting orders at a level\n- **Sweep** — price running through a level to take the orders resting there\n\n## Common mistakes\n\n- **Marking every high and low.** Only swing points with lower highs (or higher lows) on both sides carry meaningful liquidity.\n- **Assuming a sweep means reversal.** Taking liquidity is a *reason* for a turn, not proof of one. Proof comes in Module 4.\n- **Trading breakouts of obvious equal highs** without asking who is buying from you at that price."
         }
       ],
-      "videoUrl": "/videos/Liquidity___Wick_Size.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Liquidity___Wick_Size.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -288,7 +288,7 @@
           "md": "## Key terms\n\n- **Opposing run** — the initial move from the open to the high/low, against your bias\n- **Shallow run** — a small, early opposing run that preserves energy\n- **Large run** — an opposing run consuming much of the candle's time and range\n- **Expansion candle** — small wicks, large body, moving with intent\n- **Filter of time** — using time remaining in the period as a go/no-go check\n\n## Common mistakes\n\n- **Trading the wick as it forms.** Tempting, and the fastest route to being stopped out.\n- **Keeping a distant target after a large opposing run.** The energy for that target is gone; adjust to the open.\n- **Entering late in a candle.** With little time left, there is no room for the expansion you need."
         }
       ],
-      "videoUrl": "/videos/Wick_Size_Matters.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Wick_Size_Matters.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -319,7 +319,7 @@
           "md": "## Key terms\n\n- **Fixed risk** — the same monetary amount at risk on every trade\n- **Position size** — the variable that changes so risk stays fixed\n- **R multiple** — a result expressed as a multiple of the amount risked\n- **Drawdown** — the fall from a peak in account value\n- **Trailing drawdown** — a drawdown limit that follows the account's high-water mark\n\n## Common mistakes\n\n- **Moving the stop to fit the position size.** Backwards: the stop is set by structure, the size is calculated from it.\n- **Judging yourself on win rate.** Meaningless unless every trade risked the same.\n- **Sizing up after losses to \"get it back\".** The asymmetry above makes this the fastest route to a breached limit."
         }
       ],
-      "videoUrl": "/videos/The_Math_of_Consistency__Proper_Position_Sizing.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/The_Math_of_Consistency__Proper_Position_Sizing.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -350,7 +350,7 @@
           "md": "## Key terms\n\n- **Capital base** — the account value the risk percentages apply to\n- **Exposure %** — the share of capital that may be at risk\n- **Risk per trade** — the fixed amount risked on any single position\n- **Lot size / quantity** — the calculated output, not an input\n- **Risk template** — a saved configuration that applies the parameters automatically\n- **Available margin** — capital not currently committed\n\n## Common mistakes\n\n- **Choosing quantity first, then placing the stop to suit it.** Exactly inverted.\n- **Adjusting the risk parameter mid-session** — usually upward, usually after a loss.\n- **Skipping the template** and re-deciding by hand each time, which is where inconsistency creeps back in."
         }
       ],
-      "videoUrl": "/videos/Perfect_Position_Sizing_in_TradingView.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Perfect_Position_Sizing_in_TradingView.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -381,7 +381,7 @@
           "md": "## Key terms\n\n- **Evaluation account** — simulated capital with a profit target and loss limits\n- **Max loss limit** — the breach point that closes the account\n- **Drawdown maths** — dividing the limit by expected trade count to get per-trade risk\n- **Buffer** — the distance remaining between current loss and the limit\n- **2:1** — a target of twice the risked amount\n\n## Common mistakes\n\n- **Sizing to the maximum allowed.** \"Max 5 contracts\" is a ceiling, not an instruction.\n- **Increasing risk to hit the target faster.** The limit is hit first, reliably.\n- **Treating the fee as sunk and therefore irrelevant.** It is a recurring cost that changes the expected value of the whole exercise."
         }
       ],
-      "videoUrl": "/videos/Cracking_Prop_Firms.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Cracking_Prop_Firms.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -414,7 +414,7 @@
           "md": "## Key terms\n\n- **Candle 2 closure** — sweeps a previous extreme, closes back inside the prior range\n- **Point of Interest (POI)** — a pre-marked level giving a reason for the reversal\n- **Reference range** — Candle 1, whose extreme gets swept\n- **HTF / LTF** — higher timeframe (bias) and lower timeframe (execution)\n- **Change in State of Delivery (CISD)** — mechanical proof of a directional shift (Lesson 7)\n\n## Common mistakes\n\n- **Trading the shape without the context.** The single most common failure. A sweep-and-close-back-in in the middle of nowhere is noise.\n- **Entering on the daily closure itself** without dropping down for confirmation.\n- **Renumbering the candles to fit.** Candle 2 is the one that sweeps Candle 1 — not whichever candle you would like it to be."
         }
       ],
-      "videoUrl": "/videos/Candle_2_Closures.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Candle_2_Closures.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -447,7 +447,7 @@
           "md": "## Key terms\n\n- **Continuation closure** — closes completely beyond the swept level; the move continues\n- **Reversal closure** — closes back inside the range; the move failed\n- **Engulfing body** — Candle 3's body fully covering Candle 2's body\n- **Equilibrium (EQ)** — the 50% midpoint of a range, used as the entry\n- **Protected swing** — the swing the setup creates, used for stop placement (Lesson 9)\n\n## Common mistakes\n\n- **Abandoning the setup when Candle 2 fails to close back in.** That is exactly the condition for waiting for Candle 3.\n- **Entering at the close of Candle 3** instead of waiting for the retrace to equilibrium.\n- **Pattern trading without a level.** Repeated for the third lesson running because it is the mistake that costs the most."
         }
       ],
-      "videoUrl": "/videos/Candle_3_Closure_Strategy.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Candle_3_Closure_Strategy.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -480,7 +480,7 @@
           "md": "## Key terms\n\n- **CISD** — a close beyond the opening price of an opposing series of candles\n- **Delivery** — the direction in which price is being moved\n- **Manipulation leg** — the swing measured to project targets\n- **Standard deviation (SD)** — a projection multiple of the manipulation leg\n- **AMD** — Accumulation, Manipulation, Distribution\n- **Order Block** — the entry zone left behind by the shift (Lesson 11)\n\n## Common mistakes\n\n- **Using the high/low of the opposing candles instead of the opening.** The definition is specific for a reason.\n- **Accepting a wick through the level.** CISD requires a *close*.\n- **Skipping the higher timeframe.** A 2-minute CISD with no daily reason behind it is noise at high resolution."
         }
       ],
-      "videoUrl": "/videos/Mastering_the_CISD.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Mastering_the_CISD.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -513,7 +513,7 @@
           "md": "## Key terms\n\n- **Fair Value Gap (FVG)** — three candles where 1 and 3 do not overlap\n- **BISI / SIBI** — bullish / bearish imbalance labels\n- **Consequent encroachment** — the 50% midpoint of the gap\n- **Invalidation** — a body close beyond the 50% line or outside the gap\n- **FVG inversion** — an invalidated gap flipping to the opposite function\n- **Volume imbalance** — bodies apart, wicks overlapping\n\n## Common mistakes\n\n- **Marking gaps where candles 1 and 3 overlap.** That is not an FVG.\n- **Treating a wick through the midpoint as invalidation.** It takes a body close.\n- **Discarding a failed gap.** An invalidated gap inverts — it becomes a level on the other side.\n- **Confusing weekend gaps with FVGs.** No trading occurred in a standard gap at all."
         }
       ],
-      "videoUrl": "/videos/How_Fair_Value_Gaps_Work.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/How_Fair_Value_Gaps_Work.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -540,7 +540,7 @@
           "itemId": "kc-cisd-confirmation-item-3"
         }
       ],
-      "videoUrl": "/videos/How_to_Validate_Swing_Points_with_CISD.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/How_to_Validate_Swing_Points_with_CISD.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -569,7 +569,7 @@
           "md": "## Key terms\n\n- **Protected swing** — a high or low expected to hold while the trend continues\n- **Sweep-based formation** — a protected swing originating from a liquidity sweep\n- **FVG-based formation** — a protected swing originating from a retracement into a fair value gap\n- **Invalidation** — the price that proves the idea wrong\n- **Expansion candle** — small wicks, large body, shallow early opposing run\n\n## Common mistakes\n\n- **Calling every pullback low a protected swing.** It is only protected once a close through the opposing series confirms it.\n- **Moving the stop past the protected swing** to avoid being stopped out. That deletes the only objective invalidation you had.\n- **Ignoring deteriorating candle shape.** Growing wicks and shrinking bodies are the trend telling you it is tiring."
         }
       ],
-      "videoUrl": "/videos/Decoding_Market_Trends.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Decoding_Market_Trends.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -600,7 +600,7 @@
           "md": "## Key terms\n\n- **Ideal setup** — closes over the entire opposing *series*, not just the body\n- **Non-ideal setup** — closes over the body only\n- **Simultaneity rule** — Candle 2 closure and protected swing forming together\n- **Displacement** — the aggressive move that leaves the order block behind\n- **Standard deviation targets** — -1, -2 to -2.5, -4 to -4.5\n\n## Common mistakes\n\n- **Accepting a body-only close** as an ideal setup.\n- **Treating the closure and the protected swing as separate events.** They must be simultaneous.\n- **Acting on a premature closure.** Wait for the candle to actually close."
         }
       ],
-      "videoUrl": "/videos/Ideal_Swing_Points.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Ideal_Swing_Points.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -629,7 +629,7 @@
           "md": "## Key terms\n\n- **Order block** — the candle from which a displacement began; a return-to entry zone\n- **Mean threshold** — the 50% midpoint of an order block, used for large blocks\n- **Displacement** — the aggressive close past the prior opening price\n- **Exhaustion** — a large-wick, small-body candle with no expansion left\n\n## Common mistakes\n\n- **Marking order blocks with no higher-timeframe reason.** You are marking a stop-hunt zone.\n- **Tightening the stop instead of improving the entry.** The stop is the invalidation; it does not move for convenience.\n- **Entering on a candle with a large opposing run.** Nothing left in the budget."
         }
       ],
-      "videoUrl": "/videos/Order_Blocks___Wicks.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Order_Blocks___Wicks.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -660,7 +660,7 @@
           "md": "## Key terms\n\n- **Point of Interest (POI)** — a pre-marked level giving a reason for a trade\n- **Point of reversal** — the protected swing the trade is anchored to\n- **Priority one / two / last resort** — FVG, swing point, CISD retest\n- **Front-running** — entering before price reaches the level\n- **CISD retest level** — the fail-safe entry when the range has no gap and no swing\n\n## Common mistakes\n\n- **Marking every level you know.** The hierarchy exists to stop this.\n- **Front-running the gap** rather than waiting for price to arrive.\n- **Reaching for CISD first** because it is familiar. It is the last resort, by definition."
         }
       ],
-      "videoUrl": "/videos/Trading_Point_Hierarchy.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Trading_Point_Hierarchy.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -913,7 +913,7 @@
           "md": "## Key terms\n\n- **PDH / PDL** — previous day high / previous day low\n- **EQ (Equilibrium)** — the 50% midpoint of a range\n- **Continuation** — price respects EQ and breaks the prior extreme\n- **Reversal** — price opens into an extreme, rejects, and returns to EQ\n- **Bias timeframe / execution timeframe** — the higher/lower pairing\n\n## Common mistakes\n\n- **Trading the open.** The first minutes contain volatility, not information.\n- **Deciding bias before the levels are marked.** The levels come first, always.\n- **Mismatching timeframes.** A daily bias executed on the 1-minute chart is a daily idea drowned in noise."
         }
       ],
-      "videoUrl": "/videos/Decoding_Daily_Bias.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Decoding_Daily_Bias.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -944,7 +944,7 @@
           "md": "## Key terms\n\n- **DOL (Draw on Liquidity)** — the pool price is actively being pulled toward\n- **Inside bar** — a period that takes neither the prior high nor the prior low\n- **OLHC** — Open-Low-High-Close: a bullish daily sequence\n- **OHLC** — Open-High-Low-Close: a bearish daily sequence\n- **Kill zone** — a session window in which setups are expected\n\n## Common mistakes\n\n- **Having a direction without a destination.** \"Bullish\" is not a bias; \"bullish, drawing to the previous week high\" is.\n- **Ignoring the early opposing run** in an OLHC day and being shaken out of a correct idea.\n- **Skipping item five.** A valid setup with poor risk-to-reward is still a bad trade."
         }
       ],
-      "videoUrl": "/videos/Daily_Bias___Liquidity.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Daily_Bias___Liquidity.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -979,7 +979,7 @@
           "md": "## Key terms\n\n- **Kill zone** — a defined window of higher volatility\n- **EST / New York time** — the reference clock for every window\n- **Daily cycle** — Asian range → London breakout → New York reversal\n- **Silver Bullet** — a one-hour window targeting a specific liquidity pool\n- **Session colour coding** — a visual aid for identifying the active window\n\n## Common mistakes\n\n- **Leaving charts on local time.** Every window drifts, twice a year.\n- **Using forex windows on indices.** New York differs; the others do not.\n- **Trading outside the windows** because a setup \"looks good\". Time is part of the setup."
         }
       ],
-      "videoUrl": "/videos/Mastering_ICT_Killzones.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Mastering_ICT_Killzones.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1010,7 +1010,7 @@
           "md": "## Key terms\n\n- **Daily wick** — the initial run after the open, before the true expansion\n- **Session matrix** — session volatility mapped to confirmation timeframes\n- **2R** — a target of twice the amount risked\n- **Daily open** — the day's opening price, used as a structural target\n- **SMT divergence** — correlated assets failing to confirm each other\n\n## Common mistakes\n\n- **Guessing the bottom of the wick.** Named explicitly in the lesson as the thing not to do.\n- **Using one confirmation timeframe for every session.** Asia and New York need different resolutions.\n- **Assuming confirmation overrides bias.** It does not."
         }
       ],
-      "videoUrl": "/videos/Confirming_the_Daily_Wick.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Confirming_the_Daily_Wick.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1041,7 +1041,7 @@
           "md": "## Key terms\n\n- **Becoming the liquidity** — entering before the manipulation completes, so your stop feeds it\n- **Protected swing** — sweep → reversal → close through the prior series\n- **The wick checklist** — has the higher timeframe formed its wick, yes or no\n- **Trading the body** — entering for the expansion, not inside the manipulation\n- **2R** — a target of at least twice the risked distance\n\n## Common mistakes\n\n- **Entering on the level rather than after the wick.** The level is where the wick forms, not where the move starts.\n- **Placing the stop inside the wick.** It must sit beyond the protected wick, at invalidation.\n- **Answering the wick checklist with \"nearly\".** It is a yes/no gate."
         }
       ],
-      "videoUrl": "/videos/Let_the_Wick_Form.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Let_the_Wick_Form.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1072,7 +1072,7 @@
           "md": "## Key terms\n\n- **Relevant swing** — a swing with valid separation from surrounding highs/lows\n- **Valid separation** — clear distance that makes a swing structurally meaningful\n- **Failure swing** — stacked highs/lows with no separation; a liquidity trap\n- **Solid ground** — the quality a relevant swing provides for building a trade\n- **Prime window** — the post-open hourly closure where entries are taken\n\n## Common mistakes\n\n- **Marking every swing on the chart.** Most lack separation and are traps.\n- **Trading the 9:00 move.** That is usually the manipulation, not the day.\n- **Using one confirmation timeframe in every session.** Asia and New York run at different speeds.\n- **Assuming confirmation beats bias.** It does not."
         }
       ],
-      "videoUrl": "/videos/Confirming_Daily_Wicks.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Confirming_Daily_Wicks.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1103,7 +1103,7 @@
           "md": "## Key terms\n\n- **Invalidation** — the condition proving the bias wrong\n- **Opposing setup** — a valid setup forming against your position\n- **EQ invalidation** — a close beyond the previous candle's midpoint\n- **Golden Fractal Rule** — valid model → observed failure → trade the opposing liquidity\n- **Opposing liquidity** — the pool on the other side, now the target\n\n## Common mistakes\n\n- **Ignoring an opposing setup** because it contradicts your view.\n- **Trading \"failures\" of setups you never had.** Requires a valid model first.\n- **Treating EQ as infallible.** It is a probability tool, stated explicitly as \"not 100%.\""
         }
       ],
-      "videoUrl": "/videos/Trade_Bias_Failures.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Trade_Bias_Failures.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1398,7 +1398,7 @@
           "md": "## Key terms\n\n- **T-Spot** — the zone where a higher-timeframe wick is expected to form\n- **Delivery shift** — closing through the candles that created the extreme\n- **Fractal** — the same model applied at any timeframe\n- **Kill zone** — a time window limiting when setups are valid\n\n## Common mistakes\n\n- **Looking for reversals without a swing point.** By definition there isn't one.\n- **Trading the T-Spot on arrival** without a lower-timeframe confirmation.\n- **Closing through the wrong candles.** The delivery shift is specifically through the candles that made the extreme."
         }
       ],
-      "videoUrl": "/videos/Decoding_the_Fractal_Model.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Decoding_the_Fractal_Model.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1427,7 +1427,7 @@
           "md": "## Key terms\n\n- **Manipulation leg** — the swing from the low to the preceding high, measured for targets\n- **Anchor (1 & 0)** — the two ends of the measured leg\n- **-2 to -2.5 SD** — the primary projected target zone\n- **-4 SD** — maximum expansion, for large manipulation legs\n- **Confluence** — independent reasons agreeing on the same price\n\n## Common mistakes\n\n- **Anchoring before the delivery change.** The leg may not be complete.\n- **Using Fibonacci retracement levels.** This method uses the negative *extensions*.\n- **Taking -4 as standard.** It is the maximum-expansion case, not the default."
         }
       ],
-      "videoUrl": "/videos/Fractal_Model_Projections.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Fractal_Model_Projections.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1456,7 +1456,7 @@
           "md": "## Key terms\n\n- **Fractal target** — a higher-timeframe untaken swing high or low\n- **Untaken level** — a level price has not yet traded through; still holds liquidity\n- **Runner** — the remaining position held for a higher-timeframe target\n- **Partial profit** — closing part of a position at a nearer target\n- **SMT exception** — a correlated asset taking the equivalent level counts as the target being hit\n\n## Common mistakes\n\n- **Targeting levels already swept.** The liquidity is gone.\n- **Mismatching entry and target timeframes.** A 5-minute entry does not justify a weekly target on its own.\n- **Closing runners early out of anxiety.** The partial exists precisely to remove that anxiety."
         }
       ],
-      "videoUrl": "/videos/Fractal_Price_Targets.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Fractal_Price_Targets.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1485,7 +1485,7 @@
           "md": "## Key terms\n\n- **TTFM** — TTrades Fractal Model\n- **Timeframe alignment** — all three charts agreeing on direction\n- **Dealbreaker** — a missing condition that cancels the trade outright\n- **Master cheat sheet** — Daily bias → 4-Hour confirm → 15-Min execute\n\n## Common mistakes\n\n- **Taking the trade without the 4-hour CISD.** Named a dealbreaker for a reason.\n- **Trading misaligned timeframes.** Disagreement is a signal to wait.\n- **Jumping straight to the 15-minute chart.** Without the daily bias it is Lesson 5's context-free pattern trading."
         }
       ],
-      "videoUrl": "/videos/TTFM_Trading_Strategy.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/TTFM_Trading_Strategy.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1680,7 +1680,7 @@
           "md": "## Key terms\n\n- **SMT divergence** — correlated markets failing to confirm each other's highs or lows\n- **Correlation crack** — the moment the divergence appears\n- **Reversal SMT** — divergence at a turn (C1/C2)\n- **Continuation SMT** — divergence mid-trend (C2/C3)\n- **Double SMT** — both types present, forming a protected intraday swing\n- **Secondary confluence** — a confirming factor, never a primary signal\n\n## Common mistakes\n\n- **Hunting for SMT first.** The Golden Rule exists because this is the default temptation.\n- **Treating divergence as a signal on its own.** It is confluence.\n- **Ignoring EQ invalidation** because the SMT looks compelling."
         }
       ],
-      "videoUrl": "/videos/SMT_Divergence_Explained.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/SMT_Divergence_Explained.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1761,7 +1761,7 @@
           "md": "## Key terms\n\n- **Weekly profile** — the characteristic shape a week takes\n- **Intraweek reversal** — the weekly extreme forming mid-week\n- **Checklist of engagement** — daily reversal candle plus hourly shift\n- **OHLC vs OLHC** — false vs true reversal sequences\n- **Hourly checkpoint** — the non-negotiable confirmation step\n\n## Common mistakes\n\n- **Trading the day of the week instead of the model.**\n- **Reading consolidation as a reversal.** It is indecision.\n- **Skipping the hourly checkpoint** because the weekly shape looks textbook."
         }
       ],
-      "videoUrl": "/videos/The_Weekly_Profile.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/The_Weekly_Profile.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1794,7 +1794,7 @@
           "md": "## Key terms\n\n- **Classic expansion** — weekly extreme forms early, expansion follows\n- **Observation days** — Monday and Tuesday, when the wick forms\n- **Secondary expansion** — Thursday's continuation, Candle 4\n- **TGIF retracement** — Friday's tendency to pull back inside the weekly range\n- **Capping** — Friday closing out the weekly range rather than extending it\n\n## Common mistakes\n\n- **Trading Monday's move.** Monday is building the weekly wick you intend to trade away from.\n- **Trading Friday.** The expansion is complete and targets are usually hit.\n- **Skipping the hourly delivery shift** because the daily closure looked strong."
         }
       ],
-      "videoUrl": "/videos/Classic_Expansion_Week.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Classic_Expansion_Week.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1825,7 +1825,7 @@
           "md": "## Key terms\n\n- **Midweek reversal** — Monday/Tuesday move against the weekly bias; Wednesday reverses\n- **Weekly wick** — the false move built by the first two days\n- **Hourly state change** — the 1-hour directional shift confirming the reversal\n- **Range sweep** — a sweep of the established range in place of a clean closure\n- **Inside bar** — a day taking neither the prior high nor low\n\n## Common mistakes\n\n- **Trading Monday's move** as if it reflects the week's direction. It is the trap.\n- **Demanding a perfect Candle 2** and missing the sweep and messy variations.\n- **Lowering the evidence bar on a messy week.** It should go up, not down."
         }
       ],
-      "videoUrl": "/videos/Midweek_Reversal_Playbook.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Midweek_Reversal_Playbook.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1856,7 +1856,7 @@
           "md": "## Key terms\n\n- **Thursday counter** — Thursday reversing an established three-day range\n- **Reversal loop** — the counter-move pattern on Thursday\n- **Topping out** — the exhaustion signature of the final expansion day\n- **Ch-DoS** — change in delivery state, the hourly confirmation\n- **Final open objective** — Friday's target\n\n## Common mistakes\n\n- **Joining the trend on Wednesday.** The exhausted third day is where the trap is baited.\n- **Trading Thursday's daily candle without the hourly confirmation.**\n- **Applying Lesson 22's \"avoid Friday\" rule here.** In this profile Friday is the delivery day."
         }
       ],
-      "videoUrl": "/videos/The_Thursday_Counter.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/The_Thursday_Counter.mp4",
       "videoFallbackUrl": null
     },
     {
@@ -1887,7 +1887,7 @@
           "md": "## Key terms\n\n- **Consolidation reversal** — a failed expansion week resolving late\n- **Setup phase** — Monday to Wednesday's directionless range\n- **Manipulation** — Thursday's sweep of the range extreme\n- **T-Spot** — the zone where price reacts before the true expansion\n- **Continuation day** — Friday, delivering the expansion\n\n## Common mistakes\n\n- **Forcing trades Monday to Wednesday.** The profile explicitly requires patience.\n- **Trading Thursday's break at face value.** The break is the manipulation, not the move.\n- **Entering on the hourly shift without waiting for the T-Spot reaction.**\n\n## You've reached the end of Level 1\n\nAcross 25 lessons you have gone from OHLC to a complete, multi-timeframe trading framework:\n\n- **Modules 1–2** — reading a candle, and understanding liquidity as the reason price moves\n- **Module 3** — the Candle 2 and Candle 3 reversal patterns\n- **Module 4** — CISD, protected swings and order blocks: turning patterns into proof\n- **Module 5** — daily bias, and what to do when it is wrong\n- **Module 6** — the fractal model, projections and targets\n- **Module 7** — SMT divergence as secondary confluence\n- **Module 8** — the four weekly profiles and their timing\n\nReturn to the [curriculum overview](00-CURRICULUM.md) for the recommended review order and the list of topics still to be covered."
         }
       ],
-      "videoUrl": "/videos/Consolidation_Reversal.mp4",
+      "videoUrl": "https://iiqr015akgvmx1cm.public.blob.vercel-storage.com/videos/Consolidation_Reversal.mp4",
       "videoFallbackUrl": null
     },
     {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
@@ -32,6 +33,7 @@ interface Badge {
 }
 
 export default function ProfilePage() {
+  useTitle("Profile");
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useAuth();

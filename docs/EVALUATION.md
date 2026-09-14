@@ -170,7 +170,7 @@ Screenshots: `docs/screenshots/placement-intro.png`, `init-moment.png`,
 
 ### Simulated-learner harness (BKT validation)
 
-Generated 2026-09-11 by `scripts/simulate.ts` (seeded, reproducible).
+Generated 2026-09-14 by `scripts/simulate.ts` (seeded, reproducible).
 
 | Metric | Value |
 | --- | --- |

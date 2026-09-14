@@ -1,5 +1,6 @@
 "use client";
 
+import { useTitle } from "@/lib/use-title";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -40,6 +41,7 @@ const BEAT_MS = 380;
  * mind again, and it costs about a second and a half.
  */
 export default function PracticePage() {
+  useTitle("Practise");
   const router = useRouter();
   const reduced = useReducedMotion();
   const { user, loading } = useAuth();
