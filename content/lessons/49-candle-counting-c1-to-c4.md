@@ -1,6 +1,6 @@
 # Lesson 49 — Candle Counting: C1 to C4 and the Swing Formation
 
-**Module 11: The Fractal Model** · Video: `to be recorded` · Walkthrough: `candle-counting` · Prerequisites: Lessons 16 to 19
+**Module 11: The Fractal Model** · Video: `to be recorded` · Walkthrough: `candle-counting` · CaseStudy: `real-candle-count` · Prerequisites: Lessons 16 to 19
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

@@ -1,6 +1,6 @@
 # Lesson 11 — Order Blocks & the Mean Threshold
 
-**Module 4: Confirmation & Structure** · Video: `Order_Blocks___Wicks.mp4` (7:52) · Prerequisites: Lessons 7–10
+**Module 4: Confirmation & Structure** · Video: `Order_Blocks___Wicks.mp4` (7:52) · CaseStudy: `real-order-block` · Prerequisites: Lessons 7–10
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

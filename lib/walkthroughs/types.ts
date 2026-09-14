@@ -57,4 +57,18 @@ export interface Walkthrough {
   /** An extra line drawn in a lower panel: a second market, an equity curve. */
   overlay?: { label: string; values: number[]; tone?: Tone; unit?: string };
   steps: Step[];
+  /**
+   * Set on the real-chart case studies: where the bars came from and when.
+   * Absent on the synthetic walkthroughs, which is how the renderer knows
+   * which pill to show.
+   */
+  source?: {
+    kind: "real";
+    symbol: string;
+    interval: string;
+    from: string;
+    to: string;
+    provider: string;
+    retrieved: string;
+  };
 }

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const FAQS = [
   {
     q: "Is this financial advice?",
-    a: "No — and it never will be. TradeMind Academy teaches concepts on simulated data only. There are no signals, no live prices, no broker connections, and no claims about profitability. It is a university research project about how people learn.",
+    a: "No — and it never will be. TradeMind Academy teaches concepts on simulated charts and on dated, labelled historical case studies. There are no signals, no live prices, no broker connections, and no claims about profitability. It is a university research project about how people learn.",
   },
   {
     q: "How does the adaptive tutor work?",

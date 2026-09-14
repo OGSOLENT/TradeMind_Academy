@@ -36,7 +36,7 @@ people in.
    ```
 
    It prints the production URL. The project's is
-   **https://trademind-academy.vercel.app**.
+   **https://tmacademyuk.vercel.app**.
 
 4. Allow that domain in Firebase Auth, or Google sign-in will refuse with
    `auth/unauthorized-domain`. Firebase console → Authentication → Settings
@@ -45,14 +45,14 @@ people in.
    does the same thing from the terminal with the admin key:
 
    ```bash
-   npx tsx scripts/authorize-domain.ts trademind-academy.vercel.app
+   npx tsx scripts/authorize-domain.ts tmacademyuk.vercel.app
    ```
 
 5. Set `NEXT_PUBLIC_SITE_URL` to the production URL so the open-graph tags
    carry absolute links:
 
    ```bash
-   printf 'https://trademind-academy.vercel.app' | npx vercel@latest env add NEXT_PUBLIC_SITE_URL production --force
+   printf 'https://tmacademyuk.vercel.app' | npx vercel@latest env add NEXT_PUBLIC_SITE_URL production --force
    npm run deploy
    ```
 

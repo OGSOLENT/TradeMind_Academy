@@ -1,6 +1,6 @@
 # Lesson 3 — Liquidity: The Invisible Magnet
 
-**Module 2: Liquidity & Wicks** · Video: `Liquidity___Wick_Size.mp4` (7:55) · Walkthrough: `liquidity-magnet` · Prerequisites: Lessons 1–2
+**Module 2: Liquidity & Wicks** · Video: `Liquidity___Wick_Size.mp4` (7:55) · Walkthrough: `liquidity-magnet` · CaseStudy: `real-liquidity` · Prerequisites: Lessons 1–2
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

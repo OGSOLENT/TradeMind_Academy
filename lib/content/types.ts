@@ -35,6 +35,8 @@ export type LessonBlock =
   | { kind: "video"; poster: string }
   /** A stepped, annotated synthetic chart. The spec lives in lib/walkthroughs, keyed by id. */
   | { kind: "walkthrough"; id: string }
+  /** A real-chart case study: the same stepped chart, cut from dated historical bars. Specs in lib/case-studies. */
+  | { kind: "caseStudy"; id: string }
   | { kind: "checkQuestion"; itemId: string };
 
 export interface Lesson {

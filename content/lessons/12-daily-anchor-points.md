@@ -1,6 +1,6 @@
 # Lesson 12 — Daily Anchor Points: PDH, PDL and Equilibrium
 
-**Module 5: Daily Bias** · Video: `Decoding_Daily_Bias.mp4` (7:22) · Walkthrough: `daily-anchors` · Prerequisites: Modules 1–4
+**Module 5: Daily Bias** · Video: `Decoding_Daily_Bias.mp4` (7:22) · Walkthrough: `daily-anchors` · CaseStudy: `real-pdh-pdl` · Prerequisites: Modules 1–4
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

@@ -19,6 +19,7 @@ import { Markdown } from "@/components/learn/markdown";
 import { LessonCheck } from "@/components/learn/lesson-check";
 import { Walkthrough } from "@/components/learn/walkthrough";
 import { getWalkthrough } from "@/lib/walkthroughs";
+import { getCaseStudy } from "@/lib/case-studies";
 import {
   CheckQuestionBlock,
   FigureBlock,
@@ -269,7 +270,7 @@ export default function LessonPage() {
             )}
             <StaggerItem>
               <Pill tone="warning" dot>
-                Simulated data · education only
+                Simulated or dated historical data · education only
               </Pill>
             </StaggerItem>
           </Stagger>
@@ -288,6 +289,11 @@ export default function LessonPage() {
                   if (!spec) return null;
                   const nth = blocks.slice(0, i).filter((b) => b.kind === "walkthrough").length;
                   return <Walkthrough spec={spec} anchor={nth === 0 ? "walkthrough" : `walkthrough-${nth + 1}`} />;
+                }
+                case "caseStudy": {
+                  const spec = getCaseStudy(block.id);
+                  if (!spec) return null;
+                  return <Walkthrough spec={spec} anchor="case-study" />;
                 }
                 case "checkQuestion":
                   return <CheckQuestionBlock itemId={block.itemId} />;
@@ -460,6 +466,16 @@ export default function LessonPage() {
                         className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-fg-secondary transition-colors hover:text-fg-primary"
                       >
                         Walkthrough
+                      </a>
+                    </li>
+                  )}
+                  {blocks.some((b) => b.kind === "caseStudy") && (
+                    <li>
+                      <a
+                        href="#case-study"
+                        className="-ml-px block border-l border-transparent py-1.5 pl-3 text-sm text-fg-secondary transition-colors hover:text-fg-primary"
+                      >
+                        Real chart
                       </a>
                     </li>
                   )}

@@ -246,7 +246,29 @@ These six lessons are written from TTrades' own published material. The mechanic
 Each lesson's markdown already has the shape a video needs: the "What you'll learn" list is the cold open, the sections are the beats, the tables are the slides, the key terms are the recap, and the common mistakes are the outro. A six to nine minute video per lesson matches the length of the originals in Level 1. Once a recording exists, add one line to the lesson's markdown, `Video: \`File_Name.mp4\``, drop the file in `public/videos/`, and run `npx tsx scripts/generate-content.ts` followed by `npm run seed`. The lecture slot on the lesson page picks it up.
 
 
-## Walkthroughs
+## Real-chart case studies
+
+Sixteen lessons carry a "Real chart" block after the walkthrough: the same stepped chart, cut from historical ES and NQ futures bars. The bars come from Yahoo Finance's public chart endpoint (`scripts/fetch-bars.ts`; daily and hourly for about two years, 5-minute for the last sixty days) and are used for education with attribution, never live. `scripts/find-case-studies.ts` holds one detector per concept, written as the lesson's own rule (a Candle 2 closure is "the low trades below the previous bar's low and the close is back above it"), scores every instance in the data, keeps the cleanest one, and generates the annotations and captions from the matched bars, so every date and price in a caption is the one on the chart. Re-run both scripts to refresh them; the retrieval date is stamped on each.
+
+| Lesson | Case study | What the detector requires |
+|---|---|---|
+| 3 | real-liquidity | two equal swing highs, a bar through both that closes back below, then a decline |
+| 5 | real-candle-2 | a decline, a sweep of the previous bar's low, a close back above it, confirmation and follow-through |
+| 6 | real-candle-3 | Candle 2 closes below Candle 1's low, Candle 3 closes back above it |
+| 7 | real-cisd | three or more down-close bars, then a close above the first one's open, with the low holding |
+| 7a | real-fvg | a three-bar gap from a displacement bar, returned to and held, then a new high |
+| 11 | real-order-block | the last down-close bar before three up-close bars of displacement, retested and held |
+| 12 | real-pdh-pdl | a day that runs the previous day's low in the morning and reaches its high later |
+| 20 | real-smt | ES makes a lower low while NQ makes a higher low at the same time, then both rally |
+| 22 | real-expansion-week | a week whose low forms on Monday or Tuesday under the prior week's low and closes near its high |
+| 26 | real-bos-choch | higher highs and lows, a BOS, then a displaced close below the last higher low |
+| 28 | real-ote | a leg, a retrace into the 62 to 79% band that holds, then a new high |
+| 33 | real-nwog | a weekend gap of at least 0.8 average ranges, returned to at its midpoint |
+| 34 | real-power-of-three | a day whose low forms below the midnight open before New York and closes in its top 30% |
+| 35 | real-judas | a London-open sweep of the Asian range low, a close back inside, and a rally |
+| 38 | real-silver-bullet | in 10:00 to 11:00, a sweep of the 09:30 to 10:00 low, a displacement leaving a gap, the AM high reached |
+| 49 | real-candle-count | C1 low, C2 sweeps and closes back, C3 closes above C2's high, C4 opens in C3's upper half and closes above C3's high |
+
 
 Every lesson above without a recording now opens on a stepped chart walkthrough instead (see `lib/walkthroughs/`). The chart is synthetic and built to show the idea exactly, so a recording is optional rather than required. If you do record one later, add the `Video:` line as described and the recording takes the hero slot; the walkthrough moves below the prose.
 

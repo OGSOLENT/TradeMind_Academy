@@ -1,6 +1,6 @@
 # Lesson 26 — Break of Structure, Change of Character and the Market Structure Shift
 
-**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Walkthrough: `bos-choch-mss` · Prerequisites: Lessons 1 to 11a
+**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Walkthrough: `bos-choch-mss` · CaseStudy: `real-bos-choch` · Prerequisites: Lessons 1 to 11a
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

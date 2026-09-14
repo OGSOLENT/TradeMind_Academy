@@ -1,6 +1,6 @@
 # Lesson 28 — Premium, Discount and the Optimal Trade Entry
 
-**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Walkthrough: `premium-discount-ote` · Prerequisites: Lesson 27
+**Module 6: Market Structure & Delivery** · Video: `to be recorded` · Walkthrough: `premium-discount-ote` · CaseStudy: `real-ote` · Prerequisites: Lesson 27
 
 > Educational content only. All charts are illustrative or simulated. Not financial advice.
 

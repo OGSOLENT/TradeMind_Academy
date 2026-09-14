@@ -26,7 +26,7 @@ const prod = !process.argv.includes("--preview");
 const root = process.cwd();
 
 if (!existsSync(join(root, ".vercel/project.json"))) {
-  console.error("Not linked yet. Run: npx vercel@latest login && npx vercel@latest link --yes --project trademind-academy");
+  console.error("Not linked yet. Run: npx vercel@latest login && npx vercel@latest link --yes --project tmacademyuk");
   process.exit(2);
 }
 
