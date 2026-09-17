@@ -29,6 +29,12 @@ service cloud.firestore {
         allow read, write: if isOwner(uid);
       }
 
+      // The end-of-study questionnaire (SUS + open answers). One doc, owner
+      // only, and they can change their mind.
+      match /surveys/{surveyId} {
+        allow read, write: if isOwner(uid);
+      }
+
       match /sessions/{sid} {
         allow read, create, update: if isOwner(uid);
         allow delete: if false;

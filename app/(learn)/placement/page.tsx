@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import type { Item, Kc } from "@/lib/content/types";
 import { DEFAULT_PARAMS } from "@/lib/bkt";
+import { pickAssessment } from "@/lib/assessment";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { useQuizSession } from "@/lib/quiz/session-store";
@@ -40,12 +41,9 @@ export default function PlacementPage() {
     const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
     const eligible = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
 
-    // One eligible item per KC, in prerequisite order.
-    const picked: Item[] = [];
-    for (const kc of kcs) {
-      const it = eligible.find((e) => e.kcId === kc.id && !picked.includes(e));
-      if (it) picked.push(it);
-    }
+    // One eligible item per KC, in prerequisite order (form A; the
+    // post-test takes form B from the same pool).
+    const picked: Item[] = pickAssessment(kcs, eligible, "A");
 
     const mastery: Record<string, number> = {};
     for (const kc of kcs) mastery[kc.id] = DEFAULT_PARAMS.pL0;

@@ -170,7 +170,7 @@ Screenshots: `docs/screenshots/placement-intro.png`, `init-moment.png`,
 
 ### Simulated-learner harness (BKT validation)
 
-Generated 2026-09-14 by `scripts/simulate.ts` (seeded, reproducible).
+Generated 2026-09-17 by `scripts/simulate.ts` (seeded, reproducible).
 
 | Metric | Value |
 | --- | --- |
@@ -184,3 +184,87 @@ Generated 2026-09-14 by `scripts/simulate.ts` (seeded, reproducible).
 | Ground-truth priors | pL0 ~ U(0.05, 0.45) · pT ~ U(0.05, 0.25) · pG=0.2 · pS=0.1 fixed |
 
 <!-- SIMULATION:END -->
+
+
+## Routing policy simulation (2026-09-17)
+
+Run: `npm run simulate:routing`. Same synthetic learners, three policies, one item budget; answers come from the learner's hidden true state, not from the engine's estimate. "Items spent on KCs the learner already knew" is the waste measure; the last two columns are the estimate's errors in each direction at the end of the run.
+
+Reading it: the adaptive policy reaches the same true knowledge as the syllabus with 46 per cent of the items, and most of the saving is items the syllabus spends on modules the learner already knew. The cost is in the second-to-last column. The engine stops asking about a module once its estimate crosses 0.8, and a guess or two on easy items can put it there, so about one module in sixteen is declared mastered that the learner doesn't actually know. The syllabus has the opposite error (it under-calls, because it keeps asking) and pays for it with double the items. The knob is the mastery threshold and the guess parameter, and the pilot's post-test is designed to measure exactly this (analyse.ts, "held-out check").
+
+<!-- routing-sim:start -->
+Routing policy simulation: 300 learners, 160 items each, seed 7. Learners start knowing 3.66 of 16 KCs on average.
+
+| Policy | Items used (of 160) | KCs actually known at the end (of 16) | Items spent on KCs the learner already knew | Estimated mastered but not known | Known but not yet estimated mastered |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Adaptive (the engine) | 73.6 | 14.97 (sd 0.97) | 32.6 (44%) | 1.03 | 0.00 |
+| Fixed syllabus | 160.0 | 14.77 (sd 1.00) | 121.4 (76%) | 0.05 | 0.77 |
+| Random unlocked | 160.0 | 8.50 (sd 1.58) | 142.3 (89%) | 0.03 | 1.28 |
+<!-- routing-sim:end -->
+
+
+## Study instruments, axe, coverage (2026-09-17)
+
+### The pilot pipeline, end to end
+
+| Piece | Where | Checked by |
+| --- | --- | --- |
+| Placement (form A) | `/placement`, `pickAssessment(kcs, eligible, "A")` | `adaptive-journey.spec.ts`, `study.spec.ts` |
+| Post-test (form B, 15 of 16 items differ, no model update, pLBefore logged) | `/post-test`, `isAssessment()` in the session store | `study.spec.ts`, `assessment.test.ts` |
+| SUS + open questions | `/survey` → `users/{uid}/surveys/sus` | `study.spec.ts`, `firestore.rules.test.ts` (owner-only, stranger denied) |
+| Analysis | `npm run analyse` / `analyse:live` → `docs/report/PILOT_RESULTS.md` | Runs clean on the empty live database (n = 0) and on the emulator after the E2E run |
+
+Normalised gain and the SUS arithmetic have unit tests against worked examples (`tests/unit/assessment.test.ts`).
+
+### axe-core WCAG 2.1 AA (`tests/e2e/axe.spec.ts`)
+
+Public pages (`/`, `/sign-in`, `/sign-up`, `/legal`) and signed-in pages (dashboard, skill tree, a lesson, profile, settings, survey, post-test, a live quiz question) on desktop and Pixel 7 profiles, tags wcag2a/2aa/21a/21aa, canvases excluded, serious and critical violations fail the test. Three real defects found and fixed before it went green:
+
+| Found | Where | Fix |
+| --- | --- | --- |
+| `--fg-muted` #5b5b6b at 3.0:1 | every small label, footer, quiz meta | token raised to #82829a (4.6:1 on all three elevations) |
+| Unearned badges at 40% tile opacity → text at 1.9:1 | profile | dim the icon and swap text tones; tile stays at full opacity |
+| Sideways-scrolling lesson table not keyboard reachable | lesson markdown tables | wrapper is a focusable `role="region"` with a name |
+
+### Unit coverage (`npm run test:coverage`, v8)
+
+| Module | Lines | Branches |
+| --- | ---: | ---: |
+| `lib/bkt` | 100% | 91% |
+| `lib/assessment` | 100% | 100% |
+| `lib/quiz/grade` | 100% | 93% |
+| `lib/routing` | 94% | 90% |
+| `lib/logging/logger` | 90% | 58% |
+| `lib/walkthroughs` (synth + registry) | 78 to 90% | 71% |
+| all of `lib/` | 46% | 35% |
+
+The whole-`lib` figure is low because the Firebase adapters, stores and hooks are exercised by the Playwright journeys, not unit tests. The claim the dissertation makes is about the engine, and the engine modules are the top four rows.
+
+### Suite totals on this commit
+
+Unit 138 · rules 16 · E2E 32 (16 journeys × 2 profiles) · lint and typecheck clean.
+
+### Lighthouse, production (https://tmacademyuk.vercel.app)
+
+<!-- lighthouse-prod:start -->
+Lighthouse 12, headless Chrome, three runs per page per preset, medians reported (first cold run on this machine is usually an outlier; the individual performance scores are listed). Mobile is the default preset: simulated slow 4G, 4× CPU slowdown. Desktop is `--preset=desktop`.
+
+| Page | Preset | Performance (runs) | Accessibility | Best practices | SEO | FCP | LCP | TBT | CLS |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Landing `/` | mobile | **89** (62, 89, 89) | 100 | 100 | 100 | 1.0 s | 3.8 s | 16 ms | 0 |
+| Sign-in | mobile | **91** (65, 91, 91) | 100 | 100 | 100 | 1.0 s | 3.5 s | 0 ms | 0 |
+| Legal | mobile | **93** (66, 100, 93) | 100 | 100 | 100 | 1.0 s | 3.2 s | 0 ms | 0 |
+| Landing `/` | desktop | **100** (100, 100, 100) | 100 | 100 | 100 | 0.3 s | 0.7 s | 0 ms | 0 |
+| Sign-in | desktop | **100** (100, 100, 100) | 100 | 100 | 100 | 0.3 s | 0.7 s | 0 ms | 0 |
+| Legal | desktop | **100** (100, 100, 100) | 100 | 100 | 100 | 0.2 s | 0.6 s | 0 ms | 0 |
+
+What it took to get there, in order, each verified by re-running:
+
+| Before | Cause | Fix | After |
+| --- | --- | --- | --- |
+| Landing mobile 61, LCP 7.8 s, accessibility 96 | The three.js hero mounted on hydration, so the headline and copy (the LCP) queued behind the WebGL chunk; `--fg-muted` at 3:1 on the footer | Particles mount on `requestIdleCallback` after first paint and fade in with CSS; token raised to 4.6:1 | 98 on that run, 89 median; accessibility 100 |
+| Sign-in mobile 77, LCP 6.6 s; legal 92 | Framer Motion page entrances rendered every block with inline `opacity:0` in the server HTML, so nothing was visible until 940 KB of JavaScript had hydrated | `Stagger`/`StaggerItem`/`Reveal` rebuilt as CSS animations (nth-child stagger, scroll-driven reveal where supported); server HTML paints immediately | Sign-in 91, LCP 3.5 s; legal 93 |
+| Legal accessibility 96 after the above | The scroll-driven reveal faded blocks in, so a paragraph straddling the bottom of the viewport sat at partial opacity, which is text at 3.3:1 | The reveal moves but never fades | 100 |
+
+The remaining mobile LCP of 3 to 4 s is the simulated slow-4G download of the JavaScript the pages genuinely use (Firebase Auth, Framer Motion, GSAP on the landing); the desktop numbers show there is nothing left on the render path itself. Signed-in pages were audited in July via `scripts/audit.ts` (dashboard 86 performance, accessibility 96 to 100) and are covered by the axe suite above rather than re-audited here.
+<!-- lighthouse-prod:end -->

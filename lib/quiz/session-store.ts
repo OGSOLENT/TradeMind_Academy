@@ -30,7 +30,12 @@ export interface AnswerRecord {
   pLAfter: number;
 }
 
-export type SessionType = "placement" | "lesson-check" | "topic-test" | "review";
+export type SessionType = "placement" | "post-test" | "lesson-check" | "topic-test" | "review";
+
+/** Placement and post-test measure; they never move the learner model. */
+export function isAssessment(type: SessionType): boolean {
+  return type === "placement" || type === "post-test";
+}
 
 interface QuizSessionState {
   uid: string | null;
@@ -174,8 +179,7 @@ export const useQuizSession = create<QuizSessionState>()(
 
         const pLBefore = s.mastery[item.kcId] ?? DEFAULT_PARAMS.pL0;
         const correct = grade(answer, item.answerKey);
-        const pLAfter =
-          s.sessionType === "placement" ? pLBefore : updateMastery(pLBefore, correct).pL;
+        const pLAfter = isAssessment(s.sessionType) ? pLBefore : updateMastery(pLBefore, correct).pL;
         const latencyMs = Math.max(0, Date.now() - s.shownAt);
 
         getLogger().enqueue({

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { collection, doc, getDocs, runTransaction, serverTimestamp, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, runTransaction, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { applyMasteryUpdates } from "@/lib/firebase/mastery";
 import { QuestionBody, answerFromWorking, freshWorking, promptOf, type Working } from "@/components/learn/question-body";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +13,8 @@ import { MASTERY_THRESHOLD, initialiseFromPlacement } from "@/lib/bkt";
 import { newlyUnlocked } from "@/lib/routing";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
-import { useQuizSession } from "@/lib/quiz/session-store";
+import { isAssessment, useQuizSession } from "@/lib/quiz/session-store";
+import { normalisedGain } from "@/lib/assessment";
 import type { LearnerAnswer } from "@/lib/quiz/grade";
 import { Button } from "@/components/ui/button";
 import { Counter } from "@/components/ui/counter";
@@ -93,9 +94,15 @@ export default function QuizPage() {
 
     void (async () => {
       try {
+        const correct = records.filter((r) => r.correct).length;
         await updateDoc(doc(db, "users", user.uid, "sessions", s.sessionId!), {
           endedAt: serverTimestamp(),
+          score: { correct, total: records.length },
         });
+
+        // A post-test is a measurement. The responses are logged against
+        // the model's current estimate; the model itself is left alone.
+        if (s.sessionType === "post-test") return;
 
         if (s.sessionType === "placement") {
           // Finishing a placement: initialise pL0 per KC from what I just saw.
@@ -133,7 +140,7 @@ export default function QuizPage() {
 
   if (!s.sessionId || s.sessionId !== sessionId || !item) {
     if (s.phase === "complete" && s.sessionId === sessionId) {
-      return s.sessionType === "placement" ? <PlacementComplete /> : <SessionSummary />;
+      return <Complete />;
     }
     return (
       <div className="mx-auto max-w-md pt-20 text-center">
@@ -147,13 +154,13 @@ export default function QuizPage() {
   }
 
   if (s.phase === "complete") {
-    return s.sessionType === "placement" ? <PlacementComplete /> : <SessionSummary />;
+    return <Complete />;
   }
 
   const record = s.answers[item.id];
   const reason = s.reasons[item.id];
   const lessonHref = `/lesson/${item.kcId}`;
-  const isPlacement = s.sessionType === "placement";
+  const isPlacement = isAssessment(s.sessionType);
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-2xl flex-col px-4 pb-10 pt-6">
@@ -247,6 +254,95 @@ export default function QuizPage() {
         </AnimatePresence>
       </main>
     </div>
+  );
+}
+
+function Complete() {
+  const type = useQuizSession((s) => s.sessionType);
+  if (type === "placement") return <PlacementComplete />;
+  if (type === "post-test") return <PostTestComplete />;
+  return <SessionSummary />;
+}
+
+/** The end of the post-test: the score, set against placement if there was one. */
+function PostTestComplete() {
+  const { user } = useAuth();
+  const s = useQuizSession();
+  const records = Object.values(s.answers);
+  const correct = records.filter((r) => r.correct).length;
+  const total = records.length;
+
+  const { data: placement } = useQuery({
+    queryKey: ["placement-score", user?.uid],
+    enabled: !!user,
+    queryFn: async () => {
+      const { db } = getFirebase();
+      const snap = await getDocs(
+        query(collection(db, "users", user!.uid, "sessions"), where("type", "==", "placement")),
+      );
+      const done = snap.docs.find((d) => d.data().endedAt);
+      if (!done) return null;
+      const stored = done.data().score as { correct: number; total: number } | undefined;
+      if (stored) return stored;
+      // Placements completed before scores were stored on the session doc.
+      const rs = await getDocs(collection(db, "users", user!.uid, "sessions", done.id, "responses"));
+      return { correct: rs.docs.filter((d) => d.data().correct).length, total: rs.size };
+    },
+  });
+
+  const gain = placement ? normalisedGain(placement.correct, correct, total) : null;
+
+  return (
+    <Stagger autoWrap={false} className="mx-auto max-w-md space-y-8 px-4 pt-16 text-center">
+      <StaggerItem>
+        <p className="text-label-caps uppercase tracking-widest text-fg-secondary">Post-test complete</p>
+        <p className="num mt-6 text-display-lg text-fg-primary" data-testid="post-test-score">
+          {correct}/{total}
+        </p>
+        {placement ? (
+          <p className="mt-3 text-body-base text-fg-secondary">
+            At placement you scored {placement.correct}/{placement.total}.
+            {gain !== null && gain > 0 && (
+              <>
+                {" "}
+                That&apos;s {Math.round(gain * 100)}% of the ground you had left to make up.
+              </>
+            )}
+            {gain !== null && gain <= 0 && <> No change on this measure this time.</>}
+            {gain === null && placement.correct >= placement.total && (
+              <> You were already at the ceiling, so there was nothing to gain here.</>
+            )}
+          </p>
+        ) : (
+          <p className="mt-3 text-body-base text-fg-secondary">
+            There&apos;s no placement score to compare with, so this stands on its own.
+          </p>
+        )}
+      </StaggerItem>
+      <StaggerItem>
+        <ul className="mx-auto grid max-w-sm grid-cols-2 gap-x-6 gap-y-1.5 text-left text-sm">
+          {records.map((r) => (
+            <li key={r.itemId} className="flex items-center gap-2 text-fg-secondary">
+              <span aria-hidden="true" className={r.correct ? "text-mastery" : "text-fg-muted"}>
+                {r.correct ? "✓" : "✗"}
+              </span>
+              <span className="truncate">
+                <span className="sr-only">{r.correct ? "Correct: " : "Wrong: "}</span>
+                {r.kcId.replace("kc-", "").replaceAll("-", " ")}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </StaggerItem>
+      <StaggerItem className="flex flex-col justify-center gap-3 sm:flex-row">
+        <Link href="/survey">
+          <Button>Rate the course (2 minutes)</Button>
+        </Link>
+        <Link href="/dashboard">
+          <Button variant="ghost">Back to dashboard</Button>
+        </Link>
+      </StaggerItem>
+    </Stagger>
   );
 }
 

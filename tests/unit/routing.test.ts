@@ -5,6 +5,7 @@ import {
   newlyUnlocked,
   nextActionFor,
   nextItem,
+  nodeStateFor,
   targetKcId,
   unlockedKcIds,
 } from "@/lib/routing";
@@ -76,6 +77,30 @@ describe("targetKcId — lowest-mastery unlocked KC", () => {
       }),
     ).toBeNull();
   });
+
+  it("treats a KC with no state as the default prior, and never picks a locked one", () => {
+    // b and c are locked (a is not mastered), so a is the only candidate.
+    expect(targetKcId(kcs, {})).toBe("a");
+    // c stays locked however low its estimate is, because b isn't mastered.
+    expect(
+      targetKcId(kcs, { a: { pL: 0.9, attempts: 5 }, b: { pL: 0.5, attempts: 2 }, c: { pL: 0.1, attempts: 1 } }),
+    ).toBe("b");
+  });
+});
+
+describe("nodeStateFor — how the skill tree draws a KC", () => {
+  it("locked beats everything", () => {
+    expect(nodeStateFor(0.95, 5, false)).toBe("locked");
+  });
+  it("mastered at or above 0.8", () => {
+    expect(nodeStateFor(0.8, 5, true)).toBe("mastered");
+    expect(nodeStateFor(0.79, 5, true)).not.toBe("mastered");
+  });
+  it("remediation only once it's been tried and sits below 0.4", () => {
+    expect(nodeStateFor(0.2, 0, true)).toBe("available");
+    expect(nodeStateFor(0.2, 1, true)).toBe("remediation");
+    expect(nodeStateFor(0.4, 3, true)).toBe("available");
+  });
 });
 
 describe("difficulty ladder", () => {
@@ -133,6 +158,20 @@ describe("nextItem", () => {
   it("exposes the model's predicted P(correct) for the popover", () => {
     const sel = nextItem(pool, "a", 0.25, { usedItemIds: [], consecutiveWrong: 0 });
     expect(sel?.reason.pCorrectPredicted).toBeCloseTo(0.375, 10);
+  });
+
+  it("returns null for a KC with no items at all", () => {
+    expect(nextItem(pool, "zzz", 0.5, { usedItemIds: [], consecutiveWrong: 0 })).toBeNull();
+  });
+
+  it("climbs to hard near mastery, and reports the band it's in", () => {
+    const sel = nextItem(pool, "a", 0.75, { usedItemIds: [], consecutiveWrong: 0 });
+    expect(sel?.item.id).toBe("h1");
+    expect(sel?.reason.band).toBe("practice");
+    const low = nextItem(pool, "a", 0.1, { usedItemIds: [], consecutiveWrong: 0 });
+    expect(low?.item.difficulty).toBe("easy");
+    expect(low?.reason.band).toBe("remediate");
+    expect(low?.reason.remediation).toBe(false);
   });
 });
 

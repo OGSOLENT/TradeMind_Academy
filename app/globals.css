@@ -26,7 +26,9 @@
 
   --fg-primary: #e4e1ed;
   --fg-secondary: #908f9e;
-  --fg-muted: #5b5b6b;
+  /* 4.6:1 on every elevation level (was #5b5b6b at 3:1, which failed AA
+     for the small labels it's used on). Still clearly a step below secondary. */
+  --fg-muted: #82829a;
 
   --accent: #5e6ad2; /* indigo. Actions, focus, the active path */
   --accent-bright: #bdc2ff; /* the indigo I use for text and links on dark */
@@ -533,4 +535,66 @@
 [data-motion="reduced"] .tm-node-float,
 [data-motion="reduced"] .tm-const-stars {
   animation: none !important;
+}
+
+
+/* ── Entrances ─────────────────────────────────────────────────────────────
+   Page entrances (components/motion/stagger.tsx) are CSS so the server HTML
+   paints before any script runs. .tm-rise fades and rises; a .tm-stagger
+   parent hands its direct .tm-rise children 60ms steps, eight deep, plus the
+   page's own base delay. .tm-reveal is the scroll-driven version for long
+   columns, progressive: browsers without animation-timeline just show it. */
+@keyframes tm-rise {
+  from { opacity: 0; transform: translateY(var(--tm-rise, 18px)); }
+  to   { opacity: 1; transform: none; }
+}
+.tm-rise {
+  animation: tm-rise 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--tm-delay, var(--tm-base, 0ms));
+}
+.tm-stagger > .tm-rise:nth-child(1) { --tm-delay: calc(var(--tm-base, 0ms) + 0ms); }
+.tm-stagger > .tm-rise:nth-child(2) { --tm-delay: calc(var(--tm-base, 0ms) + 60ms); }
+.tm-stagger > .tm-rise:nth-child(3) { --tm-delay: calc(var(--tm-base, 0ms) + 120ms); }
+.tm-stagger > .tm-rise:nth-child(4) { --tm-delay: calc(var(--tm-base, 0ms) + 180ms); }
+.tm-stagger > .tm-rise:nth-child(5) { --tm-delay: calc(var(--tm-base, 0ms) + 240ms); }
+.tm-stagger > .tm-rise:nth-child(6) { --tm-delay: calc(var(--tm-base, 0ms) + 300ms); }
+.tm-stagger > .tm-rise:nth-child(7) { --tm-delay: calc(var(--tm-base, 0ms) + 360ms); }
+.tm-stagger > .tm-rise:nth-child(n + 8) { --tm-delay: calc(var(--tm-base, 0ms) + 420ms); }
+
+/* The reveal moves but never fades: a block straddling the bottom edge of the
+   viewport at partial opacity is text at reduced contrast, and Lighthouse
+   rightly flagged it. So it settles into place as it enters, fully opaque. */
+@keyframes tm-settle {
+  from { transform: translateY(var(--tm-rise, 16px)); }
+  to   { transform: none; }
+}
+.tm-reveal { --tm-rise: 16px; }
+@supports (animation-timeline: view()) {
+  .tm-reveal {
+    animation: tm-settle linear both;
+    animation-timeline: view();
+    /* Settled by the time its top edge is 220px into the viewport, whatever
+       its height; a block already on screen at load is simply in place. */
+    animation-range: entry 0px entry 220px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-rise, .tm-reveal { --tm-rise: 0px; animation-delay: 0ms !important; }
+  .tm-reveal { animation: none; }
+}
+[data-motion="reduced"] .tm-rise,
+[data-motion="reduced"] .tm-reveal { --tm-rise: 0px; animation-delay: 0ms !important; }
+[data-motion="reduced"] .tm-reveal { animation: none; }
+
+/* A mount fade for things that arrive after first paint (the hero particles). */
+@keyframes tm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.tm-fade-in {
+  animation: tm-fade-in 900ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tm-fade-in { animation: none; }
 }

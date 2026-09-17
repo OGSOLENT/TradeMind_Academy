@@ -84,6 +84,19 @@ describe("users/{uid}/mastery + sessions", () => {
     );
   });
 
+  it("owner reads/writes their own survey, and can change their answers", async () => {
+    const ref = doc(db(ALICE), "users", ALICE, "surveys", "sus");
+    await assertSucceeds(setDoc(ref, { answers: [4, 2, 5, 1, 4, 2, 5, 2, 4, 2], score: 82.5 }));
+    await assertSucceeds(updateDoc(ref, { score: 80 }));
+    await assertSucceeds(getDoc(ref));
+  });
+
+  it("stranger cannot read or write my survey", async () => {
+    await assertFails(setDoc(doc(db(BOB), "users", ALICE, "surveys", "sus"), { answers: [] }));
+    await assertFails(getDoc(doc(db(BOB), "users", ALICE, "surveys", "sus")));
+    await assertFails(getDoc(doc(db(null), "users", ALICE, "surveys", "sus")));
+  });
+
   it("sessions cannot be deleted", async () => {
     await assertSucceeds(
       setDoc(doc(db(ALICE), "users", ALICE, "sessions", "s1"), {
