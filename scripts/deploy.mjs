@@ -65,6 +65,7 @@ cpSync(join(root, ".vercel/project.json"), join(snapshot, ".vercel/project.json"
 console.log(`Deploying ${prod ? "to production" : "a preview"} from ${snapshot}`);
 const args = ["--yes", "vercel@latest", "deploy", "--yes"];
 if (prod) args.push("--prod");
+if (process.argv.includes("--debug")) args.push("--debug");
 const result = spawnSync("npx", args, { cwd: snapshot, stdio: "inherit", env: process.env });
 rmSync(snapshot, { recursive: true, force: true });
 process.exit(result.status ?? 1);

@@ -33,10 +33,17 @@ const STEPS = [
 
 export default function LandingPage() {
   const [mobile, setMobile] = useState(false);
+  // The particle field waits for the browser to go idle after the first
+  // paint, so the headline and the copy (the largest contentful paint) never
+  // queue behind three.js. It fades in a beat later, which reads as intended.
+  const [particles, setParticles] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setMobile(window.innerWidth < 768);
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    if (w.requestIdleCallback) w.requestIdleCallback(() => setParticles(true), { timeout: 1500 });
+    else setTimeout(() => setParticles(true), 300);
   }, []);
 
   // As you scroll out of the hero, the copy drifts up a touch faster than
@@ -64,7 +71,7 @@ export default function LandingPage() {
     <>
       {/* Hero */}
       <section ref={heroRef} aria-label="Introduction" className="relative overflow-hidden">
-        <HeroParticles mobile={mobile} />
+        {particles && <HeroParticles mobile={mobile} />}
         <div
           data-hero-copy
           className="relative mx-auto flex min-h-[82dvh] max-w-4xl flex-col items-center justify-center px-6 py-24 text-center"

@@ -1,8 +1,7 @@
 "use client";
 
-import { Children, isValidElement } from "react";
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { ease, stagger } from "@/lib/motion";
+import { Children, isValidElement, type CSSProperties } from "react";
+import { cn } from "@/lib/utils";
 
 /**
  * Page entrance choreography.
@@ -11,8 +10,15 @@ import { ease, stagger } from "@/lib/motion";
  * 0.06, max 8 children" (section 3). This is that rule made reusable, so
  * every page opens the same way instead of snapping into place.
  *
- * Under reduced motion the rise collapses to a 150ms fade with no stagger.
- * Content still arrives, nothing travels.
+ * It used to be Framer Motion. That rendered every item with an inline
+ * opacity:0 in the server HTML, so nothing on a page was visible until the
+ * JavaScript had downloaded, parsed and hydrated, which on a throttled
+ * phone put the largest contentful paint five seconds after the HTML
+ * arrived. Now it's a CSS animation: the server HTML paints straight away,
+ * the rise runs from the first frame, and the stagger comes from nth-child
+ * delays (globals.css, "Entrances"). Under reduced motion the global rule
+ * clamps it to a 150ms fade with no rise and no stagger. Content still
+ * arrives, nothing travels.
  */
 
 export function Stagger({
@@ -20,17 +26,12 @@ export function Stagger({
   className,
   delay = 0,
   autoWrap = true,
+  style,
   ...props
-}: { delay?: number; autoWrap?: boolean; children?: React.ReactNode } & Omit<
-  HTMLMotionProps<"div">,
-  "children"
->) {
-  const reduced = useReducedMotion();
-
-  // Variants only propagate to child *motion* components, so by default I
-  // wrap each direct child in a StaggerItem. Callers that already wrap their
-  // own children (the dashboard, which needs layout classes on the items)
-  // pass autoWrap={false}.
+}: { delay?: number; autoWrap?: boolean } & React.HTMLAttributes<HTMLDivElement>) {
+  // By default I wrap each direct child in a StaggerItem. Callers that
+  // already wrap their own children (the dashboard, which needs layout
+  // classes on the items) pass autoWrap={false}.
   const content = autoWrap
     ? Children.map(children, (child) =>
         isValidElement(child) ? <StaggerItem>{child}</StaggerItem> : child,
@@ -38,22 +39,13 @@ export function Stagger({
     : children;
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: {},
-        visible: {
-          transition: reduced
-            ? { duration: 0.15 }
-            : { staggerChildren: stagger.children, delayChildren: delay },
-        },
-      }}
-      className={className}
+    <div
+      className={cn("tm-stagger", className)}
+      style={{ ...style, "--tm-base": `${Math.round(delay * 1000)}ms` } as CSSProperties}
       {...props}
     >
       {content}
-    </motion.div>
+    </div>
   );
 }
 
@@ -61,51 +53,44 @@ export function StaggerItem({
   children,
   className,
   rise = 18,
+  style,
   ...props
-}: { rise?: number; children?: React.ReactNode } & Omit<HTMLMotionProps<"div">, "children">) {
-  const reduced = useReducedMotion();
+}: { rise?: number } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <motion.div
-      variants={{
-        hidden: reduced ? { opacity: 0 } : { opacity: 0, y: rise },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: reduced
-            ? { duration: 0.15 }
-            : { duration: 0.5, ease: ease.choreo },
-        },
-      }}
-      className={className}
+    <div
+      className={cn("tm-rise", className)}
+      style={{ ...style, "--tm-rise": `${rise}px` } as CSSProperties}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 /**
  * A scroll-triggered reveal for long reading columns (lessons, legal, the
- * landing page). It fires once, when the block is a little way into the
- * viewport.
+ * landing page). Where the browser supports scroll-driven animations the
+ * block settles up into place as it enters the viewport, driven by the
+ * scroll position and needing no JavaScript; anywhere else it's simply
+ * there. It moves but never fades: a paragraph at half opacity across the
+ * bottom of the screen is text at reduced contrast, and the audit said so.
+ * Either way the server HTML is never hidden, which is what keeps the
+ * first paint honest on slow connections.
  */
 export function Reveal({
   children,
   className,
   rise = 16,
+  style,
   ...props
-}: { rise?: number; children?: React.ReactNode } & Omit<HTMLMotionProps<"div">, "children">) {
-  const reduced = useReducedMotion();
+}: { rise?: number } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <motion.div
-      initial={reduced ? { opacity: 0 } : { opacity: 0, y: rise }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={reduced ? { duration: 0.15 } : { duration: 0.55, ease: ease.choreo }}
-      className={className}
+    <div
+      className={cn("tm-reveal", className)}
+      style={{ ...style, "--tm-rise": `${rise}px` } as CSSProperties}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

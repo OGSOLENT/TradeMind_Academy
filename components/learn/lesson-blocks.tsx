@@ -71,7 +71,8 @@ const VIDEO_BASE = process.env.NEXT_PUBLIC_VIDEO_BASE?.replace(/\/$/, "");
 
 function resolveVideo(url: string | null): string | null {
   if (!url) return null;
-  if (VIDEO_BASE && url.startsWith("/videos/")) return `${VIDEO_BASE}/${url.slice("/videos/".length)}`;
+  if (VIDEO_BASE && url.startsWith("/videos/"))
+    return `${VIDEO_BASE}/${url.slice("/videos/".length)}`;
   return url;
 }
 
@@ -87,15 +88,22 @@ export function VideoBlock({
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [unavailable, setUnavailable] = useState(false);
-  const src = unavailable ? null : resolveVideo(videoUrl);
-  if (unavailable || !src) return null;
+  // A load error keeps the frame and offers a retry. Dropping the block on
+  // a flaky connection would make the lecture look like it never existed.
+  const [failed, setFailed] = useState(false);
+  const src = resolveVideo(videoUrl);
+  if (!src) return null;
 
   const play = () => {
     setPlaying(true);
     // The element is already mounted underneath the poster, so this is
     // immediate and counts as a user gesture for autoplay policies.
     void videoRef.current?.play();
+  };
+
+  const retry = () => {
+    setFailed(false);
+    videoRef.current?.load();
   };
 
   return (
@@ -114,7 +122,7 @@ export function VideoBlock({
           className="aspect-video w-full bg-bg-deep object-contain"
           onPlay={() => setPlaying(true)}
           onError={() => {
-            setUnavailable(true);
+            setFailed(true);
             setPlaying(false);
           }}
         />
@@ -130,26 +138,64 @@ export function VideoBlock({
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0 flex flex-col items-center justify-center gap-4"
             >
-              <Image src={block.poster} alt="" fill sizes="720px" className="object-cover" unoptimized />
-              <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg-deep/85 via-bg-deep/30 to-transparent" />
-              <button
-                onClick={play}
-                aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
-                className="group relative flex h-20 w-20 items-center justify-center rounded-pill bg-white/10 text-fg-primary shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),0_0_40px_var(--accent-glow)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-300 hover:scale-105 hover:bg-white/15 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3),0_0_60px_var(--accent-glow)]"
-              >
-                <span
-                  aria-hidden="true"
-                  className={cn("absolute inset-0 rounded-pill border border-accent/40", !reduced && "tm-node-pulse")}
-                />
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="ml-1">
-                  <path d="M8 5.5v13l11-6.5z" />
-                </svg>
-              </button>
+              <Image
+                src={block.poster}
+                alt=""
+                fill
+                sizes="720px"
+                className="object-cover"
+                unoptimized
+              />
+              <div
+                aria-hidden="true"
+                className="from-bg-deep/85 via-bg-deep/30 absolute inset-0 bg-gradient-to-t to-transparent"
+              />
+              {failed ? (
+                <div
+                  role="alert"
+                  className="relative flex flex-col items-center gap-3 px-6 text-center"
+                >
+                  <p className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    The recording didn&apos;t load. Check your connection and try again.
+                  </p>
+                  <Button size="sm" variant="secondary" onClick={retry}>
+                    Try again
+                  </Button>
+                </div>
+              ) : (
+                <button
+                  onClick={play}
+                  aria-label={`Play the lecture${title ? `: ${title}` : ""}`}
+                  className="group relative flex h-20 w-20 items-center justify-center rounded-pill bg-white/10 text-fg-primary shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18),0_0_40px_var(--accent-glow)] backdrop-blur-md transition-[transform,background-color,box-shadow] duration-300 hover:scale-105 hover:bg-white/15 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.3),0_0_60px_var(--accent-glow)]"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "border-accent/40 absolute inset-0 rounded-pill border",
+                      !reduced && "tm-node-pulse",
+                    )}
+                  />
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="ml-1"
+                  >
+                    <path d="M8 5.5v13l11-6.5z" />
+                  </svg>
+                </button>
+              )}
               <div className="relative flex items-center gap-2">
                 <Pill tone="accent" dot>
                   Lecture
                 </Pill>
-                {title && <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">{title}</span>}
+                {title && (
+                  <span className="text-sm text-fg-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+                    {title}
+                  </span>
+                )}
               </div>
             </motion.div>
           )}
@@ -217,8 +263,12 @@ export function CheckQuestionBlock({ itemId }: { itemId: string }) {
               className={cn(
                 "min-h-11 w-full rounded-control px-4 py-3 text-left text-sm transition-colors duration-200",
                 chosen ? "text-fg-primary" : "text-fg-secondary hover:bg-white/5",
-                showState && result === "correct" && "bg-mastery/10 shadow-[inset_0_0_0_1px_var(--mastery)]",
-                showState && result === "incorrect" && "bg-warning/10 shadow-[inset_0_0_0_1px_var(--warning)]",
+                showState &&
+                  result === "correct" &&
+                  "bg-mastery/10 shadow-[inset_0_0_0_1px_var(--mastery)]",
+                showState &&
+                  result === "incorrect" &&
+                  "bg-warning/10 shadow-[inset_0_0_0_1px_var(--warning)]",
                 chosen && result === null && "bg-accent/15 shadow-[inset_0_0_0_1px_var(--accent)]",
                 !chosen && "shadow-hairline",
               )}
@@ -231,9 +281,7 @@ export function CheckQuestionBlock({ itemId }: { itemId: string }) {
 
       <div aria-live="polite">
         {result === "incorrect" && (
-          <p className="text-sm text-warning">
-            Not quite — have another look. {item.explanation}
-          </p>
+          <p className="text-sm text-warning">Not quite — have another look. {item.explanation}</p>
         )}
         {result === "correct" && (
           <p className="text-sm text-mastery-bright">Correct. {item.explanation}</p>

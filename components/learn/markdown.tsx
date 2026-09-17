@@ -104,7 +104,15 @@ export function Markdown({ md }: { md: string }) {
     if (table.length) {
       const [head, ...body] = table;
       out.push(
-        <div key={key++} className="-mx-1 overflow-x-auto">
+        // Wide tables scroll sideways on a phone, so the wrapper is focusable
+        // and keyboard users can scroll it with the arrow keys (WCAG 2.1.1).
+        <div
+          key={key++}
+          className="-mx-1 overflow-x-auto rounded-control focus:outline-none focus-visible:shadow-[inset_0_0_0_1px_var(--accent)]"
+          tabIndex={0}
+          role="region"
+          aria-label="Table, scrolls sideways on small screens"
+        >
           <table className="w-full min-w-[28rem] border-collapse text-sm">
             <thead>
               <tr className="border-b border-hair">

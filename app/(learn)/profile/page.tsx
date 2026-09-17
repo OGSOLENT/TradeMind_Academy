@@ -208,29 +208,65 @@ export default function ProfilePage() {
             <motion.li
               key={badge.id}
               initial={reduced ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: badge.earned ? 1 : 0.4, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ ...spring.ui, delay: 0.25 + i * 0.05 }}
               whileHover={badge.earned && !reduced ? { y: -3, scale: 1.02 } : undefined}
               className={cn(
-                "rounded-control p-4 text-center shadow-hairline transition-shadow duration-300",
-                badge.earned && "bg-mastery/5 hover:shadow-[inset_0_0_0_1px_var(--mastery-glow),0_0_24px_-6px_var(--mastery-glow)]",
+                "rounded-control p-4 text-center transition-shadow duration-300",
+                // An unearned badge is dimmed through its icon and text tones,
+                // not a whole-tile opacity, so the words stay at AA contrast.
+                badge.earned
+                  ? "bg-mastery/5 shadow-hairline hover:shadow-[inset_0_0_0_1px_var(--mastery-glow),0_0_24px_-6px_var(--mastery-glow)]"
+                  : "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]",
               )}
             >
               <p
                 aria-hidden="true"
                 className={cn(
                   "text-2xl",
-                  badge.earned ? "text-mastery-bright drop-shadow-[0_0_10px_var(--mastery-glow)]" : "text-fg-muted",
+                  badge.earned ? "text-mastery-bright drop-shadow-[0_0_10px_var(--mastery-glow)]" : "text-fg-muted opacity-50",
                 )}
               >
                 {badge.icon}
               </p>
-              <p className="mt-2 text-sm font-medium text-fg-primary">{badge.title}</p>
-              <p className="mt-0.5 text-xs text-fg-secondary">{badge.description}</p>
+              <p className={cn("mt-2 text-sm font-medium", badge.earned ? "text-fg-primary" : "text-fg-secondary")}>
+                {badge.title}
+              </p>
+              <p className={cn("mt-0.5 text-xs", badge.earned ? "text-fg-secondary" : "text-fg-muted")}>
+                {badge.description}
+              </p>
               <span className="sr-only">{badge.earned ? "Earned" : "Not yet earned"}</span>
             </motion.li>
           ))}
         </ul>
+      </Card>
+
+      {/* The study: a post-test to set against placement, and the questionnaire. */}
+      <Card level="elevated" spotlight className="p-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="max-w-md">
+            <h2 className="text-body-base font-medium text-fg-primary">Measure what changed</h2>
+            <p className="mt-1 text-sm text-fg-secondary">
+              {sessions.some((s) => s.type === "post-test" && s.ended)
+                ? "Post-test done. You can retake it, but the study uses your first attempt."
+                : sessions.filter((s) => s.ended && s.type !== "placement").length >= 3
+                  ? "You've worked through enough of the course for a post-test to mean something: sixteen questions, the same shape as placement, nothing changes your model."
+                  : "After a few practice sessions, take a sixteen-question post-test to set against your placement. Nothing in it changes your model."}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/post-test">
+              <Button variant={sessions.some((s) => s.type === "post-test" && s.ended) ? "ghost" : "primary"} size="sm">
+                {sessions.some((s) => s.type === "post-test" && s.ended) ? "Retake post-test" : "Take the post-test"}
+              </Button>
+            </Link>
+            <Link href="/survey">
+              <Button variant="ghost" size="sm">
+                Rate the course
+              </Button>
+            </Link>
+          </div>
+        </div>
       </Card>
 
       {/* The three doors into settings, each straight to its own section. */}

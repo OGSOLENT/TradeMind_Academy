@@ -74,6 +74,16 @@ Takes about two minutes. Details and first-time setup are in docs/DEPLOY.md.
 npm run test
 ```
 
+## When the study runs
+
+Participants sign up on the live site, do placement, work through the course, then from **Profile** take the post-test and rate the course. To pull the numbers out:
+
+```bash
+npm run analyse:live
+```
+
+That writes `docs/report/PILOT_RESULTS.md` (normalised gain, time on task, mastered modules, SUS, and how the model's mastery calls held up on the post-test). It only reads. Needs `serviceAccountKey.json` in the project folder.
+
 ## Practice mode (optional)
 
 A throwaway copy on a fake local database, for testing without touching anyone's real data. Google sign-in shows a plain white "Sign-in with Google.com" page there. That's the fake, and it's correct. Needs two Terminal windows.
