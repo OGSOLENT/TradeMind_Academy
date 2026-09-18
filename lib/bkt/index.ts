@@ -1,6 +1,6 @@
 /**
  * Bayesian Knowledge Tracing, after Corbett and Anderson (1994).
- * This is THE engine of the dissertation. Pure TypeScript, no dependencies,
+ * This is THE engine of my dissertation. Pure TypeScript, no dependencies,
  * and not a single Firebase import.
  *
  *   evidence update:  pL|correct = pL(1-pS) / (pL(1-pS) + (1-pL)pG)
