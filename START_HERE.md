@@ -32,17 +32,23 @@ npm run stop:all
 
 ## Open the database
 
-The database, in the Firebase console:
+The live database is Cloud Firestore inside the Firebase project **trademind-academy**. It belongs to the Google account **ekeneadama2003@gmail.com**, so the browser has to be signed into that account or the console says you don't have access. Run these from the `TradeMind_Academy` folder (from anywhere else npm says "missing script"):
 
 ```bash
-npm run db
+npm run db        # Firestore, in the Firebase console
+npm run users     # the sign-ups (Authentication tab)
 ```
 
-The sign-ups (the Authentication tab):
+Or paste the address straight into a browser: https://console.firebase.google.com/project/trademind-academy/firestore
+
+Quicker, and no browser: a read-only view in the terminal, with every learner, their sessions and response counts:
 
 ```bash
-npm run users
+npm run db:peek          # production
+npm run db:peek:local    # the emulator copy, while `npm run emulators` is running
 ```
+
+The emulator's own console (a throwaway copy, wiped on restart) is at http://localhost:4000/firestore, or `npm run db:local`.
 
 ## Accessibility settings
 

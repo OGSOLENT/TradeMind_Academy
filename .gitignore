@@ -54,3 +54,6 @@ serviceAccountKey.json
 .next-audit/
 .env*
 content/bars/
+
+# build cache: downscaled figures for the dissertation build
+docs/report-figures/.print/

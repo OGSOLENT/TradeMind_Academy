@@ -34,9 +34,9 @@ OUT_COPY = ROOT.parent / "TradeMind_Academy_Dissertation.docx"
 TITLE = "TradeMind Academy: an intelligent tutoring system for trading education"
 AUTHOR = "Ogechukwu Adama"
 STUDENT_ID = "10440379"
-DEGREE = "BSc (Hons) Computing"
+DEGREE = "[Your degree title, e.g. BSc (Hons) Computer Science]"
 YEAR = "2025/26"
-SUBMISSION = "30 September 2026"
+SUBMISSION = "September 2026"
 
 W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 TEXT_WIDTH_CM = 15.3
@@ -282,20 +282,6 @@ class Builder:
         width_cm = min(TEXT_WIDTH_CM, 15.3)
         if h / w > 1.1:
             width_cm = 11.0
-        # Downsample to roughly 300 dpi at the printed width. The source
-        # screenshots are 3780 px wide and would be embedded whole, which puts
-        # the finished document over 45 MB for no visible gain in print.
-        target_px = int(width_cm / 2.54 * 300)
-        if w > target_px * 1.15:
-            cache = ROOT / "docs" / "report-figures" / ".print"
-            cache.mkdir(parents=True, exist_ok=True)
-            small = cache / (Path(path).stem + ".png")
-            if not small.exists() or small.stat().st_mtime < img.stat().st_mtime:
-                with Image.open(img) as im:
-                    im = im.convert("RGB")
-                    im = im.resize((target_px, round(h * target_px / w)), Image.LANCZOS)
-                    im.save(small, "PNG", optimize=True)
-            img = small
         run.add_picture(str(img), width=Cm(width_cm))
         cap = self.paragraph("Caption", align=WD_ALIGN_PARAGRAPH.CENTER)
         bm = f"_F{label.replace('.', '_')}" if label else f"_F{len(self.figures)}"
