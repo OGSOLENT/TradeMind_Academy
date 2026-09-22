@@ -44,7 +44,7 @@ flowchart LR
   FS --> An
   BKT -. same code .-> Sim
   Route -. same code .-> Sim
-  Blob["Vercel Blob\n36 lesson recordings"] --> UI
+  Vid["public/videos-web\n36 lesson recordings, 286 MB\nstatic, CDN-cached"] --> UI
 ```
 
 The loop in one line: placement seeds the model → routing picks the weakest unlocked module and an item at the right difficulty → every answer updates P(L) and is logged with the estimate before and after → the dashboard, skill tree and knowledge model show the learner exactly what the model believes. The post-test and SUS survey close the study; `scripts/analyse.ts` turns the log into normalised gain, time on task and usability numbers.

@@ -26,7 +26,18 @@ const nextConfig = {
   // and costs nothing here.
   images: { unoptimized: true },
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      {
+        // The lesson recordings are content-stable: a lesson's file name
+        // never changes, and a re-encode gets a new name. Without this they
+        // go out as max-age=0 and every play re-downloads six megabytes,
+        // which is the learner's data and the project's bandwidth for no
+        // reason. A year, immutable, so a second viewing is free.
+        source: "/videos-web/:file*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
   },
 };
 

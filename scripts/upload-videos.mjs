@@ -1,4 +1,16 @@
 /**
+ * PARKED, 22 September 2026. The recordings are no longer on Vercel Blob:
+ * the store went over the Hobby plan's 1 GB free storage allowance, and a
+ * suspended store returns 403 on every public read, which killed every
+ * video on the live site at once. They're now static files inside the app
+ * (public/videos-web, built by scripts/compress-videos.mjs) and the deploy
+ * carries them. See docs/DEPLOY.md.
+ *
+ * This is kept because it still works, and is the path back to a CDN if
+ * bandwidth ever becomes the binding constraint: run it, and the
+ * content/video-urls.json it writes overrides the local paths with no code
+ * change. Anything it uploads has to stay under the storage allowance.
+ *
  * Uploads the lesson recordings to the project's Vercel Blob store and
  * writes content/video-urls.json, which the content generator reads to
  * turn `Video: File.mp4` into the hosted URL.

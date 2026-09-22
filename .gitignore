@@ -57,3 +57,9 @@ content/bars/
 
 # build cache: downscaled figures for the dissertation build
 docs/report-figures/.print/
+
+# The web-sized lesson recordings (public/videos-web, ~260 MB, built from
+# the originals by scripts/compress-videos.mjs). They're deployed as static
+# files but kept out of the repo so a clone stays small; re-create them with
+# `npm run videos:compress`.
+/public/videos-web
