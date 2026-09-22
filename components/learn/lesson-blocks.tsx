@@ -243,7 +243,15 @@ export function CheckQuestionBlock({ itemId }: { itemId: string }) {
   }
 
   return (
-    <Card level="glass" className="space-y-4" role="group" aria-label="Knowledge check">
+    <Card
+      level="glass"
+      className="space-y-4"
+      role="group"
+      aria-label="Knowledge check"
+      // Which item this is, so a browser test can look up the real answer
+      // instead of hard-coding one and breaking whenever the bank changes.
+      data-check-item-id={itemId}
+    >
       <Pill tone="mastery">Knowledge check</Pill>
       <p className="text-body-base font-medium text-fg-primary">{question}</p>
       <div className="space-y-2" role="radiogroup" aria-label="Answer options">

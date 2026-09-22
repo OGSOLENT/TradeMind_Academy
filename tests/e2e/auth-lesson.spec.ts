@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { fetchAnswerKey } from "./helpers";
 
 /**
  * The Phase 2 done criterion: someone can sign up (through the 18+ gate),
@@ -69,8 +70,18 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByRole("button", { name: "Describe this walkthrough" }).click();
     await expect(page.getByText(/Simulated prices built to show the idea/)).toBeVisible();
 
-    // Inline knowledge check: answer it correctly and it collapses to the tick chip.
-    await page.getByRole("radio", { name: /Open, High, Low, Close/ }).click();
+    // Inline knowledge check: answer it correctly and it collapses to the tick
+    // chip. The right option is read from the seeded bank rather than written
+    // in here, because which item a lesson uses, and where its answer sits,
+    // are both generated (scripts/generate-content.ts, lib/content/debias.ts).
+    const check = page.locator("[data-check-item-id]");
+    await expect(check).toBeVisible();
+    const checkItemId = await check.getAttribute("data-check-item-id");
+    const key = await fetchAnswerKey(checkItemId!);
+    if (key.type !== "mcq" || typeof key.correct !== "number") {
+      throw new Error(`lesson check ${checkItemId} is not a single-answer MCQ`);
+    }
+    await check.getByRole("radio").nth(key.correct).click();
     await page.getByRole("button", { name: "Check answer" }).click();
     await expect(page.getByText(/^Correct\./)).toBeVisible();
     await page.getByRole("button", { name: "Continue reading" }).click();

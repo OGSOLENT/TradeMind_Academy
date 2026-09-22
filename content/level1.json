@@ -186,7 +186,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-candle-anatomy-item-1"
+          "itemId": "kc-candle-anatomy-item-3"
         },
         {
           "kind": "markdown",
@@ -217,7 +217,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-candle-anatomy-item-2"
+          "itemId": "kc-candle-anatomy-item-4"
         },
         {
           "kind": "markdown",
@@ -250,7 +250,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-liquidity-item-1"
+          "itemId": "kc-liquidity-item-2"
         },
         {
           "kind": "markdown",
@@ -281,7 +281,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-liquidity-item-2"
+          "itemId": "kc-liquidity-item-3"
         },
         {
           "kind": "markdown",
@@ -312,7 +312,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-risk-sizing-item-1"
+          "itemId": "kc-risk-sizing-item-3"
         },
         {
           "kind": "markdown",
@@ -343,7 +343,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-risk-sizing-item-2"
+          "itemId": "kc-risk-sizing-item-4"
         },
         {
           "kind": "markdown",
@@ -374,7 +374,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-risk-sizing-item-3"
+          "itemId": "kc-risk-sizing-item-5"
         },
         {
           "kind": "markdown",
@@ -407,7 +407,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-reversal-patterns-item-1"
+          "itemId": "kc-reversal-patterns-item-2"
         },
         {
           "kind": "markdown",
@@ -440,7 +440,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-reversal-patterns-item-2"
+          "itemId": "kc-reversal-patterns-item-3"
         },
         {
           "kind": "markdown",
@@ -473,7 +473,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-1"
+          "itemId": "kc-cisd-confirmation-item-2"
         },
         {
           "kind": "markdown",
@@ -506,7 +506,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-2"
+          "itemId": "kc-cisd-confirmation-item-3"
         },
         {
           "kind": "markdown",
@@ -537,7 +537,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-3"
+          "itemId": "kc-cisd-confirmation-item-4"
         }
       ],
       "videoUrl": "/videos-web/How_to_Validate_Swing_Points_with_CISD.mp4",
@@ -562,7 +562,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-4"
+          "itemId": "kc-cisd-confirmation-item-2"
         },
         {
           "kind": "markdown",
@@ -593,7 +593,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-1"
+          "itemId": "kc-cisd-confirmation-item-3"
         },
         {
           "kind": "markdown",
@@ -622,7 +622,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-2"
+          "itemId": "kc-cisd-confirmation-item-4"
         },
         {
           "kind": "markdown",
@@ -653,7 +653,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-cisd-confirmation-item-3"
+          "itemId": "kc-cisd-confirmation-item-2"
         },
         {
           "kind": "markdown",
@@ -707,7 +707,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-market-structure-item-2"
+          "itemId": "kc-market-structure-item-1"
         },
         {
           "kind": "markdown",
@@ -761,7 +761,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-pd-arrays-item-1"
+          "itemId": "kc-pd-arrays-item-4"
         },
         {
           "kind": "markdown",
@@ -786,7 +786,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-pd-arrays-item-2"
+          "itemId": "kc-pd-arrays-item-4"
         },
         {
           "kind": "markdown",
@@ -844,7 +844,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-pd-arrays-item-1"
+          "itemId": "kc-pd-arrays-item-4"
         },
         {
           "kind": "markdown",
@@ -873,7 +873,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-pd-arrays-item-2"
+          "itemId": "kc-pd-arrays-item-4"
         },
         {
           "kind": "markdown",
@@ -906,7 +906,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-1"
+          "itemId": "kc-daily-bias-item-2"
         },
         {
           "kind": "markdown",
@@ -937,7 +937,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-2"
+          "itemId": "kc-daily-bias-item-4"
         },
         {
           "kind": "markdown",
@@ -972,7 +972,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-3"
+          "itemId": "kc-daily-bias-item-2"
         },
         {
           "kind": "markdown",
@@ -1034,7 +1034,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-1"
+          "itemId": "kc-daily-bias-item-2"
         },
         {
           "kind": "markdown",
@@ -1065,7 +1065,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-2"
+          "itemId": "kc-daily-bias-item-4"
         },
         {
           "kind": "markdown",
@@ -1096,7 +1096,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-daily-bias-item-3"
+          "itemId": "kc-daily-bias-item-2"
         },
         {
           "kind": "markdown",
@@ -1154,7 +1154,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-time-sessions-item-2"
+          "itemId": "kc-time-sessions-item-1"
         },
         {
           "kind": "markdown",
@@ -1208,7 +1208,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-time-sessions-item-2"
+          "itemId": "kc-time-sessions-item-1"
         },
         {
           "kind": "markdown",
@@ -1262,7 +1262,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-time-sessions-item-2"
+          "itemId": "kc-time-sessions-item-1"
         },
         {
           "kind": "markdown",
@@ -1287,7 +1287,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-entry-models-item-1"
+          "itemId": "kc-entry-models-item-5"
         },
         {
           "kind": "markdown",
@@ -1312,7 +1312,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-entry-models-item-2"
+          "itemId": "kc-entry-models-item-5"
         },
         {
           "kind": "markdown",
@@ -1362,7 +1362,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-entry-models-item-1"
+          "itemId": "kc-entry-models-item-5"
         },
         {
           "kind": "markdown",
@@ -1391,7 +1391,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-1"
+          "itemId": "kc-fractal-model-item-2"
         },
         {
           "kind": "markdown",
@@ -1420,7 +1420,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-2"
+          "itemId": "kc-fractal-model-item-4"
         },
         {
           "kind": "markdown",
@@ -1449,7 +1449,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-3"
+          "itemId": "kc-fractal-model-item-2"
         },
         {
           "kind": "markdown",
@@ -1507,7 +1507,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-1"
+          "itemId": "kc-fractal-model-item-2"
         },
         {
           "kind": "markdown",
@@ -1532,7 +1532,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-2"
+          "itemId": "kc-fractal-model-item-4"
         },
         {
           "kind": "markdown",
@@ -1561,7 +1561,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-3"
+          "itemId": "kc-fractal-model-item-2"
         },
         {
           "kind": "markdown",
@@ -1611,7 +1611,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-1"
+          "itemId": "kc-fractal-model-item-2"
         },
         {
           "kind": "markdown",
@@ -1640,7 +1640,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-fractal-model-item-2"
+          "itemId": "kc-fractal-model-item-4"
         },
         {
           "kind": "markdown",
@@ -1673,7 +1673,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-smt-divergence-item-1"
+          "itemId": "kc-smt-divergence-item-3"
         },
         {
           "kind": "markdown",
@@ -1698,7 +1698,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-htf-context-item-1"
+          "itemId": "kc-htf-context-item-4"
         },
         {
           "kind": "markdown",
@@ -1723,7 +1723,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-htf-context-item-2"
+          "itemId": "kc-htf-context-item-4"
         },
         {
           "kind": "markdown",
@@ -1754,7 +1754,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-weekly-profiles-item-1"
+          "itemId": "kc-weekly-profiles-item-2"
         },
         {
           "kind": "markdown",
@@ -1787,7 +1787,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-weekly-profiles-item-2"
+          "itemId": "kc-weekly-profiles-item-3"
         },
         {
           "kind": "markdown",
@@ -1818,7 +1818,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-weekly-profiles-item-3"
+          "itemId": "kc-weekly-profiles-item-4"
         },
         {
           "kind": "markdown",
@@ -1849,7 +1849,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-weekly-profiles-item-4"
+          "itemId": "kc-weekly-profiles-item-2"
         },
         {
           "kind": "markdown",
@@ -1880,7 +1880,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-weekly-profiles-item-1"
+          "itemId": "kc-weekly-profiles-item-3"
         },
         {
           "kind": "markdown",
@@ -1930,7 +1930,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-execution-review-item-2"
+          "itemId": "kc-execution-review-item-1"
         },
         {
           "kind": "markdown",
@@ -1984,7 +1984,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-instruments-item-1"
+          "itemId": "kc-instruments-item-4"
         },
         {
           "kind": "markdown",
@@ -2030,7 +2030,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-instruments-item-5"
+          "itemId": "kc-instruments-item-4"
         },
         {
           "kind": "markdown",
@@ -2059,7 +2059,7 @@
         },
         {
           "kind": "checkQuestion",
-          "itemId": "kc-instruments-item-1"
+          "itemId": "kc-instruments-item-4"
         },
         {
           "kind": "markdown",
@@ -2081,14 +2081,14 @@
         "question": "Which four data points does every candle record?",
         "options": [
           "High, Low, Volume, Close",
-          "Open, High, Low, Close",
           "Open, Close, Volume, Range",
+          "Open, High, Low, Close",
           "Bid, Ask, High, Low"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "Every candle on every timeframe records Open, High, Low and Close — OHLC. The body spans open to close; the wick is everything beyond it.",
       "isPretestEligible": true
@@ -2104,13 +2104,13 @@
         "options": [
           "Indecision candle",
           "Reversal candle",
-          "Directional candle",
-          "Inside bar"
+          "Inside bar",
+          "Directional candle"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 3
       },
       "explanation": "A large body with small wicks is a directional (expansion) candle: price moved confidently in one direction for most of the period and gave little back.",
       "isPretestEligible": true
@@ -2125,14 +2125,14 @@
         "question": "What does a candle with long wicks on both sides and a tiny body tell you?",
         "options": [
           "Buyers were in complete control",
+          "A reversal has been confirmed",
           "Neither side won — the open and close are nearly identical",
-          "The period had no trading activity",
-          "A reversal has been confirmed"
+          "The period had no trading activity"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "That is an indecision candle. Price was pushed both ways but finished roughly where it started — a tug-of-war, often a pause before the next real move.",
       "isPretestEligible": false
@@ -2146,15 +2146,15 @@
         "type": "mcq",
         "question": "On the daily chart you see a candle with a long lower wick. What does that wick represent on the 15-minute chart inside it?",
         "options": [
+          "Sideways consolidation only",
           "A period with no price data",
-          "A complete lower-timeframe decline, a bottom, and a sharp reversal",
           "A single 15-minute candle",
-          "Sideways consolidation only"
+          "A complete lower-timeframe decline, a bottom, and a sharp reversal"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "A wick is a lower-timeframe trend compressed into one line. The daily lower wick contains an entire 15-minute move down, a bottom, and the reversal back up.",
       "isPretestEligible": false
@@ -2168,16 +2168,16 @@
         "type": "multi",
         "question": "Select every statement that is true about reading candles.",
         "options": [
-          "The close matters more than the extreme, because a close is an agreement",
           "Colour alone tells you whether a candle is bullish or bearish",
           "Body-to-wick ratio identifies the candle type",
+          "The close matters more than the extreme, because a close is an agreement",
           "Every timeframe with a candle has a lower timeframe building it"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
-          0,
+          1,
           2,
           3
         ]
@@ -2215,19 +2215,19 @@
         "type": "ordering",
         "question": "Put the four stages of a bearish reversal candle into the order they occur.",
         "entries": [
-          "Open — the candle opens",
+          "Close — price closes below the open",
           "Push high — buyers take control and push price up",
-          "Reversal down — sellers aggressively push price back down",
-          "Close — price closes below the open"
+          "Open — the candle opens",
+          "Reversal down — sellers aggressively push price back down"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
           2,
-          3
+          1,
+          3,
+          0
         ]
       },
       "explanation": "The long upper wick is the record of the buyers who were overwhelmed between the push high and the close.",
@@ -2258,15 +2258,15 @@
         "type": "mcq",
         "question": "Where does buyside liquidity sit?",
         "options": [
-          "Below old lows",
-          "Above old highs",
           "At the midpoint of the range",
-          "Wherever volume is lowest"
+          "Wherever volume is lowest",
+          "Below old lows",
+          "Above old highs"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "Buyside liquidity is the cluster of buy stop orders resting above old highs — stops from shorts and breakout orders from buyers.",
       "isPretestEligible": true
@@ -2280,15 +2280,15 @@
         "type": "mcq",
         "question": "Using the three-step method, how do you confirm a high is a genuine swing high?",
         "options": [
-          "It is the highest price of the day",
-          "There are lower highs on both the left and right of it",
+          "It sits above the previous day high",
           "It has been touched at least three times",
-          "It sits above the previous day high"
+          "There are lower highs on both the left and right of it",
+          "It is the highest price of the day"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "Locate the point, then check both sides. A high with lower highs to the left and right is a genuine swing high, and the liquidity above it is real.",
       "isPretestEligible": false
@@ -2302,15 +2302,15 @@
         "type": "mcq",
         "question": "Why are equal highs a stronger magnet than a single high?",
         "options": [
-          "They are easier to see on a chart",
           "Repeated touches at one price stack more orders in a single spot",
           "They always mark the end of a trend",
+          "They are easier to see on a chart",
           "They cannot be swept"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "Two or more touches at the same price concentrate stops and pending orders at one level, making the pool larger and the draw stronger.",
       "isPretestEligible": false
@@ -2324,15 +2324,15 @@
         "type": "mcq",
         "question": "A candle forms a large wick that consumes half its time and range. What does this tell you about further expansion in that candle?",
         "options": [
-          "Expansion is more likely because momentum is building",
           "A large wick does not support further expansion — the budget is spent",
+          "Expansion is more likely because momentum is building",
           "It guarantees a reversal on the next candle",
           "Wick size has no bearing on expansion"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "Every candle has a finite time and range budget. If most of it went into forming the wick, there is nothing left for a decisive move before the close.",
       "isPretestEligible": false
@@ -2346,16 +2346,16 @@
         "type": "multi",
         "question": "Which levels are worth marking as liquidity before a session starts?",
         "options": [
-          "Previous day high and low",
           "Every single candle high on the chart",
-          "Previous week high and low",
-          "Equal highs and equal lows"
+          "Equal highs and equal lows",
+          "Previous day high and low",
+          "Previous week high and low"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
-          0,
+          1,
           2,
           3
         ]
@@ -2395,8 +2395,8 @@
         "entries": [
           "Let it close — let the large reversal candle completely close",
           "Observe the open of the next candle",
-          "Wait for a small wick — a shallow opposing run",
-          "Enter on the confirmed expansion continuation"
+          "Enter on the confirmed expansion continuation",
+          "Wait for a small wick — a shallow opposing run"
         ]
       },
       "answerKey": {
@@ -2404,8 +2404,8 @@
         "order": [
           0,
           1,
-          2,
-          3
+          3,
+          2
         ]
       },
       "explanation": "Do not try to catch a falling knife. Letting the candle close, then waiting for a shallow opposing run, is the safest of the three scenarios.",
@@ -2565,14 +2565,14 @@
         "question": "Your setup requires a wide stop. What happens to the position size?",
         "options": [
           "It gets larger, to keep the profit the same",
-          "It gets smaller, to keep the risk the same",
           "It stays the same and you accept more risk",
+          "It gets smaller, to keep the risk the same",
           "You move the stop closer instead"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "A wider stop means a smaller position for the same money at risk. The stop is set by structure — never moved to suit a position size.",
       "isPretestEligible": true
@@ -2586,15 +2586,15 @@
         "type": "mcq",
         "question": "A trader wins 80% of trades but the account is down. What is the most likely cause?",
         "options": [
-          "The win rate was measured wrongly",
-          "The losing trades were sized far larger than the winners",
+          "Commissions consumed the profit",
           "The strategy has no edge at all",
-          "Commissions consumed the profit"
+          "The win rate was measured wrongly",
+          "The losing trades were sized far larger than the winners"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "Eight wins at $50 cannot cover one loss at $2,000. Win rate is meaningless unless every trade risks the same amount.",
       "isPretestEligible": false
@@ -2608,15 +2608,15 @@
         "type": "mcq",
         "question": "Why are losses and gains described as asymmetrical?",
         "options": [
-          "Losses are taxed differently from gains",
           "A large loss needs a proportionally larger gain to recover from",
           "Gains always take longer to achieve",
+          "Losses are taxed differently from gains",
           "Brokers charge more on losing trades"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "A 50% loss needs a 100% gain just to get back to level. Damage compounds faster than repair, so the downside is protected first.",
       "isPretestEligible": false
@@ -2630,15 +2630,15 @@
         "type": "mcq",
         "question": "What is a trailing drawdown?",
         "options": [
-          "A stop loss that moves with price",
           "A loss limit that follows the account's high-water mark",
           "The average loss across a losing streak",
+          "A stop loss that moves with price",
           "The margin required to hold a position overnight"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "Because the floor rises as the account grows, a run of oversized losses can breach it even from a profitable peak — which is exactly what consistent sizing prevents.",
       "isPretestEligible": false
@@ -2653,17 +2653,17 @@
         "question": "Which three parameters are set before a session begins?",
         "options": [
           "Capital base",
+          "Expected win rate",
           "Exposure percentage",
-          "Risk per trade",
-          "Expected win rate"
+          "Risk per trade"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
           0,
-          1,
-          2
+          2,
+          3
         ]
       },
       "explanation": "Capital base, exposure % and risk per trade are decided in advance and held. Win rate is an outcome you measure afterwards, not a parameter you set.",
@@ -2699,19 +2699,19 @@
         "type": "ordering",
         "question": "Order the steps for sizing a trade correctly.",
         "entries": [
-          "Place the stop where structure says — beyond the protected swing",
-          "Measure the distance from entry to stop",
           "Divide the fixed risk amount by that distance",
-          "Enter the resulting quantity in the order ticket"
+          "Enter the resulting quantity in the order ticket",
+          "Measure the distance from entry to stop",
+          "Place the stop where structure says — beyond the protected swing"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
+          3,
           2,
-          3
+          0,
+          1
         ]
       },
       "explanation": "Structure first, arithmetic second. Choosing the quantity first and then placing the stop to suit it inverts the whole method.",
@@ -2726,15 +2726,15 @@
         "type": "mcq",
         "question": "Which two conditions must BOTH be true for a Candle 2 closure?",
         "options": [
-          "Price gaps up, then closes higher",
           "Price sweeps a previous extreme AND closes back inside the prior candle's range",
           "Price closes completely beyond the previous high",
-          "Two candles close in the same direction"
+          "Two candles close in the same direction",
+          "Price gaps up, then closes higher"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "The sweep grabs the liquidity; the close back inside proves the move failed. Both are required — either alone is not a Candle 2 closure.",
       "isPretestEligible": true
@@ -2748,15 +2748,15 @@
         "type": "mcq",
         "question": "Why will a strategy of trading every sweep-and-close-back-in fail?",
         "options": [
-          "The pattern is too rare to trade",
-          "The shape appears constantly; without a Point of Interest there is no reason behind it",
           "It only works on the daily timeframe",
-          "Brokers do not allow it"
+          "Brokers do not allow it",
+          "The shape appears constantly; without a Point of Interest there is no reason behind it",
+          "The pattern is too rare to trade"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "Context versus shape. The pattern occurs dozens of times across any chart. What makes one tradeable is that it happens at a level you marked in advance.",
       "isPretestEligible": false
@@ -2770,9 +2770,9 @@
         "type": "mcq",
         "question": "What single feature distinguishes a continuation closure from a reversal closure?",
         "options": [
-          "The colour of the candle",
-          "Where the candle closes relative to the swept level",
           "The size of the wick",
+          "Where the candle closes relative to the swept level",
+          "The colour of the candle",
           "The time of day it forms"
         ]
       },
@@ -2792,15 +2792,15 @@
         "type": "mcq",
         "question": "Candle 2 sweeps the low but closes below it. What are you now waiting for?",
         "options": [
-          "Nothing — the setup is dead",
           "Candle 3 to close through and engulf Candle 2's body",
-          "An immediate entry at the low",
-          "The next daily open"
+          "Nothing — the setup is dead",
+          "The next daily open",
+          "An immediate entry at the low"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "If Candle 2 lacks a closure, wait for print. Candle 3 completes the rejection one period late by engulfing Candle 2's body.",
       "isPretestEligible": false
@@ -2814,8 +2814,8 @@
         "type": "multi",
         "question": "Select the non-negotiable rules for a Candle 3 setup.",
         "options": [
-          "It needs a key level",
           "Enter at the equilibrium of the Candle 3 range",
+          "It needs a key level",
           "Enter immediately at the Candle 3 close",
           "Candle 3 must engulf Candle 2's body"
         ]
@@ -2861,19 +2861,19 @@
         "type": "ordering",
         "question": "Put the four-candle sequence into order.",
         "entries": [
+          "Candle 4 — follow-through expansion",
           "Candle 1 — the reference range",
           "Candle 2 — the sweep and the reversal closure",
-          "Candle 3 — the initial continuation",
-          "Candle 4 — follow-through expansion"
+          "Candle 3 — the initial continuation"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
           1,
           2,
-          3
+          3,
+          0
         ]
       },
       "explanation": "Naming candles by position rather than shape is what makes the model mechanical. Candle 2 is always the one that sweeps Candle 1.",
@@ -2904,8 +2904,8 @@
         "type": "mcq",
         "question": "Which price of the opposing candle series must be closed through for a valid CISD?",
         "options": [
-          "The high",
           "The low",
+          "The high",
           "The opening price",
           "The midpoint"
         ]
@@ -2927,14 +2927,14 @@
         "question": "What is a protected swing?",
         "options": [
           "Any high or low on the chart",
-          "A high or low expected to remain intact as the current trend continues",
           "A level guaranteed never to break",
-          "The midpoint of the previous range"
+          "The midpoint of the previous range",
+          "A high or low expected to remain intact as the current trend continues"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "Protected swings are the skeleton of a trend. When one breaks, the trend structure it belonged to is finished — which is why it makes a good invalidation point.",
       "isPretestEligible": false
@@ -2949,14 +2949,14 @@
         "question": "What distinguishes an IDEAL CISD from a non-ideal one?",
         "options": [
           "It happens on a higher timeframe",
-          "It closes over the entire opposing series, not just the body of the last candle",
+          "It occurs during the New York session",
           "It has a larger wick",
-          "It occurs during the New York session"
+          "It closes over the entire opposing series, not just the body of the last candle"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "A close clearing only the body is a shallow shift. An ideal setup closes past the opening of every candle that helped create the extreme.",
       "isPretestEligible": false
@@ -2970,15 +2970,15 @@
         "type": "mcq",
         "question": "You drop inside the wick of a swept swing high and find no CISD. What do you do?",
         "options": [
+          "Wait for the daily close then trade it",
           "Trade it anyway — the higher timeframe reversal is enough",
           "Treat it as a fakeout and skip it",
-          "Wait for the daily close then trade it",
           "Halve your position size and trade it"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "No CISD means the swing point is not validated. A higher-timeframe reversal candle on its own is not proof — the proof lives inside the wick.",
       "isPretestEligible": false
@@ -2992,10 +2992,10 @@
         "type": "multi",
         "question": "Which items belong on the ideal swing point formation checklist?",
         "options": [
-          "Occurs on a Candle 2 or Candle 3 closure",
-          "Closes past the opposing series opening",
           "Simultaneously forms a protected swing",
-          "Forms during the Asian session"
+          "Occurs on a Candle 2 or Candle 3 closure",
+          "Forms during the Asian session",
+          "Closes past the opposing series opening"
         ]
       },
       "answerKey": {
@@ -3003,7 +3003,7 @@
         "correct": [
           0,
           1,
-          2
+          3
         ]
       },
       "explanation": "The three structural conditions plus alignment with a higher-timeframe Point of Interest. Session timing is a separate filter, not part of the formation.",
@@ -3039,18 +3039,18 @@
         "type": "ordering",
         "question": "Order the four phases of the AMD entry model.",
         "entries": [
-          "Accumulation — a tight consolidation range builds",
           "Manipulation — an aggressive sweep out of that range",
           "Distribution — CISD formation confirms momentum",
+          "Accumulation — a tight consolidation range builds",
           "Entry — retest of the validated Order Block"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
+          2,
           0,
           1,
-          2,
           3
         ]
       },
@@ -3082,10 +3082,10 @@
         "type": "mcq",
         "question": "In an uptrend, price breaks above the most recent higher high. What is that called?",
         "options": [
-          "A Change of Character",
-          "A Break of Structure",
           "A Market Structure Shift",
-          "A liquidity void"
+          "A Break of Structure",
+          "A liquidity void",
+          "A Change of Character"
         ]
       },
       "answerKey": {
@@ -3104,15 +3104,15 @@
         "type": "mcq",
         "question": "What turns a plain Change of Character into a Market Structure Shift?",
         "options": [
-          "It happens on the daily chart",
-          "It comes after a liquidity sweep and is delivered with displacement",
           "It breaks two swing points instead of one",
-          "It happens at 9:30 New York time"
+          "It happens at 9:30 New York time",
+          "It happens on the daily chart",
+          "It comes after a liquidity sweep and is delivered with displacement"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "A CHoCH on its own is weak. The shift needs a sweep first and a displacement break that leaves a gap. Those two ingredients are the evidence that delivery has changed hands.",
       "isPretestEligible": true
@@ -3143,18 +3143,18 @@
         "question": "Put the four phases of price delivery in the order they usually follow one another, starting from a range.",
         "entries": [
           "Consolidation",
+          "Reversal",
           "Expansion",
-          "Retracement",
-          "Reversal"
+          "Retracement"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
           0,
-          1,
           2,
-          3
+          3,
+          1
         ]
       },
       "explanation": "The loop runs consolidation, expansion, retracement, then either more expansion or a reversal, and back to consolidation. Nobody gets a reversal straight out of a range without an expansion first.",
@@ -3190,17 +3190,17 @@
         "type": "multi",
         "question": "Select every statement that is true about premium and discount.",
         "options": [
-          "Above the 50% of the dealing range is premium",
-          "In a bullish bias you look to buy in discount",
           "The Fibonacci levels have force of their own, so the band is an entry on its own",
-          "A fair value gap inside the OTE band is what turns the band into an entry"
+          "A fair value gap inside the OTE band is what turns the band into an entry",
+          "In a bullish bias you look to buy in discount",
+          "Above the 50% of the dealing range is premium"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
-          0,
           1,
+          2,
           3
         ]
       },
@@ -3216,15 +3216,15 @@
         "type": "mcq",
         "question": "An order block fails after price sweeps the old swing high, then displaces down through it. What is the block now?",
         "options": [
-          "A mitigation block",
-          "A rejection block",
           "A bearish breaker block",
-          "A liquidity void"
+          "A liquidity void",
+          "A rejection block",
+          "A mitigation block"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 0
       },
       "explanation": "A failed order block that flipped after a liquidity sweep is a breaker. Because it came from a bullish block and now acts as resistance, it's a bearish breaker.",
       "isPretestEligible": true
@@ -3238,10 +3238,10 @@
         "type": "mcq",
         "question": "What is the single structural difference between a breaker block and a mitigation block?",
         "options": [
-          "The breaker is on a higher timeframe",
-          "The breaker had a liquidity sweep before the block failed; the mitigation block did not",
           "The mitigation block is always bullish",
-          "The breaker uses wicks and the mitigation block uses bodies"
+          "The breaker had a liquidity sweep before the block failed; the mitigation block did not",
+          "The breaker uses wicks and the mitigation block uses bodies",
+          "The breaker is on a higher timeframe"
         ]
       },
       "answerKey": {
@@ -3276,15 +3276,15 @@
         "type": "mcq",
         "question": "The New Day Opening Gap forms between which two times in New York?",
         "options": [
-          "9:30am and 10:00am",
-          "5:00pm and 6:00pm",
           "Friday close and Sunday open",
-          "Midnight and 8:30am"
+          "Midnight and 8:30am",
+          "9:30am and 10:00am",
+          "5:00pm and 6:00pm"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "Futures pause for about an hour each weekday evening. The gap between the 5pm close and the 6pm reopen is the NDOG. Friday close to Sunday open is the weekly one, the NWOG.",
       "isPretestEligible": false
@@ -3298,9 +3298,9 @@
         "type": "multi",
         "question": "Select every array that belongs in the discount stack for a bullish bias.",
         "options": [
+          "A bullish breaker below equilibrium",
           "A bullish fair value gap below equilibrium",
           "A bearish order block above equilibrium",
-          "A bullish breaker below equilibrium",
           "An old low with stops beneath it, below equilibrium"
         ]
       },
@@ -3308,7 +3308,7 @@
         "type": "multi",
         "correct": [
           0,
-          2,
+          1,
           3
         ]
       },
@@ -3324,21 +3324,21 @@
         "type": "ordering",
         "question": "Put these steps of a bearish breaker in the order they happen.",
         "entries": [
+          "Price displaces down through the bullish block",
+          "Price returns up into the block and sells off",
           "Price makes a swing high",
           "A bullish order block forms on the pullback",
-          "Price sweeps the buy stops above the old high",
-          "Price displaces down through the bullish block",
-          "Price returns up into the block and sells off"
+          "Price sweeps the buy stops above the old high"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
           2,
           3,
-          4
+          4,
+          0,
+          1
         ]
       },
       "explanation": "Swing high, the block on the pullback, the sweep above the high, the displacement through the block, then the return that reacts. The sweep is the step people leave out, and it's the one that makes it a breaker.",
@@ -3375,15 +3375,15 @@
         "type": "mcq",
         "question": "In the continuation sequence, what does price 'respecting the EQ' tell you?",
         "options": [
+          "A reversal is imminent",
           "The trend has ended",
           "Buyers are defending the midpoint, supporting a bullish bias",
-          "Volume is falling",
-          "A reversal is imminent"
+          "Volume is falling"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "In a genuine bullish day price may dip but holds at or above equilibrium. Respecting EQ says buyers are defending it; the break of PDH then confirms the bias.",
       "isPretestEligible": false
@@ -3419,15 +3419,15 @@
         "type": "mcq",
         "question": "Price sweeps the previous week's low and reverses. Which pool becomes the draw?",
         "options": [
-          "The previous week low again",
           "The previous week high",
-          "The monthly open",
-          "There is no draw until Monday"
+          "The previous week low again",
+          "There is no draw until Monday",
+          "The monthly open"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "When one side's liquidity is taken and rejected, the opposite pool becomes the draw. Sweep the low and reverse, and the target becomes the previous week high.",
       "isPretestEligible": false
@@ -3441,18 +3441,18 @@
         "type": "multi",
         "question": "Which items are on the execution checklist?",
         "options": [
-          "Kill Zone",
           "Fair Value Gap",
-          "Draw on Liquidity",
-          "Number of indicators agreeing"
+          "Number of indicators agreeing",
+          "Kill Zone",
+          "Draw on Liquidity"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
           0,
-          1,
-          2
+          2,
+          3
         ]
       },
       "explanation": "Kill zone, fair value gap, stop, draw on liquidity and risk-to-reward. Indicator counting is not part of the framework.",
@@ -3488,19 +3488,19 @@
         "type": "ordering",
         "question": "Order the four steps of the daily continuation sequence.",
         "entries": [
-          "Mark the EQ and PDH boundaries",
           "Wait for the market to open",
-          "Watch price trade lower and respect the EQ",
-          "Price trades up and through the PDH"
+          "Price trades up and through the PDH",
+          "Mark the EQ and PDH boundaries",
+          "Watch price trade lower and respect the EQ"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
           2,
-          3
+          0,
+          3,
+          1
         ]
       },
       "explanation": "Each step requires a completed observation, not an anticipated one. The impatient trader who acts at the open has no information — only volatility.",
@@ -3531,10 +3531,10 @@
         "type": "mcq",
         "question": "On a bullish day, on which side of the midnight open do you want to buy?",
         "options": [
-          "Above it, once the trend is confirmed",
+          "It doesn't matter",
           "Below it, after the manipulation",
-          "Exactly at it",
-          "It doesn't matter"
+          "Above it, once the trend is confirmed",
+          "Exactly at it"
         ]
       },
       "answerKey": {
@@ -3553,9 +3553,9 @@
         "type": "mcq",
         "question": "Which phase of Power of Three produces the wick of the daily candle?",
         "options": [
-          "Accumulation",
-          "Manipulation",
           "Distribution",
+          "Manipulation",
+          "Accumulation",
           "Consolidation"
         ]
       },
@@ -3575,19 +3575,19 @@
         "type": "ordering",
         "question": "Put the New York macro windows in the order they occur during the day.",
         "entries": [
+          "2:50 to 3:10",
           "9:50 to 10:10",
           "10:50 to 11:10",
-          "1:10 to 1:40",
-          "2:50 to 3:10"
+          "1:10 to 1:40"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
           1,
           2,
-          3
+          3,
+          0
         ]
       },
       "explanation": "The AM macros come first, then the lunch and afternoon ones. The 9:50 macro opens the Silver Bullet hour and the 10:50 macro closes the first 90 minutes of floor trading.",
@@ -3639,18 +3639,18 @@
         "type": "multi",
         "question": "Select every statement that is true about the Judas swing.",
         "options": [
-          "It moves against the day's true direction",
           "It tends to happen at the London or New York open",
-          "A sweep with a wick, followed by a shift back, confirms it",
-          "You should enter as soon as price breaks the level, before any reversal"
+          "You should enter as soon as price breaks the level, before any reversal",
+          "It moves against the day's true direction",
+          "A sweep with a wick, followed by a shift back, confirms it"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
           0,
-          1,
-          2
+          2,
+          3
         ]
       },
       "explanation": "The Judas swing is the manipulation at a session open. You wait for the sweep and the shift back, then enter on the retracement. Chasing the break is how it gets its name.",
@@ -3665,15 +3665,15 @@
         "type": "mcq",
         "question": "What are the three steps of the 2022 model, in order?",
         "options": [
-          "Gap, shift, sweep",
-          "Sweep, shift, gap",
           "Shift, sweep, gap",
-          "Bias, gap, target"
+          "Bias, gap, target",
+          "Gap, shift, sweep",
+          "Sweep, shift, gap"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "Liquidity sweep, then a Market Structure Shift with displacement, then entry on the fair value gap the shift left behind. Bias and time are the two conditions around it.",
       "isPretestEligible": true
@@ -3687,15 +3687,15 @@
         "type": "mcq",
         "question": "Where does the stop go on a bullish 2022 model entry?",
         "options": [
-          "At the entry price",
           "Below the low that was swept",
-          "At the previous day's high",
-          "Ten points below the gap"
+          "Ten points below the gap",
+          "At the entry price",
+          "At the previous day's high"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "The stop sits below the sweep low. If price trades back through the low it swept, the manipulation reading was wrong and the trade should be closed.",
       "isPretestEligible": true
@@ -3725,21 +3725,21 @@
         "type": "ordering",
         "question": "Put the five stages of the market maker buy model in order.",
         "entries": [
+          "Buyside liquidity reached",
+          "Legs back up through the consolidation",
           "Original consolidation",
           "Legs down engineering the sellside liquidity",
-          "Smart money reversal at the low",
-          "Legs back up through the consolidation",
-          "Buyside liquidity reached"
+          "Smart money reversal at the low"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
           2,
           3,
-          4
+          4,
+          1,
+          0
         ]
       },
       "explanation": "Consolidation, the left side of the curve running the sellside, the reversal, the right side delivering back through the range, and the buyside target. The sell model is the mirror.",
@@ -3755,14 +3755,14 @@
         "question": "In top-down analysis, which layer is a 5-minute chart allowed to provide?",
         "options": [
           "The bias",
+          "All three, if the setup is clean enough",
           "The narrative",
-          "The confirmation",
-          "All three, if the setup is clean enough"
+          "The confirmation"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 3
       },
       "explanation": "The lowest timeframe can only confirm a plan made above it. A clean 5-minute setup that contradicts the daily bias is discarded, no matter how good it looks.",
       "isPretestEligible": false
@@ -3776,9 +3776,9 @@
         "type": "multi",
         "question": "Select everything that has to be true for a trade to count as a 2022 model.",
         "options": [
+          "The entry is inside a kill zone",
           "A liquidity sweep happened first",
           "The shift was delivered with displacement",
-          "The entry is inside a kill zone",
           "The trade is against the daily bias"
         ]
       },
@@ -3803,14 +3803,14 @@
         "question": "Complete the foundation rule: 'The market cannot reverse without ___.'",
         "options": [
           "a news event",
+          "a gap",
           "a swing point",
-          "high volume",
-          "a gap"
+          "high volume"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "Every reversal on every timeframe requires a swing point to reverse from. If you cannot identify it, you are not looking at a reversal yet.",
       "isPretestEligible": true
@@ -3826,8 +3826,8 @@
         "options": [
           "The exact price of the daily open",
           "The target area where a higher-timeframe wick forms before continuing the trend",
-          "A candlestick pattern with three wicks",
-          "The 50% level of the weekly range"
+          "The 50% level of the weekly range",
+          "A candlestick pattern with three wicks"
         ]
       },
       "answerKey": {
@@ -3846,15 +3846,15 @@
         "type": "mcq",
         "question": "Which standard deviation zone is the primary projected target?",
         "options": [
-          "-0.5 to -1",
           "-1 to -1.5",
-          "-2 to -2.5",
-          "-6 to -8"
+          "-0.5 to -1",
+          "-6 to -8",
+          "-2 to -2.5"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 3
       },
       "explanation": "-1 is the conservative first target, -2 to -2.5 is the primary objective, and -4 to -4.5 is maximum expansion reserved for large manipulation legs.",
       "isPretestEligible": true
@@ -3868,15 +3868,15 @@
         "type": "mcq",
         "question": "Why should you ignore price levels that have already been taken when setting fractal targets?",
         "options": [
-          "They are hard to see on the chart",
-          "Their liquidity has been consumed, so they no longer act as a magnet",
           "They always become support",
-          "Brokers remove them from the feed"
+          "They are hard to see on the chart",
+          "Brokers remove them from the feed",
+          "Their liquidity has been consumed, so they no longer act as a magnet"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "A level price has already traded through is spent. Traders repeatedly target levels swept days earlier and wonder why price never reaches them — the orders are gone.",
       "isPretestEligible": false
@@ -3890,18 +3890,18 @@
         "type": "multi",
         "question": "Select the three rows of the TTFM master cheat sheet.",
         "options": [
-          "Daily — bias — Candle 2 or 3 closure",
-          "4-Hour — confirm wick — CISD and swing",
           "15-Minute — execute — protected swing",
-          "1-Minute — scalp — any engulfing candle"
+          "1-Minute — scalp — any engulfing candle",
+          "4-Hour — confirm wick — CISD and swing",
+          "Daily — bias — Candle 2 or 3 closure"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
           0,
-          1,
-          2
+          2,
+          3
         ]
       },
       "explanation": "Three rows, three jobs: the daily says which way, the 4-hour says when the pullback is done, the 15-minute says at what price.",
@@ -3938,16 +3938,16 @@
         "question": "Order the three steps for anchoring a projection.",
         "entries": [
           "Wait for the Candle 2 closure and the delivery change",
-          "Identify the manipulation leg — low to high",
-          "Anchor the Fibonacci tool from low to high"
+          "Anchor the Fibonacci tool from low to high",
+          "Identify the manipulation leg — low to high"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
           0,
-          1,
-          2
+          2,
+          1
         ]
       },
       "explanation": "Anchoring before the closure means anchoring to a leg that has not finished forming, which moves every target.",
@@ -3978,15 +3978,15 @@
         "type": "mcq",
         "question": "What is SMT divergence?",
         "options": [
-          "A moving average crossover",
-          "A structural divergence between correlated markets that should move together",
           "A gap between the open and the previous close",
-          "Divergence between price and volume"
+          "Divergence between price and volume",
+          "A structural divergence between correlated markets that should move together",
+          "A moving average crossover"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "When correlated markets such as the Nasdaq and S&P 500 stop confirming each other's highs or lows, that correlation crack often precedes a reversal.",
       "isPretestEligible": true
@@ -4000,15 +4000,15 @@
         "type": "mcq",
         "question": "What is the Golden Rule of SMT?",
         "options": [
-          "Always trade the divergence immediately",
           "Establish your framework first, then look for SMT as confluence",
           "Only use SMT on the daily timeframe",
-          "Trade only when three assets diverge"
+          "Trade only when three assets diverge",
+          "Always trade the divergence immediately"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "Find a model first, then check whether it has SMT for confluence. Correlated markets diverge constantly; most of it means nothing away from a level your framework identified.",
       "isPretestEligible": true
@@ -4022,15 +4022,15 @@
         "type": "mcq",
         "question": "Which SMT type typically produces cleaner expansion?",
         "options": [
+          "Neither produces expansion",
           "Reversal SMT, between Candle 1 and Candle 2",
           "Continuation SMT, between Candle 2 and Candle 3",
-          "Both are equally clean",
-          "Neither produces expansion"
+          "Both are equally clean"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "Continuation SMT confirms an existing move rather than calling a new one, so the expansion that follows is typically cleaner. Reversal SMT can be messy around the turn.",
       "isPretestEligible": false
@@ -4044,15 +4044,15 @@
         "type": "mcq",
         "question": "Your target is a swing low on gold that has not printed, but silver has taken its equivalent low. What does the SMT exception say?",
         "options": [
-          "Keep waiting for gold to print the exact price",
           "The target has been hit — the liquidity has been consumed",
-          "The setup is invalid",
-          "Double the position size"
+          "Double the position size",
+          "Keep waiting for gold to print the exact price",
+          "The setup is invalid"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "When a correlated asset takes out the low, the target has been hit. Waiting for your chart to print the exact price risks watching the reversal happen without you.",
       "isPretestEligible": false
@@ -4066,10 +4066,10 @@
         "type": "multi",
         "question": "Select the documented reasons SMT trades fail.",
         "options": [
-          "Price opens high instead of low in a long setup",
-          "Intraday action invalidates previous equilibrium",
           "Hunting for SMT without a valid timeframe model",
-          "Using a correlated asset from the same sector"
+          "Price opens high instead of low in a long setup",
+          "Using a correlated asset from the same sector",
+          "Intraday action invalidates previous equilibrium"
         ]
       },
       "answerKey": {
@@ -4077,7 +4077,7 @@
         "correct": [
           0,
           1,
-          2
+          3
         ]
       },
       "explanation": "The premise breaking, EQ invalidation, and violating the Golden Rule. Same-sector correlation is exactly what SMT relies on, not a failure mode.",
@@ -4113,16 +4113,16 @@
         "type": "ordering",
         "question": "Order the three steps of the SMT workflow.",
         "entries": [
-          "Wait for the model — a valid setup with proper candle closure",
           "Check the correlated asset for structural divergence",
+          "Wait for the model — a valid setup with proper candle closure",
           "Execute, using the SMT as secondary confluence"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
           1,
+          0,
           2
         ]
       },
@@ -4154,10 +4154,10 @@
         "type": "mcq",
         "question": "What are the three IPDA lookback ranges, in trading days?",
         "options": [
-          "10, 20 and 30",
-          "20, 40 and 60",
           "30, 60 and 90",
-          "5, 10 and 20"
+          "20, 40 and 60",
+          "5, 10 and 20",
+          "10, 20 and 30"
         ]
       },
       "answerKey": {
@@ -4178,8 +4178,8 @@
         "options": [
           "Also bullish",
           "Bearish, or at least not bullish",
-          "Consolidating",
-          "It's unrelated"
+          "It's unrelated",
+          "Consolidating"
         ]
       },
       "answerKey": {
@@ -4214,15 +4214,15 @@
         "type": "mcq",
         "question": "Which pair of markets is the standard SMT divergence comparison for US indices?",
         "options": [
-          "ES and gold",
           "NQ and the Dollar Index",
           "ES and NQ",
+          "ES and gold",
           "YM and crude oil"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 1
       },
       "explanation": "The S&P and the Nasdaq futures move together most of the time. When one makes a new low and the other doesn't at a sweep, that's the divergence from the SMT lesson.",
       "isPretestEligible": false
@@ -4236,18 +4236,18 @@
         "type": "multi",
         "question": "Select every statement that describes a risk-off day.",
         "options": [
-          "Indices fall",
+          "The Nasdaq and the dollar fall together",
           "AUD and NZD fall",
-          "The dollar and the yen strengthen",
-          "The Nasdaq and the dollar fall together"
+          "Indices fall",
+          "The dollar and the yen strengthen"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
-          0,
           1,
-          2
+          2,
+          3
         ]
       },
       "explanation": "Risk off is indices and the risk currencies down, the dollar and yen up. It's a tendency rather than a law, but it explains a lot of days.",
@@ -4283,15 +4283,15 @@
         "type": "mcq",
         "question": "In a classic expansion week, which days form the weekly extreme?",
         "options": [
+          "It varies randomly",
           "Thursday or Friday",
           "Monday or Tuesday",
-          "Wednesday only",
-          "It varies randomly"
+          "Wednesday only"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "The classic expansion week sets its high or low early — Monday or Tuesday — then expands, with Friday capping the range.",
       "isPretestEligible": true
@@ -4305,15 +4305,15 @@
         "type": "mcq",
         "question": "In an intraweek reversal, which day forms the actual pivot?",
         "options": [
+          "Wednesday",
           "Monday",
           "Tuesday",
-          "Wednesday",
           "Friday"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 0
       },
       "explanation": "Monday expands and sets the initial tone, Tuesday consolidates, Wednesday forms the actual reversal pivot, and Thursday/Friday deliver the continuations.",
       "isPretestEligible": false
@@ -4327,15 +4327,15 @@
         "type": "mcq",
         "question": "Why is consolidation NOT a reversal signature?",
         "options": [
-          "It always precedes a breakout upward",
-          "Sideways price is indecision, not a turn",
           "It only happens on Fridays",
-          "Consolidation cannot be measured"
+          "Consolidation cannot be measured",
+          "It always precedes a breakout upward",
+          "Sideways price is indecision, not a turn"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 3
       },
       "explanation": "A quiet, tight range feels like a pivot forming, but it is not evidence. A Candle 2 closure signals a reversal; consolidation signals indecision.",
       "isPretestEligible": false
@@ -4349,15 +4349,15 @@
         "type": "mcq",
         "question": "What makes a three-day Monday–Wednesday run vulnerable to a Thursday counter?",
         "options": [
-          "It produced no significant counter-swing, so it has no supporting structure",
+          "The weekly open was gapped",
           "It always happens after a bank holiday",
-          "Volume is too high",
-          "The weekly open was gapped"
+          "It produced no significant counter-swing, so it has no supporting structure",
+          "Volume is too high"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 0
+        "correct": 2
       },
       "explanation": "A healthy trend leaves protected swings behind it. A one-way run with no meaningful counter-swing has no structure supporting it — and invites a counter at the Thursday close.",
       "isPretestEligible": false
@@ -4371,17 +4371,17 @@
         "type": "multi",
         "question": "In which weekly profiles is Friday a trading day rather than a day to avoid?",
         "options": [
-          "The Thursday Counter",
-          "The Consolidation Reversal",
           "The Classic Expansion Week",
-          "The Midweek Reversal"
+          "The Thursday Counter",
+          "The Midweek Reversal",
+          "The Consolidation Reversal"
         ]
       },
       "answerKey": {
         "type": "multi",
         "correct": [
-          0,
-          1
+          1,
+          3
         ]
       },
       "explanation": "In both the Thursday Counter and the Consolidation Reversal the week's expansion only begins late, so Friday delivers. In a classic expansion week Friday is spent.",
@@ -4417,18 +4417,18 @@
         "type": "ordering",
         "question": "Order the days of the classic expansion week by what they do.",
         "entries": [
-          "Mon–Tue — retrace, oppose bias, form the wick and confirm",
-          "Wed — aggressive expansion (Candle 3)",
           "Thu — secondary continuation (Candle 4)",
+          "Wed — aggressive expansion (Candle 3)",
+          "Mon–Tue — retrace, oppose bias, form the wick and confirm",
           "Fri — cap the range with a TGIF retracement; avoid trading"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
           2,
+          1,
+          0,
           3
         ]
       },
@@ -4460,15 +4460,15 @@
         "type": "mcq",
         "question": "In the default management plan, what happens when price reaches +1R?",
         "options": [
+          "Add to the position",
           "Close the whole position",
           "Take a partial and move the stop to break-even",
-          "Widen the stop to give it room",
-          "Add to the position"
+          "Widen the stop to give it room"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 2
       },
       "explanation": "At one unit of risk in your favour you bank a partial and move the stop to entry. That locks something in before the trade can become a loss, and it calms the management of the rest.",
       "isPretestEligible": true
@@ -4482,15 +4482,15 @@
         "type": "mcq",
         "question": "Where should a structure-based trailing stop sit on a long trade?",
         "options": [
-          "A fixed ten points below price",
           "Below the most recent protected swing low",
-          "At the entry price at all times",
-          "At the last fair value gap"
+          "At the last fair value gap",
+          "A fixed ten points below price",
+          "At the entry price at all times"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "Trail behind structure, not by distance. Each new confirmed higher low is a new place for the stop, and it never moves back.",
       "isPretestEligible": true
@@ -4541,18 +4541,18 @@
         "type": "ordering",
         "question": "Put the weekly review questions in the order the lesson gives them.",
         "entries": [
+          "The two worst trades and their one-line notes",
           "How many trades followed the written plan?",
           "Win rate and average R, by model",
-          "The two worst trades and their one-line notes",
           "One change for next week, written at the top of the page"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
           1,
           2,
+          0,
           3
         ]
       },
@@ -4568,9 +4568,9 @@
         "type": "multi",
         "question": "Select every hard rule from the psychology lesson.",
         "options": [
+          "Fixed risk per trade, never raised after a win",
           "Two losses in a session, stop for the day",
           "Raise the size after three wins in a row",
-          "Fixed risk per trade, never raised after a win",
           "Journal before the next trade, not after"
         ]
       },
@@ -4578,7 +4578,7 @@
         "type": "multi",
         "correct": [
           0,
-          2,
+          1,
           3
         ]
       },
@@ -4594,9 +4594,9 @@
         "type": "mcq",
         "question": "One tick on the E-mini S&P 500 (ES) is 0.25 of a point. What is one tick worth per contract?",
         "options": [
-          "$5.00",
-          "$12.50",
           "$50.00",
+          "$12.50",
+          "$5.00",
           "$1.25"
         ]
       },
@@ -4653,15 +4653,15 @@
         "type": "mcq",
         "question": "Who is the counterparty when you trade a CFD?",
         "options": [
-          "The exchange's clearing house",
           "Your broker",
           "Another retail trader",
-          "The index provider"
+          "The index provider",
+          "The exchange's clearing house"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 1
+        "correct": 0
       },
       "explanation": "A CFD is a private contract with your broker, which quotes the price. A future is cleared centrally, so the clearing house stands between buyer and seller and there's one price for everyone.",
       "isPretestEligible": false
@@ -4676,14 +4676,14 @@
         "question": "Which drawdown rule moves the floor with the account's highest unrealised balance, tick by tick?",
         "options": [
           "Static drawdown",
-          "End-of-day trailing drawdown",
           "Intraday trailing drawdown",
+          "End-of-day trailing drawdown",
           "Daily loss limit"
         ]
       },
       "answerKey": {
         "type": "mcq",
-        "correct": 2
+        "correct": 1
       },
       "explanation": "Intraday trailing follows the peak of open equity, so a trade that runs into profit and comes back raises the floor even if nothing was banked. End-of-day trailing only moves on closed balance; static never moves.",
       "isPretestEligible": true
@@ -4697,9 +4697,9 @@
         "type": "multi",
         "question": "Which of these are protections a retail CFD account has that a futures account does not? Select all that apply.",
         "options": [
-          "Negative balance protection",
           "A 50% margin close-out rule",
           "A central clearing house",
+          "Negative balance protection",
           "Leverage capped by asset class"
         ]
       },
@@ -4707,7 +4707,7 @@
         "type": "multi",
         "correct": [
           0,
-          1,
+          2,
           3
         ]
       },
@@ -4739,21 +4739,21 @@
         "type": "ordering",
         "question": "Put the steps of judging a prop firm in the order the lesson gives them.",
         "entries": [
-          "Check it matches your instrument and platform",
-          "Check the drawdown rule fits your style",
           "Check you can actually follow its rules",
+          "Check its operating history and any regulator warnings",
           "Check its payout history and denial conditions",
-          "Check its operating history and any regulator warnings"
+          "Check the drawdown rule fits your style",
+          "Check it matches your instrument and platform"
         ]
       },
       "answerKey": {
         "type": "ordering",
         "order": [
-          0,
-          1,
-          2,
+          4,
           3,
-          4
+          0,
+          2,
+          1
         ]
       },
       "explanation": "Instrument first, because a CFD firm quoting US500 isn't the market you learned; then the drawdown rule, which ends most attempts; then the other rules; then whether it pays; then whether it will still exist.",
