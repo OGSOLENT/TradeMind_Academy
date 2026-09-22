@@ -30,6 +30,33 @@ describe("the shipped bank carries no positional tell", () => {
     }
   });
 
+  it("answer length doesn't give the answer away", () => {
+    // Hand-authored banks tend to spell the right answer out and leave the
+    // distractors as throwaways; this one was 65% "correct is longest",
+    // against 25% by chance, which makes "pick the wordiest" a strategy.
+    let longest = 0;
+    let correctChars = 0;
+    let distractorChars = 0;
+    let distractorCount = 0;
+    for (const i of mcq) {
+      if (i.payload.type !== "mcq" || i.answerKey.type !== "mcq") continue;
+      const opts = i.payload.options;
+      const correctIdx = i.answerKey.correct;
+      const c = opts[correctIdx]!.length;
+      const others = opts.filter((_, k) => k !== correctIdx).map((o) => o.length);
+      if (c > Math.max(...others)) longest += 1;
+      correctChars += c;
+      distractorChars += others.reduce((a, b) => a + b, 0);
+      distractorCount += others.length;
+    }
+    // Chance is 25%. Allow headroom for a small bank without letting the
+    // old 65% back in.
+    expect(longest / mcq.length).toBeLessThan(0.4);
+    const meanCorrect = correctChars / mcq.length;
+    const meanDistractor = distractorChars / distractorCount;
+    expect(Math.abs(meanCorrect - meanDistractor)).toBeLessThan(8);
+  });
+
   it("no single multi-select option appears in every answer", () => {
     const counts = new Map<number, number>();
     for (const i of multi) {

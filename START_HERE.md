@@ -100,13 +100,15 @@ npm run test
 
 ## When the study runs
 
+**Read `docs/RUN_THE_PILOT.md` first.** It has the script to read to participants, the session plan and the write-up checklist.
+
 Participants sign up on the live site, do placement, work through the course, then from **Profile** take the post-test and rate the course. To pull the numbers out:
 
 ```bash
 npm run analyse:live
 ```
 
-That writes `docs/report/PILOT_RESULTS.md` (normalised gain, time on task, mastered modules, SUS, and how the model's mastery calls held up on the post-test). It only reads. Needs `serviceAccountKey.json` in the project folder.
+That writes `docs/report/PILOT_RESULTS.md` (normalised gain, time on task, mastered modules, SUS, how the model's mastery calls held up on the post-test, and the per-component learning curves). It only reads. Needs `serviceAccountKey.json` in the project folder.
 
 ## Practice mode (optional)
 
