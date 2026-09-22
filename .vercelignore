@@ -22,7 +22,12 @@ serviceAccountKey.json
 *-service-account*.json
 .env*
 !.env.example
-# The lesson videos are a 1.1 GB symlink to a folder outside the repo.
-# Vercel isn't the place for them (100 MB per-file limit, bandwidth cost),
-# so the deployed site serves them from Firebase Storage instead.
+# public/videos is the 1.1 GB symlink to the untouched original recordings
+# outside the repo. It must never go up. What DOES go up is
+# public/videos-web: the same 36 lessons re-encoded to about 260 MB by
+# scripts/compress-videos.mjs, served as ordinary static files by the app.
+# They used to live in a Vercel Blob store, which suspended itself for
+# going over the free storage allowance and took every recording down with
+# it; the app's own static hosting has no separate quota to trip.
 /public/videos
+!/public/videos-web

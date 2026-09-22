@@ -35,7 +35,8 @@
     "simulate:routing": "tsx scripts/simulate-routing.ts",
     "test:coverage": "vitest run --coverage",
     "db:peek": "GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json GCLOUD_PROJECT=trademind-academy tsx scripts/peek.ts --live",
-    "db:peek:local": "tsx scripts/peek.ts"
+    "db:peek:local": "tsx scripts/peek.ts",
+    "videos:compress": "node scripts/compress-videos.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",

@@ -18,9 +18,15 @@ import { ITEMS } from "./level1-items";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
 import { CASE_STUDIES } from "../lib/case-studies";
 
-// Where the recordings are hosted. scripts/upload-videos.mjs writes this
-// after pushing the files to Vercel Blob; without it, videoUrl stays the
-// local /videos/ path the dev server serves through the symlink.
+// Where the recordings are served from. They're static files inside the
+// app now (public/videos-web, written by scripts/compress-videos.mjs), so
+// the same relative path works on the dev server and on the deployed site
+// and there's no second service to go down. It replaced a Vercel Blob
+// store, which was suspended for going over its free allowance on 22
+// September 2026 and 403'd every recording on the live site.
+//
+// content/video-urls.json is still honoured if it exists, so the
+// recordings can be moved to a CDN later without touching this file.
 const VIDEO_URLS: Record<string, string> = existsSync("content/video-urls.json")
   ? (JSON.parse(readFileSync("content/video-urls.json", "utf8")) as Record<string, string>)
   : {};
@@ -259,7 +265,7 @@ function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): 
     kcId: kc.id,
     title: parsed.title,
     blocks,
-    videoUrl: parsed.video ? VIDEO_URLS[parsed.video] ?? `/videos/${parsed.video}` : null,
+    videoUrl: parsed.video ? VIDEO_URLS[parsed.video] ?? `/videos-web/${parsed.video}` : null,
     videoFallbackUrl: null,
   };
 }

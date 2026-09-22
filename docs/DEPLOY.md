@@ -76,21 +76,44 @@ deploys on push.)
 
 ## The lesson videos
 
-The recordings live in a public Vercel Blob store attached to the project
-(`tmacademy-lessons`; Hobby includes 5 GB of storage and 100 GB of transfer
-a month, and the 36 files are 1.1 GB). `scripts/upload-videos.mjs` pushes
-anything new from `public/videos` (the symlink to
-`~/Documents/DIssertation/Lessons`) and writes `content/video-urls.json`,
-which the content generator uses for each lesson's `videoUrl`. So adding a
-recording is:
+The recordings are ordinary static files inside the app, at
+`public/videos-web`, served by Vercel's CDN like any other asset and cached
+for a year (`next.config.mjs`). There is no separate media service.
+
+They did live in a public Vercel Blob store (`tmacademy-lessons`). On 22
+September 2026 that store suspended itself: the 36 originals came to
+1.15 GB, the Hobby plan's free Blob storage allowance is 1 GB, and once
+over it every public read returns `403 store_suspended`. Every recording
+on the live site went dead at once, and writes were blocked too, so it
+couldn't be fixed by deleting a few files. Hosting them in the app removes
+that whole class of failure: Hobby's 100 GB of bandwidth a month is the
+only limit, and it isn't a quota that can switch the videos off.
+
+Two layers now:
+
+- `public/videos` is a symlink to `~/Documents/DIssertation/Lessons`, the
+  untouched originals (1.23 GB). Never deployed, `.vercelignore` blocks it.
+- `public/videos-web` is the same 36 lessons re-encoded to 286 MB by
+  `scripts/compress-videos.mjs` (x264 CRF 28, 64 kbps mono AAC,
+  `+faststart`). 4.4x smaller with no visible difference, checked frame by
+  frame at 2x zoom on the smallest chart text. Deployed; gitignored, so a
+  clone stays small.
+
+So adding a recording is:
 
 ```bash
 # drop File.mp4 into ~/Documents/DIssertation/Lessons, add the Video: line
-node scripts/upload-videos.mjs
+npm run videos:compress      # encodes only what's missing
 npx tsx scripts/generate-content.ts
-npm run seed:live      # or npm run seed for the emulator
+npm run seed:live            # or npm run seed for the emulator
 npm run deploy
 ```
+
+`content/video-urls.json` is still honoured if present: if the recordings
+ever move to a CDN, write that file and the generator will use it instead
+of the local path, with no code change. The old blob map is parked at
+`content/video-urls.json.blob-suspended-2026-09-22`.
+
 
 It needs `BLOB_READ_WRITE_TOKEN` in `.env.local`, which `vercel blob
 create-store` (or `vercel env pull`) writes. The store is public so the

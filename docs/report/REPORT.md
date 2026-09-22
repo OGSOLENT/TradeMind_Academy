@@ -434,6 +434,7 @@ Table: Problems encountered and their resolution
 | Seven test users leaked into the live database | Playwright auto-started a production build with the live config | Users deleted and verified; dev/live split enforced by configuration |
 | Dashboard performance score 68 | Sequential fetches; heavy chart bundle; layout shift | Parallel fetch; chart lazy-loaded (389 to 333 kB); skeletons mirror layout. Score 86 |
 | Skill map route drawn in the wrong order | Sorting by prerequisite count, and every module has exactly one | Replaced with a walk of the prerequisite chain from the root |
+| Every lesson recording dead on the live site, eight days before hand-in | The Vercel Blob store holding them was 1.15 GB against a 1 GB free allowance, so it suspended itself and returned 403 on every public read | Recordings re-encoded 4.4x smaller (1.23 GB to 286 MB, no visible loss) and served as static files by the app itself, removing the separate quota that could switch them off |
 | Background effect dropped the dashboard from 120 to 19 fps | Rotating blurred layer, pure GPU cost | Measured and removed; static gradients instead |
 | Eight animated layers cost 120 to 48 fps | About 18 fps per animated full-screen layer | One layer animated, the rest static at zero cost; 105 fps |
 | WCAG contrast failure on small text | Muted token at 3.05:1 on 14 px text | Secondary token, then the token itself raised to 4.6:1 in September; accessibility 100 |
@@ -808,7 +809,7 @@ To run it locally with Node 22 and npm 10:
 3. In a second terminal run npm run seed to load the curriculum, then npm run dev:emulator. Open http://localhost:3100. (npm run dev is the live project, which needs the Firebase configuration in .env.production.local.)
 4. npm run test runs the unit suite (npm run test:coverage with coverage); npm run test:rules the security-rule suite inside the emulator; npm run test:e2e the browser journeys, including the axe-core accessibility checks; npx tsx scripts/simulate.ts the simulated-learner harness; npm run simulate:routing the routing-policy simulation; npx tsx scripts/calibration.ts --sim the calibration report; npm run analyse the pilot analysis against the emulator (npm run analyse:live reads production, read-only, and needs the service-account key).
 
-The deployed site is https://tmacademyuk.vercel.app, built from a snapshot of the working tree by npm run deploy (docs/DEPLOY.md); the recordings are served from Vercel Blob.
+The deployed site is https://tmacademyuk.vercel.app, built from a snapshot of the working tree by npm run deploy (docs/DEPLOY.md); the recordings are static files inside the app, re-encoded to 286 MB by npm run videos:compress and served from the CDN.
 
 Table: The three run modes and where their data goes
 

@@ -74,6 +74,24 @@ npm run deploy
 
 Takes about two minutes. Details and first-time setup are in docs/DEPLOY.md.
 
+## The lesson videos
+
+Two folders, and only one of them is deployed:
+
+- `public/videos` points at your `Lessons` folder. Those are the originals, 1.23 GB. Untouched, never uploaded.
+- `public/videos-web` is the same 36 lessons squeezed to 286 MB. That's what the site serves.
+
+If you add or replace a recording, drop the .mp4 in `Lessons`, add the `Video:` line to the lesson, then:
+
+```bash
+npm run videos:compress   # only encodes what's new, about 15s per video
+npx tsx scripts/generate-content.ts
+npm run seed:live
+npm run deploy
+```
+
+They used to be hosted on Vercel Blob. That store went over its free 1 GB and Vercel suspended it, which is why every video broke on 22 September. They're part of the app now, so there's no separate service left to run out.
+
 ## Check everything still works
 
 ```bash
