@@ -36,7 +36,8 @@
     "test:coverage": "vitest run --coverage",
     "db:peek": "GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json GCLOUD_PROJECT=trademind-academy tsx scripts/peek.ts --live",
     "db:peek:local": "tsx scripts/peek.ts",
-    "videos:compress": "node scripts/compress-videos.mjs"
+    "videos:compress": "node scripts/compress-videos.mjs",
+    "blob:empty": "node scripts/blob-empty.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
