@@ -2124,10 +2124,10 @@
         "type": "mcq",
         "question": "What does a candle with long wicks on both sides and a tiny body tell you?",
         "options": [
-          "Buyers were in complete control",
-          "A reversal has been confirmed",
+          "Buyers held control of the period from open to close",
+          "A reversal has been confirmed and the direction has now changed",
           "Neither side won — the open and close are nearly identical",
-          "The period had no trading activity"
+          "The period passed with almost no trading activity"
         ]
       },
       "answerKey": {
@@ -2146,9 +2146,9 @@
         "type": "mcq",
         "question": "On the daily chart you see a candle with a long lower wick. What does that wick represent on the 15-minute chart inside it?",
         "options": [
-          "Sideways consolidation only",
-          "A period with no price data",
-          "A single 15-minute candle",
+          "A long stretch of sideways consolidation and nothing else",
+          "A period in which no trading took place at all, so nothing was printed",
+          "One large 15-minute candle that covered the whole distance",
           "A complete lower-timeframe decline, a bottom, and a sharp reversal"
         ]
       },
@@ -2280,10 +2280,10 @@
         "type": "mcq",
         "question": "Using the three-step method, how do you confirm a high is a genuine swing high?",
         "options": [
-          "It sits above the previous day high",
-          "It has been touched at least three times",
+          "It sits above the previous day high on the chart",
+          "It has been touched at least three times without breaking",
           "There are lower highs on both the left and right of it",
-          "It is the highest price of the day"
+          "It is the highest price reached during the session"
         ]
       },
       "answerKey": {
@@ -2303,9 +2303,9 @@
         "question": "Why are equal highs a stronger magnet than a single high?",
         "options": [
           "Repeated touches at one price stack more orders in a single spot",
-          "They always mark the end of a trend",
-          "They are easier to see on a chart",
-          "They cannot be swept"
+          "Equal highs always mark the exhaustion point of a trend",
+          "They are simply easier for traders to spot on a chart",
+          "Equal highs hold more often than they break, so they resist sweeps"
         ]
       },
       "answerKey": {
@@ -2325,9 +2325,9 @@
         "question": "A candle forms a large wick that consumes half its time and range. What does this tell you about further expansion in that candle?",
         "options": [
           "A large wick does not support further expansion — the budget is spent",
-          "Expansion is more likely because momentum is building",
-          "It guarantees a reversal on the next candle",
-          "Wick size has no bearing on expansion"
+          "Expansion is more likely, because the wick shows momentum building",
+          "It guarantees the next candle will reverse the current direction",
+          "Wick size tells you nothing about how far the candle can still expand"
         ]
       },
       "answerKey": {
@@ -2586,9 +2586,9 @@
         "type": "mcq",
         "question": "A trader wins 80% of trades but the account is down. What is the most likely cause?",
         "options": [
-          "Commissions consumed the profit",
-          "The strategy has no edge at all",
-          "The win rate was measured wrongly",
+          "Commissions and spread quietly consumed the whole profit",
+          "The strategy has no real edge and the wins were luck",
+          "The win rate was measured over too small a sample to trust",
           "The losing trades were sized far larger than the winners"
         ]
       },
@@ -2609,9 +2609,9 @@
         "question": "Why are losses and gains described as asymmetrical?",
         "options": [
           "A large loss needs a proportionally larger gain to recover from",
-          "Gains always take longer to achieve",
-          "Losses are taxed differently from gains",
-          "Brokers charge more on losing trades"
+          "Gains simply take longer to accumulate than losses do",
+          "Losses and gains are taxed at different rates by HMRC",
+          "Brokers apply a higher commission to trades that close at a loss"
         ]
       },
       "answerKey": {
@@ -2633,7 +2633,7 @@
           "A loss limit that follows the account's high-water mark",
           "The average loss across a losing streak",
           "A stop loss that moves with price",
-          "The margin required to hold a position overnight"
+          "The margin required to hold a position overnight or longer"
         ]
       },
       "answerKey": {
@@ -2727,9 +2727,9 @@
         "question": "Which two conditions must BOTH be true for a Candle 2 closure?",
         "options": [
           "Price sweeps a previous extreme AND closes back inside the prior candle's range",
-          "Price closes completely beyond the previous high",
-          "Two candles close in the same direction",
-          "Price gaps up, then closes higher"
+          "Price closes completely beyond the previous extreme and then holds above it",
+          "Two consecutive candles close in the same direction after taking a high",
+          "Price gaps away from the previous close and closes further in that direction"
         ]
       },
       "answerKey": {
@@ -2748,10 +2748,10 @@
         "type": "mcq",
         "question": "Why will a strategy of trading every sweep-and-close-back-in fail?",
         "options": [
-          "It only works on the daily timeframe",
-          "Brokers do not allow it",
+          "The close back inside only carries meaning on the daily timeframe and above",
+          "Brokers widen the spread around every swept extreme, so the fills there are unreliable",
           "The shape appears constantly; without a Point of Interest there is no reason behind it",
-          "The pattern is too rare to trade"
+          "The pattern appears too rarely to build a repeatable strategy around it"
         ]
       },
       "answerKey": {
@@ -2770,10 +2770,10 @@
         "type": "mcq",
         "question": "What single feature distinguishes a continuation closure from a reversal closure?",
         "options": [
-          "The size of the wick",
+          "The size of the wick left above the swept level",
           "Where the candle closes relative to the swept level",
-          "The colour of the candle",
-          "The time of day it forms"
+          "The colour of the candle that takes the level out",
+          "The time of day the closure forms within the session"
         ]
       },
       "answerKey": {
@@ -2793,9 +2793,9 @@
         "question": "Candle 2 sweeps the low but closes below it. What are you now waiting for?",
         "options": [
           "Candle 3 to close through and engulf Candle 2's body",
-          "Nothing — the setup is dead",
-          "The next daily open",
-          "An immediate entry at the low"
+          "Nothing, the setup is dead once the close is below",
+          "The next daily open to reset the range",
+          "An immediate entry at the low before price moves away"
         ]
       },
       "answerKey": {
@@ -2926,9 +2926,9 @@
         "type": "mcq",
         "question": "What is a protected swing?",
         "options": [
-          "Any high or low on the chart",
-          "A level guaranteed never to break",
-          "The midpoint of the previous range",
+          "Any clearly visible high or low left behind by recent price action",
+          "A level the market is guaranteed not to trade through again",
+          "The midpoint of the previous dealing range, marked out in advance",
           "A high or low expected to remain intact as the current trend continues"
         ]
       },
@@ -2948,9 +2948,9 @@
         "type": "mcq",
         "question": "What distinguishes an IDEAL CISD from a non-ideal one?",
         "options": [
-          "It happens on a higher timeframe",
-          "It occurs during the New York session",
-          "It has a larger wick",
+          "It is confirmed on a higher timeframe than the one you intend to enter on",
+          "It occurs inside the New York session rather than in London or Asia",
+          "The closing candle carries a noticeably larger wick than the ones before it",
           "It closes over the entire opposing series, not just the body of the last candle"
         ]
       },
@@ -3064,13 +3064,13 @@
       "difficulty": "med",
       "payload": {
         "type": "tf-confidence",
-        "statement": "True or false: when a trade's risk feels too large, you should tighten the stop closer to your entry."
+        "statement": "True or false: when a trade's risk feels too large, the fix is to improve the entry rather than to tighten the stop."
       },
       "answerKey": {
         "type": "tf-confidence",
-        "value": false
+        "value": true
       },
-      "explanation": "False. Move the entry, not the stop. The stop sits at the invalidation point — moving it means you no longer know when you are wrong. Improve the entry instead.",
+      "explanation": "True. Move the entry, not the stop. The stop sits at the invalidation point — moving it means you no longer know when you are wrong. Improve the entry instead.",
       "isPretestEligible": true
     },
     {
@@ -3104,9 +3104,9 @@
         "type": "mcq",
         "question": "What turns a plain Change of Character into a Market Structure Shift?",
         "options": [
-          "It breaks two swing points instead of one",
-          "It happens at 9:30 New York time",
-          "It happens on the daily chart",
+          "It breaks two swing points in a row rather than a single one",
+          "It happens at the 9:30 New York open rather than mid-session",
+          "It is confirmed on the daily chart rather than on an intraday one",
           "It comes after a liquidity sweep and is delivered with displacement"
         ]
       },
@@ -3238,10 +3238,10 @@
         "type": "mcq",
         "question": "What is the single structural difference between a breaker block and a mitigation block?",
         "options": [
-          "The mitigation block is always bullish",
+          "The mitigation block only forms in a bullish trend, the breaker in a bearish one",
           "The breaker had a liquidity sweep before the block failed; the mitigation block did not",
-          "The breaker uses wicks and the mitigation block uses bodies",
-          "The breaker is on a higher timeframe"
+          "The breaker is measured from the wicks while the mitigation block is measured from bodies",
+          "The breaker has to be marked on a higher timeframe than the one you enter on"
         ]
       },
       "answerKey": {
@@ -3353,10 +3353,10 @@
         "type": "mcq",
         "question": "What are the three daily anchor points?",
         "options": [
-          "Open, High, Low",
+          "The open, the high and the low of the day",
           "Previous Day High, Previous Day Low, and Equilibrium",
-          "Asian, London and New York session highs",
-          "Support, resistance and the trendline"
+          "The Asian, London and New York session highs in order",
+          "Support, resistance and the prevailing trendline"
         ]
       },
       "answerKey": {
@@ -3375,10 +3375,10 @@
         "type": "mcq",
         "question": "In the continuation sequence, what does price 'respecting the EQ' tell you?",
         "options": [
-          "A reversal is imminent",
-          "The trend has ended",
+          "A reversal is forming and the bias should now be flipped over",
+          "The trend has finished and price will now range",
           "Buyers are defending the midpoint, supporting a bullish bias",
-          "Volume is falling"
+          "Volume is falling away as the session moves on"
         ]
       },
       "answerKey": {
@@ -3397,10 +3397,10 @@
         "type": "mcq",
         "question": "What is the Draw on Liquidity (DOL)?",
         "options": [
-          "The total volume traded in a session",
+          "The total volume traded across the session, measured at the close",
           "The price level or liquidity pool the market is actively pulled toward",
-          "The spread between bid and ask",
-          "The midpoint of the weekly range"
+          "The spread between the bid and the ask at the moment of entry",
+          "The midpoint of the weekly range, where price tends to settle"
         ]
       },
       "answerKey": {
@@ -3824,10 +3824,10 @@
         "type": "mcq",
         "question": "What is the T-Spot?",
         "options": [
-          "The exact price of the daily open",
+          "The exact price of the daily open, used as the main reference for the whole session",
           "The target area where a higher-timeframe wick forms before continuing the trend",
-          "The 50% level of the weekly range",
-          "A candlestick pattern with three wicks"
+          "The 50% level of the weekly range, where price is expected to settle",
+          "A three-wick candlestick pattern that marks the end of an expansion"
         ]
       },
       "answerKey": {
@@ -3868,9 +3868,9 @@
         "type": "mcq",
         "question": "Why should you ignore price levels that have already been taken when setting fractal targets?",
         "options": [
-          "They always become support",
-          "They are hard to see on the chart",
-          "Brokers remove them from the feed",
+          "Levels that have been taken always flip into support afterwards",
+          "They become hard to identify once price has traded through them",
+          "Brokers stop reporting them once the liquidity has been taken",
           "Their liquidity has been consumed, so they no longer act as a magnet"
         ]
       },
@@ -3978,10 +3978,10 @@
         "type": "mcq",
         "question": "What is SMT divergence?",
         "options": [
-          "A gap between the open and the previous close",
-          "Divergence between price and volume",
+          "A gap between one session's open and the previous session's close",
+          "A divergence between the direction of price and the volume standing behind it",
           "A structural divergence between correlated markets that should move together",
-          "A moving average crossover"
+          "A crossover between two moving averages of different lengths"
         ]
       },
       "answerKey": {
@@ -4001,9 +4001,9 @@
         "question": "What is the Golden Rule of SMT?",
         "options": [
           "Establish your framework first, then look for SMT as confluence",
-          "Only use SMT on the daily timeframe",
-          "Trade only when three assets diverge",
-          "Always trade the divergence immediately"
+          "Only read SMT on the daily timeframe, never intraday",
+          "Wait until three correlated assets diverge at the same time",
+          "Enter as soon as the divergence appears, before the candle closes"
         ]
       },
       "answerKey": {
@@ -4045,9 +4045,9 @@
         "question": "Your target is a swing low on gold that has not printed, but silver has taken its equivalent low. What does the SMT exception say?",
         "options": [
           "The target has been hit — the liquidity has been consumed",
-          "Double the position size",
-          "Keep waiting for gold to print the exact price",
-          "The setup is invalid"
+          "Double the position size to make up the difference",
+          "Keep waiting for gold to print that exact price before acting",
+          "The setup is invalid and should be abandoned"
         ]
       },
       "answerKey": {
@@ -4136,13 +4136,13 @@
       "difficulty": "med",
       "payload": {
         "type": "tf-confidence",
-        "statement": "True or false: SMT divergence on its own is a sufficient reason to enter a trade."
+        "statement": "True or false: SMT divergence should only be read as confluence once your framework is already established."
       },
       "answerKey": {
         "type": "tf-confidence",
-        "value": false
+        "value": true
       },
-      "explanation": "False. It is secondary confluence. Never traded in a vacuum — establish the framework first, only then look for divergence.",
+      "explanation": "True. It is secondary confluence. Never traded in a vacuum — establish the framework first, only then look for divergence.",
       "isPretestEligible": true
     },
     {
@@ -4176,10 +4176,10 @@
         "type": "mcq",
         "question": "Your EURUSD daily bias is bullish. For the picture to be coherent, what should the Dollar Index be doing?",
         "options": [
-          "Also bullish",
+          "Bullish as well, confirming the move",
           "Bearish, or at least not bullish",
-          "It's unrelated",
-          "Consolidating"
+          "Unrelated, the two move independently",
+          "Consolidating in a tight range"
         ]
       },
       "answerKey": {
@@ -4349,10 +4349,10 @@
         "type": "mcq",
         "question": "What makes a three-day Monday–Wednesday run vulnerable to a Thursday counter?",
         "options": [
-          "The weekly open was gapped",
-          "It always happens after a bank holiday",
+          "The week opened with a gap, which leaves the range unbalanced",
+          "Three-day runs only occur in weeks shortened by a bank holiday",
           "It produced no significant counter-swing, so it has no supporting structure",
-          "Volume is too high"
+          "Volume builds across the three days until the move can no longer be sustained"
         ]
       },
       "answerKey": {
@@ -4442,13 +4442,13 @@
       "difficulty": "hard",
       "payload": {
         "type": "tf-confidence",
-        "statement": "True or false: when a weekly setup degrades from perfect to messy, you should lower your evidence requirement to keep trading."
+        "statement": "True or false: as a weekly setup degrades from perfect to messy, the evidence you require before taking it should rise."
       },
       "answerKey": {
         "type": "tf-confidence",
-        "value": false
+        "value": true
       },
-      "explanation": "False. As the setup degrades, the evidence requirement RISES — from a daily Candle 2 with hourly CSD, to an hourly close, to waiting for the Thursday close.",
+      "explanation": "True. As the setup degrades, the evidence requirement RISES — from a daily Candle 2 with hourly CSD, to an hourly close, to waiting for the Thursday close.",
       "isPretestEligible": true
     },
     {
@@ -4460,10 +4460,10 @@
         "type": "mcq",
         "question": "In the default management plan, what happens when price reaches +1R?",
         "options": [
-          "Add to the position",
-          "Close the whole position",
+          "Add to the position while it is working",
+          "Close the whole position and bank the gain",
           "Take a partial and move the stop to break-even",
-          "Widen the stop to give it room"
+          "Widen the stop to give the trade more room to breathe"
         ]
       },
       "answerKey": {
@@ -4483,9 +4483,9 @@
         "question": "Where should a structure-based trailing stop sit on a long trade?",
         "options": [
           "Below the most recent protected swing low",
-          "At the last fair value gap",
-          "A fixed ten points below price",
-          "At the entry price at all times"
+          "At the last fair value gap price left behind",
+          "A fixed ten points below the current price",
+          "At the entry price from the moment you are filled"
         ]
       },
       "answerKey": {

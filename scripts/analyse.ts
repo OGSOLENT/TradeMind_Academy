@@ -59,6 +59,8 @@ interface Row {
   comments: Record<string, string> | null;
   /** Post-test answers against the model's estimate going in. */
   heldOut: { pL: number; correct: boolean }[];
+  /** Practice answers in order per KC, for the learning-curve check. */
+  curve: { kcId: string; opportunity: number; correct: boolean }[];
 }
 
 function fmt(n: number | null | undefined, d = 2): string {
@@ -107,6 +109,8 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
 
   let practiceItems = 0;
   let practiceCorrect = 0;
+  const seen: Record<string, number> = {};
+  const curve: { kcId: string; opportunity: number; correct: boolean }[] = [];
   let latencyMs = 0;
   let wallMs = 0;
   for (const s of practice) {
@@ -115,6 +119,11 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     for (const r of rs.docs) {
       if (r.data().correct) practiceCorrect++;
       latencyMs += Number(r.data().latencyMs ?? 0);
+      const kcId = String(r.data().kcId ?? "");
+      if (kcId) {
+        seen[kcId] = (seen[kcId] ?? 0) + 1;
+        curve.push({ kcId, opportunity: seen[kcId]!, correct: !!r.data().correct });
+      }
     }
     const a = ms(s.startedAt);
     const b = ms(s.endedAt);
@@ -149,6 +158,7 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     sus: survey && typeof survey.score === "number" ? survey.score : null,
     comments: survey?.comments ?? null,
     heldOut: post?.answers ?? [],
+    curve,
   };
 }
 
@@ -255,6 +265,64 @@ async function main() {
     lines.push("");
   }
   lines.push("");
+  // ---- KC validation: do error rates fall with practice? -------------------
+  // The standard data-driven check on a knowledge-component decomposition
+  // (Cen, Koedinger and Junker, 2006) is whether the learning curve is
+  // smooth and downward: if a KC is really one skill, error rate should fall
+  // as opportunities accumulate. A flat curve suggests the KC is not being
+  // learned; a jagged or rising one suggests it bundles several skills, or
+  // that its items are not measuring the same thing. It needs learner data,
+  // so it reports itself as pending until the pilot runs.
+  lines.push(`## Knowledge-component validation (learning curves)`);
+  lines.push("");
+  lines.push(`A knowledge component should behave like one skill: error rate falls as opportunities accumulate (Cen, Koedinger and Junker, 2006). A flat curve suggests the component is not being learned; a rising or jagged one suggests it bundles more than one skill, or that its items do not measure the same thing. This is the check that turns the decomposition in Section 5.6 from an assertion into a result.`);
+  lines.push("");
+  const curve = rows.flatMap((r) => r.curve);
+  if (curve.length === 0) {
+    lines.push(`No practice answers yet, so no curves. This section fills in when the pilot runs.`);
+  } else {
+    const byKc = new Map<string, Map<number, { n: number; wrong: number }>>();
+    for (const c of curve) {
+      const m = byKc.get(c.kcId) ?? new Map();
+      const cell = m.get(c.opportunity) ?? { n: 0, wrong: 0 };
+      cell.n += 1;
+      if (!c.correct) cell.wrong += 1;
+      m.set(c.opportunity, cell);
+      byKc.set(c.kcId, m);
+    }
+    lines.push(`| Knowledge component | Opportunities | Error rate, first half | Error rate, second half | Slope per opportunity | Reads as |`);
+    lines.push(`| --- | ---: | ---: | ---: | ---: | --- |`);
+    for (const [kcId, m] of [...byKc.entries()].sort()) {
+      const pts = [...m.entries()].sort((a, b) => a[0] - b[0]);
+      const total = pts.reduce((a, [, c]) => a + c.n, 0);
+      const mid = Math.ceil(pts.length / 2);
+      const rate = (sel: typeof pts) => {
+        const n = sel.reduce((a, [, c]) => a + c.n, 0);
+        return n ? sel.reduce((a, [, c]) => a + c.wrong, 0) / n : null;
+      };
+      const first = rate(pts.slice(0, mid));
+      const second = rate(pts.slice(mid));
+      // Least-squares slope of error rate against opportunity.
+      const xs = pts.map(([o]) => o);
+      const ys = pts.map(([, c]) => c.wrong / c.n);
+      const mx = mean(xs)!;
+      const my = mean(ys)!;
+      const den = xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+      const slope = den ? xs.reduce((a, x, i) => a + (x - mx) * (ys[i]! - my), 0) / den : 0;
+      const reads =
+        total < 10 ? "too few answers to read"
+          : slope < -0.02 ? "learning, as expected"
+          : slope > 0.02 ? "error rising, inspect this component"
+          : "flat, inspect this component";
+      lines.push(
+        `| ${kcId.replace("kc-", "")} | ${total} | ${first === null ? "–" : (first * 100).toFixed(0) + "%"} | ${second === null ? "–" : (second * 100).toFixed(0) + "%"} | ${slope.toFixed(3)} | ${reads} |`,
+      );
+    }
+    lines.push("");
+    lines.push(`Components reading as flat or rising are the ones to re-examine: either the lessons are not teaching them or the items are not measuring one skill.`);
+  }
+  lines.push("");
+
   lines.push(`## Caveats`);
   lines.push("");
   lines.push(`- Placement (form A) and post-test (form B) use different items for every module except Liquidity, which has one pretest-eligible item, so that module is a repeat.`);
