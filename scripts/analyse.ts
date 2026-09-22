@@ -261,6 +261,7 @@ async function main() {
   lines.push(`- Time on task from answer latencies excludes reading lessons and watching recordings; it's a floor. Session wall-clock includes them but is capped at two hours per session to stop an abandoned tab counting.`);
   lines.push(`- There's no control group. Gains are pre/post on one group and can't separate the routing from the content. The routing question is addressed by simulation in EVALUATION.md.`);
   lines.push(`- Only the first completed post-test per learner counts.`);
+  lines.push(`- Option positions are evened out at build time (lib/content/debias.ts), so no answer position is worth guessing. Two authoring tells remain and are not corrected: the correct option is the longest in 37 of 55 multiple-choice items (42 characters against 26 for the distractors), and the true/false items run 5 true to 10 false. Both would inflate scores slightly for a test-wise participant.`);
   lines.push("");
 
   writeFileSync(OUT, lines.join("\n"));

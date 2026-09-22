@@ -15,6 +15,8 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
 import { ITEMS } from "./level1-items";
+import { debiasItems } from "../lib/content/debias";
+import { pickAssessment } from "../lib/assessment";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
 import { CASE_STUDIES } from "../lib/case-studies";
 
@@ -290,20 +292,51 @@ function main() {
     description: m.description,
   }));
 
-  const items: Item[] = [];
+  const authored: Item[] = [];
   for (const kc of kcs) {
     const seeds = ITEMS[kc.id] ?? [];
     if (seeds.length === 0) throw new Error(`No items authored for ${kc.id}`);
     seeds.forEach((seed, i) => {
-      items.push({ id: `${kc.id}-item-${i + 1}`, kcId: kc.id, ...seed });
+      authored.push({ id: `${kc.id}-item-${i + 1}`, kcId: kc.id, ...seed });
     });
   }
+  // Authoring by hand leaves positional tells (84% of the MCQ answers were
+  // option 2, and every ordering item arrived already in its answer order).
+  // This spreads them deterministically, seeded by item id. lib/content/debias.ts
+  // explains why it happens here and not in the browser.
+  const items: Item[] = debiasItems(authored);
+
+  // Which item each module contributes to the post-test, from the same
+  // function the post-test page uses, so the two can't drift apart.
+  const eligible = items.filter((it) => it.isPretestEligible);
+  const postTestItemByKc = new Map(
+    pickAssessment(kcs, eligible, "B").map((it) => [it.kcId, it.id] as const),
+  );
+  const reusedAssessmentItem: string[] = [];
 
   const lessons: Lesson[] = [];
   MODULES.forEach((m, mi) => {
     const kc = kcs[mi]!;
-    // Each lesson gets a different pretest-eligible MCQ as its inline check.
-    const checks = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
+    // Each lesson gets an MCQ as its inline check, but NEVER the module's
+    // post-test question. The inline check shows the answer and explains
+    // it, so reusing a post-test item would mean measuring recall of a
+    // lesson slide rather than learning, and the post-test is what the
+    // normalised gain in the evaluation is computed from. Nine of the
+    // sixteen post-test questions were being leaked this way.
+    //
+    // Placement (form A) is fair game: the learner meets it once, before
+    // the lessons, which is what a pre-test is for. Preference order is
+    // therefore: MCQs not used by either assessment, then form A. Three
+    // modules (market structure, time and sessions, execution and review)
+    // have only two MCQs and both are assessment items, so they fall back
+    // to form A rather than leaving the lesson without a check.
+    const postTestId = postTestItemByKc.get(kc.id);
+    const moduleMcqs = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
+    const spare = moduleMcqs.filter((it) => !it.isPretestEligible);
+    const checks = spare.length > 0 ? spare : moduleMcqs.filter((it) => it.id !== postTestId);
+    if (spare.length === 0) {
+      reusedAssessmentItem.push(kc.id);
+    }
     m.lessons.forEach((key, li) => {
       const p = parsed.get(key);
       if (!p) throw new Error(`Missing lesson markdown for lesson ${key}`);
@@ -327,6 +360,10 @@ function main() {
     console.log(`  ${kc.id.padEnd(24)} ${n} lesson(s), ${ITEMS[kc.id]!.length} items`);
   }
   const missingVideo = lessons.filter((l) => !l.videoUrl);
+  if (reusedAssessmentItem.length)
+    console.log(
+      `  note: ${reusedAssessmentItem.length} module(s) have no spare MCQ, so their lesson check reuses the placement question: ${[...new Set(reusedAssessmentItem)].join(", ")}`,
+    );
   const withWalkthrough = missingVideo.filter((l) => l.blocks.some((b) => b.kind === "walkthrough"));
   if (missingVideo.length)
     console.log(
