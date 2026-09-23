@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { collection, doc, getDoc, getDocs, orderBy, query, limit } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
-import type { Kc } from "@/lib/content/types";
 import { MASTERY_THRESHOLD } from "@/lib/bkt";
 import { nextActionFor, targetKcId, type MasteryMap, type NextAction } from "@/lib/routing";
 import { getFirebase } from "@/lib/firebase/client";
@@ -24,6 +23,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { HistoryPoint } from "@/components/learn/mastery-chart";
 import { cn } from "@/lib/utils";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseKc } from "@/lib/firebase/schemas";
 
 // lightweight-charts is heavy and sits below the fold, so I load it lazily.
 const MasteryChart = dynamic(
@@ -31,16 +32,9 @@ const MasteryChart = dynamic(
   { ssr: false, loading: () => <Skeleton className="h-[200px] w-full rounded-card" /> },
 );
 
-const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DAY_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
 
-interface KcState {
-  pL: number;
-  attempts: number;
-  lastSeen: number;
-  masteredAt: number | null;
-}
 
 const actionCopy: Record<NextAction, { label: string; href(kcId: string): string }> = {
   lesson: { label: "Read the lesson", href: (kcId) => `/lesson/${kcId}` },
@@ -81,13 +75,9 @@ export default function DashboardPage() {
           ),
         ),
       ]);
-      const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<string, KcState>;
-      const history = (masterySnap.data()?.history ?? []) as Array<{
-        ts: number;
-        kcId: string;
-        pL: number;
-      }>;
+      const kcs = parseDocs(kcsSnap, parseKc);
+      const kcStates = masteryOf(masterySnap).kcs;
+      const history = masteryOf(masterySnap).history;
       const sessionDays = sessionsSnap.docs
         .map((d) => d.data().startedAt?.toMillis?.() as number | undefined)
         .filter((t): t is number => typeof t === "number");

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
-import type { Item, Kc } from "@/lib/content/types";
+import type { Item } from "@/lib/content/types";
 import { DEFAULT_PARAMS } from "@/lib/bkt";
 import { pickAssessment } from "@/lib/assessment";
 import { getFirebase } from "@/lib/firebase/client";
@@ -17,8 +17,9 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Stagger } from "@/components/motion/stagger";
 import { LazyParticleField } from "@/components/three/lazy-particle-field";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseItem, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 /**
  * The post-test. The same shape as placement (one question per module,
@@ -63,12 +64,12 @@ export default function PostTestPage() {
       getDocs(query(collection(db, "items"), where("isPretestEligible", "==", true))),
       getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID)),
     ]);
-    const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-    const eligible = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
+    const kcs = parseDocs(kcsSnap, parseKc);
+    const eligible = parseDocs(itemsSnap, parseItem);
     const picked: Item[] = pickAssessment(kcs, eligible, "B");
 
     // The model's view going in, so every answer is logged against it.
-    const current = (masterySnap.data()?.kcs ?? {}) as Record<string, { pL?: number }>;
+    const current = masteryOf(masterySnap).kcs;
     const mastery: Record<string, number> = {};
     for (const kc of kcs) mastery[kc.id] = current[kc.id]?.pL ?? DEFAULT_PARAMS.pL0;
 

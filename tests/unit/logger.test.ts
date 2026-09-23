@@ -100,4 +100,66 @@ describe("ResponseLogger", () => {
     expect(attempts).toBe(4);
     expect(logger.pending).toBe(1); // still never dropped
   });
+
+  it("parks an event the server refuses outright, so it can't block the answers behind it", async () => {
+    // Before the September audit a permanently rejected row stayed at the
+    // head of the queue forever and nothing after it was ever written.
+    const sent: string[] = [];
+    const parked: string[] = [];
+    const logger = new ResponseLogger({
+      send: async (e) => {
+        if (e.itemId === "item-2") throw Object.assign(new Error("denied"), { code: "permission-denied" });
+        sent.push(e.itemId);
+      },
+      isPermanent: (err) => (err as { code?: string }).code === "permission-denied",
+      onDeadLetter: (e) => void parked.push(e.itemId),
+    });
+    logger.enqueue(makeEvent(1));
+    logger.enqueue(makeEvent(2));
+    logger.enqueue(makeEvent(3));
+    await logger.flush();
+    expect(sent).toEqual(["item-1", "item-3"]);
+    expect(parked).toEqual(["item-2"]);
+    expect(logger.pending).toBe(0);
+    expect(logger.deadLettered).toBe(1);
+  });
+
+  it("keeps parked events across a restart and gives them one more try", async () => {
+    const refuse = new ResponseLogger({
+      send: async () => {
+        throw Object.assign(new Error("denied"), { code: "permission-denied" });
+      },
+      isPermanent: () => true,
+    });
+    refuse.enqueue(makeEvent(7));
+    await refuse.flush();
+    expect(refuse.deadLettered).toBe(1);
+
+    // A new logger (the next page load) finds it and retries it.
+    const sent: string[] = [];
+    const revived = new ResponseLogger({ send: async (e) => void sent.push(e.itemId) });
+    expect(revived.deadLettered).toBe(1);
+    revived.start();
+    await revived.flush();
+    expect(sent).toEqual(["item-7"]);
+    expect(revived.deadLettered).toBe(0);
+  });
+
+  it("still retries a transient error rather than parking it", async () => {
+    vi.useFakeTimers();
+    let attempts = 0;
+    const logger = new ResponseLogger({
+      send: async () => {
+        attempts++;
+        if (attempts < 3) throw Object.assign(new Error("offline"), { code: "unavailable" });
+      },
+      isPermanent: (err) => (err as { code?: string }).code === "permission-denied",
+      backoffBaseMs: 100,
+    });
+    logger.enqueue(makeEvent(9));
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(attempts).toBe(3);
+    expect(logger.deadLettered).toBe(0);
+    expect(logger.pending).toBe(0);
+  });
 });

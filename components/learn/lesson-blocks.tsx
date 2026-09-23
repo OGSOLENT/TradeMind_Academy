@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Markdown } from "./markdown";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 

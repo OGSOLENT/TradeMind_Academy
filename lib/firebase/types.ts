@@ -3,8 +3,12 @@ import type { Timestamp } from "firebase/firestore";
 /** The users/{uid} document, per BUILD_PROMPT section 4. */
 export interface UserProfile {
   displayName: string;
-  createdAt: Timestamp;
-  consent: { agreedAt: Timestamp; version: string } | null;
+  /**
+   * Null for the moment between a write with serverTimestamp() and the
+   * server confirming it, when Firestore's local copy has no value yet.
+   */
+  createdAt: Timestamp | null;
+  consent: { agreedAt: Timestamp | null; version: string } | null;
   isAdult: boolean;
   settings: UserSettings;
 }

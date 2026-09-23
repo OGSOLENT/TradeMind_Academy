@@ -17,8 +17,8 @@
  * site. Smaller files mean the store stays inside the allowance, each play
  * costs a quarter of the transfer, and the video starts sooner on a phone.
  *
- * Originals are never touched. Output goes to public/videos-web, which is
- * what scripts/upload-videos.mjs uploads.
+ * Originals are never touched. Output goes to public/videos-web, which the
+ * deploy carries as ordinary static files.
  */
 import { existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";

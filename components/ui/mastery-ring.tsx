@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { cn, clamp } from "@/lib/utils";
+import { masteryBand, type MasteryBand } from "@/lib/bkt";
 
 /**
  * MasteryRing. The flagship component of the design system, and the one I'd
@@ -60,10 +61,16 @@ const toneVar: Record<Exclude<RingTone, "auto">, string> = {
   warning: "var(--warning)",
 };
 
+// The colour follows the model's own bands, so the ring can never show
+// "mastered" at a value the routing engine still treats as practice.
+const BAND_TONE: Record<MasteryBand, Exclude<RingTone, "auto">> = {
+  mastered: "mastery",
+  remediate: "warning",
+  practice: "accent",
+};
+
 function bandTone(v: number): Exclude<RingTone, "auto"> {
-  if (v >= 0.8) return "mastery";
-  if (v < 0.4) return "warning";
-  return "accent";
+  return BAND_TONE[masteryBand(v)];
 }
 
 export function MasteryRing({

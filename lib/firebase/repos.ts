@@ -13,6 +13,7 @@ import {
 import type { Course, Item, Kc, Lesson } from "@/lib/content/types";
 import { CONSENT_VERSION, defaultSettings, type UserProfile } from "./types";
 import { withRetry } from "./errors";
+import { parseDocs, parseKc, parseLesson, parseProfile } from "@/lib/firebase/schemas";
 
 /**
  * The Firestore repositories. Content collections are read-only from the
@@ -46,7 +47,7 @@ export async function recordConsent(db: Firestore, uid: string) {
 
 export async function getUserProfile(db: Firestore, uid: string): Promise<UserProfile | null> {
   const snap = await withRetry(() => getDoc(doc(db, "users", uid)));
-  return snap.exists() ? (snap.data() as UserProfile) : null;
+  return snap.exists() ? parseProfile(uid, snap.data()) : null;
 }
 
 export async function getCourse(db: Firestore, courseId: string): Promise<Course | null> {
@@ -56,14 +57,14 @@ export async function getCourse(db: Firestore, courseId: string): Promise<Course
 
 export async function getKcs(db: Firestore, courseId: string): Promise<Kc[]> {
   const snap = await getDocs(query(collection(db, "kcs"), where("courseId", "==", courseId)));
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
+  return parseDocs(snap, parseKc);
 }
 
 /** Every lesson in a knowledge component, in curriculum order. */
 export async function getLessonsByKc(db: Firestore, kcId: string): Promise<Lesson[]> {
   const snap = await getDocs(query(collection(db, "lessons"), where("kcId", "==", kcId)));
   return snap.docs
-    .map((d) => ({ id: d.id, ...d.data() }) as Lesson)
+    .map((d) => parseLesson(d.id, d.data()))
     .sort((a, b) => a.id.localeCompare(b.id));
 }
 

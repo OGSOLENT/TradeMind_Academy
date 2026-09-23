@@ -2,10 +2,17 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "tests/e2e",
+  // Figure capture isn't a test; it rewrites the report's screenshots, so it
+  // only runs when asked (npm run figures:capture).
+  testIgnore: process.env.CAPTURE_FIGURES === "1" ? [] : ["**/report-screens.spec.ts"],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  reporter: process.env.CI ? "github" : "list",
+  // CI also writes JSON, which the workflow checks so a skipped journey
+  // fails the build instead of passing silently.
+  reporter: process.env.CI
+    ? [["github"], ["json", { outputFile: "test-results/results.json" }]]
+    : "list",
   use: {
     baseURL: "http://localhost:3100",
     trace: "on-first-retry",
@@ -20,10 +27,11 @@ export default defineConfig({
   webServer: {
     // The suite ALWAYS runs against the emulator server on 3100. `npm run
     // dev` is the real app now, and auto-starting that here would route E2E
-    // sign-ups into the real research database, which happened once. CI has
-    // no env files, so the prod-style build there runs without Firebase and
-    // the Firebase specs skip themselves.
-    command: process.env.CI ? "npm run build && npx next start -p 3100" : "npm run dev:emulator",
+    // sign-ups into the real research database, which happened once. In CI
+    // the workflow builds the app with the emulator's demo configuration
+    // and runs the suite inside `firebase emulators:exec`, so every journey
+    // runs there too.
+    command: process.env.CI ? "npx next start -p 3100" : "npm run dev:emulator",
     url: "http://localhost:3100",
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

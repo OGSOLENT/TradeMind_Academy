@@ -390,7 +390,7 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
     };
   }, [hovered]);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const g = group.current;
     if (!g) return;
     if (start.current === null) start.current = state.clock.elapsedTime;

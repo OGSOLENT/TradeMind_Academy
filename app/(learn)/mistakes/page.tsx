@@ -24,9 +24,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Stagger } from "@/components/motion/stagger";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 interface MistakeGroup {
   kcId: string;
@@ -82,7 +83,7 @@ export default function MistakesPage() {
       if (snap.exists()) items.push({ id: snap.id, ...snap.data() } as Item);
     }
     const masterySnap = await getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID));
-    const states = (masterySnap.data()?.kcs ?? {}) as Record<string, { pL: number }>;
+    const states = masteryOf(masterySnap).kcs;
     const mastery: Record<string, number> = {};
     for (const it of items) mastery[it.kcId] = states[it.kcId]?.pL ?? DEFAULT_PARAMS.pL0;
 

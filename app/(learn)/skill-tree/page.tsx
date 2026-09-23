@@ -1,13 +1,12 @@
 "use client";
 
 import { useTitle } from "@/lib/use-title";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
-import type { Kc } from "@/lib/content/types";
 import { nodeStateFor, unlockedKcIds, type MasteryMap } from "@/lib/routing";
 import { ConstellationMap, type KcView } from "@/components/learn/constellation-map";
 import { getFirebase } from "@/lib/firebase/client";
@@ -21,9 +20,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { LazyParticleField } from "@/components/three/lazy-particle-field";
-import { clamp, cn } from "@/lib/utils";
+import { clamp } from "@/lib/utils";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 export default function SkillTreePage() {
   useTitle("Skill map");
@@ -80,11 +80,8 @@ function SkillTree() {
         getDocs(collection(db, "kcs")),
         getDoc(doc(db, "users", user!.uid, "mastery", COURSE_ID)),
       ]);
-      const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<
-        string,
-        { pL: number; attempts: number }
-      >;
+      const kcs = parseDocs(kcsSnap, parseKc);
+      const kcStates = masteryOf(masterySnap).kcs;
       return { kcs, kcStates };
     },
   });

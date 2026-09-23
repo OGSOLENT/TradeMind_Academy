@@ -7,8 +7,9 @@ import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { nodeStateFor, unlockedKcIds, type MasteryMap, type NodeState } from "@/lib/routing";
 import { orderByChain } from "@/lib/constellation";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseKc, parseLesson } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 export interface ModuleView extends Kc {
   pL: number;
@@ -36,9 +37,9 @@ export function useLearnerModel() {
         getDocs(collection(db, "kcs")),
         getDocs(collection(db, "lessons")),
       ]);
-      const kcs = orderByChain(kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc));
+      const kcs = orderByChain(parseDocs(kcsSnap, parseKc));
       const lessons = lessonsSnap.docs
-        .map((d) => ({ id: d.id, ...d.data() }) as Lesson)
+        .map((d) => parseLesson(d.id, d.data()))
         .sort((a, b) => a.id.localeCompare(b.id))
         .map(({ id, title, kcId }) => ({ id, title, kcId }));
       return { kcs, lessons };
@@ -51,7 +52,7 @@ export function useLearnerModel() {
     queryFn: async () => {
       const { db } = getFirebase();
       const snap = await getDoc(doc(db, "users", user!.uid, "mastery", COURSE_ID));
-      return (snap.data()?.kcs ?? {}) as Record<string, { pL: number; attempts: number }>;
+      return masteryOf(snap).kcs;
     },
   });
 

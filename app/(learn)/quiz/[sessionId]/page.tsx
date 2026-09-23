@@ -4,11 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { collection, doc, getDocs, query, runTransaction, serverTimestamp, updateDoc, where } from "firebase/firestore";
-import { applyMasteryUpdates } from "@/lib/firebase/mastery";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { completeSession } from "@/lib/firebase/mastery";
 import { QuestionBody, answerFromWorking, freshWorking, promptOf, type Working } from "@/components/learn/question-body";
 import { useQuery } from "@tanstack/react-query";
-import type { Item, Kc } from "@/lib/content/types";
+import type { Item } from "@/lib/content/types";
 import { MASTERY_THRESHOLD, initialiseFromPlacement } from "@/lib/bkt";
 import { newlyUnlocked } from "@/lib/routing";
 import { getFirebase } from "@/lib/firebase/client";
@@ -29,8 +29,9 @@ import { ConstellationInit } from "@/components/learn/constellation-init";
 import { MasteryCelebration } from "@/components/learn/mastery-celebration";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { COURSE_ID } from "@/lib/constants";
+import { parseDocs, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 export default function QuizPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -85,56 +86,34 @@ export default function QuizPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [s, item, canSubmit, submit]);
 
-  // ---- Completion: the mastery writes (one doc, one transaction, section 4) ----
+  // ---- Completion: close the session and write the model in one transaction ----
+  // completeSession never throws. If the write fails after its retries the
+  // session is left unapplied and reconcileMastery rebuilds the model from
+  // the response log the next time the learning area opens, so nothing a
+  // learner answered is lost from the model (lib/firebase/mastery.ts).
   useEffect(() => {
     if (s.phase !== "complete" || !user || !s.sessionId || finishedRef.current) return;
     finishedRef.current = true;
     const { db } = getFirebase();
     const records = Object.values(s.answers);
+    const correct = records.filter((r) => r.correct).length;
+    const attempts: Record<string, number> = {};
+    for (const r of records) attempts[r.kcId] = (attempts[r.kcId] ?? 0) + 1;
 
     void (async () => {
-      try {
-        const correct = records.filter((r) => r.correct).length;
-        await updateDoc(doc(db, "users", user.uid, "sessions", s.sessionId!), {
-          endedAt: serverTimestamp(),
-          score: { correct, total: records.length },
-        });
-
-        // A post-test is a measurement. The responses are logged against
-        // the model's current estimate; the model itself is left alone.
-        if (s.sessionType === "post-test") return;
-
-        if (s.sessionType === "placement") {
-          // Finishing a placement: initialise pL0 per KC from what I just saw.
-          const kcsSnap = await getDocs(collection(db, "kcs"));
-          const kcIds = kcsSnap.docs.map((d) => d.id);
-          const initial = initialiseFromPlacement(
-            records.map((r) => ({ kcId: r.kcId, correct: r.correct })),
-            kcIds,
-          );
-          const kcsMap: Record<string, unknown> = {};
-          for (const kcId of kcIds) {
-            kcsMap[kcId] = {
-              pL: initial[kcId],
-              attempts: records.filter((r) => r.kcId === kcId).length,
-              lastSeen: Date.now(),
-              masteredAt: (initial[kcId] ?? 0) >= MASTERY_THRESHOLD ? Date.now() : null,
-            };
-          }
-          await runTransaction(db, async (tx) => {
-            const ref = doc(db, "users", user.uid, "mastery", COURSE_ID);
-            tx.set(ref, { kcs: kcsMap, history: [], updatedAt: serverTimestamp() }, { merge: true });
-          });
-          return;
-        }
-
-        const attempts: Record<string, number> = {};
-        for (const r of records) attempts[r.kcId] = (attempts[r.kcId] ?? 0) + 1;
-        await applyMasteryUpdates(db, user.uid, COURSE_ID, s.mastery, attempts);
-      } catch {
-        // The responses are already safe in the append-only log. The mastery
-        // doc catches up on the next completed session.
-      }
+      const kcIds =
+        s.sessionType === "placement"
+          ? (await getDocs(collection(db, "kcs")).catch(() => null))?.docs.map((d) => d.id) ?? []
+          : undefined;
+      await completeSession(db, user.uid, COURSE_ID, {
+        sessionId: s.sessionId!,
+        type: s.sessionType,
+        after: s.mastery,
+        attempts,
+        kcIds,
+        placementAnswers: records.map((r) => ({ kcId: r.kcId, correct: r.correct, ts: 0 })),
+        score: { correct, total: records.length },
+      });
     })();
   }, [s.phase, user, s.sessionId, s.answers, s.mastery, s.sessionType]);
 
@@ -355,7 +334,7 @@ function PlacementComplete() {
     queryKey: ["kcs", COURSE_ID],
     queryFn: async () => {
       const snap = await getDocs(collection(getFirebase().db, "kcs"));
-      return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
+      return parseDocs(snap, parseKc);
     },
   });
 
@@ -390,7 +369,7 @@ function SessionSummary() {
     queryKey: ["kcs", COURSE_ID],
     queryFn: async () => {
       const snap = await getDocs(collection(getFirebase().db, "kcs"));
-      return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
+      return parseDocs(snap, parseKc);
     },
   });
   const [celebrating, setCelebrating] = useState(() =>
