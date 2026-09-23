@@ -63,3 +63,8 @@ docs/report-figures/.print/
 # files but kept out of the repo so a clone stays small; re-create them with
 # `npm run videos:compress`.
 /public/videos-web
+
+# The built report. Its source is docs/report/REPORT.md and the submission
+# copy goes to the Dissertation folder; committing a 13 MB .docx on every
+# rebuild is what took this repository to 947 MB.
+/docs/report/*.docx
