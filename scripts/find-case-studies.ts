@@ -18,7 +18,7 @@
  * the only differences.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import type { Anno, Candle, Step, Walkthrough } from "../lib/walkthroughs/types";
+import type { Candle, Step, Walkthrough } from "../lib/walkthroughs/types";
 
 interface Bar extends Candle {
   t: number;

@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp } from "firebase/firestore";
-import type { Item, Kc } from "@/lib/content/types";
 import { DEFAULT_PARAMS } from "@/lib/bkt";
 import { unlockedKcIds } from "@/lib/routing";
 import { getFirebase } from "@/lib/firebase/client";
@@ -16,8 +15,9 @@ import { Pill } from "@/components/ui/pill";
 import { LazyParticleField } from "@/components/three/lazy-particle-field";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseItem, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 const SESSION_LENGTH = 10;
 
 interface Line {
@@ -66,12 +66,9 @@ export default function PracticePage() {
         getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID)),
       ]);
 
-      const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-      const allItems = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
-      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<
-        string,
-        { pL: number; attempts: number }
-      >;
+      const kcs = parseDocs(kcsSnap, parseKc);
+      const allItems = parseDocs(itemsSnap, parseItem);
+      const kcStates = masteryOf(masterySnap).kcs;
 
       const mastery: Record<string, number> = {};
       for (const kc of kcs) mastery[kc.id] = kcStates[kc.id]?.pL ?? DEFAULT_PARAMS.pL0;

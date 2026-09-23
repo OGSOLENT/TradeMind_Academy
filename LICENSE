@@ -1,0 +1,42 @@
+MIT License, for the source code
+
+Copyright (c) 2026 Ogechukwu Adama
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+
+What this licence does NOT cover
+
+The MIT licence above applies to the source code only. The following are
+Copyright (c) 2026 Ogechukwu Adama, all rights reserved, and are not licensed
+for reuse:
+
+  - the curriculum: content/lessons/, the item bank in scripts/level1-items.ts,
+    and the generated content/level1.json. The lessons summarise public
+    teaching by third parties (ICT and TTrades, cited lesson by lesson in
+    docs/LESSON_SOURCES.md), whose ideas remain theirs;
+  - the lesson recordings;
+  - the dissertation report and its figures (docs/report/, docs/report-figures/).
+
+The historical price bars behind the real-chart case studies come from a
+public data provider and are used for education under its terms; they are
+not redistributed as a dataset.
+
+Educational simulation only. Nothing in this repository is financial advice.

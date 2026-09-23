@@ -62,7 +62,7 @@ Edit the markdown in `content/lessons/`, then push it everywhere:
 npx tsx scripts/generate-content.ts && npm run seed:live && npm run deploy
 ```
 
-Added a recording? Put the file in `~/Documents/DIssertation/Lessons`, add its `Video:` line, and run `node scripts/upload-videos.mjs` first.
+Added a recording? See **The lesson videos** below: drop it in `Lessons`, add its `Video:` line, then `npm run videos:compress`, regenerate, seed and deploy.
 
 ## Deploy the live site
 

@@ -17,11 +17,12 @@ import { Counter } from "@/components/ui/counter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Stagger } from "@/components/motion/stagger";
 import { RhythmTrace } from "@/components/learn/rhythm-trace";
 import { DownloadIcon, EyeIcon, GearIcon, ShieldIcon } from "@/components/learn/stat-icons";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 interface Badge {
@@ -49,10 +50,7 @@ export default function ProfilePage() {
         getDoc(doc(db, "users", user!.uid, "mastery", COURSE_ID)),
         getDocs(collection(db, "users", user!.uid, "sessions")),
       ]);
-      const kcStates = (masterySnap.data()?.kcs ?? {}) as Record<
-        string,
-        { pL: number; attempts: number }
-      >;
+      const kcStates = masteryOf(masterySnap).kcs;
       const sessions = sessionsSnap.docs.map((d) => ({
         type: d.data().type as string,
         startedAt: (d.data().startedAt?.toMillis?.() as number | undefined) ?? 0,

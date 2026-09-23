@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AppShell } from "@/components/shell/app-shell";
 import { AmbientBackground } from "@/components/shell/ambient-background";
-import { Toaster } from "@/components/ui/toast";
+import { Toaster, toast } from "@/components/ui/toast";
 import { useAuth } from "@/lib/firebase/auth-context";
 import { getFirebase } from "@/lib/firebase/client";
 import { getUserProfile } from "@/lib/firebase/repos";
+import { reconcileMastery } from "@/lib/firebase/mastery";
+import { COURSE_ID } from "@/lib/constants";
 
 /**
  * The learn-area guard. You have to be signed in AND have given consent to
@@ -31,6 +33,27 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
     if (!loading && !user) router.replace("/sign-in");
     if (user && !isPending && !profile?.consent) router.replace("/consent");
   }, [loading, user, isPending, profile, router]);
+
+  // Once per visit, check that every finished session made it into the
+  // learner model, and rebuild the model from the response log if one
+  // didn't (lib/firebase/mastery.ts). Almost always a no-op.
+  const queryClient = useQueryClient();
+  const reconciled = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user || !profile?.consent || reconciled.current === user.uid) return;
+    reconciled.current = user.uid;
+    reconcileMastery(getFirebase().db, user.uid, COURSE_ID)
+      .then((repaired) => {
+        if (repaired === 0) return;
+        void queryClient.invalidateQueries();
+        toast({
+          title: "Progress restored",
+          description: `${repaired} session${repaired === 1 ? "" : "s"} that didn't save last time ${repaired === 1 ? "has" : "have"} been added back from your answers.`,
+          variant: "success",
+        });
+      })
+      .catch((err) => console.warn("[mastery] reconciliation skipped", err));
+  }, [user, profile?.consent, queryClient]);
 
   // I render the children straight away. Every page shows its own skeleton
   // while auth resolves, so the profile check and the page data load in

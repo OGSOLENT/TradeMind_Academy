@@ -20,7 +20,7 @@ import { Modal } from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
-import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Stagger } from "@/components/motion/stagger";
 import { Kbd } from "@/components/ui/kbd";
 import { ShortcutsSheet } from "@/components/shell/shortcuts-sheet";
 

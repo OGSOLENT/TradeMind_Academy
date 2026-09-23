@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AnswerKey } from "@/lib/content/types";
-import { grade } from "@/lib/quiz/grade";
+import { grade, type LearnerAnswer } from "@/lib/quiz/grade";
 
 describe("grade", () => {
   it("mcq", () => {
@@ -41,5 +41,24 @@ describe("grade", () => {
     const key: AnswerKey = { type: "tf-confidence", value: true };
     expect(grade({ type: "tf-confidence", value: true, confidence: 50 }, key)).toBe(true);
     expect(grade({ type: "tf-confidence", value: false, confidence: 100 }, key)).toBe(false);
+  });
+});
+
+describe("an answer of the wrong type", () => {
+  // The quiz can only produce an answer shaped for the question on screen,
+  // but the grader must never crash or award a mark if that ever fails.
+  const keys: AnswerKey[] = [
+    { type: "mcq", correct: 0 },
+    { type: "multi", correct: [0] },
+    { type: "numeric", value: 3, tolerance: 0.5 },
+    { type: "ordering", order: [0, 1] },
+    { type: "annotation", zone: { from: "2024-03-01", to: "2024-03-05", priceLow: 1, priceHigh: 2 } },
+    { type: "tf-confidence", value: true },
+  ];
+  const wrongFor = (k: AnswerKey): LearnerAnswer =>
+    k.type === "mcq" ? { type: "tf-confidence", value: true, confidence: 1 } : { type: "mcq", selected: 0 };
+
+  it.each(keys.map((k) => [k.type, k] as const))("grades a %s key given another type as wrong", (_t, key) => {
+    expect(grade(wrongFor(key), key)).toBe(false);
   });
 });

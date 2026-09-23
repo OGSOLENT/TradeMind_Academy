@@ -3,6 +3,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getFirebase } from "@/lib/firebase/client";
 import { toast } from "@/components/ui/toast";
+import { firebaseCode } from "@/lib/firebase/errors";
 import { ResponseLogger, type ResponseEvent } from "./logger";
 
 /**
@@ -34,6 +35,17 @@ export function getLogger(): ResponseLogger {
   if (!singleton) {
     singleton = new ResponseLogger({
       send: firestoreSend,
+      // The rules refused the row. Retrying the same bytes can't change that,
+      // so it's parked (never dropped) and the answers behind it still sync.
+      isPermanent: (err) => ["permission-denied", "invalid-argument"].includes(firebaseCode(err)),
+      onDeadLetter: (event, err) => {
+        console.error("[logger] response refused by the server, parked", event.itemId, err);
+        toast({
+          title: "One answer couldn't be saved",
+          description: "It's kept on this device and will be retried next time. Your other answers are saved.",
+          variant: "warning",
+        });
+      },
       onError: (_err, queued) => {
         if (!erroredOnce) {
           erroredOnce = true;

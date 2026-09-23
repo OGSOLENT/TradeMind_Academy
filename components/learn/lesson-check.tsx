@@ -3,13 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import type { Item } from "@/lib/content/types";
 import { DEFAULT_PARAMS, MASTERY_THRESHOLD, updateMastery } from "@/lib/bkt";
 import { grade, type LearnerAnswer } from "@/lib/quiz/grade";
 import { getFirebase } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/firebase/auth-context";
-import { applyMasteryUpdates } from "@/lib/firebase/mastery";
+import { completeSession } from "@/lib/firebase/mastery";
 import { getLogger } from "@/lib/logging";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,6 +20,8 @@ import { MasteryCelebration } from "@/components/learn/mastery-celebration";
 import { QuestionBody, answerFromWorking, freshWorking, promptOf, type Working } from "@/components/learn/question-body";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseItem } from "@/lib/firebase/schemas";
 
 /**
  * The check at the end of every lesson.
@@ -38,7 +40,6 @@ import { cn } from "@/lib/utils";
  * you did here. Wrong answers stay amber and calm, never red.
  */
 
-const COURSE_ID = "trading-foundations";
 const QUESTIONS = 3;
 
 const CORRECT = ["Nailed it.", "That's the one.", "Exactly right.", "Clean.", "You've got this."];
@@ -177,14 +178,14 @@ export function LessonCheck({
         getDoc(doc(db, "users", user.uid, "mastery", COURSE_ID)),
       ]);
       const items = itemsSnap.docs
-        .map((d) => ({ id: d.id, ...d.data() }) as Item)
+        .map((d) => parseItem(d.id, d.data()))
         .filter((it) => it.id !== excludeItemId);
       if (items.length === 0) {
         setError("There aren't any questions for this module yet.");
         setPhase("idle");
         return;
       }
-      const state = (masterySnap.data()?.kcs ?? {}) as Record<string, { pL: number }>;
+      const state = masteryOf(masterySnap).kcs;
       const startPL = state[kcId]?.pL ?? DEFAULT_PARAMS.pL0;
       setPLStart(startPL);
       setPL(startPL);
@@ -282,16 +283,16 @@ export function LessonCheck({
     if (phase !== "done" || !user || !sessionId.current) return;
     const { db } = getFirebase();
     const id = sessionId.current;
-    void (async () => {
-      try {
-        await updateDoc(doc(db, "users", user.uid, "sessions", id), { endedAt: serverTimestamp() });
-        await applyMasteryUpdates(db, user.uid, COURSE_ID, { [kcId]: pL }, { [kcId]: attempts.length });
-      } catch (err) {
-        // The responses are already safe in the append-only log. The mastery
-        // doc catches up on the next completed session.
-        console.error("[lesson-check] mastery write failed", err);
-      }
-    })();
+    // Ended and applied in one transaction. If it fails, the session is
+    // left unapplied and rebuilt from the response log on the next visit
+    // (lib/firebase/mastery.ts), so the answers still count.
+    void completeSession(db, user.uid, COURSE_ID, {
+      sessionId: id,
+      type: "lesson-check",
+      after: { [kcId]: pL },
+      attempts: { [kcId]: attempts.length },
+      score: { correct: attempts.filter((a) => a.correct).length, total: attempts.length },
+    });
     if (pL >= MASTERY_THRESHOLD && pLStart < MASTERY_THRESHOLD) setCelebrate(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);

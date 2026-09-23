@@ -1,7 +1,9 @@
 # TradeMind Academy
 
-An Intelligent Tutoring System for trading education — BSc dissertation artefact
-(Solent University, QHO634). **Educational simulation only:** no live market data,
+[![CI](https://github.com/OGSOLENT/TradeMind_Academy/actions/workflows/ci.yml/badge.svg)](https://github.com/OGSOLENT/TradeMind_Academy/actions/workflows/ci.yml)
+
+An Intelligent Tutoring System for trading education, the artefact of a BSc dissertation
+(Solent University, QHO656). **Educational simulation only:** no live market data,
 no signals, no broker links, 18+.
 
 The adaptive loop is the research core: auth → lesson → per-topic test →
@@ -57,8 +59,10 @@ run the practice app, open the database. [RUNNING.md](RUNNING.md) has the longer
 ## Stack
 
 Next.js 14 (App Router, TS strict) · Tailwind (custom tokens) · Framer Motion ·
-GSAP · react-three-fiber · lightweight-charts · Firebase (Auth/Firestore/Storage,
-Emulator Suite locally) · React Query · Zustand · Vitest · Playwright.
+GSAP · react-three-fiber · lightweight-charts · Firebase (Auth and Firestore,
+Emulator Suite locally) · zod at the Firestore boundary · React Query · Zustand ·
+Vitest · Playwright · axe-core. Lesson recordings are static files served by the
+app itself (docs/DEPLOY.md).
 
 ## Development
 
@@ -68,7 +72,9 @@ npm run dev            # the app on :3000 (live project, real Google)
 npm run dev:emulator   # a throwaway copy on :3100 against the local emulators
 npm run emulators      # Firebase emulator suite (requires firebase-tools)
 npm run test           # unit tests (Vitest)
-npm run test:e2e       # E2E (Playwright; builds + serves automatically)
+npm run test:coverage  # unit tests with the coverage floors enforced
+npm run test:rules     # security rules + learner-model integration, in the emulator
+npm run test:e2e       # browser journeys against the emulator server on :3100
 npm run lint && npm run typecheck
 npm run simulate:routing   # adaptive vs fixed vs random routing, into docs/EVALUATION.md
 npm run analyse            # pilot data (emulator) → docs/report/PILOT_RESULTS.md
@@ -76,6 +82,16 @@ npm run deploy             # production snapshot to Vercel (docs/DEPLOY.md)
 ```
 
 Copy `.env.example` → `.env.local`. Local dev and tests target the emulator suite.
+
+## Testing
+
+| Suite | What it proves | Runs in CI |
+|---|---|---|
+| Unit (Vitest, 233 tests) | BKT against hand-worked arithmetic; routing; the session state machine; the mastery ledger and its rebuild from the log; grading; the logger's queue and dead-letter store; runtime schemas against the whole shipped bank; the item-bank debiasing; two interface claims in rendered components | Yes, with per-module coverage floors (BKT, ledger, quiz and schemas at 100% of lines) |
+| Rules and integration (36 tests) | Every forbidden read and write is refused, every malformed document is refused, and a lost session write is rebuilt from the append-only log, all against a real Firestore emulator | Yes |
+| Browser (Playwright, 32 runs) | Every learner journey on desktop and Pixel 7, including a network cut mid-session, keyboard-only use and axe-core WCAG 2.1 AA checks | Yes, against the emulators; the build fails if any journey is skipped |
+
+`npm run figures:capture` regenerates the report's screenshots; it is not a test and only runs when asked.
 
 ## Repository map
 

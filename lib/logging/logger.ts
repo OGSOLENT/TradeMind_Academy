@@ -9,6 +9,16 @@
  * survives a refresh via localStorage and flushes on the next start() or
  * online event.
  *
+ * One exception to "retry until it lands": an error the server will never
+ * accept however often it's retried (the rules rejecting the row, say).
+ * The queue is strictly ordered, so before the September audit a single
+ * such event sat at the head forever and silently blocked every answer
+ * behind it. Now the transport can mark an error as permanent; that event
+ * moves to a separate dead-letter store, persisted like the queue, so it is
+ * still never dropped, and the queue carries on. Dead letters get one more
+ * try, at the back of the queue, each time the logger starts, in case the
+ * "permanent" error was a misclassified transient one.
+ *
  * No Firebase in here. The transport is injected, so the unit tests drive
  * the queue with a fake sender and the app injects a Firestore addDoc one.
  */
@@ -37,6 +47,10 @@ interface LoggerOptions {
   backoffCapMs?: number;
   onError?: (error: unknown, queuedCount: number) => void;
   onFlushed?: (remaining: number) => void;
+  /** True for an error retrying cannot fix. Defaults to "none are". */
+  isPermanent?: (error: unknown) => boolean;
+  /** Called when an event is moved to the dead-letter store. */
+  onDeadLetter?: (event: ResponseEvent, error: unknown) => void;
 }
 
 interface QueuedEvent {
@@ -46,6 +60,7 @@ interface QueuedEvent {
 
 export class ResponseLogger {
   private queue: QueuedEvent[] = [];
+  private dead: QueuedEvent[] = [];
   private inFlight: Promise<void> | null = null;
   private failures = 0;
   private timer: ReturnType<typeof setTimeout> | null = null;
@@ -65,6 +80,11 @@ export class ResponseLogger {
   /** How many events haven't been confirmed as written yet. */
   get pending(): number {
     return this.queue.length;
+  }
+
+  /** How many events the server refused outright and are parked, not lost. */
+  get deadLettered(): number {
+    return this.dead.length;
   }
 
   /** Append an event. Returns immediately, so the UI can carry on. */
@@ -94,6 +114,15 @@ export class ResponseLogger {
         this.persist();
         this.opts.onFlushed?.(this.queue.length);
       } catch (err) {
+        if (this.opts.isPermanent?.(err)) {
+          // Retrying can't help, and holding it at the head would block
+          // everything behind it. Park it and keep going.
+          this.queue.shift();
+          this.dead.push(head);
+          this.persist();
+          this.opts.onDeadLetter?.(head.event, err);
+          continue;
+        }
         this.failures++;
         this.opts.onError?.(err, this.queue.length);
         this.scheduleRetry();
@@ -118,6 +147,7 @@ export class ResponseLogger {
     try {
       if (typeof localStorage === "undefined") return;
       localStorage.setItem(this.opts.storageKey, JSON.stringify(this.queue));
+      localStorage.setItem(`${this.opts.storageKey}.dead`, JSON.stringify(this.dead));
     } catch {
       // Storage is full or unavailable. The in-memory queue still keeps order.
     }
@@ -128,6 +158,8 @@ export class ResponseLogger {
       if (typeof localStorage === "undefined") return;
       const raw = localStorage.getItem(this.opts.storageKey);
       if (raw) this.queue = JSON.parse(raw) as QueuedEvent[];
+      const dead = localStorage.getItem(`${this.opts.storageKey}.dead`);
+      if (dead) this.dead = JSON.parse(dead) as QueuedEvent[];
     } catch {
       this.queue = [];
     }
@@ -135,6 +167,12 @@ export class ResponseLogger {
 
   /** Call this once when the app starts. It resumes any persisted queue and retries on reconnect. */
   start(): void {
+    // One more try for anything parked last time, behind the live queue.
+    if (this.dead.length) {
+      this.queue.push(...this.dead);
+      this.dead = [];
+      this.persist();
+    }
     if (typeof window !== "undefined") {
       window.addEventListener("online", () => void this.flush());
     }

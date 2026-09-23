@@ -4,7 +4,7 @@ import { useTitle } from "@/lib/use-title";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { collection, doc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
-import type { Item, Kc } from "@/lib/content/types";
+import type { Item } from "@/lib/content/types";
 import { DEFAULT_PARAMS } from "@/lib/bkt";
 import { pickAssessment } from "@/lib/assessment";
 import { getFirebase } from "@/lib/firebase/client";
@@ -15,8 +15,9 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Stagger } from "@/components/motion/stagger";
 import { LazyParticleField } from "@/components/three/lazy-particle-field";
+import { COURSE_ID } from "@/lib/constants";
+import { parseDocs, parseItem, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 
 /**
  * The placement flow (onboarding_placement_test). A short pretest across
@@ -38,8 +39,8 @@ export default function PlacementPage() {
       getDocs(collection(db, "kcs")),
       getDocs(query(collection(db, "items"), where("isPretestEligible", "==", true))),
     ]);
-    const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-    const eligible = itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Item);
+    const kcs = parseDocs(kcsSnap, parseKc);
+    const eligible = parseDocs(itemsSnap, parseItem);
 
     // One eligible item per KC, in prerequisite order (form A; the
     // post-test takes form B from the same pool).

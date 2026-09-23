@@ -15,8 +15,9 @@ import { MasteryRing } from "@/components/ui/mastery-ring";
 import { Pill } from "@/components/ui/pill";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { COURSE_ID } from "@/lib/constants";
+import { masteryOf, parseDocs, parseKc } from "@/lib/firebase/schemas";
 
-const COURSE_ID = "trading-foundations";
 const DAY_MS = 24 * 60 * 60 * 1000;
 const FADE_AFTER_DAYS = 3;
 
@@ -46,11 +47,8 @@ export default function ReviewPage() {
         getDocs(collection(db, "kcs")),
         getDoc(doc(db, "users", user!.uid, "mastery", COURSE_ID)),
       ]);
-      const kcs = kcsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Kc);
-      const states = (masterySnap.data()?.kcs ?? {}) as Record<
-        string,
-        { pL: number; attempts: number; lastSeen: number }
-      >;
+      const kcs = parseDocs(kcsSnap, parseKc);
+      const states = masteryOf(masterySnap).kcs;
       return { kcs, states };
     },
   });

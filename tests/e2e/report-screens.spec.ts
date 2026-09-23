@@ -7,12 +7,18 @@ import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
  * figures, so the figures always match the current artefact rather than
  * some July build.
  *
- *   npx playwright test tests/e2e/report-screens.spec.ts --project=desktop
+ *   npm run figures:capture
+ *
+ * It only runs when asked (CAPTURE_FIGURES=1). It used to run with every
+ * browser-test pass, rewriting 24 screenshots of about 7 MB each every
+ * time, and each rewrite that got committed added another copy to the git
+ * history. That is most of how the repository reached 947 MB.
  */
 const OUT = "docs/report-figures";
 
 test.describe("report figures", () => {
   test.beforeEach(async () => {
+    test.skip(process.env.CAPTURE_FIGURES !== "1", "Figure capture runs only when asked: npm run figures:capture");
     test.skip(!(await emulatorUp()), "Firebase emulators not running");
   });
 

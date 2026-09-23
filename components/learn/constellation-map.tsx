@@ -16,7 +16,6 @@ export interface KcView extends Kc {
 }
 
 const R = 30;
-const CIRC = 2 * Math.PI * R;
 
 const TONE: Record<NodeState, string> = {
   mastered: "var(--mastery)",

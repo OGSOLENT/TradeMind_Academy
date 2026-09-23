@@ -112,7 +112,7 @@ npm run deploy
 `content/video-urls.json` is still honoured if present: if the recordings
 ever move to a CDN, write that file and the generator will use it instead
 of the local path, with no code change. The old blob map is parked at
-`content/video-urls.json.blob-suspended-2026-09-22`.
+`scripts/archive/video-urls.blob-suspended-2026-09-22.json`, next to the archived upload script.
 
 
 It needs `BLOB_READ_WRITE_TOKEN` in `.env.local`, which `vercel blob

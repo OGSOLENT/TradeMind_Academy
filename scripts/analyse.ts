@@ -17,7 +17,11 @@
  *   practice   completed practice sessions and answered items
  *   time       time on task, as the sum of answer latencies (a floor:
  *              reading isn't in it), plus wall-clock session spans
- *   mastered   KCs at or above the 0.8 threshold in the model now
+ *   mastered   KCs at or above the 0.8 threshold, rebuilt from the response
+ *              log rather than read from the learner's mastery document,
+ *              which the learner's own browser writes and could edit
+ *   repaired   sessions whose model write failed and was restored from the
+ *              log (lib/firebase/mastery.ts), so a lost write is visible
  *   SUS        the questionnaire score, 0 to 100
  * and the post-test as a held-out check of the model: each answer was
  * logged with the model's pL at the time, so accuracy on items the model
@@ -29,6 +33,7 @@ import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 import { MASTERY_THRESHOLD } from "../lib/bkt";
+import { kindOf, rebuildMastery, type LoggedSession } from "../lib/mastery/ledger";
 import { normalisedGain } from "../lib/assessment";
 
 const live = process.argv.includes("--live");
@@ -39,7 +44,8 @@ if (!live && !process.env.FIRESTORE_EMULATOR_HOST) {
   process.env.FIREBASE_AUTH_EMULATOR_HOST ??= "localhost:9099";
   console.log("FIRESTORE_EMULATOR_HOST not set — defaulting to localhost:8080 (emulator).");
 }
-const COURSE_ID = "trading-foundations";
+/** The course's KC ids, read from the database the app used. */
+let KC_IDS: string[] = [];
 const OUT = "docs/report/PILOT_RESULTS.md";
 
 interface Row {
@@ -55,6 +61,7 @@ interface Row {
   latencyMin: number;
   wallMin: number;
   mastered: number;
+  repaired: number;
   sus: number | null;
   comments: Record<string, string> | null;
   /** Post-test answers against the model's estimate going in. */
@@ -113,10 +120,19 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
   const curve: { kcId: string; opportunity: number; correct: boolean }[] = [];
   let latencyMs = 0;
   let wallMs = 0;
+  const logged: LoggedSession[] = [];
   for (const s of practice) {
     const rs = await db.collection(`users/${uid}/sessions/${s.id}/responses`).get();
     practiceItems += rs.size;
-    for (const r of rs.docs) {
+    // addDoc ids are random, so the documents come back in no useful order.
+    // The learning curve and the rebuild both need the order of answering.
+    const ordered = [...rs.docs].sort((x, y) => Number(x.data().ts ?? 0) - Number(y.data().ts ?? 0));
+    logged.push({
+      id: s.id,
+      type: String(s.type),
+      answers: ordered.map((r) => ({ kcId: String(r.data().kcId), correct: r.data().correct === true, ts: Number(r.data().ts ?? 0) })),
+    });
+    for (const r of ordered) {
       if (r.data().correct) practiceCorrect++;
       latencyMs += Number(r.data().latencyMs ?? 0);
       const kcId = String(r.data().kcId ?? "");
@@ -129,15 +145,25 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     const b = ms(s.endedAt);
     if (a !== null && b !== null && b > a) wallMs += Math.min(b - a, 2 * 60 * 60 * 1000);
   }
+  // Every placement counts toward the model (not only the first), in order.
+  for (const s of sessions.filter((x) => ended(x) && kindOf(String(x.type)) === "placement")) {
+    const rs = await db.collection(`users/${uid}/sessions/${s.id}/responses`).get();
+    logged.push({
+      id: s.id,
+      type: "placement",
+      answers: rs.docs.map((r) => ({ kcId: String(r.data().kcId), correct: r.data().correct === true, ts: Number(r.data().ts ?? 0) })),
+    });
+  }
   for (const s of [placement, postTest]) {
     if (!s) continue;
     const rs = await db.collection(`users/${uid}/sessions/${s.id}/responses`).get();
     for (const r of rs.docs) latencyMs += Number(r.data().latencyMs ?? 0);
   }
 
-  const masterySnap = await db.doc(`users/${uid}/mastery/${COURSE_ID}`).get();
-  const kcs = (masterySnap.data()?.kcs ?? {}) as Record<string, { pL?: number }>;
-  const mastered = Object.values(kcs).filter((k) => (k.pL ?? 0) >= MASTERY_THRESHOLD).length;
+  // Mastery from the append-only log, never from the client-written cache.
+  const rebuilt = rebuildMastery(KC_IDS, logged);
+  const mastered = Object.values(rebuilt.kcs).filter((k) => k.pL >= MASTERY_THRESHOLD).length;
+  const repaired = sessions.filter((x) => x.repairedAt != null).length;
 
   const surveySnap = await db.doc(`users/${uid}/surveys/sus`).get();
   const survey = surveySnap.exists ? surveySnap.data() : null;
@@ -155,6 +181,7 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     latencyMin: latencyMs / 60000,
     wallMin: wallMs / 60000,
     mastered,
+    repaired,
     sus: survey && typeof survey.score === "number" ? survey.score : null,
     comments: survey?.comments ?? null,
     heldOut: post?.answers ?? [],
@@ -165,6 +192,7 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
 async function main() {
   const app = initializeApp({ projectId: process.env.GCLOUD_PROJECT ?? "demo-trademind" });
   const db = getFirestore(app);
+  KC_IDS = (await db.collection("kcs").get()).docs.map((d) => d.id);
   // Emails live in Auth, not in the profile document; they're only used
   // here to drop the test accounts and never written anywhere.
   const emails = new Map<string, string>();
@@ -235,7 +263,8 @@ async function main() {
   lines.push(`| Mean practice sessions per active learner | ${fmt(mean(active.map((r) => r.practiceSessions)), 1)} |`);
   lines.push(`| Mean items answered per active learner | ${fmt(mean(active.map((r) => r.practiceItems)), 1)} |`);
   lines.push(`| Mean time on task per active learner (min) | ${fmt(mean(active.map((r) => r.latencyMin)), 1)} |`);
-  lines.push(`| Mean KCs mastered per active learner | ${fmt(mean(active.map((r) => r.mastered)), 1)} |`);
+  lines.push(`| Mean KCs mastered per active learner (rebuilt from the log) | ${fmt(mean(active.map((r) => r.mastered)), 1)} |`);
+  lines.push(`| Sessions whose model write failed and was restored from the log | ${rows.reduce((a, r) => a + r.repaired, 0)} |`);
   lines.push(`| SUS responses | ${sus.length} |`);
   lines.push(`| Mean SUS (sd) | ${fmt(mean(sus), 1)} (${fmt(sd(sus), 1)}) |`);
   lines.push("");
@@ -329,6 +358,7 @@ async function main() {
   lines.push(`- Time on task from answer latencies excludes reading lessons and watching recordings; it's a floor. Session wall-clock includes them but is capped at two hours per session to stop an abandoned tab counting.`);
   lines.push(`- There's no control group. Gains are pre/post on one group and can't separate the routing from the content. The routing question is addressed by simulation in EVALUATION.md.`);
   lines.push(`- Only the first completed post-test per learner counts.`);
+  lines.push(`- Modules mastered are rebuilt from the append-only response log, not read from the learner's mastery document, which the browser writes. The log's shape and ranges are enforced by the security rules, but answers are graded in the browser, so the log records what the learner's client reported (see the report's limitations).`);
   lines.push(`- Option positions are evened out at build time (lib/content/debias.ts), so no answer position is worth guessing. Two authoring tells remain and are not corrected: the correct option is the longest in 37 of 55 multiple-choice items (42 characters against 26 for the distractors), and the true/false items run 5 true to 10 false. Both would inflate scores slightly for a test-wise participant.`);
   lines.push("");
 
