@@ -229,13 +229,13 @@ Table: Non-functional requirements
 | N1 | BKT engine pure, dependency-free, all update maths unit tested against hand-computed values | Met |
 | N2 | Thresholds exactly 0.8 and 0.4, defined once | Met |
 | N3 | Response log never silently drops an event, across refresh and network loss; verified by a network-cut test | Met |
-| N4 | Rules deny by default; responses create-only even for the owner; rules tested in the emulator | Met, 16 tests |
+| N4 | Rules deny by default and validate every learner write; responses create-only even for the owner; rules tested in the emulator | Met, 30 tests |
 | N5 | Accessibility: keyboard operable, visible focus, 44 px targets, live announcements, chart text alternatives; Lighthouse at least 95 | Met, 100 on every public page on both device presets |
 | N6 | Dashboard Lighthouse performance at least 85 | Met, 86 |
 | N7 | Reduced-motion and colour-blind modes from the OS setting or an in-app toggle | Met, and extended with high contrast, a readable typeface, comfortable reading and calm mode |
 | N8 | Responsive to phone width, tested on desktop and Pixel 7 | Met |
 | N9 | Development can never write to the research database, enforced by configuration | Met after one incident, 5.10 |
-| N10 | Every design decision recorded with its reason | Met, 91 entries |
+| N10 | Every design decision recorded with its reason | Met, 104 entries |
 
 ## 3.4 Platform and technology
 
@@ -283,7 +283,7 @@ The first two strands are what a computing dissertation can verify unambiguously
 
 ## 4.4 Technical testing method
 
-Testing followed a pyramid, each layer catching a class of defect the others structurally cannot. Vitest unit tests cover the BKT update mathematics against fixtures computed by hand from the equations (Appendix C), the routing decision table and its boundaries, grading per question type, and the logger's queue, retry, persistence and backoff. Hand-computed fixtures test the mathematics rather than the code's opinion of itself, so a drifting implementation fails against arithmetic. The security rules have their own suite inside the Firestore emulator that attempts every forbidden operation and asserts refusal, the only way to prove the append-only and 18+ guarantees hold against a caller who never touches the interface. Playwright then drives real browsers through the journeys on desktop and Pixel 7 profiles, and CI runs lint, typecheck and unit tests on every commit. Table 6.1 reports the outcome.
+Testing followed a pyramid, each layer catching a class of defect the others structurally cannot. Vitest unit tests cover the BKT update mathematics against fixtures computed by hand from the equations (Appendix C), the routing decision table and its boundaries, grading per question type, and the logger's queue, retry, persistence and backoff. Hand-computed fixtures test the mathematics rather than the code's opinion of itself, so a drifting implementation fails against arithmetic. The security rules have their own suite inside the Firestore emulator that attempts every forbidden operation and asserts refusal, the only way to prove the append-only and 18+ guarantees hold against a caller who never touches the interface. Playwright then drives real browsers through the journeys on desktop and Pixel 7 profiles. CI runs all three layers on every commit, the rules and browser suites against the emulators, and fails if any journey is skipped. Table 6.1 reports the outcome.
 
 ## 4.5 Simulated-learner method
 
@@ -299,7 +299,7 @@ The study is the recommended next step, and the point worth making is that it is
 
 Teaching trading carries real responsibility. Around 80 per cent of retail CFD customers lose money (FCA, 2022), and the regulator's restrictions on leverage, incentives and promotion (FCA, 2019; ESMA, 2018) draw a line the artefact must never approach, so the constraints were built as features rather than disclaimers. Every chart is simulated or dated historical data and says so on the chart itself, labelled with symbol, dates and source, never live. There is no live market data, no broker connection, no affiliate link, no trade signal and no profitability language anywhere in the copy, and Chapter 6 reports a sweep for exactly those things. The landing page carries a full risk disclaimer, the sign-up form states the education-only purpose above the fields, and the curriculum is honest that the methodology it teaches is contested. The mentor marketplace was cut because paid guidance from strangers is the mechanism the FCA warns about.
 
-Under UK GDPR the lawful basis for collecting learning data is consent. The consent screen (Figure 4.1) states what is recorded, why, and that the learner can withdraw, and Decline is a real button that signs the learner out with nothing stored beyond the account. The 18+ requirement is enforced in the database rules and not only in the interface, so a profile cannot be created without the attestation by any route, including Google sign-in. Data is minimised, learners can download all of it as CSV and delete their account, and the response log is append-only by rule, protecting the dataset from tampering and the learner from accidental loss. Development runs on a local emulator wiped on restart, with the live project reserved for participants after the incident in Section 5.9. Appendix A maps each condition of the ethics approval to the place that enforces it.
+Under UK GDPR the lawful basis for collecting learning data is consent. The consent screen (Figure 4.1) states what is recorded, why, and that the learner can withdraw, and Decline is a real button that signs the learner out with nothing stored beyond the account. The 18+ requirement is enforced in the database rules and not only in the interface, so a profile cannot be created without the attestation by any route, including Google sign-in. Data is minimised, learners can download all of it as CSV and delete their account, and the response log is append-only and shape-checked by rule; since answers are graded in the browser, it records what the client reported. Development runs on a local emulator wiped on restart, with the live project reserved for participants after the incident in Section 5.9. Appendix A maps each condition of the ethics approval to the place that enforces it.
 
 ![The consent screen: what is recorded, the lawful basis, and a working Decline](docs/report-figures/03-consent.png)
 
@@ -340,9 +340,9 @@ Two boundaries were treated as inviolable. The BKT engine and the routing rules 
 
 ## 5.2 Data model and security rules
 
-Firestore holds a user document per learner with consent state, the 18+ flag and settings; one mastery document per course with the per-KC estimates, attempts and timestamps; a session document per placement, practice or review session; and beneath each session, one response document per answer. That last collection is the research dataset. Each response carries the item, its KC, the question type, whether it was correct, what was selected, the latency in milliseconds, and the model's estimate before and after the update. Content lives in four collections: courses, KCs with their prerequisites, lessons and items.
+Firestore holds a user document per learner with consent state, the 18+ flag and settings; one mastery document per course with the per-KC estimates, attempts and timestamps; a session document per placement, practice or review session; and beneath each session, one response document per answer. That last collection is the research dataset: each response carries the item, its KC, correctness, latency and the model's estimate before and after. Content lives in four collections: courses, KCs, lessons and items.
 
-The security rules (Appendix D) deny everything by default. Learners can read and write only their own subtree. A user document can only be created with the adult flag set to true, which is the 18+ gate. Sessions can't be deleted. Responses can be created and read by their owner and can never be updated or deleted by anyone through the client, including the owner. Content is readable by any signed-in user and writable only with an administrator claim, which the seed script holds and the client never does. Sixteen rules tests cover both the permitted operations and every forbidden one.
+The security rules (Appendix D) deny everything by default and check what is written as well as who writes it: every learner document has an allow-list of fields, typed values, ranges and server-stamped times, so a learner cannot award themselves mastery from the browser console. A profile can only be created with the adult flag set, which is the 18+ gate. Responses must belong to an existing session and can never be updated or deleted through the client, even by their owner. Content is writable only with an administrator claim. Thirty rules tests cover every permitted and forbidden operation. The mastery document is treated as a cache of the log: if a session's write is ever found missing, the model is rebuilt from the responses (Appendix L).
 
 ## 5.3 The BKT engine
 
@@ -367,7 +367,7 @@ The router returns the reason for its choice alongside the item: the current est
 
 The logger was designed to behave like a payments system: it must never silently fail. Every submit enqueues an event, persists the queue to local storage, returns immediately so the interface stays responsive, and flushes in the background with exponential backoff to a thirty-second cap. Unflushed events survive a refresh and flush on the next start or on the browser's online event.
 
-One detail deserves explanation because it is the kind of bug that never shows in a demo. The Firebase SDK keeps its own internal write queue, so if the transport were allowed to accept a write while the browser was offline, both queues would hold the same event and both would deliver on reconnect, producing duplicate rows in the research log months later. The transport therefore fails fast when the browser reports itself offline, which makes my queue the single retry authority, and the browser suite verifies it by cutting the network mid-session and counting the responses that arrive against the answers given.
+Two details matter because they never show in a demo. The Firebase SDK keeps its own write queue, so a transport that accepted writes offline would deliver each event twice on reconnect; it therefore fails fast offline, making my queue the single retry authority, and the browser suite cuts the network mid-session and counts the responses that arrive. And because the queue is strictly ordered, one row the server refuses outright would block every answer behind it, so such a row moves to a persisted dead-letter store, kept and retried later, and the queue carries on.
 
 ## 5.6 Curriculum and content pipeline
 
@@ -446,6 +446,10 @@ Table: Problems encountered and their resolution
 | Positional tells made part of the bank answerable without knowing anything | Hand-authoring left 84% of multiple-choice answers in position 2, option 1 in every multi-select answer, and all 15 ordering items already in their correct sequence, which the quiz presents unchanged | Options permuted at generate time, seeded by item id, giving an even 14/14/14/13 spread and no ordering item correct on arrival; verified that all 116 items keep the same correct answer, and held by unit tests |
 | Nine of the sixteen post-test questions shown inside lessons with the answer | Lesson inline checks were drawn from a module's MCQs without excluding the assessment forms | Checks now prefer MCQs neither assessment uses and never take the post-test item; leakage reduced to zero |
 | Every lesson recording dead on the live site, eight days before hand-in | The Vercel Blob store holding them was 1.15 GB against a 1 GB free allowance, so it suspended itself and returned 403 on every public read | Recordings re-encoded 4.4x smaller (1.23 GB to 286 MB, no visible loss) and served as static files by the app itself, removing the separate quota that could switch them off |
+| CI green while testing almost nothing | The workflow never started the Firebase emulators, so eight of nine browser spec files skipped themselves and the rules tests never ran | Emulators started in CI; rules, integration and every browser journey run there; the build fails if any journey is skipped |
+| A failed end-of-session write lost that session's learning from the model | The failure was caught and ignored, and nothing rebuilt the model from the log | One transaction ends and applies a session; unapplied sessions are rebuilt from the append-only log when the learner returns |
+| Learners could write any shape into their own documents | The rules checked who wrote, not what | Allow-listed keys, types, ranges and server-stamped times on every learner document; 30 rules tests |
+| One refused answer would block every later answer from syncing | The strictly ordered queue never drops its head | Permanently refused rows move to a persisted dead-letter store and the queue continues |
 | Background effect dropped the dashboard from 120 to 19 fps | Rotating blurred layer, pure GPU cost | Measured and removed; static gradients instead |
 | Eight animated layers cost 120 to 48 fps | About 18 fps per animated full-screen layer | One layer animated, the rest static at zero cost; 105 fps |
 | WCAG contrast failure on small text | Muted token at 3.05:1 on 14 px text | Secondary token, then the token itself raised to 4.6:1 in September; accessibility 100 |
@@ -467,14 +471,14 @@ Table: Test and check results on the final build
 
 | Suite | What it covers | Result |
 |---|---|---|
-| Vitest unit | BKT maths against hand-computed fixtures and threshold crossings; routing decisions, gating, difficulty ladder, non-repetition, remediation trigger, node states; grading per type; logger queue, retry, persistence, backoff; walkthrough synthesis and every case-study marker on a real bar; assessment forms, normalised gain and SUS arithmetic | 138 of 138 pass |
-| Unit coverage (v8) | Lines: BKT 100%, assessment 100%, grading 100%, routing 94%, logger 90% | Engine modules covered; 46% of `lib/` overall, the rest exercised by E2E |
-| Firestore rules | Owner-only subtree, 18+ create gate, create-only responses even for the owner, survey owner-only, content read/write boundaries | 16 of 16 pass |
-| Playwright E2E, desktop and Pixel 7 | Sign-up to lesson; ten-question offline-tolerant session; placement to mastery to unlock; learner support; keyboard and reduced motion; walkthroughs; placement to post-test to survey; axe-core WCAG 2.1 AA on twelve pages | 32 of 32 pass |
-| Lint and typecheck | ESLint (Next core web vitals rules), strict TypeScript | Clean |
-| CI | Same checks on every push | Green |
+| Vitest unit | BKT maths against hand-computed fixtures; routing decisions, gating, difficulty ladder, remediation; the session state machine; the mastery ledger and its rebuild from the log; grading per type; logger queue, backoff and dead-letter store; runtime schemas against the whole shipped bank; assessment forms, gain and SUS; item-bank debiasing; two interface claims in rendered components | 233 of 233 pass |
+| Unit coverage (v8), enforced in CI | Lines: BKT, ledger, quiz state machine, assessment and schemas 100%; routing 94% | 72% of `lib/` overall (was 52%); Firebase adapters exercised by the integration and browser suites |
+| Firestore rules and integration, in the emulator | Owner-only subtree; 18+ gate; allow-listed, typed and ranged fields on every learner document; create-only responses tied to an existing session; content boundaries; a lost session write rebuilt from the log | 36 of 36 pass |
+| Playwright E2E, desktop and Pixel 7, in the emulator | Sign-up to lesson; offline-tolerant session; placement to mastery to unlock; learner support; keyboard and reduced motion; walkthroughs; placement to post-test to survey; axe-core WCAG 2.1 AA on twelve pages; all under the production security rules and CSP | 30 of 30 pass |
+| Lint and typecheck | ESLint (Next core web vitals rules), strict TypeScript with unused-code checks | Clean |
+| CI | All of the above on every push, emulators included; fails if any journey is skipped | Green |
 
-The single most important test is the network-cut journey. It starts a ten-question session, disables the network partway through, finishes the session, restores the network, then reads Firestore directly and asserts that exactly as many responses arrived as answers were given, each carrying its estimates and latency. That is the test that protects the claim the whole project rests on: that the dataset is complete.
+The single most important test is the network-cut journey (Section 5.5), which asserts that exactly as many responses arrive as answers were given. It protects the claim the whole project rests on: that the dataset is complete.
 
 ## 6.3 BKT engine behaviour
 
@@ -537,7 +541,7 @@ The engine reaches the same true knowledge as the syllabus on 46 per cent of the
 
 ## 6.5 Audits
 
-Lighthouse accessibility scored 95 to 100 on every page at the July audit against a gate of 95, and dashboard performance 86 against a gate of 85. The deployed site was re-audited in September (Lighthouse 12, three runs per page, medians); Table 6.5 gives the result after three fixes the audit forced.
+Lighthouse accessibility scored 95 to 100 on every page at the July audit against a gate of 95, and dashboard performance 86 against a gate of 85. The deployed site was re-audited in September (Lighthouse 12, three runs per page, medians); Table 6.5 gives the result after three fixes the audit forced. Every response now also carries a Content Security Policy naming only the sources the app uses.
 
 The general finding is worth more than the scores. Every defect was invisible on a development machine and appeared only under a throttled mobile profile, and in two cases the cause was the same: the largest contentful paint was waiting for JavaScript the page did not need in order to show its text. An entrance animation that hides server-rendered content behind JavaScript is a performance and an accessibility defect rather than a polish choice. Appendix L gives the diagnosis and the fix.
 
@@ -555,7 +559,7 @@ The animation work was measured rather than assumed: each animated full-screen l
 
 ## 6.6 Guardrail sweep
 
-A final sweep of every string in the interface found no live data, no broker links, no signal language and no profitability claims, and every chart surface carries a simulated-data pill. The 18+ gate and the create-only response log are enforced by rules and covered by the rules tests.
+A final sweep of every string in the interface found no live data, no broker links, no signal language and no profitability claims, and every chart surface carries a simulated-data pill.
 
 ## 6.7 What was not collected
 
@@ -591,9 +595,9 @@ RQ4 asked what constraints the regulatory context imposes and whether they can b
 
 ## 7.3 Evaluation of the product
 
-The artefact goes beyond what a taught module delivers in several respects. The engine is pure and hand-verified rather than imported. The research log is designed with the care of a financial ledger, and its hardest failure mode was found and closed before any participant could hit it. Security is by rule and tested, accessibility was a gate on every page rather than a finish, and the design decisions were recorded as they were made, including the ones reversed, which is the part of a codebase that usually goes missing.
+The artefact goes beyond what a taught module delivers in several respects. The engine is pure and hand-verified rather than imported. The research log is designed with the care of a financial ledger, and its hardest failure mode was found and closed before any participant could hit it. Security is by rule and tested, accessibility was a gate on every page rather than a finish, and the design decisions were recorded as they were made, including the ones reversed.
 
-The weaknesses are real too. The parameters are literature defaults rather than fitted, and the climb to mastery is fast under them; a fitted learn rate would likely slow it and make the gating more conservative. The bank averages seven items per module, thin for repeated practice and for two forms drawn from one pool, and one question type has a single item. And the curriculum teaches a contested methodology, which the interface says clearly but which limits how far any learning-gain result would generalise. The supporting products hold up: the specification, decisions log, evaluation log, parked-features record and running guide together let a reader reconstruct why the system is the way it is.
+The weaknesses are real too. The parameters are literature defaults rather than fitted, and the climb to mastery is fast under them; a fitted learn rate would likely slow it. The bank averages seven items per module, thin for repeated practice, and one question type has a single item. And the curriculum teaches a contested methodology, which the interface says clearly but which limits how far any learning-gain result would generalise. The supporting documents (specification, decisions log, evaluation log, running guide) let a reader reconstruct why the system is as it is.
 
 ## 7.4 Evaluation of the process
 
@@ -628,6 +632,8 @@ Add forgetting and spacing. Standard BKT assumes no forgetting, and the review q
 Complete the curriculum's gaps. The most valuable missing topic is backtesting, because it is what would let a learner turn the methodology into their own evidence. Trade journaling and trading psychology are the next candidates.
 
 Add a constrained generative tutor. The design deferred this for the reasons in Section 2.9, but the right shape is now clearer: an assistant that can speak only to the KC currently being studied, grounded in that lesson's text, with the BKT model unchanged as the sole authority over progression.
+
+Move grading to the server. Answers are graded in the browser, so the rules enforce the log's shape but not its truth; a Cloud Function grading each response would close that. Third-party error monitoring belongs with it, after a consent and ethics amendment.
 
 Keep the parked designs parked. The site is live for remote participants with the recordings hosted and Google sign-in enabled. The marketplace and the terminal simulator should stay parked until the research question is answered, and the marketplace should probably stay parked for good, for the regulatory reasons that cut it.
 
@@ -844,11 +850,11 @@ So the estimate crosses the 0.8 threshold on the second correct answer, which is
 
 ## Appendix D: Firestore security rules
 
-The complete rules file as deployed, with the sixteen tests that cover it listed beneath.
+The complete rules file as deployed, with the tests that cover it summarised beneath.
 
 [[CODE:firestore.rules]]
 
-The sixteen rules tests, by name: owner can create their profile with isAdult=true; create is rejected without the 18+ flag; another user cannot read or write my profile; unauthenticated access is denied; owner reads and writes own mastery doc; stranger cannot touch my mastery; sessions cannot be deleted; owner can create a response; responses can never be updated, even by the owner; responses can never be deleted, even by the owner; stranger cannot read my responses; authed users can read content and unauthenticated cannot; regular users cannot write content; admin custom claim can write content; a learner can create and read their own questionnaire response; a stranger cannot read another learner's questionnaire response.
+The thirty rules tests cover, for each learner collection, the operations the app performs (with exactly the fields it sends) and the ways a document could be malformed: a profile created without the 18+ flag, with a client-chosen sign-up date, with pre-filled consent or with fields the app never writes; a profile update that changes the 18+ flag or adds an unknown setting; a mastery document with an extra field, no history or a history past its cap; a session of an unknown type, opened already ended or with a client start time; a score above its total; a response to a session that does not exist, with an estimate outside 0 to 1, negative latency, an unknown question type, a backdated server time, or a missing or extra field; a survey with the wrong number of answers or a score off the scale; any update or delete of a response, even by its owner; and every cross-user and unauthenticated access. Six further integration tests drive the learner-model write path through these rules (Appendix L).
 
 ## Appendix E: Curriculum map
 
@@ -950,6 +956,12 @@ The effort figures are reconstructed from version-control history, document time
 The risks identified at AE1 mostly behaved as predicted. Cold start was handled by the planned contingency of literature defaults, and Section 6.4 reports what fitting would have bought. Scope creep from content production was the risk the plan flagged as biggest, and it is the one that materialised. Two risks were not anticipated: a leak of test users into the live database, resolved the same day by an environment split (Section 5.9), and misleading performance numbers from two development servers running at once. Both are in the decisions log.
 
 ## Appendix L: Implementation detail
+
+**The learner model as a cache of the log.** Every answer is written to the append-only response log before anything else happens, and the mastery document the dashboard and router read is a summary of that log: folding the answers through BKT in the order they were given reproduces it exactly. `lib/mastery/ledger.ts` implements that fold as pure functions (a placement replaces the model, a practice session merges into it, the post-test is ignored), pinned to hand-worked values and proven session by session to agree with the live write. A session is closed and applied in one transaction with retries; if that fails, it stays unapplied, and the next time the learning area opens every unapplied session is found and the model is rebuilt from the log, the repair stamped on the session so the analysis can count it. The September audit found the earlier code had caught and ignored such failures, losing that session's learning from the model. The analysis script derives mastery from the log for the same reason: it is the record the rules protect, where the mastery document is writable by its owner's browser.
+
+**Validation at the Firestore boundary.** Every document the app reads is parsed with a zod schema where it is read, so a malformed document fails there, naming its collection, id and field, instead of reaching the grader or the router. A unit test parses the entire shipped bank through the schemas.
+
+**Dependencies and the Content Security Policy.** Next was moved to the last release of its major (14.2.35) and seven transitive packages to patched versions. Every remaining high or critical advisory against Next was checked against the app; all but one need hosting or features the app does not use (Windows servers, the image optimiser, server actions, rewrites, middleware), and the one that applies, denial of service against Server Components, is fixed only in Next 15, whose upgrade chain (React 19 and a new major of the 3D library) was judged a larger risk a week before submission. The Content Security Policy names every source the app uses and no others; it permits inline scripts and styles, because removing them needs per-request nonces and therefore middleware.
 
 **The September performance diagnosis.** The entrance animation library was server-rendering every block with an inline opacity of zero, so a page stayed blank until 940 kilobytes of script had hydrated and a simulated slow phone saw the sign-in form 6.6 seconds after the HTML arrived. Rebuilding that choreography in CSS, keeping the same timing and the same component interface, took sign-in from 77 to 91 and the landing page from 61 to 89. On the landing page the three.js hero was the second cause: it mounted on hydration, so the headline queued behind it, and it now mounts when the browser goes idle after first paint. The final design keeps every visual layer and animates one.
 

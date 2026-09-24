@@ -170,7 +170,7 @@ Screenshots: `docs/screenshots/placement-intro.png`, `init-moment.png`,
 
 ### Simulated-learner harness (BKT validation)
 
-Generated 2026-09-23 by `scripts/simulate.ts` (seeded, reproducible).
+Generated 2026-09-24 by `scripts/simulate.ts` (seeded, reproducible).
 
 | Metric | Value |
 | --- | --- |
@@ -268,3 +268,26 @@ What it took to get there, in order, each verified by re-running:
 
 The remaining mobile LCP of 3 to 4 s is the simulated slow-4G download of the JavaScript the pages genuinely use (Firebase Auth, Framer Motion, GSAP on the landing); the desktop numbers show there is nothing left on the render path itself. Signed-in pages were audited in July via `scripts/audit.ts` (dashboard 86 performance, accessibility 96 to 100) and are covered by the axe suite above rather than re-audited here.
 <!-- lighthouse-prod:end -->
+
+## Strict code audit and fixes (2026-09-23)
+
+An audit of the code alone marked the artefact 80 and listed nine defects; DECISIONS.md has an entry for each. The verified state afterwards:
+
+| Check | Before | After |
+| --- | --- | --- |
+| Unit tests | 147 | 233, with per-module coverage floors enforced in CI |
+| `lib/` line / branch coverage | 52% / 38% | 72% / 65% |
+| Session state machine coverage | 0% | 100% of lines (two planted bugs caught) |
+| Rules tests | 16, who-only | 30, who and what; plus 6 emulator integration tests of the model write path |
+| Browser tests in CI | 8 of 9 spec files skipped (no emulators) | every journey runs against the emulators; build fails on any skip |
+| Unvalidated Firestore reads | 29 `as Type` casts | 0; zod at the boundary, whole bank parsed in a test |
+| Lost end-of-session write | learning lost from the model | rebuilt from the append-only log, repair stamped and counted |
+| Refused answer | blocked every later answer | parked in a dead-letter store, queue continues |
+| npm audit | 19 (1 critical, 8 high) | 11 (1 critical, 1 high); 1 ships to users, analysed as not exploitable except Server Components DoS |
+| Content-Security-Policy | none | enforced; no violations on 10 local pages, the live public pages or the Google sign-in popup |
+| Dead declarations | 20 | 0, with `noUnusedLocals` on |
+| Requirement N2 (thresholds defined once) | contradicted by the mastery ring | true, and tested in the rendered component |
+| Report figures | 101 MB, 3780 px (mobile capture overwriting desktop) | 31 MB, 1440 px; capture opt-in |
+| Licence | none | MIT for code; curriculum, recordings and report excluded |
+
+The new security rules were checked against the three live accounts' documents, released to the production project, and exercised by the full browser suite under the same rules in the emulator. Third-party monitoring was deliberately not added: the consent screen and the ethics approval list exactly what is recorded, and neither covers it.
