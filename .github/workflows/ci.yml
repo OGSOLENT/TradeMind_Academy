@@ -72,14 +72,20 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run test:e2e:ci
-      # A skipped journey must not pass silently again: fail if any did.
+      # A skipped journey must not pass silently again. Read Playwright's own
+      # counts, and fail if the report is missing, nothing passed, or
+      # anything was skipped.
       - name: No journey skipped
         run: |
-          if grep -q '"status": "skipped"' test-results/results.json 2>/dev/null; then
-            echo "::error::Browser tests were skipped. Were the emulators up?"
-            grep -o '"title": "[^"]*"' test-results/results.json | head -20
-            exit 1
-          fi
+          node -e '
+            const fs = require("fs");
+            const f = "test-results/results.json";
+            if (!fs.existsSync(f)) { console.error("::error::No Playwright report at " + f); process.exit(1); }
+            const { stats } = JSON.parse(fs.readFileSync(f, "utf8"));
+            console.log("journeys passed:", stats.expected, "skipped:", stats.skipped, "failed:", stats.unexpected, "flaky:", stats.flaky);
+            if (stats.skipped > 0) { console.error("::error::" + stats.skipped + " journeys skipped. Were the emulators up?"); process.exit(1); }
+            if (stats.expected < 1) { console.error("::error::No journeys ran."); process.exit(1); }
+          '
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
