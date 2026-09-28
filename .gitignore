@@ -68,3 +68,11 @@ docs/report-figures/.print/
 # copy goes to the Dissertation folder; committing a 13 MB .docx on every
 # rebuild is what took this repository to 947 MB.
 /docs/report/*.docx
+
+# Non-participant accounts for scripts/analyse.ts. Holds email addresses, so never committed.
+/.analysis-exclude
+
+# Real pilot results: per-learner rows and participants' own words. The
+# repository is public and the consent promises anonymised use for the
+# dissertation, not publication, so this stays on the researcher's machine.
+/docs/report/PILOT_RESULTS.md

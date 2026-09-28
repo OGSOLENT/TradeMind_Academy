@@ -28,15 +28,26 @@
  * called mastered versus not is a calibration number the practice log
  * can't give (practice answers move the model; these don't).
  */
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 import { MASTERY_THRESHOLD } from "../lib/bkt";
 import { kindOf, rebuildMastery, type LoggedSession } from "../lib/mastery/ledger";
-import { normalisedGain } from "../lib/assessment";
 
 const live = process.argv.includes("--live");
+/**
+ * Accounts that are not participants (the researcher's own, pre-pilot
+ * tests), one email or uid per line in .analysis-exclude. That file is
+ * gitignored on purpose: the repository is public and must never carry a
+ * participant's or the researcher's email address.
+ */
+const EXCLUDE = new Set(
+  (existsSync(".analysis-exclude") ? readFileSync(".analysis-exclude", "utf8") : "")
+    .split("\n")
+    .map((l) => l.trim().toLowerCase())
+    .filter((l) => l && !l.startsWith("#")),
+);
 /** Keep the @example.com accounts (the E2E learners), to see the tables filled on the emulator. */
 const includeTest = process.argv.includes("--include-test");
 if (!live && !process.env.FIRESTORE_EMULATOR_HOST) {
@@ -66,6 +77,12 @@ interface Row {
   comments: Record<string, string> | null;
   /** Post-test answers against the model's estimate going in. */
   heldOut: { pL: number; correct: boolean }[];
+  /** Median seconds per answer, and minutes between the end of placement and the start of the post-test. */
+  preSecs: number | null;
+  /** Placement start to finish in minutes, which includes reading the feedback after each answer. */
+  preSpanMin: number | null;
+  postSecs: number | null;
+  gapMin: number | null;
   /** Practice answers in order per KC, for the learning-curve check. */
   curve: { kcId: string; opportunity: number; correct: boolean }[];
 }
@@ -93,11 +110,39 @@ async function scoreOf(
   uid: string,
   sid: string,
   stored: { correct: number; total: number } | undefined,
-): Promise<{ correct: number; total: number; answers: { pL: number; correct: boolean }[] }> {
+): Promise<{
+  correct: number;
+  total: number;
+  answers: { pL: number; correct: boolean }[];
+  latencies: number[];
+  firstTs: number;
+  lastTs: number;
+}> {
   const rs = await db.collection(`users/${uid}/sessions/${sid}/responses`).get();
   const answers = rs.docs.map((d) => ({ pL: Number(d.data().pLBefore ?? 0), correct: !!d.data().correct }));
-  if (stored) return { ...stored, answers };
-  return { correct: answers.filter((a) => a.correct).length, total: answers.length, answers };
+  const latencies = rs.docs.map((d) => Number(d.data().latencyMs ?? 0));
+  const times = rs.docs.map((d) => Number(d.data().ts ?? 0)).filter((t) => t > 0);
+  const timing = { latencies, firstTs: times.length ? Math.min(...times) : 0, lastTs: times.length ? Math.max(...times) : 0 };
+  if (stored) return { ...stored, answers, ...timing };
+  return { correct: answers.filter((a) => a.correct).length, total: answers.length, answers, ...timing };
+}
+
+/**
+ * Normalised gain on proportions, so a test with a missing answer (15 of 16
+ * logged) is compared fairly with a complete one. Hake (1998).
+ */
+function gainOf(pre: { correct: number; total: number }, post: { correct: number; total: number }): number | null {
+  if (!pre.total || !post.total) return null;
+  const a = pre.correct / pre.total;
+  const b = post.correct / post.total;
+  return a >= 1 ? null : (b - a) / (1 - a);
+}
+
+function medianOf(xs: number[]): number | null {
+  if (!xs.length) return null;
+  const s = [...xs].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m]! : (s[m - 1]! + s[m]!) / 2;
 }
 
 async function learner(db: Firestore, uid: string, data: FirebaseFirestore.DocumentData): Promise<Row> {
@@ -174,7 +219,7 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     consent: data.consent != null && data.consent !== false,
     pre: pre ? { correct: pre.correct, total: pre.total } : null,
     post: post ? { correct: post.correct, total: post.total } : null,
-    gain: pre && post ? normalisedGain(pre.correct, post.correct, post.total) : null,
+    gain: pre && post ? gainOf(pre, post) : null,
     practiceSessions: practice.length,
     practiceItems,
     practiceAccuracy: practiceItems ? practiceCorrect / practiceItems : null,
@@ -185,6 +230,10 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
     sus: survey && typeof survey.score === "number" ? survey.score : null,
     comments: survey?.comments ?? null,
     heldOut: post?.answers ?? [],
+    preSecs: pre ? (medianOf(pre.latencies) ?? 0) / 1000 : null,
+    preSpanMin: pre && pre.firstTs && pre.lastTs ? (pre.lastTs - pre.firstTs) / 60000 : null,
+    postSecs: post ? (medianOf(post.latencies) ?? 0) / 1000 : null,
+    gapMin: pre && post && pre.lastTs && post.firstTs ? (post.firstTs - pre.lastTs) / 60000 : null,
     curve,
   };
 }
@@ -206,14 +255,21 @@ async function main() {
   const usersSnap = await db.collection("users").get();
   const rows: Row[] = [];
   let dropped = 0;
+  let excluded = 0;
   for (const u of usersSnap.docs) {
-    if (!includeTest && (emails.get(u.id) ?? "").endsWith("@example.com")) {
+    const email = (emails.get(u.id) ?? "").toLowerCase();
+    if (EXCLUDE.has(email) || EXCLUDE.has(u.id.toLowerCase())) {
+      excluded++;
+      continue;
+    }
+    if (!includeTest && email.endsWith("@example.com")) {
       dropped++;
       continue;
     }
     rows.push(await learner(db, u.id, u.data()));
   }
   if (dropped) console.log(`Dropped ${dropped} test account${dropped === 1 ? "" : "s"} (@example.com).`);
+  if (excluded) console.log(`Excluded ${excluded} non-participant account${excluded === 1 ? "" : "s"} listed in .analysis-exclude.`);
   rows.sort((a, b) => (a.signedUp?.getTime() ?? 0) - (b.signedUp?.getTime() ?? 0));
   const label = new Map(rows.map((r, i) => [r.id, `P${i + 1}`]));
 
@@ -230,7 +286,7 @@ async function main() {
   const lines: string[] = [];
   lines.push(`# Pilot results`);
   lines.push("");
-  lines.push(`Generated ${new Date().toISOString().slice(0, 10)} by \`scripts/analyse.ts\` from ${live ? "the production database (read-only)" : "the emulator"}. Learners are pseudonymised in sign-up order; test accounts are excluded. n = ${rows.length}.`);
+  lines.push(`Generated ${new Date().toISOString().slice(0, 10)} by \`scripts/analyse.ts\` from ${live ? "the production database (read-only)" : "the emulator"}. Learners are pseudonymised in sign-up order; test accounts are excluded${EXCLUDE.size ? `, and ${EXCLUDE.size} non-participant account${EXCLUDE.size === 1 ? "" : "s"} listed in a local exclusion file` : ""}. n = ${rows.length}.`);
   lines.push("");
   if (rows.length === 0) {
     lines.push("No learner accounts yet. The tables below fill in when the pilot runs.");
@@ -302,6 +358,23 @@ async function main() {
   // learned; a jagged or rising one suggests it bundles several skills, or
   // that its items are not measuring the same thing. It needs learner data,
   // so it reports itself as pending until the pilot runs.
+  // ---- Data quality: what a reader needs before trusting the gains ------
+  lines.push(`## Data quality`);
+  lines.push("");
+  lines.push(`Checks a reader should see before trusting the gains. A median under 3 seconds per answer is faster than a question and its options can be read, and suggests the answers were already known or not read. Practice between the tests is what the adaptive tutor contributes; lesson reading is not logged, so a learner with no practice may still have read lessons.`);
+  lines.push("");
+  lines.push(`| Learner | Placement: median s per answer | Placement: minutes start to finish | Post-test: median s per answer | Minutes between the tests | Practice answers between | Flags |`);
+  lines.push(`| --- | ---: | ---: | ---: | ---: | ---: | --- |`);
+  for (const r of withBoth) {
+    const flags: string[] = [];
+    if ((r.preSecs ?? 99) < 3 || (r.postSecs ?? 99) < 3) flags.push("answers under 3 s");
+    if (r.practiceItems === 0) flags.push("no practice between tests");
+    if (r.pre && r.pre.total < 16) flags.push(`placement logged ${r.pre.total} of 16`);
+    if (r.gapMin !== null && r.gapMin < 5) flags.push("tests under 5 min apart");
+    lines.push(`| ${label.get(r.id)} | ${fmt(r.preSecs, 1)} | ${fmt(r.preSpanMin, 1)} | ${fmt(r.postSecs, 1)} | ${fmt(r.gapMin, 0)} | ${r.practiceItems} | ${flags.join("; ") || "none"} |`);
+  }
+  lines.push("");
+
   lines.push(`## Knowledge-component validation (learning curves)`);
   lines.push("");
   lines.push(`A knowledge component should behave like one skill: error rate falls as opportunities accumulate (Cen, Koedinger and Junker, 2006). A flat curve suggests the component is not being learned; a rising or jagged one suggests it bundles more than one skill, or that its items do not measure the same thing. This is the check that turns the decomposition in Section 5.6 from an assertion into a result.`);
