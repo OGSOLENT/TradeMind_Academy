@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
@@ -379,6 +379,7 @@ async function main() {
   lines.push(`- Option positions are evened out at build time (lib/content/debias.ts), so no answer position is worth guessing. The two authoring tells found in September were fixed by rewriting the bank on 22 September: the correct option is now the longest in 14 of 55 multiple-choice items (mean 42.5 characters against 39.6 for the distractors) and the true/false items run 8 true to 7 false. Measured against the post-test form, the best zero-knowledge strategy scores 6 of 16 against 5.7 for blind guessing.`);
   lines.push("");
 
+  mkdirSync("docs/report", { recursive: true });
   writeFileSync(OUT, lines.join("\n"));
   console.log(lines.slice(0, 40).join("\n"));
   console.log(`\nWritten to ${OUT}`);

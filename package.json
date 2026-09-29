@@ -37,7 +37,6 @@
     "db:peek": "GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json GCLOUD_PROJECT=trademind-academy tsx scripts/peek.ts --live",
     "db:peek:local": "tsx scripts/peek.ts",
     "videos:compress": "node scripts/compress-videos.mjs",
-    "blob:empty": "node scripts/blob-empty.mjs",
     "figures:capture": "CAPTURE_FIGURES=1 playwright test tests/e2e/report-screens.spec.ts --project=desktop",
     "test:e2e:ci": "npx -y firebase-tools@15.19.1 emulators:exec --only auth,firestore --project demo-trademind \"npm run seed && playwright test\""
   },

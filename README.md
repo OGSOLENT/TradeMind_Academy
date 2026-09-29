@@ -53,8 +53,9 @@ The loop in one line: placement seeds the model → routing picks the weakest un
 
 ## Running it
 
-Read [START_HERE.md](START_HERE.md). It's one page: kill everything, run the real app,
-run the practice app, open the database. [RUNNING.md](RUNNING.md) has the longer version.
+Copy `.env.example` to `.env.local`, then `npm install`. `npm run dev` is the real app on
+:3000 against the live Firebase project. For a throwaway copy, run `npm run emulators`,
+then `npm run seed` and `npm run dev:emulator`, and open :3100. `npm run stop` frees the ports.
 
 ## Stack
 
@@ -62,7 +63,7 @@ Next.js 14 (App Router, TS strict) · Tailwind (custom tokens) · Framer Motion 
 GSAP · react-three-fiber · lightweight-charts · Firebase (Auth and Firestore,
 Emulator Suite locally) · zod at the Firestore boundary · React Query · Zustand ·
 Vitest · Playwright · axe-core. Lesson recordings are static files served by the
-app itself (docs/DEPLOY.md).
+app itself from `public/videos-web`.
 
 ## Development
 
@@ -78,7 +79,7 @@ npm run test:e2e       # browser journeys against the emulator server on :3100
 npm run lint && npm run typecheck
 npm run simulate:routing   # adaptive vs fixed vs random routing, into docs/EVALUATION.md
 npm run analyse            # pilot data (emulator) → docs/report/PILOT_RESULTS.md
-npm run deploy             # production snapshot to Vercel (docs/DEPLOY.md)
+npm run deploy             # production snapshot to Vercel
 ```
 
 Copy `.env.example` → `.env.local`. Local dev and tests target the emulator suite.
@@ -95,6 +96,12 @@ Copy `.env.example` → `.env.local`. Local dev and tests target the emulator su
 
 ## Repository map
 
-See `docs/BUILD_PROMPT.md` (canonical spec — re-read every session),
-`docs/DECISIONS.md` (decision log), `design/prototype/` (Stitch screens,
-reference only, never imported).
+| Path | What's in it |
+|---|---|
+| `app/` | Routes (Next.js App Router) |
+| `components/` | Interface components |
+| `lib/` | BKT engine, routing, response logger, Firebase access, content types |
+| `content/` | Lesson markdown and the generated seed data |
+| `scripts/` | Dev servers, seeding, simulation, calibration, analysis, export, deploy |
+| `tests/` | Unit, rules and browser suites |
+| `design/prototype/` | Stitch screens, reference only, never imported |

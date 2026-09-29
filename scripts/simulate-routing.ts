@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { DEFAULT_PARAMS, MASTERY_THRESHOLD, updateMastery } from "../lib/bkt";
 import { nextItem, targetKcId, unlockedKcIds, type MasteryMap, type SelectionHistory } from "../lib/routing";
 import type { Difficulty, Item, Kc, Level1Content } from "../lib/content/types";
@@ -189,8 +189,10 @@ function main() {
   console.log(lines.join("\n"));
   console.log("\n" + rows.join("\n"));
 
+  mkdirSync("docs", { recursive: true });
+
   const path = "docs/EVALUATION.md";
-  let doc = readFileSync(path, "utf8");
+  let doc = existsSync(path) ? readFileSync(path, "utf8") : "";
   const block = `<!-- routing-sim:start -->\n${header}\n\n${rows.join("\n")}\n<!-- routing-sim:end -->`;
   if (doc.includes("<!-- routing-sim:start -->")) {
     doc = doc.replace(/<!-- routing-sim:start -->[\s\S]*<!-- routing-sim:end -->/, block);

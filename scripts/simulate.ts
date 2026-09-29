@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   DEFAULT_PARAMS,
   MASTERY_THRESHOLD,
@@ -130,6 +130,7 @@ function main() {
       `${i},${learner.truth.pL0.toFixed(4)},${fit.pL0.toFixed(4)},${learner.truth.pT.toFixed(4)},${fit.pT.toFixed(4)},${rate.toFixed(4)}`,
     );
   }
+  mkdirSync("docs", { recursive: true });
   writeFileSync("docs/simulation-recovery.csv", rows.join("\n") + "\n");
   const rmseL0 = Math.sqrt(seL0 / N);
   const rmseT = Math.sqrt(seT / N);
@@ -156,7 +157,7 @@ function main() {
   const START = "<!-- SIMULATION:START -->";
   const END = "<!-- SIMULATION:END -->";
   const section = `${START}\n\n### Simulated-learner harness (BKT validation)\n\nGenerated ${new Date().toISOString().slice(0, 10)} by \`scripts/simulate.ts\` (seeded, reproducible).\n\n${table}\n\n${END}`;
-  let md = readFileSync(path, "utf8");
+  let md = existsSync(path) ? readFileSync(path, "utf8") : "";
   if (md.includes(START)) {
     md = md.replace(new RegExp(`${START}[\\s\\S]*${END}`), section);
   } else {
