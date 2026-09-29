@@ -2,11 +2,6 @@
 
 import { cn } from "@/lib/utils";
 
-/**
- * A rough strength score from 0 to 4, based on length, case mix, digits and
- * symbols. No dependency on purpose. This is guidance for the person typing,
- * not the validator. Firebase Auth enforces the real minimum on the server.
- */
 export function scorePassword(pw: string): number {
   if (!pw) return 0;
   let score = 0;

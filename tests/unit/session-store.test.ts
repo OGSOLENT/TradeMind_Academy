@@ -2,15 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Item, Kc } from "@/lib/content/types";
 import { updateMastery } from "@/lib/bkt";
 
-/*
- * The quiz session is the state machine at the centre of the tutor: it
- * decides every next question, grades every answer, moves the learner
- * model, and writes each answer to the research log. Until the September
- * audit it had no unit tests at all and was covered only by browser tests.
- * The logger is replaced with a recorder so every logged event can be
- * checked field by field.
- */
-
 const logged = vi.hoisted(() => [] as Array<Record<string, unknown>>);
 vi.mock("@/lib/logging", () => ({
   getLogger: () => ({ enqueue: (e: Record<string, unknown>) => logged.push(e) }),
@@ -179,8 +170,6 @@ describe("an adaptive session (practice)", () => {
   });
 
   it("falls back to another KC when the target KC has no items left", () => {
-    // a is mastered so b unlocks, but b is the target and has one item;
-    // after it, a still has items and should be offered rather than stopping.
     const pool = [mcq("b-1", "b", "med"), mcq("a-1", "a", "hard")];
     store().startAdaptive("u1", "s2", pool, KCS, { a: 0.85, b: 0.3 }, 2);
     expect(current().kcId).toBe("b");

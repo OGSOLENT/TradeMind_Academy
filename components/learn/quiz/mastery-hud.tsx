@@ -11,13 +11,6 @@ interface MasteryHudProps {
   pL: number;
 }
 
-/**
- * The live mastery HUD in the quiz header. Gains move on a spring, losses
- * soften into amber, the mono number rolls, and every change gets announced
- * to screen readers ("Mastery increased to 71 percent", guardrail 7.4). A
- * gain also throws a brief glow off the bar, which is the one moment in the
- * quiz where I let the interface celebrate a little.
- */
 export function MasteryHud({ kcTitle, pL }: MasteryHudProps) {
   const reduced = useReducedMotion();
   const prev = useRef(pL);

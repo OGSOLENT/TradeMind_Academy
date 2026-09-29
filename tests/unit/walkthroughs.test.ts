@@ -4,15 +4,6 @@ import { CASE_STUDIES } from "@/lib/case-studies";
 import { build } from "@/lib/walkthroughs/synth";
 import type { Anno } from "@/lib/walkthroughs/types";
 
-/**
- * The walkthroughs are teaching material, so the thing to test is that
- * every chart actually shows what its captions claim. The synth has to put
- * the close on each control point and honour every forced candle, and no
- * step may point at a bar that doesn't exist or a price miles off the
- * chart. A caption that says "bar 40 closes below L2" is checked by the
- * spec author; a bar index outside the series is checked here.
- */
-
 function bars(a: Anno): number[] {
   switch (a.kind) {
     case "hline":
@@ -92,8 +83,6 @@ describe("walkthrough specs", () => {
   const all = Object.values(WALKTHROUGHS);
 
   it("cover every lesson that has no recording, and the recorded core", () => {
-    // 25 for the unrecorded lessons 26 to 48, 11 for the fractal model,
-    // 10 for the recorded foundations, 2 for the instruments module.
     expect(all).toHaveLength(48);
   });
 
@@ -142,8 +131,6 @@ describe("walkthrough specs", () => {
   );
 
   it("markers sit on the candle they describe", () => {
-    // A marker's price should be within the candle's range (or just past a
-    // wick it labels), otherwise the dot floats away from the bar.
     for (const w of Object.values(WALKTHROUGHS)) {
       for (const step of w.steps) {
         for (const a of step.annos) {
@@ -194,7 +181,6 @@ describe("real-chart case studies", () => {
         }
         if (a.kind === "marker") {
           const c = w.candles[a.bar]!;
-          // Real markers are placed on actual highs and lows, so they sit exactly on the bar.
           expect(a.price).toBeGreaterThanOrEqual(c.l - (hi - lo) * 0.02);
           expect(a.price).toBeLessThanOrEqual(c.h + (hi - lo) * 0.02);
         }

@@ -60,13 +60,6 @@ export const tickValue: Walkthrough = {
   ],
 };
 
-/**
- * The account as daily candles: open and close are the balance at the start
- * and end of each day, high and low are the intraday peak and trough of
- * equity. That's the honest way to draw drawdown rules, because the
- * intraday trailing floor follows the high and the end-of-day floor follows
- * the close.
- */
 const EQUITY: Candle[] = [
   { o: 50000, c: 50600, h: 50900, l: 49700 },
   { o: 50600, c: 51100, h: 51300, l: 50300 },

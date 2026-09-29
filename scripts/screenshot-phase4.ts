@@ -1,8 +1,3 @@
-/**
- * The Phase 4 report screenshots: placement, the init moment, the HUD,
- * dashboard and tree. Needs the dev server, emulators and seed.
- * Run: npx tsx scripts/screenshot-phase4.ts
- */
 import { chromium } from "@playwright/test";
 
 const BASE = "http://localhost:3100";
@@ -60,7 +55,6 @@ async function main() {
   await settle(1500);
   await page.screenshot({ path: `${OUT}/dashboard.png`, fullPage: true });
 
-  // The quiz with the mastery HUD and the why-popover open
   await page.goto(`${BASE}/practice`);
   await page.waitForURL(/\/quiz\/practice-/);
   await page.getByTestId("mastery-hud").waitFor();

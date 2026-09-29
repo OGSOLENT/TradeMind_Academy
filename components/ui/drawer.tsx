@@ -5,14 +5,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
-/**
- * A Vaul-style bottom sheet I built myself rather than pulling in another
- * dependency. It snaps at 40% and 90% of the viewport. You can drag between
- * the two, and dragging down past the lower snap (or flicking) dismisses it.
- * While it's open, anything marked `data-drawer-scale` (the app shell) is
- * scaled back to 0.97 so the page feels like it's sitting behind the sheet.
- */
-
 export interface DrawerProps {
   open: boolean;
   onClose: () => void;
@@ -93,8 +85,6 @@ export function Drawer({
               if (flickDown && snap === 0) return onClose();
               if (flickDown) return setSnap(0);
               if (flickUp) return setSnap(snapPoints.length - 1);
-              // Otherwise settle on the nearest snap, or close if it's been
-              // dragged well below the lowest one.
               const positions = snapPoints.map((_, i) => yFor(i));
               const lowest = positions[0] as number;
               if (y > lowest + viewportH * 0.12) return onClose();

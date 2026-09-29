@@ -22,11 +22,6 @@ const OPEN = [
   { id: "trust", label: "Did the mastery percentages feel right to you? Why, or why not?" },
 ] as const;
 
-/**
- * The System Usability Scale plus three open questions. Saved once per
- * learner at users/{uid}/surveys/sus; resubmitting overwrites, and the
- * analysis script reads the final answer.
- */
 export default function SurveyPage() {
   useTitle("Survey");
   const { user } = useAuth();

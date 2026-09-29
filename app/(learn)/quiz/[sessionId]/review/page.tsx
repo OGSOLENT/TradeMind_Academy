@@ -12,14 +12,6 @@ import { Pill } from "@/components/ui/pill";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
 import { cn } from "@/lib/utils";
 
-/**
- * Answer review (full_feedback_detail). Every item you answered, with your
- * answer against the key, the explanation, and for chart-annotation items
- * the chart drawn again with your marker AND the correct zone laid over it.
- * The feedback is rule-based only. An AI tutor is documented as future work
- * in docs/PARKED.md.
- */
-
 function describeAnswer(item: Item, answer: LearnerAnswer): string {
   switch (answer.type) {
     case "mcq":

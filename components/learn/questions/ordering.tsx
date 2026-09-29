@@ -11,11 +11,6 @@ interface OrderingProps {
   disabled?: boolean;
 }
 
-/**
- * Drag to reorder, with spring layout from framer-motion's Reorder. Each row
- * also has move up and move down buttons for the keyboard, because dragging
- * is never allowed to be the only way.
- */
 export function OrderingList({ entries, order, onChange, disabled }: OrderingProps) {
   const reduced = useReducedMotion();
 

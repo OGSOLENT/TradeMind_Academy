@@ -1,8 +1,3 @@
-/**
- * Capture the Phase 2 report screenshots by driving the real journey, sign-up
- * to consent to lesson, against the running dev server and emulators.
- * Run: npx tsx scripts/screenshot-phase2.ts
- */
 import { chromium } from "@playwright/test";
 
 const BASE = "http://localhost:3100";

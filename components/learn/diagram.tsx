@@ -4,14 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Pill } from "@/components/ui/pill";
 
-/**
- * Diagrams for the lessons that aren't about a chart: the timeframe stack,
- * the session clock, how the two instrument types are wired, and the
- * prop-firm funnel. Drawn as SVG from the design tokens so they sit with
- * the walkthroughs, and each one carries a plain-text description for the
- * "Describe" toggle, the same as every chart on the site.
- */
-
 interface DiagramSpec {
   title: string;
   describe: string;
@@ -257,7 +249,6 @@ const propFirmFunnel: DiagramSpec = {
             {i < 3 && <Arrow x1={204 + i * 190} y1={82} x2={216 + i * 190} y2={82} tone={T.sec} />}
           </g>
         ))}
-        {/* The leak: most attempts end in the evaluation, at the drawdown. */}
         <path d="M 305 118 C 305 170 240 170 240 210" fill="none" stroke={T.danger} strokeWidth={1.5} strokeDasharray="4 3" />
         <polygon points="240,210 235,201 245,201" fill={T.danger} />
         <text x={150} y={232} fontSize={11.5} fill={T.danger} style={font}>

@@ -5,14 +5,6 @@ import { create } from "zustand";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
-/**
- * A Sonner-style toast stack that I built in-house rather than adding a
- * dependency. Four variants, auto-dismiss after four seconds, swipe right to
- * dismiss, newest on top. Failed response-log flushes surface through this
- * (guardrail 7.2), which is why the store lives at module scope: `toast()`
- * has to be callable from code that isn't React.
- */
-
 export type ToastVariant = "default" | "success" | "warning" | "danger";
 
 export interface ToastItem {
@@ -100,8 +92,6 @@ export function Toaster() {
                 <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
-            {/* A thin line along the bottom that drains as the toast's time
-                runs out, so you know it's about to leave. */}
             <motion.span
               aria-hidden="true"
               className={cn("absolute bottom-0 left-0 h-px w-full origin-left opacity-50", variantStyles[t.variant].bar)}

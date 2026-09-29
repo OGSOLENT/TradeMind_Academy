@@ -3,18 +3,9 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ease } from "@/lib/motion";
 
-/**
- * The decorative panel beside the auth forms. A simulated price trace draws
- * itself in from left to right with a glowing tip, and three small readouts
- * fade up underneath it. It's purely visual, so the whole thing is hidden
- * from assistive tech. And it's all simulated, like everything else here.
- */
-
 const W = 520;
 const H = 220;
 
-/* A hand-shaped path so it reads like a market and not like noise: a pullback
-   early on, a dip, then a climb into the top right. */
 const TRACE =
   "M 0 168 C 30 160, 44 120, 70 126 S 110 176, 138 160 S 172 92, 200 104 S 236 150, 262 138 " +
   "S 296 60, 326 74 S 360 128, 388 112 S 428 40, 458 52 S 500 28, 520 20";
@@ -40,7 +31,6 @@ export function AsideArt() {
           </filter>
         </defs>
 
-        {/* Faint horizontal rules, the way a chart would have them. */}
         {[40, 90, 140, 190].map((y) => (
           <line key={y} x1="0" x2={W} y1={y} y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
         ))}
@@ -54,7 +44,6 @@ export function AsideArt() {
           transition={{ duration: 0.8, delay: 1.6 }}
         />
 
-        {/* A blurred copy under the trace gives it the glow. */}
         <motion.path
           d={TRACE}
           fill="none"
@@ -78,7 +67,6 @@ export function AsideArt() {
           transition={{ duration: 2.2, ease: ease.choreo, delay: 0.3 }}
         />
 
-        {/* The tip. Arrives with the line, then breathes. */}
         <motion.g
           initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
           animate={{ opacity: 1, scale: 1 }}

@@ -4,13 +4,6 @@ import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Kbd } from "@/components/ui/kbd";
 
-/**
- * The keyboard shortcuts sheet. Press ? anywhere in the app (outside a text
- * field) and it opens; Escape closes it. Everything listed here is a real
- * binding somewhere in the app, so if a shortcut gets added or removed the
- * list has to change with it.
- */
-
 const GROUPS: { heading: string; rows: [string[], string][] }[] = [
   {
     heading: "Anywhere",

@@ -24,18 +24,6 @@ const TONE: Record<NodeState, string> = {
   locked: "#3a3a48",
 };
 
-/**
- * The skill constellation, drawn as a climb rather than a scatter.
- *
- * One spline runs through all the modules in curriculum order. A dim track
- * shows the whole route, and a bright path on top is clipped to the learner's
- * overall progress, with a travelling light at its head and energy flowing
- * along the stretch they've already covered. So mastery shows up as distance
- * travelled, which is the thing the BKT model is actually estimating.
- *
- * The motion is deliberately local. A handful of small SVG elements, not
- * full-screen layers, and I measured it as cheap (docs/DECISIONS.md).
- */
 export function ConstellationMap({
   views,
   justUnlocked,
@@ -96,7 +84,6 @@ export function ConstellationMap({
         </filter>
       </defs>
 
-      {/* A faint field of stars behind the route, for depth. */}
       <g className="tm-const-stars" aria-hidden="true">
         {Array.from({ length: 46 }, (_, i) => {
           const x = ((i * 79) % 97) / 97;
@@ -114,7 +101,6 @@ export function ConstellationMap({
         })}
       </g>
 
-      {/* The whole route, unlit. */}
       <path
         ref={trackRef}
         d={path}
@@ -124,8 +110,6 @@ export function ConstellationMap({
         strokeLinecap="round"
       />
 
-      {/* Distance covered. pathLength=1 normalises the dash maths, so it doesn't
-          matter how long the spline actually is. */}
       <motion.path
         d={path}
         fill="none"
@@ -139,7 +123,6 @@ export function ConstellationMap({
         transition={reduced ? { duration: 0.15 } : { duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
         opacity={0.95}
       />
-      {/* The glow underneath the covered stretch. */}
       <motion.path
         d={path}
         fill="none"
@@ -155,8 +138,6 @@ export function ConstellationMap({
         opacity={0.35}
       />
 
-      {/* Energy flowing forward along the covered stretch. It's what gives
-          the sense of travelling from one level to the next. */}
       {!reduced && progress > 0.01 && (
         <path
           className="tm-route-flow"
@@ -213,7 +194,6 @@ export function ConstellationMap({
             animate={{ scale: active ? 1.08 : 1, opacity: locked ? 0.55 : 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 18, delay: isNew ? 0.9 : 0 }}
           >
-            {/* The halo. It breathes while this module is the live frontier. */}
             {kc.state === "available" && !reduced && (
               <circle
                 className="tm-node-pulse"
@@ -273,8 +253,6 @@ export function ConstellationMap({
               </text>
             )}
 
-            {/* The step number and the title. With many nodes the labels
-                alternate sides so neighbours don't collide. */}
             <text
               x={pos.x}
               y={flip ? pos.y + R + 18 : pos.y - R - 10}

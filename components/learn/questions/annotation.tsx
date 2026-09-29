@@ -44,13 +44,6 @@ function timeToString(t: Time): string {
   return String(t);
 }
 
-/**
- * The chart-annotation question. Tap the chart to drop a marker, and once
- * you've answered the correct zone shows up as a translucent overlay.
- * Simulated data only. The chart reads --bull and --bear, so colour-blind
- * mode swaps the candles automatically. And every chart carries a "Describe
- * this chart" text alternative (guardrail 7.4).
- */
 export function AnnotationChart({
   candles,
   describe,
@@ -122,7 +115,6 @@ export function AnnotationChart({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candles]);
 
-  // The learner's marker
   useEffect(() => {
     const series = seriesRef.current;
     if (!series) return;

@@ -1,16 +1,6 @@
 import { Fragment } from "react";
 import { slugify } from "@/lib/utils";
 
-/**
- * A minimal markdown renderer for lesson blocks.
- *
- * It handles a fixed subset, and I think of that as a contract rather than a
- * limitation because I write the lesson copy myself: h2 and h3, paragraphs,
- * bullet and numbered lists, blockquotes (the definition callouts), pipe
- * tables, `code`, **bold** and *em*. Tables scroll sideways on their own so
- * the page body never has to.
- */
-
 function inline(text: string, key: number) {
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
   return (
@@ -86,8 +76,6 @@ export function Markdown({ md }: { md: string }) {
   };
   const flushQuote = () => {
     if (quote.length) {
-      // The definition callout. A teal spine, a small marker, and the text in
-      // the primary colour so it stands out from the surrounding prose.
       out.push(
         <blockquote
           key={key++}
@@ -104,8 +92,6 @@ export function Markdown({ md }: { md: string }) {
     if (table.length) {
       const [head, ...body] = table;
       out.push(
-        // Wide tables scroll sideways on a phone, so the wrapper is focusable
-        // and keyboard users can scroll it with the arrow keys (WCAG 2.1.1).
         <div
           key={key++}
           className="-mx-1 overflow-x-auto rounded-control focus:outline-none focus-visible:shadow-[inset_0_0_0_1px_var(--accent)]"
@@ -178,8 +164,6 @@ export function Markdown({ md }: { md: string }) {
       );
     } else if (t.startsWith("## ")) {
       flushAll();
-      // Every h2 gets an id so the outline in the lesson rail can jump to it,
-      // and a short teal rule above it to mark the section break.
       out.push(
         <h2 key={key++} id={slugify(t.slice(3))} className="group scroll-mt-32 pt-4 text-headline-md text-fg-primary">
           <span aria-hidden="true" className="mb-3 block h-px w-8 bg-gradient-to-r from-mastery to-transparent" />

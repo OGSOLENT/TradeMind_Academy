@@ -4,20 +4,6 @@ import { create } from "zustand";
 import type { UserSettings } from "@/lib/firebase/types";
 import { STORAGE_KEY } from "@/lib/a11y-boot";
 
-/**
- * The accessibility preferences, as applied to the page.
- *
- * The saved copy lives on the profile (users/{uid}.settings) so it follows
- * the learner between devices. But the profile only arrives after sign-in
- * and a Firestore read, and I don't want the page flashing bright, animated
- * and Inter for half a second before it settles into what the learner
- * asked for. So the applied preferences are mirrored into localStorage,
- * a tiny inline script in the root layout reads that copy and stamps the
- * html element before first paint, and this store is the in-app view of
- * the same thing. Components that switch things off (the 3D scenes, the
- * particles) read the store. The CSS reads the data attributes.
- */
-
 export interface A11yPrefs {
   reducedMotion: boolean;
   colorBlindCandles: boolean;
@@ -64,7 +50,6 @@ function readStored(): A11yPrefs {
   }
 }
 
-/** Stamp the html element. Keep this in step with the inline script in app/layout.tsx. */
 export function applyPrefsToDocument(p: A11yPrefs) {
   const root = document.documentElement;
   root.dataset.candles = p.colorBlindCandles ? "colorblind" : "";
@@ -101,7 +86,6 @@ export const useA11y = create<A11yStore>((set) => ({
   },
 }));
 
-/** The applied preferences. Safe to call anywhere on the client. */
 export function useA11yPrefs(): A11yPrefs {
   return useA11y((s) => s.prefs);
 }

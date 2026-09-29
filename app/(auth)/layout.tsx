@@ -5,12 +5,6 @@ import { BackLink } from "@/components/auth/back-link";
 import { Stagger } from "@/components/motion/stagger";
 import { Toaster } from "@/components/ui/toast";
 
-/**
- * The split auth layout from auth_sign_in: a display panel on the left
- * (desktop only), the form card on the right. On mobile it's just the card.
- * The left panel draws a simulated price trace as the page opens, and the
- * card staggers in beside it.
- */
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-dvh">
@@ -38,7 +32,6 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </Stagger>
       </aside>
       <main id="main" className="relative flex flex-1 items-center justify-center px-4 py-10">
-        {/* The way back. Top-left on every auth screen, on every size. */}
         <div className="absolute left-4 top-4 md:left-8 md:top-6">
           <BackLink />
         </div>

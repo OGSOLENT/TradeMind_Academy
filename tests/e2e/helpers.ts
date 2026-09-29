@@ -1,14 +1,5 @@
 import { expect, type Page } from "@playwright/test";
 
-/**
- * The shared E2E helpers.
- *
- * Answers get looked up from the seeded Firestore item rather than hardcoded,
- * so these tests keep passing when I change the curriculum copy. The quiz
- * page exposes the current item id via data-item-id on the question-type
- * badge, which is what makes that possible.
- */
-
 const FIRESTORE = "http://localhost:8080/v1/projects/demo-trademind/databases/(default)/documents";
 
 export async function emulatorUp(): Promise<boolean> {
@@ -20,7 +11,6 @@ export async function emulatorUp(): Promise<boolean> {
   }
 }
 
-/** Firestore REST values come back as typed wrappers. This unwraps the ones I need. */
 type RestValue = Record<string, unknown>;
 function unwrap(v: RestValue): unknown {
   if ("integerValue" in v) return Number(v.integerValue);
@@ -56,11 +46,6 @@ export async function fetchAnswerKey(itemId: string): Promise<AnswerKey> {
   return unwrap(body.fields.answerKey as RestValue) as AnswerKey;
 }
 
-/**
- * Answer whatever question is on screen. `correct: false` deliberately gets
- * it wrong where the type allows, which is how I exercise the remediation
- * path.
- */
 export async function answerCurrent(page: Page, correct = true): Promise<void> {
   // Card transitions briefly render two cards, so wait for things to settle.
   await expect(page.getByTestId("question-type")).toHaveCount(1);

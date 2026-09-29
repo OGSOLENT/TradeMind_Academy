@@ -18,19 +18,6 @@ import { CommandPalette, useCommandPalette } from "./command-palette";
 import { ShortcutsSheet, useShortcutsSheet } from "./shortcuts-sheet";
 import { CardsIcon, ConstellationIcon, HomeIcon, TargetIcon } from "./icons";
 
-/**
- * The desktop navigation. Four places to go, each with an icon and a
- * spring-loaded active pill: Dashboard, Learn (which opens the module
- * panel), Practise, and Review. On the right, a search button that opens
- * the command palette, and the learner's avatar, which opens the account
- * menu. The bar firms up once you've scrolled so the content sliding
- * underneath it doesn't muddy the links.
- *
- * Menus open on hover with a short grace period and on click, close on
- * Escape, on an outside click and on navigation, and they're buttons with
- * aria-expanded so the keyboard gets the same thing the mouse does.
- */
-
 const rightLinks = [
   { href: "/practice", label: "Practise", Icon: TargetIcon },
   { href: "/review", label: "Review", Icon: CardsIcon },
@@ -54,10 +41,6 @@ export function GlassNav() {
   const initial = user?.displayName?.trim().charAt(0).toUpperCase() ?? user?.email?.charAt(0).toUpperCase();
   const learnActive = pathname.startsWith("/lesson") || pathname.startsWith("/skill-tree");
 
-  // Close everything on route change, Escape, or a click outside the bar.
-  // A route change also refreshes the nav's copy of the model, because the
-  // things that change it (a session, a lesson check, the placement) all
-  // end with a navigation.
   useEffect(() => {
     setLearnOpen(false);
     setAccountOpen(false);
@@ -93,9 +76,6 @@ export function GlassNav() {
     hovering.current = false;
     closeTimer.current = setTimeout(() => setLearnOpen(false), 180);
   };
-  // A click while the pointer is over the button keeps the panel open (hover
-  // already opened it, and toggling would slam it shut). Without a pointer,
-  // which is the keyboard case, the click toggles.
   const clickLearn = () => {
     if (learnOpen && !hovering.current) setLearnOpen(false);
     else setLearnOpen(true);

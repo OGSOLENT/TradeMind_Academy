@@ -7,13 +7,6 @@ import { Counter } from "@/components/ui/counter";
 import { Reveal } from "@/components/motion/stagger";
 import { ease } from "@/lib/motion";
 
-/**
- * The Level-1 route, in teaching order. Mirrors scripts/generate-content.ts
- * (same titles, same order, same lesson counts), which is the source of
- * truth. If a module changes there, change it here too. The ticker on the
- * landing page reads its titles from this list as well so the two can't
- * drift apart.
- */
 export const CURRICULUM = [
   { title: "The Candle", blurb: "OHLC, the three candle types, and why every wick is a smaller trend.", lessons: 2 },
   { title: "Liquidity & Wicks", blurb: "Buyside and sellside liquidity, and what wick size says about expansion.", lessons: 2 },
@@ -36,11 +29,6 @@ export const CURRICULUM = [
 const LESSONS = CURRICULUM.reduce((n, m) => n + m.lessons, 0);
 const QUESTIONS = 116;
 
-/**
- * The route, read as stages. Same modules, grouped by what a learner can do
- * at the end of each stage. The dashboard and the landing both show it so
- * "where am I on the path" has one answer.
- */
 export const PATH = [
   { stage: "Foundations", outcome: "Read a candle, find liquidity, size a trade", modules: [1, 2, 3] },
   { stage: "Reversal and structure", outcome: "Confirm a turn, name every array on the chart", modules: [4, 5, 6, 7] },
@@ -50,12 +38,6 @@ export const PATH = [
   { stage: "The account", outcome: "Choose the instrument and judge a funding route with open eyes", modules: [16] },
 ] as const;
 
-/**
- * The curriculum, laid out as the route it is. Sixteen numbered cards in
- * teaching order, with a thin line threading through the numbers so the
- * grid still reads as a sequence. Hover a card and its number lights teal,
- * the same colour a mastered module gets inside the app.
- */
 export function Curriculum() {
   const reduced = useReducedMotion();
   return (

@@ -1,22 +1,3 @@
-/**
- * Deploy to Vercel from a snapshot of the working tree.
- *
- *   npm run deploy            production
- *   npm run deploy:preview    a preview URL
- *
- * Why not plain `vercel --prod`? The CLI attaches the HEAD commit's author
- * to the deployment, and a Hobby account refuses to build anything whose
- * author email isn't the account's own (readyStateReason: "the commit
- * author doesn't have permission to create deployments"). My commits are
- * signed with a different address from the Vercel login, so every direct
- * deploy sat BLOCKED forever. Copying the source into a temporary folder
- * without .git means there's no author to check, and the deployment is
- * attributed to the logged-in account instead.
- *
- * The copy honours .vercelignore plus the obvious big folders, and the
- * project link (.vercel/project.json) comes along so it lands in the right
- * Vercel project.
- */
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -58,8 +39,6 @@ cpSync(root, snapshot, {
     return true;
   },
 });
-// The link file is gitignored and .vercelignore'd for the upload, but the
-// snapshot needs it so the CLI knows which project to deploy to.
 cpSync(join(root, ".vercel/project.json"), join(snapshot, ".vercel/project.json"));
 
 console.log(`Deploying ${prod ? "to production" : "a preview"} from ${snapshot}`);

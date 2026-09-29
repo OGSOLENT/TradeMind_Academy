@@ -8,14 +8,6 @@ import { Kbd } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
-/**
- * The command palette. Cmd+K (or Ctrl+K) from anywhere in the app, or the
- * search button in the nav. Type a few letters and jump to any page, module
- * or lesson. Arrow keys move, Enter goes, Escape closes. It reads the same
- * learner model as the Learn menu, so a mastered module shows as mastered
- * here too.
- */
-
 interface Entry {
   id: string;
   group: "Pages" | "Modules" | "Lessons";

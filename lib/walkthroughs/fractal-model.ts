@@ -1,13 +1,6 @@
 import { build, timeLabels } from "./synth";
 import type { Walkthrough } from "./types";
 
-/**
- * Module 11: The Fractal Model. Lessons 16 to 19 (recorded) and 49 to 54.
- * The projections follow Lesson 17: the manipulation leg is anchored with
- * 1 at the swept extreme and 0 at the level it came from, so -1, -2 and
- * -2.5 sit beyond that level in the direction of the expansion.
- */
-
 export const tSpot: Walkthrough = {
   id: "t-spot",
   title: "The T-Spot: anticipating the higher-timeframe wick",

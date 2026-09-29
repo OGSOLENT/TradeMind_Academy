@@ -12,17 +12,6 @@ import {
 } from "@/lib/mastery/ledger";
 import { DEFAULT_PARAMS, MASTERY_THRESHOLD, updateMastery } from "@/lib/bkt";
 
-/*
- * The mastery document is a cache of the response log. These tests pin the
- * rebuild to hand-worked arithmetic (default parameters pL0 0.25, pT 0.12,
- * pG 0.2, pS 0.1), and prove the rebuild agrees with the live write it
- * replaces, so repairing a learner's model can never change it unless it
- * was actually wrong.
- *
- *   one correct from 0.25:  0.225 / 0.375 = 0.6,    0.6 + 0.4 x 0.12  = 0.648
- *   one wrong   from 0.25:  0.025 / 0.625 = 0.04,   0.04 + 0.96 x 0.12 = 0.1552
- */
-
 const KCS = ["kc-a", "kc-b", "kc-c"];
 const ans = (kcId: string, correct: boolean, ts: number) => ({ kcId, correct, ts });
 
@@ -116,8 +105,6 @@ describe("rebuildMastery", () => {
   });
 
   it("agrees with the live write, session by session, so a repair only changes a model that was wrong", () => {
-    // What the live app does: apply placement, then each practice session
-    // from the document as it stood when that session began.
     let live = applyPlacement(KCS, placement.answers, 2);
     const second: LoggedSession = { id: "r", type: "lesson-check", answers: [ans("kc-b", true, 30), ans("kc-b", true, 31)] };
     for (const s of [practice, second]) {
@@ -129,8 +116,6 @@ describe("rebuildMastery", () => {
   });
 
   it("recovers a session whose write was lost", () => {
-    // Session `practice` completed but its mastery write failed; the next
-    // session started from the stale document. The rebuild puts it back.
     const stale = applyPlacement(KCS, placement.answers, 2);
     const rebuilt = rebuildMastery(KCS, [placement, practice]);
     expect(masteryDiffers(stale.kcs, rebuilt.kcs)).toBe(true);

@@ -1,9 +1,3 @@
-/**
- * The content-domain types shared by the app, the seed script and the
- * tests. They mirror the Firestore data model in docs/BUILD_PROMPT.md
- * section 4.
- */
-
 export type Difficulty = "easy" | "med" | "hard";
 
 export type ItemType = "mcq" | "multi" | "numeric" | "ordering" | "annotation" | "tf-confidence";
@@ -33,11 +27,8 @@ export type LessonBlock =
       describe: string;
     }
   | { kind: "video"; poster: string }
-  /** A stepped, annotated synthetic chart. The spec lives in lib/walkthroughs, keyed by id. */
   | { kind: "walkthrough"; id: string }
-  /** A real-chart case study: the same stepped chart, cut from dated historical bars. Specs in lib/case-studies. */
   | { kind: "caseStudy"; id: string }
-  /** A named SVG diagram from components/learn/diagram.tsx, for the lessons that aren't about a chart. */
   | { kind: "diagram"; id: string }
   | { kind: "checkQuestion"; itemId: string };
 

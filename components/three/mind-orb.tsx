@@ -7,34 +7,6 @@ import { useReducedMotion } from "framer-motion";
 import * as THREE from "three";
 import type { NodeState } from "@/lib/routing";
 
-/**
- * The knowledge orb, drawn as a brain.
- *
- * The silhouette is a real brain shape, not a balloon: a cerebrum built from
- * a few overlapping ellipsoids (frontal bulge, temporal lobes, the long
- * body), a cerebellum tucked under the back and a stem running down from
- * the middle. I sample stars on the skin of that shape, wrinkle it for the
- * gyri, darken the stars that fall into the folds so the sulci draw
- * themselves, and carve the fissure along the top. It opens on the side
- * view so the first thing you see is unmistakably a brain, then it sways
- * gently around that view instead of spinning to the back. The modules sit
- * inside it as neurons, placed along a path that winds up through the
- * volume in teaching order, so it's still the climb the 2D skill map draws. The prerequisite chain is the main axon: a
- * dim tube for the whole route, a bright one built from the stretch the
- * learner has covered (mean mastery, same as the map), and signal pulses
- * travelling along it, bright where it's lit and faint beyond. Thin
- * dendrites join each neuron to its nearest neighbours. Each neuron's glow
- * scales with its own mastery.
- *
- * It turns slowly, leans toward the pointer, pauses while you hover a
- * neuron, and shows that neuron's title and estimate in a label that's
- * clamped to the canvas so it never runs off the edge. Clicking a neuron
- * hands its id back so the dashboard can open the lesson. The list beside
- * the orb is the accessible version; the canvas is decoration.
- *
- * Reduced motion: no rotation, no pulses, no entrance, one frame on demand.
- */
-
 export interface OrbNode {
   id: string;
   title: string;
@@ -70,10 +42,6 @@ function neuronPositions(count: number): THREE.Vector3[] {
   return out;
 }
 
-/* ---- The brain shape, as a signed distance field ------------------------
-   x runs left to right across the hemispheres, y is up, and -z is the
-   front. Everything below is in those units. */
-
 const _p = new THREE.Vector3();
 
 function sdEllipsoid(p: THREE.Vector3, c: [number, number, number], r: [number, number, number]) {
@@ -102,23 +70,12 @@ function sdCapsule(p: THREE.Vector3, a: [number, number, number], b: [number, nu
   return Math.sqrt(dx * dx + dy * dy + dz * dz) - r;
 }
 
-/** Polynomial smooth minimum. Blends two shapes instead of creasing them. */
 function smin(a: number, b: number, k: number): number {
   const h = Math.max(k - Math.abs(a - b), 0) / k;
   return Math.min(a, b) - h * h * k * 0.25;
 }
 
-/**
- * The two halves of the shape, kept separate because they wrinkle
- * differently: the cerebrum has winding gyri, the cerebellum has tight
- * horizontal folia. Negative means inside.
- */
 function brainParts(p: THREE.Vector3): { cerebrum: number; cerebellum: number; stem: number } {
-  // The cerebrum is five overlapping ellipsoids blended together: the long
-  // body, a frontal bulge, the temporal lobes hanging under the front half,
-  // a parietal dome and the occipital pole. Smooth unions so the outline
-  // rolls from lobe to lobe the way a real one does, rather than showing
-  // the seams between spheres.
   const body = sdEllipsoid(p, [0, 0.22, 0.06], [1.0, 0.82, 1.32]);
   const frontal = sdEllipsoid(p, [0, 0.12, -0.86], [0.84, 0.68, 0.72]);
   const temporal = sdEllipsoid(p, [0, -0.36, -0.3], [0.96, 0.38, 0.9]);
@@ -128,7 +85,6 @@ function brainParts(p: THREE.Vector3): { cerebrum: number; cerebellum: number; s
   cerebrum = smin(cerebrum, temporal, 0.18);
   cerebrum = smin(cerebrum, parietal, 0.24);
   cerebrum = smin(cerebrum, occipital, 0.2);
-  // The cerebellum tucks under the occipital lobe, a little back and down.
   const cerebellum = sdEllipsoid(p, [0, -0.6, 0.9], [0.58, 0.36, 0.5]);
   // The stem drops from the middle, angling back slightly.
   const stem = sdCapsule(p, [0, -0.3, 0.42], [0, -1.32, 0.68], 0.19);
@@ -138,15 +94,9 @@ function brainParts(p: THREE.Vector3): { cerebrum: number; cerebellum: number; s
 /** Distance to the brain surface. Negative inside. */
 function brainSdf(p: THREE.Vector3): number {
   const { cerebrum, cerebellum, stem } = brainParts(p);
-  // A small blend radius against the cerebellum keeps the crease between it
-  // and the occipital lobe, which is the detail that says "brain" in profile.
   return smin(smin(cerebrum, cerebellum, 0.07), stem, 0.1);
 }
 
-/**
- * The wrinkles. Winding gyri over the cerebrum, tight horizontal folia over
- * the cerebellum, and the stem stays smooth.
- */
 function gyri(p: THREE.Vector3): number {
   const { cerebrum, cerebellum, stem } = brainParts(p);
   if (stem < cerebrum && stem < cerebellum) return 0;
@@ -173,15 +123,6 @@ function normalAt(p: THREE.Vector3, out: THREE.Vector3): THREE.Vector3 {
   return out.set(dx, dy, dz).normalize();
 }
 
-/**
- * The brain as a dot matrix. Instead of throwing random points at the
- * shape, I walk a regular lattice through its bounding box and keep every
- * lattice point that sits in a thin shell around the wrinkled surface. That
- * regularity is what makes it read as a rendered object rather than dust.
- * Each dot carries a brightness from three things: the fold it's in, how
- * much it faces a light up and to the front, and a slow-pulsing highlight
- * patch or two so the surface feels alive.
- */
 function brainLattice(step: number): {
   positions: Float32Array;
   brightness: Float32Array;
@@ -226,9 +167,6 @@ function brainLattice(step: number): {
   };
 }
 
-/* The dot shader. Size and alpha fall off with view depth, so the far side
-   of the brain recedes instead of drawing over the near side, and the
-   highlight patches pulse on their own phase. */
 const BRAIN_VERTEX = /* glsl */ `
   uniform float uTime;
   uniform float uPixelRatio;
@@ -261,7 +199,6 @@ const BRAIN_FRAGMENT = /* glsl */ `
   }
 `;
 
-/** A faint field of distant stars around the brain, for the constellation feel. */
 function farStars(count: number): Float32Array {
   const arr = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
@@ -275,7 +212,6 @@ function farStars(count: number): Float32Array {
   return arr;
 }
 
-/** A soft radial sprite, drawn once on a 2D canvas and reused for every glow. */
 function useGlowTexture() {
   return useMemo(() => {
     const size = 128;
@@ -301,7 +237,6 @@ function easeOutBack(x: number) {
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
 }
 
-/** Keep a label inside the canvas. Labels are centred, so the margin is half a label. */
 function clampedPosition(el: THREE.Object3D, camera: THREE.Camera, size: { width: number; height: number }): [number, number] {
   const v = new THREE.Vector3().setFromMatrixPosition(el.matrixWorld).project(camera);
   const x = ((v.x + 1) / 2) * size.width;
@@ -322,9 +257,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
   const glow = useGlowTexture();
   const { invalidate, camera, size } = useThree();
 
-  // Fit the brain to the width it's been given. The side view is about
-  // 3.3 units long, so the camera backs off until half of that fits in
-  // half the view, whatever the column's aspect ratio is.
   useEffect(() => {
     const cam = camera as THREE.PerspectiveCamera;
     const aspect = size.width / Math.max(1, size.height);
@@ -346,8 +278,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
   const brainMat = useRef<THREE.ShaderMaterial>(null);
   const brainUniforms = useMemo(() => ({ uTime: { value: 0 }, uPixelRatio: { value: 1 } }), []);
 
-  // The axon. A dim tube for the whole route, a bright one for the covered
-  // stretch, both built from the same Catmull-Rom curve through the neurons.
   const { track, lit, curve } = useMemo(() => {
     if (positions.length < 2) return { track: null, lit: null, curve: null };
     const curve = new THREE.CatmullRomCurve3(positions, false, "catmullrom", 0.6);
@@ -361,8 +291,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
     return { track, lit, curve };
   }, [positions, progress]);
 
-  // Dendrites: each neuron to its two nearest that aren't already its chain
-  // neighbours. Faint, so the axon stays the story.
   const dendrites = useMemo(() => {
     const pairs = new Set<string>();
     const pts: number[] = [];
@@ -400,9 +328,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
       brainMat.current.uniforms.uPixelRatio!.value = state.gl.getPixelRatio();
     }
 
-    // Open on the side view (the brain faces left, like a textbook), then
-    // sway gently around it so it never turns its back on you. Hovering
-    // holds it still, and the pointer adds a small lean.
     const side = Math.PI / 2;
     if (!reduced) {
       const target = hovered ? sway.current : Math.sin(t * 0.22) * 0.55;
@@ -413,7 +338,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
       g.rotation.y = side;
     }
 
-    // Entrance: each neuron pops in on its own beat.
     nodeRefs.current.forEach((n, i) => {
       if (!n) return;
       const s = reduced ? 1 : easeOutBack(Math.max(0, Math.min(1, (t - 0.15 - i * 0.07) / 0.6)));
@@ -436,8 +360,6 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
       });
     }
 
-    // The traveller breathes at the head of the lit stretch, and the
-    // frontier's halo pulses with it.
     if (!reduced) {
       const k = 1 + Math.sin(state.clock.elapsedTime * 2.2) * 0.12;
       traveller.current?.scale.setScalar(k);
@@ -470,11 +392,9 @@ function Scene({ nodes, progress, frontierId, hoveredId, onHover, onSelect, redu
           blending={THREE.AdditiveBlending}
         />
       </points>
-      {/* A soft halo behind the whole brain, like the reference's blue glow. */}
       <sprite scale={[4.6, 3.4, 1]} position={[0, -0.05, -0.2]}>
         <spriteMaterial map={glow} color="#3d4fd6" transparent opacity={0.22} depthWrite={false} blending={THREE.AdditiveBlending} />
       </sprite>
-      {/* Distant stars, so the brain hangs in a sky rather than a box. */}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[far, 3]} />

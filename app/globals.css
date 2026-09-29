@@ -2,20 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * The "Void-Plus" palette.
- * I pulled these values out of the Stitch prototype: DESIGN.md is the prose
- * source, and the landing and dashboard HTML told me how they're actually
- * used. Where the prototype and the build prompt disagreed, the prototype won.
- * The reasoning is in docs/DECISIONS.md.
- */
 :root {
   --bg-deep: #050507; /* level 0, the document body. Never pure black. */
   --bg-base: #0a0a0f; /* level 1, the main workspace containers */
   --bg-elevated: #101018; /* level 2, floating panels and interactive cards */
-  /* Translucent versions of the elevation levels. The aurora behind them is a
-     soft gradient with no fine detail, so plain alpha already reads as glass.
-     And that saves me a backdrop-filter on every single card. */
   --bg-base-veil: rgba(10, 10, 15, 0.66);
   --bg-elevated-veil: rgba(16, 16, 24, 0.74);
   --surface-glass: rgba(255, 255, 255, 0.04); /* always goes with blur(20px) */
@@ -26,24 +16,20 @@
 
   --fg-primary: #e4e1ed;
   --fg-secondary: #908f9e;
-  /* 4.6:1 on every elevation level (was #5b5b6b at 3:1, which failed AA
-     for the small labels it's used on). Still clearly a step below secondary. */
   --fg-muted: #82829a;
 
-  --accent: #5e6ad2; /* indigo. Actions, focus, the active path */
-  --accent-bright: #bdc2ff; /* the indigo I use for text and links on dark */
+  --accent: #5e6ad2;
+  --accent-bright: #bdc2ff;
   --accent-glow: rgba(94, 106, 210, 0.25);
 
-  --mastery: #2dd4bf; /* teal. Progress, correct, mastered */
+  --mastery: #2dd4bf;
   --mastery-bright: #44e2cd; /* teal for data text on dark */
   --mastery-glow: rgba(45, 212, 191, 0.25);
 
-  --warning: #ffb955; /* amber. Remediation, fading skills, soft losses */
-  --danger: #ffb4ab; /* a soft red. Never harsh, never flashed at anyone */
+  --warning: #ffb955;
+  --danger: #ffb4ab;
   --danger-deep: #93000a; /* ghost backgrounds behind danger text */
 
-  /* Candle colours. Colour-blind mode swaps these two, so any chart has to
-     read these vars and never the raw mastery or danger tokens. */
   --bull: #2dd4bf;
   --bear: #ffb4ab;
 }
@@ -53,9 +39,6 @@
   --bear: #f59e0b;
 }
 
-/* The body typeface. Inter by default, Atkinson Hyperlegible when the
-   readable-font setting is on (users/{uid}.settings.readableFont). Tailwind's
-   font-sans reads this variable, so the whole app follows. */
 :root {
   --font-sans: var(--font-inter);
 }
@@ -63,11 +46,6 @@
   --font-sans: var(--font-atkinson);
 }
 
-/* ── High contrast ─────────────────────────────────────────────────────────
-   users/{uid}.settings.highContrast. The palette gets pushed apart: a
-   true-black ground, white text, secondary text lifted well past AA, solid
-   panels instead of veils, borders you can actually see, and no blur. Links
-   inside prose are underlined so colour isn't the only cue. */
 [data-contrast="high"] {
   --bg-deep: #000000;
   --bg-base: #07070b;
@@ -111,9 +89,6 @@
   outline-offset: 3px;
 }
 
-/* ── Comfortable reading ───────────────────────────────────────────────────
-   users/{uid}.settings.comfortableReading. Looser leading, a touch more
-   letter and word spacing, and a shorter measure on the lesson prose. */
 [data-reading="comfortable"] [data-prose] {
   line-height: 1.9;
   letter-spacing: 0.012em;
@@ -130,10 +105,6 @@
   margin-top: 2em;
 }
 
-/* ── Calm mode ─────────────────────────────────────────────────────────────
-   users/{uid}.settings.calmMode. The decorative layers go: the aurora and
-   candle field, the marquee, the sheen. The 3D scenes check the same flag
-   in code and render their still versions instead. */
 [data-calm="on"] [data-ambient],
 [data-calm="on"] [data-decor] {
   display: none !important;
@@ -144,8 +115,6 @@
   animation: none !important;
 }
 
-/* The skip link. Off screen until it's focused, then it drops in at the
-   top-left over everything else. */
 .skip-link {
   position: fixed;
   top: 12px;
@@ -169,8 +138,6 @@
 @layer base {
   html {
     color-scheme: dark;
-    /* Anchor links in the landing nav glide instead of jumping. The
-       reduced-motion rules further down put this back to auto. */
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
@@ -188,8 +155,6 @@
     color: var(--fg-primary);
   }
 
-  /* A thin scrollbar that sits inside the void rather than a fat grey bar
-     that fights with the whole aesthetic. */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -207,8 +172,6 @@
     background-color: rgba(255, 255, 255, 0.24);
   }
 
-  /* My one exception to the 1px hairline rule. Focus is always 2px because
-     people need to be able to see it. */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -242,8 +205,6 @@
       inset 0 0 0 1px rgba(255, 255, 255, 0.03);
   }
 
-  /* Teal-to-indigo gradient text. I use this sparingly, on the one phrase in
-     a headline that earns it, because everywhere would make it wallpaper. */
   .text-gradient {
     background-image: linear-gradient(115deg, var(--mastery-bright) 0%, var(--accent-bright) 100%);
     -webkit-background-clip: text;
@@ -251,8 +212,6 @@
     color: transparent;
   }
 
-  /* A band of light that sweeps across a primary button on hover. It's the
-     one bit of "shine" I allow myself, and it runs once per hover. */
   .tm-sheen {
     position: relative;
     overflow: hidden;
@@ -307,10 +266,6 @@
   scroll-behavior: auto !important;
 }
 
-/* ── Ambient background ────────────────────────────────────────────────────
-   Aurora blobs, a drifting grid, and three depths of candlestick silhouettes.
-   Only transform and background-position ever animate, so the whole thing
-   stays on the compositor and never touches the main thread. */
 .tm-blob,
 .tm-grid,
 .tm-candles {
@@ -321,9 +276,6 @@
   border-radius: 9999px;
   transform: translate3d(0, 0, 0);
 }
-/* No mask on these. I tried masking a full-screen animated layer and it forced
-   a re-raster every frame (about 18fps). The vignette on top of the stack
-   handles the edge fade instead, and that costs nothing because it never moves. */
 .tm-grid {
   inset: -10%;
 }
@@ -348,8 +300,6 @@
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(56px, 56px, 0); }
 }
-/* Candle layers cross the viewport and reset. The field is wider than the
-   screen, so you never see the wrap. */
 @keyframes tm-candles-pan {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-8%, -3%, 0); }
@@ -357,8 +307,6 @@
 
 .tm-blob-drift-a { animation: tm-drift-a 42s ease-in-out infinite; }
 .tm-blob-drift-b { animation: tm-drift-b 55s ease-in-out infinite; }
-/* The centre blob is positioned from its own middle, and the drift keyframes
-   carry that translate so it doesn't jump when the animation kicks in. */
 .tm-blob-centre {
   transform: translate3d(-50%, -50%, 0);
 }
@@ -371,9 +319,6 @@
 .tm-candles-mid  { animation: tm-candles-pan 120s ease-in-out infinite alternate; }
 .tm-candles-near { animation: tm-candles-pan  78s ease-in-out infinite alternate; }
 
-/* The global reduced-motion rule clamps everything to 150ms, and that would
-   make these snap instead of settle. So I stop them completely. The
-   composition still reads, it just holds still. */
 @media (prefers-reduced-motion: reduce) {
   .tm-blob-drift-a, .tm-blob-drift-b, .tm-blob-drift-c,
   .tm-grid-drift,
@@ -391,9 +336,6 @@
   animation: none !important;
 }
 
-/* ── Landing page set pieces ───────────────────────────────────────────────
-   A ticker of module names under the hero, and the little scroll cue. Both
-   are pure CSS, so they cost nothing and stop cleanly under reduced motion. */
 @keyframes tm-marquee {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
@@ -417,10 +359,6 @@
   animation: tm-scroll-cue 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
-/* ── Signed-in surfaces ────────────────────────────────────────────────────
-   An orbit ring around the dashboard's mastery ring, the slow conic spin
-   behind the profile avatar, and the pulse on anything that needs attention.
-   All transform or opacity only, all stopped under reduced motion. */
 @keyframes tm-orbit {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -475,11 +413,6 @@
   animation: none !important;
 }
 
-/* ── Skill constellation ───────────────────────────────────────────────────
-   Small, local SVG motion. A handful of little elements, not full-screen
-   layers, so the compositor barely notices (docs/DECISIONS.md). */
-
-/* Energy travelling forward along the stretch of route you've already covered. */
 @keyframes tm-route-flow {
   from { stroke-dashoffset: 0; }
   to   { stroke-dashoffset: -0.134; }
@@ -488,7 +421,6 @@
   animation: tm-route-flow 2.6s linear infinite;
 }
 
-/* Where you are on the route right now. */
 @keyframes tm-traveller {
   0%, 100% { opacity: 0.85; transform: scale(1); }
   50%      { opacity: 1;    transform: scale(1.14); }
@@ -499,7 +431,6 @@
   animation: tm-traveller 2.2s ease-in-out infinite;
 }
 
-/* The halo breathes on the frontier node and on anything in remediation. */
 @keyframes tm-node-pulse {
   0%, 100% { opacity: 0.10; transform: scale(0.94); }
   50%      { opacity: 0.26; transform: scale(1.10); }
@@ -510,8 +441,6 @@
   animation: tm-node-pulse 3s ease-in-out infinite;
 }
 
-/* Each node bobs on its own phase so the map feels alive instead of pinned
-   to the page. Three pixels of travel. You feel it more than you see it. */
 @keyframes tm-node-float {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-3px); }
@@ -538,12 +467,6 @@
 }
 
 
-/* ── Entrances ─────────────────────────────────────────────────────────────
-   Page entrances (components/motion/stagger.tsx) are CSS so the server HTML
-   paints before any script runs. .tm-rise fades and rises; a .tm-stagger
-   parent hands its direct .tm-rise children 60ms steps, eight deep, plus the
-   page's own base delay. .tm-reveal is the scroll-driven version for long
-   columns, progressive: browsers without animation-timeline just show it. */
 @keyframes tm-rise {
   from { opacity: 0; transform: translateY(var(--tm-rise, 18px)); }
   to   { opacity: 1; transform: none; }
@@ -561,9 +484,6 @@
 .tm-stagger > .tm-rise:nth-child(7) { --tm-delay: calc(var(--tm-base, 0ms) + 360ms); }
 .tm-stagger > .tm-rise:nth-child(n + 8) { --tm-delay: calc(var(--tm-base, 0ms) + 420ms); }
 
-/* The reveal moves but never fades: a block straddling the bottom edge of the
-   viewport at partial opacity is text at reduced contrast, and Lighthouse
-   rightly flagged it. So it settles into place as it enters, fully opaque. */
 @keyframes tm-settle {
   from { transform: translateY(var(--tm-rise, 16px)); }
   to   { transform: none; }
@@ -573,8 +493,6 @@
   .tm-reveal {
     animation: tm-settle linear both;
     animation-timeline: view();
-    /* Settled by the time its top edge is 220px into the viewport, whatever
-       its height; a block already on screen at load is simply in place. */
     animation-range: entry 0px entry 220px;
   }
 }

@@ -45,8 +45,6 @@ describe("grade", () => {
 });
 
 describe("an answer of the wrong type", () => {
-  // The quiz can only produce an answer shaped for the question on screen,
-  // but the grader must never crash or award a mark if that ever fails.
   const keys: AnswerKey[] = [
     { type: "mcq", correct: 0 },
     { type: "multi", correct: [0] },

@@ -1,13 +1,3 @@
-/**
- * The constellation layout, shared by the skill tree and the
- * model-initialisation moment.
- *
- * The modules form a strict prerequisite chain, so I draw the map as a
- * climb: a winding ascent from bottom-left to top-right. Reading it left to
- * right is reading the curriculum in order, and gaining height is gaining
- * mastery. The layout carries the meaning, not just the labels.
- */
-
 export interface NodePosition {
   x: number;
   y: number;
@@ -15,8 +5,6 @@ export interface NodePosition {
 
 export const CANVAS = { width: 1000, height: 470 } as const;
 
-/** In curriculum order. Each step rises overall but dips between peaks, so
- *  no two consecutive nodes ever sit on one flat line. */
 export const NODE_POSITIONS: Record<string, NodePosition> = {
   "kc-candle-anatomy": { x: 78, y: 396 },
   "kc-liquidity": { x: 196, y: 306 },
@@ -29,16 +17,6 @@ export const NODE_POSITIONS: Record<string, NodePosition> = {
   "kc-weekly-profiles": { x: 952, y: 96 },
 };
 
-/**
- * Where every node goes, given the modules in teaching order.
- *
- * Nine modules use the hand-tuned climb above, which is what the report's
- * figures show. Anything longer switches to a switchback: the first half
- * climbs left to right along the bottom, the route hairpins at the right
- * edge, and the second half climbs back right to left along the top. It
- * keeps the "gaining height is gaining mastery" reading, and it keeps the
- * nodes far enough apart for their titles.
- */
 export function layoutPositions(ids: string[]): Record<string, NodePosition> {
   const out: Record<string, NodePosition> = {};
   if (ids.length <= 9 && ids.every((id) => NODE_POSITIONS[id])) {
@@ -72,17 +50,9 @@ export function positionFor(kcId: string, index: number): NodePosition {
   );
 }
 
-/**
- * A smooth Catmull-Rom spline through the waypoints, emitted as cubic
- * beziers. The journey has to read as one continuous route. When I tried
- * straight segments between nodes it looked like a diagram of unrelated
- * points.
- */
 export function journeyPath(
   points: NodePosition[],
   tension = 0.5,
-  /** Clamp the control points' y to this range, so a step in the data can't
-   *  make the curve overshoot past the data itself. */
   bounds?: { minY: number; maxY: number },
 ): string {
   if (points.length < 2) return "";
@@ -103,13 +73,6 @@ export function journeyPath(
   return d;
 }
 
-/**
- * Walk the prerequisite chain from the root so the modules come out in
- * teaching order. Sorting by prerequisite count was my first attempt and it
- * was wrong: every module after the first has exactly one prerequisite, so
- * the order came out arbitrary. Anything off the main chain keeps a stable
- * spot at the end.
- */
 export function orderByChain<T extends { id: string; prereqIds: string[] }>(kcs: T[]): T[] {
   const nextOf = new Map<string, T>();
   for (const k of kcs) for (const pre of k.prereqIds) nextOf.set(pre, k);

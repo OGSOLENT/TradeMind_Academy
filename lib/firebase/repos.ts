@@ -15,16 +15,6 @@ import { CONSENT_VERSION, defaultSettings, type UserProfile } from "./types";
 import { withRetry } from "./errors";
 import { parseDocs, parseKc, parseLesson, parseProfile } from "@/lib/firebase/schemas";
 
-/**
- * The Firestore repositories. Content collections are read-only from the
- * client (the rules only let an admin write them), and user docs all live
- * under users/{uid}.
- */
-
-/* The three profile calls retry on transient transport errors, because they
-   are the first thing a fresh page asks Firestore for and the first attempt
-   is the one most likely to catch the connection still settling. */
-
 export async function createUserProfile(db: Firestore, uid: string, displayName: string, isAdult: boolean) {
   await withRetry(() =>
     setDoc(doc(db, "users", uid), {

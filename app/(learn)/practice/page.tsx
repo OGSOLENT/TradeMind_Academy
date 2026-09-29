@@ -29,17 +29,6 @@ interface Line {
 /** How long each line holds before the next one lands. */
 const BEAT_MS = 380;
 
-/**
- * The practice launcher, which is the entry point to the adaptive loop.
- * Routing decides every single question: the pool is restricted to UNLOCKED
- * KCs, and then /lib/routing picks the lowest-mastery KC and walks the
- * difficulty ladder after each answer.
- *
- * The screen it shows while that happens is a readout of the real decisions,
- * one line at a time: how many topics are open, which one the engine chose,
- * what it estimates, what difficulty it starts you on. It's the visible
- * mind again, and it costs about a second and a half.
- */
 export default function PracticePage() {
   useTitle("Practise");
   const router = useRouter();
@@ -92,8 +81,6 @@ export default function PracticePage() {
 
       startAdaptive(user.uid, sessionId, pool, unlockedKcs, mastery, SESSION_LENGTH);
 
-      // Read back what the engine actually decided for the first question,
-      // so the readout is the truth and not a story about it.
       const state = useQuizSession.getState();
       const first = state.items[0];
       const reason = first ? state.reasons[first.id] : undefined;
@@ -155,8 +142,6 @@ export default function PracticePage() {
           The engine picks every question from your live estimates. Here&apos;s what it&apos;s doing.
         </p>
 
-        {/* The readout. Each line lands with a rise, and the caret keeps
-            blinking on the last one until the session's ready. */}
         <ol className="num mt-6 min-h-[132px] space-y-2 text-sm" aria-live="polite">
           <AnimatePresence initial={false}>
             {lines.map((line, i) => (

@@ -11,14 +11,6 @@ import type { Walkthrough } from "./types";
 
 export type { Walkthrough, Step, Anno, Candle, Tone } from "./types";
 
-/**
- * Every walkthrough, by id. A lesson references one (or more) by id in its
- * meta line and the generator turns that into a walkthrough block; the
- * lesson page looks the spec up here at render time. Specs are code, not
- * Firestore, because they're built (the candles are computed from control
- * points) and because a typo in a bar index should fail the typecheck, not
- * a learner's screen.
- */
 const ALL: Walkthrough[] = [
   ...foundations,
   ...marketStructure,

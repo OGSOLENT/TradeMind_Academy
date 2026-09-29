@@ -10,7 +10,6 @@ interface McqProps {
   disabled?: boolean;
   /** Once graded, which index was correct. It drives the reveal styling. */
   reveal?: { correct: number; chosen: number } | null;
-  /** The multi-select version: every correct index. Chosen-and-wrong goes amber, missed-and-correct goes teal. */
   revealSet?: number[] | null;
   /** multi mode uses checkbox semantics instead of radio. */
   multi?: boolean;

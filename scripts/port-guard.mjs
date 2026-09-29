@@ -1,12 +1,3 @@
-/**
- * Refuse to start a dev server on a port that's already taken.
- *
- * Next's default is to hop to the next free port, and that's how I ended up
- * with two dev servers writing into the same .next folder and corrupting
- * each other's chunks. So both dev scripts call this first. If the port is
- * busy the app is almost certainly already running, and the message says
- * exactly what to do about it.
- */
 import net from "node:net";
 
 export function portInUse(port) {

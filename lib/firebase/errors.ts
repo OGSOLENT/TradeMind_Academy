@@ -1,16 +1,3 @@
-/**
- * Small helpers for the errors Firebase throws at the client.
- *
- * The SDK's messages are written for developers ("Failed to get document
- * because the client is offline"), so `describeFirebaseError` turns the
- * common ones into a sentence a learner can act on and keeps the code in
- * brackets so I can still diagnose it from a screenshot.
- *
- * `withRetry` handles the transient class: the first Firestore call from a
- * freshly loaded page sometimes fails while the transport is still working
- * out whether it can stream, and a second attempt a moment later succeeds.
- */
-
 export function firebaseCode(err: unknown): string {
   return (err as { code?: string })?.code ?? "";
 }

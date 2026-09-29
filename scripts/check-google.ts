@@ -1,14 +1,3 @@
-/**
- * Reports whether Google sign-in is live on the production Firebase project.
- *
- *   npx tsx scripts/check-google.ts
- *
- * It asks createAuthUri for a Google OAuth URL, which is exactly what the
- * popup handler does. If the provider is off, Identity Toolkit answers
- * OPERATION_NOT_ALLOWED. The older getProjectConfig.idpConfig field this
- * script used to read isn't returned any more, and it was giving me a false
- * negative.
- */
 import { readFileSync } from "node:fs";
 
 function readEnv(name: string): string {

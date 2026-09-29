@@ -35,7 +35,6 @@ interface MistakeGroup {
   lastMissed: number;
 }
 
-/** The mistake bank. Everything you've missed, grouped by KC, ready to re-drill. */
 export default function MistakesPage() {
   useTitle("Mistake bank");
   const router = useRouter();

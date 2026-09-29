@@ -1,17 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { fetchAnswerKey } from "./helpers";
 
-/**
- * The Phase 2 done criterion: someone can sign up (through the 18+ gate),
- * give GDPR consent, and read a full seeded lesson with the video slot.
- *
- * It needs the Firebase Emulator Suite and seeded content:
- *   npm run emulators   (auth on :9099, firestore on :8080)
- *   npm run seed
- * The suite skips itself when the emulator isn't reachable, which is what
- * happens on default CI.
- */
-
 async function emulatorUp(): Promise<boolean> {
   try {
     const res = await fetch("http://localhost:9099/", { signal: AbortSignal.timeout(1500) });
@@ -41,12 +30,10 @@ test.describe("auth → consent → lesson journey", () => {
     await page.getByRole("checkbox", { name: /18 or older/ }).check();
     await page.getByRole("button", { name: "Create account" }).click();
 
-    // The consent screen, with real GDPR copy and a Decline button that actually works.
     await expect(page.getByRole("heading", { name: "Research participation & data" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Decline" })).toBeEnabled();
     await page.getByRole("button", { name: "I consent — start learning" }).click();
 
-    // The placement offer comes first (Phase 4). Skipping starts you at the prior.
     await expect(
       page.getByRole("heading", { name: /map what you already know/i }),
     ).toBeVisible({ timeout: 20_000 });
@@ -65,15 +52,9 @@ test.describe("auth → consent → lesson journey", () => {
     await expect(page.locator("table").first()).toBeVisible();
     await expect(page.locator("blockquote").first()).toBeVisible();
 
-    // The recorded lesson also carries a walkthrough after the prose, and
-    // its text alternative is the chart's accessible version.
     await page.getByRole("button", { name: "Describe this walkthrough" }).click();
     await expect(page.getByText(/Simulated prices built to show the idea/)).toBeVisible();
 
-    // Inline knowledge check: answer it correctly and it collapses to the tick
-    // chip. The right option is read from the seeded bank rather than written
-    // in here, because which item a lesson uses, and where its answer sits,
-    // are both generated (scripts/generate-content.ts, lib/content/debias.ts).
     const check = page.locator("[data-check-item-id]");
     await expect(check).toBeVisible();
     const checkItemId = await check.getAttribute("data-check-item-id");
@@ -91,8 +72,6 @@ test.describe("auth → consent → lesson journey", () => {
     // Every lesson in the module is reachable from the footer.
     await expect(page.locator('nav[aria-label="Lessons in this module"] a')).toHaveCount(2);
 
-    // A lesson without a recording opens on a stepped walkthrough instead of
-    // a placeholder, and the steps advance from the keyboard and the button.
     await page.goto("/lesson/26-break-of-structure-and-the-market-structure-shift");
     const walkthrough = page.locator("#walkthrough");
     await expect(walkthrough).toBeVisible();

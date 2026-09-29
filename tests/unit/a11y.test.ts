@@ -2,14 +2,6 @@ import { afterEach, describe, expect, it } from "vitest";
 import { PREFS_BOOT_SCRIPT, STORAGE_KEY } from "@/lib/a11y-boot";
 import { applyPrefsToDocument, defaultPrefs, prefsFromSettings, useA11y, type A11yPrefs } from "@/lib/a11y-prefs";
 
-/*
- * Accessibility preferences are applied twice: by an inline script that
- * runs before React (so a high-contrast learner never sees a flash of the
- * normal theme) and by applyPrefsToDocument once the app is running. The
- * two are separate copies of the same logic, and the source says "keep
- * this in step" by hand. This test makes that a check instead of a hope.
- */
-
 const root = () => document.documentElement;
 
 function snapshot() {

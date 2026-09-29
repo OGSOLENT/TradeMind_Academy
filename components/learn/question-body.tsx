@@ -8,14 +8,6 @@ import { OrderingList } from "@/components/learn/questions/ordering";
 import { TfConfidence } from "@/components/learn/questions/tf-confidence";
 import { AnnotationChart, type AnnotationValue } from "@/components/learn/questions/annotation";
 
-/**
- * The bit of a question that's the same wherever it's asked: the in-progress
- * answer, how it turns into something the grader understands, and the
- * renderer for each of the six item types. The quiz session and the
- * end-of-lesson check both use this, so a question looks and behaves the
- * same in both places.
- */
-
 export interface Working {
   mcq: number | null;
   multi: number[];

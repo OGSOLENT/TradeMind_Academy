@@ -13,17 +13,11 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["lib/**/*.ts"],
-      // The floor for lib/ as a whole, and much higher bars for the modules
-      // the dissertation's claims rest on. CI fails if any of them slips.
-      // The Firebase adapters and React hooks are left to the emulator
-      // integration tests and the browser tests, which is why the overall
-      // floor sits below the engine's.
       thresholds: {
         lines: 70,
         branches: 60,
         functions: 65,
         statements: 70,
-        // Guardrail 7.3: the BKT maths has to hold 100% unit coverage.
         "lib/bkt/**": { lines: 100, functions: 100, statements: 100, branches: 90 },
         "lib/mastery/**": { lines: 100, functions: 100, statements: 100, branches: 85 },
         "lib/quiz/**": { lines: 100, functions: 100, statements: 100, branches: 80 },

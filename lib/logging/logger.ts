@@ -1,28 +1,3 @@
-/**
- * The response logger. I treat it like a payments system (BUILD_PROMPT
- * section 0.2), because the response log IS the research dataset.
- *
- * enqueue() persists to localStorage, returns straight away so the UI can be
- * optimistic, then flushes in the background with exponential backoff. A
- * failed write surfaces through onError (the UI shows a toast) and the event
- * goes BACK in the queue. Nothing is ever dropped. Anything unflushed
- * survives a refresh via localStorage and flushes on the next start() or
- * online event.
- *
- * One exception to "retry until it lands": an error the server will never
- * accept however often it's retried (the rules rejecting the row, say).
- * The queue is strictly ordered, so before the September audit a single
- * such event sat at the head forever and silently blocked every answer
- * behind it. Now the transport can mark an error as permanent; that event
- * moves to a separate dead-letter store, persisted like the queue, so it is
- * still never dropped, and the queue carries on. Dead letters get one more
- * try, at the back of the queue, each time the logger starts, in case the
- * "permanent" error was a misclassified transient one.
- *
- * No Firebase in here. The transport is injected, so the unit tests drive
- * the queue with a fake sender and the app injects a Firestore addDoc one.
- */
-
 export interface ResponseEvent {
   uid: string;
   sessionId: string;
@@ -87,14 +62,12 @@ export class ResponseLogger {
     return this.dead.length;
   }
 
-  /** Append an event. Returns immediately, so the UI can carry on. */
   enqueue(event: ResponseEvent): void {
     this.queue.push({ id: `${event.ts}-${Math.random().toString(36).slice(2, 8)}`, event });
     this.persist();
     void this.flush();
   }
 
-  /** Flush the queue in order. If a flush is already running, callers wait on that one. */
   flush(): Promise<void> {
     if (!this.inFlight) {
       this.inFlight = this.drain().finally(() => {
@@ -115,8 +88,6 @@ export class ResponseLogger {
         this.opts.onFlushed?.(this.queue.length);
       } catch (err) {
         if (this.opts.isPermanent?.(err)) {
-          // Retrying can't help, and holding it at the head would block
-          // everything behind it. Park it and keep going.
           this.queue.shift();
           this.dead.push(head);
           this.persist();
@@ -165,7 +136,6 @@ export class ResponseLogger {
     }
   }
 
-  /** Call this once when the app starts. It resumes any persisted queue and retries on reconnect. */
   start(): void {
     // One more try for anything parked last time, behind the live queue.
     if (this.dead.length) {

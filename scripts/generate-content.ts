@@ -1,16 +1,3 @@
-/**
- * Build content/level1.json from the real curriculum.
- *
- * The source of truth is content/lessons/*.md, the written lessons I derived
- * from the video series. Edit the markdown, run this again, reseed. That's
- * the whole workflow.
- *
- * The structure is the knowledge components (one per module) in a strict
- * prerequisite chain, the lessons spread across them, and the authored
- * questions from scripts/level1-items.ts.
- *
- * Run: npx tsx scripts/generate-content.ts
- */
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { Item, Kc, Lesson, LessonBlock, Level1Content } from "../lib/content/types";
@@ -20,27 +7,15 @@ import { pickAssessment } from "../lib/assessment";
 import { WALKTHROUGHS } from "../lib/walkthroughs";
 import { CASE_STUDIES } from "../lib/case-studies";
 
-// Where the recordings are served from. They're static files inside the
-// app now (public/videos-web, written by scripts/compress-videos.mjs), so
-// the same relative path works on the dev server and on the deployed site
-// and there's no second service to go down. It replaced a Vercel Blob
-// store, which was suspended for going over its free allowance on 22
-// September 2026 and 403'd every recording on the live site.
-//
-// content/video-urls.json is still honoured if it exists, so the
-// recordings can be moved to a CDN later without touching this file.
 const VIDEO_URLS: Record<string, string> = existsSync("content/video-urls.json")
   ? (JSON.parse(readFileSync("content/video-urls.json", "utf8")) as Record<string, string>)
   : {};
 
-// The diagram component is a client module with framer in it, so the
-// generator keeps its own list of ids rather than importing it.
 const DIAGRAM_IDS = new Set(["timeframe-stack", "session-clock", "instrument-map", "prop-firm-funnel"]);
 
 const COURSE_ID = "trading-foundations";
 const LESSON_DIR = "content/lessons";
 
-/** The modules, in teaching order. Each one requires the one before it. Sixteen since September 2026. */
 const MODULES: Array<{ id: string; title: string; description: string; lessons: string[] }> = [
   {
     id: "kc-candle-anatomy",
@@ -172,7 +147,6 @@ interface ParsedLesson {
   tail: string;
 }
 
-/** Split a lesson's markdown into the body and the reference tail, dropping the meta lines. */
 function parseLesson(file: string): ParsedLesson {
   const raw = readFileSync(path.join(LESSON_DIR, file), "utf8");
   const lines = raw.split("\n");
@@ -181,8 +155,6 @@ function parseLesson(file: string): ParsedLesson {
   const title = (titleLine.split("—")[1] ?? titleLine.replace(/^#\s*/, "")).trim();
   const key = /^([0-9]{2}[a-z]?)-/.exec(file)?.[1] ?? file.slice(0, 2);
   const video = /Video:\s*`([^`]+\.mp4)`/.exec(raw)?.[1] ?? null;
-  // Walkthrough: `id` or Walkthrough: `id`, `id`. Each id has to exist in
-  // lib/walkthroughs, and the check below fails the build if it doesn't.
   const walkthroughs = (/Walkthrough:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
     .split(",")
     .map((s) => s.replace(/`/g, "").trim())
@@ -190,8 +162,6 @@ function parseLesson(file: string): ParsedLesson {
   for (const id of walkthroughs) {
     if (!WALKTHROUGHS[id]) throw new Error(`${file}: unknown walkthrough "${id}"`);
   }
-  // CaseStudy: `id`. A real-chart example, cut from history by
-  // scripts/find-case-studies.ts; it has to exist in lib/case-studies.
   const caseStudies = (/CaseStudy:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
     .split(",")
     .map((s) => s.replace(/`/g, "").trim())
@@ -199,7 +169,6 @@ function parseLesson(file: string): ParsedLesson {
   for (const id of caseStudies) {
     if (!CASE_STUDIES[id]) throw new Error(`${file}: unknown case study "${id}"`);
   }
-  // Diagram: `id`. The ids are the keys of DIAGRAMS in components/learn/diagram.tsx.
   const diagrams = (/Diagram:\s*((?:`[^`]+`\s*,?\s*)+)/.exec(raw)?.[1] ?? "")
     .split(",")
     .map((s) => s.replace(/`/g, "").trim())
@@ -208,9 +177,6 @@ function parseLesson(file: string): ParsedLesson {
     if (!DIAGRAM_IDS.has(id)) throw new Error(`${file}: unknown diagram "${id}"`);
   }
 
-  // I drop the h1, the meta line, the standing disclaimer (the app renders
-  // its own banner), the "Next:" navigation link, and the self-check section
-  // because those questions became real items.
   const kept: string[] = [];
   let section = "";
   for (const line of lines) {
@@ -236,21 +202,11 @@ function parseLesson(file: string): ParsedLesson {
 function buildLesson(parsed: ParsedLesson, kc: Kc, checkItemId: string | null): Lesson {
   const blocks: LessonBlock[] = [];
 
-  // The order is visuals first, then the prose. A recording, if there is
-  // one; then every walkthrough; then the real-chart case study; then the
-  // lesson. The page hides the recording where the video files aren't
-  // hosted, and because the walkthrough sits right behind it, a lesson
-  // whose video is missing looks exactly like a lesson that never had one.
-  // There is no "coming soon" slot any more: a lesson with no video and no
-  // walkthrough simply starts with its prose.
   if (parsed.video) blocks.push({ kind: "video", poster: `/posters/${kc.id}.svg` });
   for (const id of parsed.walkthroughs) blocks.push({ kind: "walkthrough", id });
   for (const id of parsed.caseStudies) blocks.push({ kind: "caseStudy", id });
   for (const id of parsed.diagrams) blocks.push({ kind: "diagram", id });
   blocks.push({ kind: "markdown", md: parsed.main });
-  // The generic module figure only where there's no walkthrough to do the
-  // job properly, and never for the instruments module, where a simulated
-  // candle chart would illustrate nothing.
   if (parsed.walkthroughs.length === 0 && parsed.caseStudies.length === 0 && kc.id !== "kc-instruments") {
     blocks.push({
       kind: "figure",
@@ -300,14 +256,8 @@ function main() {
       authored.push({ id: `${kc.id}-item-${i + 1}`, kcId: kc.id, ...seed });
     });
   }
-  // Authoring by hand leaves positional tells (84% of the MCQ answers were
-  // option 2, and every ordering item arrived already in its answer order).
-  // This spreads them deterministically, seeded by item id. lib/content/debias.ts
-  // explains why it happens here and not in the browser.
   const items: Item[] = debiasItems(authored);
 
-  // Which item each module contributes to the post-test, from the same
-  // function the post-test page uses, so the two can't drift apart.
   const eligible = items.filter((it) => it.isPretestEligible);
   const postTestItemByKc = new Map(
     pickAssessment(kcs, eligible, "B").map((it) => [it.kcId, it.id] as const),
@@ -317,19 +267,6 @@ function main() {
   const lessons: Lesson[] = [];
   MODULES.forEach((m, mi) => {
     const kc = kcs[mi]!;
-    // Each lesson gets an MCQ as its inline check, but NEVER the module's
-    // post-test question. The inline check shows the answer and explains
-    // it, so reusing a post-test item would mean measuring recall of a
-    // lesson slide rather than learning, and the post-test is what the
-    // normalised gain in the evaluation is computed from. Nine of the
-    // sixteen post-test questions were being leaked this way.
-    //
-    // Placement (form A) is fair game: the learner meets it once, before
-    // the lessons, which is what a pre-test is for. Preference order is
-    // therefore: MCQs not used by either assessment, then form A. Three
-    // modules (market structure, time and sessions, execution and review)
-    // have only two MCQs and both are assessment items, so they fall back
-    // to form A rather than leaving the lesson without a check.
     const postTestId = postTestItemByKc.get(kc.id);
     const moduleMcqs = items.filter((it) => it.kcId === kc.id && it.type === "mcq");
     const spare = moduleMcqs.filter((it) => !it.isPretestEligible);

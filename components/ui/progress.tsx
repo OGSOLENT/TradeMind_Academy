@@ -7,7 +7,6 @@ import { spring } from "@/lib/motion";
 export interface ProgressBarProps {
   /** 0 to 1 */
   value: number;
-  /** "thin" is the 2px floating reading-progress line DESIGN.md describes. */
   variant?: "default" | "thin";
   tone?: "accent" | "mastery" | "warning";
   className?: string;
@@ -46,8 +45,6 @@ export function ProgressBar({
         className={cn(
           "h-full",
           variant === "default" && "rounded-pill",
-          // The thin reading line gets a gradient and a glow so it reads as a
-          // trace of light along the top of the page instead of a plain rule.
           variant === "thin" && tone === "mastery"
             ? "bg-gradient-to-r from-mastery via-mastery-bright to-accent-bright shadow-[0_0_10px_var(--mastery-glow)]"
             : toneClass[tone],
@@ -64,7 +61,6 @@ export interface SegmentedProgressProps {
   total: number;
   /** How many segments are done. */
   completed: number;
-  /** The segment you're on, shown in accent. */
   current?: number;
   className?: string;
 }

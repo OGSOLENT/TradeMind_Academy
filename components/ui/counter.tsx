@@ -11,16 +11,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-/**
- * A number that rolls up to its value instead of popping into place. That's
- * guardrail 7.8 ("every number animates by rolling, never popping"). The
- * MasteryRing already does this for percentages, so this is the standalone
- * version for the dashboard tiles and the profile stats.
- *
- * Pass `inView` for anything below the fold. The roll then waits until the
- * number is actually on screen, otherwise it would finish before anyone
- * scrolled down to see it.
- */
 export function Counter({
   value,
   className,

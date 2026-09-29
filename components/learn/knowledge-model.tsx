@@ -20,15 +20,6 @@ const MindOrb = dynamic(() => import("@/components/three/mind-orb").then((m) => 
   ssr: false,
 });
 
-/**
- * The knowledge model panel. The 3D orb on the left is the model drawn as a
- * climb, and the list on the right is the same model as numbers, one row per
- * module, each estimate rolling up to its value. Hover a row and the node
- * lights up. Hover a node and the row lights up. Either takes you to the
- * lesson. The orb only mounts on desktop, on idle, and never under reduced
- * motion. The list is always there, and it's the version a screen reader gets.
- */
-
 interface KcState {
   pL: number;
   attempts: number;
@@ -71,8 +62,6 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
 
   return (
     <Card level="elevated" className="p-0">
-      {/* The brain, wide, as the card's hero. Desktop only. On phones the
-          header sits on its own and the list follows. */}
       <div className={cn("relative hidden md:block", calmMode ? "h-[240px]" : "h-[400px]")}>
         <div
           aria-hidden="true"
@@ -83,8 +72,6 @@ export function KnowledgeModel({ kcs, kcStates }: { kcs: Kc[]; kcStates: Record<
             <BrainMark size={150} animate={false} />
           </div>
         )}
-        {/* The canvas starts to the right of the heading column, so the two
-            can't overlap at any width. */}
         <LazyMount className="md:left-[300px]">
           <MindOrb
             nodes={rows}

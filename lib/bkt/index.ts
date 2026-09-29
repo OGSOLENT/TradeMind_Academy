@@ -1,18 +1,3 @@
-/**
- * Bayesian Knowledge Tracing, after Corbett and Anderson (1994).
- * This is THE engine of my dissertation. Pure TypeScript, no dependencies,
- * and not a single Firebase import.
- *
- *   evidence update:  pL|correct = pL(1-pS) / (pL(1-pS) + (1-pL)pG)
- *                     pL|wrong   = pL·pS   / (pL·pS   + (1-pL)(1-pG))
- *   learning step:    pL' = pL|evidence + (1 - pL|evidence)·pT
- *   predict:          P(correct) = pL(1-pS) + (1-pL)pG
- *
- * The thresholds come from my AE1 report and they can't drift, because the
- * report is what a marker checks them against: mastered and unlock at pL of
- * 0.8 or above, remediation below 0.4.
- */
-
 export interface BktParams {
   /** P(L0). The prior probability that the skill is already known. */
   pL0: number;
@@ -32,7 +17,6 @@ export const REMEDIATION_THRESHOLD = 0.4; // below this is the remediation band
 export interface MasteryUpdate {
   /** The posterior P(L), after the evidence and the learning step. */
   pL: number;
-  /** P(correct) predicted from the PRIOR pL. I log this so the model can be validated later. */
   pCorrectPredicted: number;
 }
 
@@ -41,7 +25,6 @@ export function predictCorrect(pL: number, params: BktParams = DEFAULT_PARAMS): 
   return pL * (1 - params.pS) + (1 - pL) * params.pG;
 }
 
-/** One BKT step. Condition on the observation first, then apply the learning step. */
 export function updateMastery(
   pL: number,
   correct: boolean,
@@ -63,11 +46,6 @@ export interface PlacementResponse {
   correct: boolean;
 }
 
-/**
- * Initialise the per-KC pL0 from placement responses by running the full BKT
- * update sequence from the default prior. Any KC that didn't get a placement
- * question keeps params.pL0.
- */
 export function initialiseFromPlacement(
   responses: PlacementResponse[],
   kcIds: string[],

@@ -26,31 +26,6 @@ import { parseMasteryDoc } from "./schemas";
 
 export type { KcRecord } from "@/lib/mastery/ledger";
 
-/**
- * Writing the learner model.
- *
- * The mastery document is a cache of the response log (lib/mastery/ledger
- * explains why). Two functions keep that cache honest:
- *
- *   completeSession   closes a session and writes its result in ONE
- *                     transaction, so a session is either ended and applied
- *                     or neither. Transient failures are retried; if the
- *                     write still fails, the session is remembered locally
- *                     and left unapplied.
- *
- *   reconcileMastery  runs when the learning area opens. If any finished
- *                     session was never applied, it rebuilds the whole
- *                     document from the log and marks those sessions
- *                     repaired, which is also how a researcher can see
- *                     that a repair happened (scripts/analyse.ts counts
- *                     them).
- *
- * Before this, a failed end-of-session write was caught and ignored under a
- * comment saying the document would "catch up on the next completed
- * session". It didn't: the next session started from the stale document and
- * that session's learning was gone from the model for good.
- */
-
 const PENDING_KEY = (uid: string) => `tm.pendingSessions.${uid}`;
 
 function readPending(uid: string): Set<string> {
@@ -58,7 +33,6 @@ function readPending(uid: string): Set<string> {
     const raw = localStorage.getItem(PENDING_KEY(uid));
     return new Set(raw ? (JSON.parse(raw) as string[]) : []);
   } catch {
-    // No storage (private mode, server render). Firestore-side reconciliation still works.
     return new Set();
   }
 }
@@ -92,12 +66,6 @@ function nextDoc(kind: SessionKind, existing: MasteryDoc, input: CompleteSession
   return mergePractice(existing, input.after ?? {}, input.attempts ?? {}, at);
 }
 
-/**
- * Close a session and write its result atomically. Resolves true when the
- * model is up to date, false when the write had to be deferred to the next
- * reconciliation. It never throws, because the caller is an end-of-session
- * screen that should not fall over on a bad connection.
- */
 export async function completeSession(
   db: Firestore,
   uid: string,
@@ -127,9 +95,6 @@ export async function completeSession(
     if (pending.delete(input.sessionId)) writePending(uid, pending);
     return true;
   } catch (err) {
-    // The answers are already in the log. Record that this session still
-    // needs applying, try at least to mark it ended, and let
-    // reconcileMastery rebuild the model from the log next time.
     console.warn("[mastery] session write deferred to reconciliation", err);
     const pending = readPending(uid);
     pending.add(input.sessionId);
@@ -137,7 +102,6 @@ export async function completeSession(
     try {
       await updateDoc(sessionRef, { ...closing, masteryApplied: false });
     } catch {
-      // Offline. The local marker is enough for this device.
     }
     return false;
   }
@@ -150,10 +114,6 @@ interface SessionRow {
   applied: boolean;
 }
 
-/**
- * Rebuild the mastery document from the log if any finished session was
- * never applied. Returns how many sessions were repaired (0 almost always).
- */
 export async function reconcileMastery(db: Firestore, uid: string, courseId: string): Promise<number> {
   const pending = readPending(uid);
   const snap = await getDocs(collection(db, "users", uid, "sessions"));
@@ -174,8 +134,6 @@ export async function reconcileMastery(db: Firestore, uid: string, courseId: str
     return 0;
   }
 
-  // Read the log for every session that counts, and the course's KC ids for
-  // any placement in it.
   const included = rows.filter(counts);
   const sessions: LoggedSession[] = await Promise.all(
     included.map(async (r) => {

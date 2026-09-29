@@ -1,33 +1,3 @@
-/**
- * The pilot analysis: every learner's placement, post-test, practice and
- * questionnaire, reduced to the numbers the evaluation chapter needs.
- *
- *   npm run analyse                   the emulator (localhost:8080)
- *   npm run analyse -- --include-test the emulator, keeping the E2E learners
- *   npm run analyse:live              production, read-only, needs serviceAccountKey.json
- *
- * Writes docs/report/PILOT_RESULTS.md. Learners are pseudonymised as P1,
- * P2, ... in order of sign-up; no uid, name or email leaves this script.
- * Test accounts (@example.com) are dropped. It never writes to Firestore.
- *
- * Per learner:
- *   pre        placement score, one item per KC (form A)
- *   post       first completed post-test score (form B)
- *   gain       Hake's normalised gain (post - pre) / (N - pre)
- *   practice   completed practice sessions and answered items
- *   time       time on task, as the sum of answer latencies (a floor:
- *              reading isn't in it), plus wall-clock session spans
- *   mastered   KCs at or above the 0.8 threshold, rebuilt from the response
- *              log rather than read from the learner's mastery document,
- *              which the learner's own browser writes and could edit
- *   repaired   sessions whose model write failed and was restored from the
- *              log (lib/firebase/mastery.ts), so a lost write is visible
- *   SUS        the questionnaire score, 0 to 100
- * and the post-test as a held-out check of the model: each answer was
- * logged with the model's pL at the time, so accuracy on items the model
- * called mastered versus not is a calibration number the practice log
- * can't give (practice answers move the model; these don't).
- */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
@@ -36,19 +6,12 @@ import { MASTERY_THRESHOLD } from "../lib/bkt";
 import { kindOf, rebuildMastery, type LoggedSession } from "../lib/mastery/ledger";
 
 const live = process.argv.includes("--live");
-/**
- * Accounts that are not participants (the researcher's own, pre-pilot
- * tests), one email or uid per line in .analysis-exclude. That file is
- * gitignored on purpose: the repository is public and must never carry a
- * participant's or the researcher's email address.
- */
 const EXCLUDE = new Set(
   (existsSync(".analysis-exclude") ? readFileSync(".analysis-exclude", "utf8") : "")
     .split("\n")
     .map((l) => l.trim().toLowerCase())
     .filter((l) => l && !l.startsWith("#")),
 );
-/** Keep the @example.com accounts (the E2E learners), to see the tables filled on the emulator. */
 const includeTest = process.argv.includes("--include-test");
 if (!live && !process.env.FIRESTORE_EMULATOR_HOST) {
   process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
@@ -77,9 +40,7 @@ interface Row {
   comments: Record<string, string> | null;
   /** Post-test answers against the model's estimate going in. */
   heldOut: { pL: number; correct: boolean }[];
-  /** Median seconds per answer, and minutes between the end of placement and the start of the post-test. */
   preSecs: number | null;
-  /** Placement start to finish in minutes, which includes reading the feedback after each answer. */
   preSpanMin: number | null;
   postSecs: number | null;
   gapMin: number | null;
@@ -127,10 +88,6 @@ async function scoreOf(
   return { correct: answers.filter((a) => a.correct).length, total: answers.length, answers, ...timing };
 }
 
-/**
- * Normalised gain on proportions, so a test with a missing answer (15 of 16
- * logged) is compared fairly with a complete one. Hake (1998).
- */
 function gainOf(pre: { correct: number; total: number }, post: { correct: number; total: number }): number | null {
   if (!pre.total || !post.total) return null;
   const a = pre.correct / pre.total;
@@ -169,8 +126,6 @@ async function learner(db: Firestore, uid: string, data: FirebaseFirestore.Docum
   for (const s of practice) {
     const rs = await db.collection(`users/${uid}/sessions/${s.id}/responses`).get();
     practiceItems += rs.size;
-    // addDoc ids are random, so the documents come back in no useful order.
-    // The learning curve and the rebuild both need the order of answering.
     const ordered = [...rs.docs].sort((x, y) => Number(x.data().ts ?? 0) - Number(y.data().ts ?? 0));
     logged.push({
       id: s.id,
@@ -242,8 +197,6 @@ async function main() {
   const app = initializeApp({ projectId: process.env.GCLOUD_PROJECT ?? "demo-trademind" });
   const db = getFirestore(app);
   KC_IDS = (await db.collection("kcs").get()).docs.map((d) => d.id);
-  // Emails live in Auth, not in the profile document; they're only used
-  // here to drop the test accounts and never written anywhere.
   const emails = new Map<string, string>();
   let pageToken: string | undefined;
   do {
@@ -350,15 +303,6 @@ async function main() {
     lines.push("");
   }
   lines.push("");
-  // ---- KC validation: do error rates fall with practice? -------------------
-  // The standard data-driven check on a knowledge-component decomposition
-  // (Cen, Koedinger and Junker, 2006) is whether the learning curve is
-  // smooth and downward: if a KC is really one skill, error rate should fall
-  // as opportunities accumulate. A flat curve suggests the KC is not being
-  // learned; a jagged or rising one suggests it bundles several skills, or
-  // that its items are not measuring the same thing. It needs learner data,
-  // so it reports itself as pending until the pilot runs.
-  // ---- Data quality: what a reader needs before trusting the gains ------
   lines.push(`## Data quality`);
   lines.push("");
   lines.push(`Checks a reader should see before trusting the gains. A median under 3 seconds per answer is faster than a question and its options can be read, and suggests the answers were already known or not read. Practice between the tests is what the adaptive tutor contributes; lesson reading is not logged, so a learner with no practice may still have read lessons.`);

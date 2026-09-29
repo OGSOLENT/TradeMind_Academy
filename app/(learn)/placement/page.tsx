@@ -19,11 +19,6 @@ import { COURSE_ID } from "@/lib/constants";
 import { parseDocs, parseItem, parseKc } from "@/lib/firebase/schemas";
 
 
-/**
- * The placement flow (onboarding_placement_test). A short pretest across
- * every Level-1 KC seeds the learner model. Skipping is a perfectly valid
- * choice, and a logged one: it just starts everything at the default prior.
- */
 export default function PlacementPage() {
   useTitle("Placement");
   const router = useRouter();
@@ -42,8 +37,6 @@ export default function PlacementPage() {
     const kcs = parseDocs(kcsSnap, parseKc);
     const eligible = parseDocs(itemsSnap, parseItem);
 
-    // One eligible item per KC, in prerequisite order (form A; the
-    // post-test takes form B from the same pool).
     const picked: Item[] = pickAssessment(kcs, eligible, "A");
 
     const mastery: Record<string, number> = {};

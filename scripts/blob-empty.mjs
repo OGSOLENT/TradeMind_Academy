@@ -1,26 +1,3 @@
-/**
- * Deletes everything in the Vercel Blob store.
- *
- *   node scripts/blob-empty.mjs          list what's there, delete nothing
- *   node scripts/blob-empty.mjs --yes    actually delete it
- *
- * The store held the lesson recordings until 22 September 2026, when it
- * went over the Hobby plan's 1 GB free allowance and Vercel suspended it,
- * which 403'd every video on the live site. The recordings are served from
- * the app now (public/videos-web), so the store is dead weight sitting over
- * an allowance, and emptying it puts the account back under.
- *
- * Why not `vercel blob empty-store`? The CLI reads .env.local, finds
- * VERCEL_OIDC_TOKEN set and BLOB_STORE_ID unset, and refuses before it ever
- * looks at the read-write token. Run from the parent folder it fails
- * differently, because there's no linked project there. The REST API takes
- * the read-write token straight, and deletes work even on a suspended
- * store, which is the one operation that does.
- *
- * Nothing here is recoverable from Vercel afterwards, but everything in the
- * store is reproducible: the originals are in ~/Documents/DIssertation/Lessons
- * and `npm run videos:compress` rebuilds the web copies.
- */
 import { readFileSync } from "node:fs";
 
 const go = process.argv.includes("--yes");
@@ -62,8 +39,6 @@ async function main() {
     return;
   }
 
-  // The delete endpoint takes a batch of URLs; keep the batches modest so a
-  // failure is easy to attribute and rerunning is cheap.
   let done = 0;
   for (let i = 0; i < blobs.length; i += 100) {
     const batch = blobs.slice(i, i + 100).map((b) => b.url);

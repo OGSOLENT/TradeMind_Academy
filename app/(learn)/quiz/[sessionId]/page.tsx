@@ -86,11 +86,6 @@ export default function QuizPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [s, item, canSubmit, submit]);
 
-  // ---- Completion: close the session and write the model in one transaction ----
-  // completeSession never throws. If the write fails after its retries the
-  // session is left unapplied and reconcileMastery rebuilds the model from
-  // the response log the next time the learning area opens, so nothing a
-  // learner answered is lost from the model (lib/firebase/mastery.ts).
   useEffect(() => {
     if (s.phase !== "complete" || !user || !s.sessionId || finishedRef.current) return;
     finishedRef.current = true;
@@ -363,8 +358,6 @@ function SessionSummary() {
   const records = Object.values(s.answers);
   const correct = records.filter((r) => r.correct).length;
 
-  // Unlock detection needs the FULL prerequisite graph, not just the KCs
-  // that happened to be in this session.
   const { data: allKcs } = useQuery({
     queryKey: ["kcs", COURSE_ID],
     queryFn: async () => {
@@ -411,8 +404,6 @@ function SessionSummary() {
       )}
       <StaggerItem>
         <p className="text-label-caps uppercase tracking-widest text-fg-secondary">Session complete</p>
-        {/* The score rolls up, and a thin arc underneath it fills to the
-            accuracy so the number has a shape as well as a value. */}
         <div className="relative mx-auto mt-10 inline-block">
           <svg
             aria-hidden="true"
@@ -462,9 +453,6 @@ function SessionSummary() {
                   </span>
                 </span>
               </div>
-              {/* The bar underneath: the muted stretch is where you started,
-                  the coloured stretch is the move. Losses draw in amber and
-                  a little slower, per the emotional rule. */}
               <div className="relative mt-2 h-1 w-full overflow-hidden rounded-pill bg-white/5" aria-hidden="true">
                 <div
                   className="absolute inset-y-0 left-0 rounded-pill bg-white/15"

@@ -9,17 +9,6 @@ import {
   updateMastery,
 } from "@/lib/bkt";
 
-/**
- * Fixtures I worked out by hand (defaults pL0=0.25, pT=0.12, pG=0.20, pS=0.10):
- *
- * CORRECT from 0.25:
- *   num = 0.25·0.9 = 0.225 ; den = 0.225 + 0.75·0.2 = 0.375
- *   pL|e = 0.6 ; pL' = 0.6 + 0.4·0.12 = 0.648
- * WRONG from 0.25:
- *   num = 0.25·0.1 = 0.025 ; den = 0.025 + 0.75·0.8 = 0.625
- *   pL|e = 0.04 ; pL' = 0.04 + 0.96·0.12 = 0.1552
- * PREDICT at 0.25: 0.25·0.9 + 0.75·0.2 = 0.375
- */
 describe("updateMastery — hand-computed fixtures", () => {
   it("correct answer from the prior 0.25 → 0.648", () => {
     const { pL, pCorrectPredicted } = updateMastery(0.25, true);
@@ -33,8 +22,6 @@ describe("updateMastery — hand-computed fixtures", () => {
   });
 
   it("second correct from 0.648 → 0.92512…", () => {
-    // num = 0.648·0.9 = 0.5832 ; den = 0.5832 + 0.352·0.2 = 0.6536
-    // pL|e = 0.892289… ; pL' = pL|e + (1-pL|e)·0.12 = 0.905214…
     const { pL } = updateMastery(0.648, true);
     expect(pL).toBeCloseTo(0.9052145, 6);
   });

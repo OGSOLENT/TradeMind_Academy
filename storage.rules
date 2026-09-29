@@ -1,6 +1,5 @@
 rules_version = '2';
 
-// Deny-by-default. Lesson-video read rules land in Phase 2.
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {

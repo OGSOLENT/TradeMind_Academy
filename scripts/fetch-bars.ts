@@ -1,19 +1,3 @@
-/**
- * Pulls historical bars for the real-chart case studies.
- *
- *   npx tsx scripts/fetch-bars.ts
- *
- * Source: Yahoo Finance's public chart endpoint, the same data its site
- * shows. It's used here for education with attribution and never live: the
- * case studies are cut from history, dated, and labelled with the source.
- * Daily bars go back years, hourly bars about two years, and 5-minute bars
- * only the last sixty days, which is why the intraday case studies are
- * drawn from recent weeks.
- *
- * The raw pulls land in content/bars/ (gitignored, a few megabytes). The
- * committed artefacts are the small slices scripts/find-case-studies.ts
- * cuts from them.
- */
 import { mkdirSync, writeFileSync } from "node:fs";
 
 export interface Bar {

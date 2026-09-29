@@ -9,17 +9,6 @@ import { useScrolled } from "@/lib/use-scrolled";
 import { ease, spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-/**
- * The visitor nav. Same glass as the app nav, and it firms up once you've
- * scrolled. The section links carry a small icon each and share one
- * spring-loaded pill that follows whichever section you're reading (a
- * scroll spy on the landing page) or whichever link you're hovering. On
- * the right, Sign in as a quiet link and Start free as the one filled
- * button. Below the lg breakpoint (four labelled links plus two buttons
- * don't fit a tablet) everything lives behind a hamburger that opens a
- * full-screen sheet with the items staggering in.
- */
-
 type IconProps = React.SVGAttributes<SVGSVGElement>;
 
 function icon(props: IconProps): IconProps {
@@ -72,12 +61,6 @@ const sections = [
   { id: "faq", label: "Questions", Icon: HelpIcon },
 ] as const;
 
-/**
- * Which landing section is on screen. The active one is whichever section
- * crosses a line about a third of the way down the viewport, which feels
- * right when you're reading: the heading you've just scrolled past is the
- * one that lights up. Off the landing page there's no active section.
- */
 function useActiveSection(enabled: boolean): string | null {
   const [active, setActive] = useState<string | null>(null);
   useEffect(() => {
@@ -118,8 +101,6 @@ export function MarketingNav() {
     };
   }, [open]);
 
-  // Anchors resolve on the landing page. From any other marketing page
-  // they go back to the landing and jump to the section.
   const hrefFor = (id: string) => (onLanding ? `#${id}` : `/#${id}`);
 
   return (

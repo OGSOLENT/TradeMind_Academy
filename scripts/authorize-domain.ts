@@ -1,16 +1,3 @@
-/**
- * Adds a domain to Firebase Auth's authorised list, so Google sign-in works
- * from a deployment. Same thing as Authentication → Settings → Authorised
- * domains in the console, but from the terminal.
- *
- *   npx tsx scripts/authorize-domain.ts trademind-academy.vercel.app
- *
- * Needs serviceAccountKey.json in the project root (gitignored). It reads
- * the current list, appends the new domain if it isn't there, and writes
- * the list back through the Identity Toolkit admin API. Nothing else in
- * the project config is touched, because the update mask names only
- * authorizedDomains.
- */
 import { readFileSync } from "node:fs";
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 
@@ -24,8 +11,6 @@ async function main() {
   const key = JSON.parse(readFileSync("serviceAccountKey.json", "utf8")) as {
     project_id: string;
   };
-  // The admin SDK already knows how to turn the key into an access token,
-  // so I borrow its credential rather than adding another dependency.
   const credential = cert(key as Parameters<typeof cert>[0]);
   const app = getApps()[0] ?? initializeApp({ credential, projectId: key.project_id });
   const token = (await app.options.credential!.getAccessToken()).access_token;

@@ -32,11 +32,6 @@ const FOOTER_COLUMNS = [
   },
 ];
 
-/**
- * The marketing shell: visitor glass nav on top, and a proper footer
- * underneath with the site map in columns and the disclaimer in its own
- * box so it can't be missed.
- */
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh">
@@ -47,7 +42,6 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       <main id="main" className="pt-[72px]">{children}</main>
 
       <footer className="relative border-t border-hair px-6 py-14">
-        {/* A faint line of light along the top edge, fading out at both ends. */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"

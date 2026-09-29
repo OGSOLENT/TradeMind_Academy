@@ -33,9 +33,6 @@ const STEPS = [
 
 export default function LandingPage() {
   const [mobile, setMobile] = useState(false);
-  // The particle field waits for the browser to go idle after the first
-  // paint, so the headline and the copy (the largest contentful paint) never
-  // queue behind three.js. It fades in a beat later, which reads as intended.
   const [particles, setParticles] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
@@ -46,10 +43,6 @@ export default function LandingPage() {
     else setTimeout(() => setParticles(true), 300);
   }, []);
 
-  // As you scroll out of the hero, the copy drifts up a touch faster than
-  // the page and fades, so the section feels like it's receding rather than
-  // just being pushed off the top. Scrubbed to scroll, and skipped entirely
-  // under reduced motion.
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -104,7 +97,6 @@ export default function LandingPage() {
           </p>
         </div>
 
-        {/* The scroll cue. A short line that keeps dripping down. */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-6 hidden flex-col items-center gap-2 md:flex"
@@ -116,7 +108,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* The module ticker. A quiet strip of what's inside, on a loop. */}
       <section aria-label="Curriculum modules" className="relative border-y border-hair py-4">
         <div
           aria-hidden="true"
@@ -191,7 +182,6 @@ export default function LandingPage() {
             spotlight
             className="relative mx-auto max-w-2xl overflow-hidden p-10 shadow-lift"
           >
-            {/* A faint teal-to-indigo wash behind the copy. */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_80%_at_50%_0%,rgba(45,212,191,0.10),transparent_70%)]"

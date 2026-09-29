@@ -9,7 +9,6 @@ export interface HistoryPoint {
   pL: number;
 }
 
-/** The mastery-over-time area chart. lightweight-charts, teal on the void. */
 export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ariaLabel: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -39,7 +38,6 @@ export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ar
       priceFormat: { type: "percent" },
     });
 
-    // De-duplicate the timestamps. lightweight-charts insists they're ascending and unique.
     const seen = new Set<number>();
     const data = points
       .slice()
@@ -64,8 +62,6 @@ export function MasteryChart({ points, ariaLabel }: { points: HistoryPoint[]; ar
   }, [points]);
 
   if (points.length === 0) {
-    // The empty state. A dashed curve draws itself in so the card still
-    // feels alive before there's any data, and the copy sits on top of it.
     return (
       <div className="relative flex h-[200px] items-center justify-center overflow-hidden rounded-control">
         <svg

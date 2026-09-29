@@ -1,14 +1,5 @@
 import type { Anno, Tone, Walkthrough as Spec } from "@/lib/walkthroughs/types";
 
-/**
- * The chart itself, as a pure function of (spec, step): no hooks, no
- * framer, so the same code draws the lesson figure in the browser and the
- * static PNGs the report and the review harness use. Steps are cumulative;
- * the current step's layer is bright and the earlier ones sit back. The
- * layers cross-fade with a CSS transition, which the reduced-motion rules
- * in globals.css shorten like every other transition.
- */
-
 const W = 820;
 const PLOT_H = 430;
 const OVERLAY_H = 110;
@@ -49,11 +40,6 @@ function annoPrices(a: Anno): number[] {
   }
 }
 
-/**
- * A label on the chart: a rounded pill behind the text so it reads over
- * candles and other layers. Width is estimated from the character count,
- * which is close enough for the sans face at these sizes.
- */
 function Label({ x, y, text, tone, anchor = "start", size = 12 }: { x: number; y: number; text: string; tone: Tone; anchor?: "start" | "middle" | "end"; size?: number }) {
   const w = text.length * size * 0.56 + 12;
   const h = size + 8;
@@ -220,8 +206,6 @@ export function WalkthroughChart({ spec, step, className }: { spec: Spec; step: 
         const lines = a.text.split("\n");
         const w = Math.max(...lines.map((l) => l.length)) * 6.6 + 16;
         const h = lines.length * 15 + 10;
-        // Corner-pinned by default, so notes sit in the empty part of the
-        // plot the spec chose rather than on top of the candles.
         const corner = a.at ?? (a.bar === undefined ? "tr" : undefined);
         const nx = corner
           ? corner.endsWith("l")
@@ -298,7 +282,6 @@ export function WalkthroughChart({ spec, step, className }: { spec: Spec; step: 
         );
       })}
 
-      {/* Annotations, cumulative. Earlier steps stay but step back. */}
       {spec.steps.map((s, si) => (
         <g
           key={si}

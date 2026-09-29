@@ -1,10 +1,3 @@
-/**
- * A terminal view of the database, for when the console is a hassle.
- * Read-only: counts per collection, the learners, and their recent sessions.
- *
- *   npm run db:peek          production (needs serviceAccountKey.json)
- *   npm run db:peek:local    the emulator
- */
 import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";

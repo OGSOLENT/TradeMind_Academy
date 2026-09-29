@@ -26,7 +26,6 @@ import { cn } from "@/lib/utils";
 import { COURSE_ID } from "@/lib/constants";
 import { masteryOf, parseDocs, parseKc } from "@/lib/firebase/schemas";
 
-// lightweight-charts is heavy and sits below the fold, so I load it lazily.
 const MasteryChart = dynamic(
   () => import("@/components/learn/mastery-chart").then((m) => m.MasteryChart),
   { ssr: false, loading: () => <Skeleton className="h-[200px] w-full rounded-card" /> },
@@ -43,7 +42,6 @@ const actionCopy: Record<NextAction, { label: string; href(kcId: string): string
   advance: { label: "Advance", href: () => "/practice" },
 };
 
-/** "Good morning" and friends, from the local clock. */
 function greetingFor(date: Date): string {
   const h = date.getHours();
   if (h < 5) return "Still up";
@@ -96,10 +94,6 @@ export default function DashboardPage() {
     [data],
   );
 
-  // The header is static and renders on the server. It's the page's LCP
-  // element and its h1, so it has to be there before anything else. The
-  // greeting above it fades in once auth resolves, in a slot whose height
-  // is reserved so nothing below it shifts.
   const firstName = user?.displayName?.trim().split(/\s+/)[0];
   const header = (
     <header>
@@ -124,7 +118,6 @@ export default function DashboardPage() {
   );
 
   if (isPending || !data) {
-    // The skeleton mirrors the loaded layout to the pixel. That's the CLS gate.
     return (
       <div className="mx-auto max-w-4xl space-y-6">
         {header}
@@ -172,8 +165,6 @@ export default function DashboardPage() {
     <Stagger autoWrap={false} className="mx-auto max-w-4xl space-y-6">
       <StaggerItem>{header}</StaggerItem>
 
-      {/* The continue-learning hero. A quiet particle field sits behind it
-          and two faint orbit rings turn around the mastery ring. */}
       <StaggerItem>
         <Card
           level="elevated"
@@ -371,8 +362,6 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-          {/* The chart wipes in from the left, and again whenever you pick a
-              different topic, so the switch reads as a redraw. */}
           <motion.div
             key={chartKc ?? "none"}
             className="mt-4"
@@ -391,11 +380,6 @@ export default function DashboardPage() {
   );
 }
 
-/**
- * Two faint dashed rings turning slowly in opposite directions around the
- * hero's mastery ring. Pure CSS rotation, so it's free, and it stops under
- * reduced motion.
- */
 function OrbitRings() {
   return (
     <>

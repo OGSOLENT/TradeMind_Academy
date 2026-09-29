@@ -8,13 +8,6 @@ import { MasteryRing } from "@/components/ui/mastery-ring";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-/**
- * The Learn panel that drops out of the nav. Every module in teaching
- * order, each with its live estimate and its state, so the nav itself is
- * a small version of the visible mind. Locked modules are still listed and
- * still open (the lesson is readable), they're just dimmer.
- */
-
 const tone: Record<NodeState, { text: string; dot: string; label: string }> = {
   mastered: { text: "text-mastery-bright", dot: "bg-mastery", label: "mastered" },
   available: { text: "text-accent-bright", dot: "bg-accent-bright", label: "in progress" },
@@ -31,7 +24,6 @@ export function LearnMenu({ onNavigate }: { onNavigate(): void }) {
   return (
     <div className="w-[720px] max-w-[calc(100vw-2rem)] p-2">
       <div className="grid gap-2 md:grid-cols-[220px_1fr]">
-        {/* The left column: where you are, and the two big actions. */}
         <div className="flex flex-col gap-2">
           <div className="rounded-control bg-white/[0.03] p-4 shadow-hairline">
             <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Up next</p>

@@ -15,12 +15,6 @@ const tabs = [
   { href: "/profile", label: "Profile", Icon: UserIcon },
 ] as const;
 
-/**
- * The mobile navigation: a floating glass dock with the Practise button
- * raised in the middle. The active tab sits on a soft pill that springs
- * across when you switch, and the dock keeps clear of the home indicator.
- * It hides at md and up, where GlassNav takes over.
- */
 export function TabBar() {
   const pathname = usePathname();
   const reduced = useReducedMotion();

@@ -55,8 +55,6 @@ function SkillTree() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // The unlock ceremony queue. One toast per newly unlocked KC, staggered so
-  // they don't all land at once.
   useEffect(() => {
     if (ceremonyIndex >= justUnlocked.length) return;
     const t = setTimeout(() => {
@@ -113,8 +111,6 @@ function SkillTree() {
     );
   }
 
-  // The summary numbers above the map. Mean mastery is what the route's
-  // bright stretch is drawn from, so showing it here ties the two together.
   const mastered = views.filter((v) => v.state === "mastered").length;
   const meanMastery = views.length ? views.reduce((n, v) => n + v.pL, 0) / views.length : 0;
   const frontier = views.find((v) => v.state === "available" || v.state === "remediation");
@@ -200,8 +196,6 @@ function SkillTree() {
         </div>
       </StaggerItem>
 
-      {/* The summary strip. Three numbers that roll in, and a bar for the
-          mean, which is the same value the route's bright stretch is drawn from. */}
       <StaggerItem className="mb-4 grid gap-3 sm:grid-cols-3">
         <div className="rounded-control bg-bg-base-veil px-4 py-3 shadow-hairline">
           <p className="text-label-caps uppercase tracking-wider text-fg-secondary">Mastered</p>

@@ -12,14 +12,6 @@ import {
 } from "@/lib/firebase/schemas";
 import type { Level1Content } from "@/lib/content/types";
 
-/*
- * The validators sit between Firestore and the app. They have to accept
- * every real document (or the app breaks for learners) and reject malformed
- * ones where they are read (or the app breaks somewhere far away). The
- * first half runs the entire shipped bank through them; the second half
- * feeds them the kinds of damage a document can actually carry.
- */
-
 const content: Level1Content = JSON.parse(readFileSync("content/level1.json", "utf8"));
 const strip = <T extends { id: string }>({ id, ...rest }: T) => ({ id, data: rest });
 const ts = { toMillis: () => 0 };
@@ -108,8 +100,6 @@ describe("the user profile", () => {
   });
 
   it("accepts the moment before the server confirms a timestamp", () => {
-    // A serverTimestamp() field reads as null locally until the write lands,
-    // which is exactly when a new learner's profile is first read.
     const pending = { ...profile, createdAt: null, consent: { agreedAt: null, version: "v" } };
     expect(parseProfile("u1", pending).createdAt).toBeNull();
   });

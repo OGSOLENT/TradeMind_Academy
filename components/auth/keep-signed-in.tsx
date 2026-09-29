@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * The "keep me signed in" row on the sign-in and sign-up forms. Ticked by
- * default because most people are on their own device. The helper line
- * says what unticking actually does, so nobody has to guess.
- */
 export function KeepSignedIn({ checked, onChange }: { checked: boolean; onChange(v: boolean): void }) {
   return (
     <label className="-mx-2 flex min-h-11 cursor-pointer items-start gap-3 rounded-control p-2 hover:bg-white/5">

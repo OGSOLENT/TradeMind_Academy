@@ -1,21 +1,10 @@
 import type { Candle } from "./types";
 
-/**
- * The synthetic series builder. A walkthrough needs price to do a specific
- * thing at a specific bar (sweep this low at bar 31, close above that high
- * at bar 38, leave a gap between bars 40 and 42), so the series is drawn
- * from a spine of control points and then noised, rather than random-walked
- * and hoped for. Anything the noise might spoil can be forced exactly with
- * `force`. The random source is seeded, so the same spec always draws the
- * same chart and the captions stay true.
- */
-
 export interface SeriesSpec {
   seed: number;
   bars: number;
   /** Control points the close passes through: [bar, price]. Sorted by bar. */
   points: [number, number][];
-  /** Noise on the close as a fraction of price. 0.002 is calm, 0.006 is lively. */
   vol?: number;
   /** Wick length as a fraction of price. */
   wick?: number;
@@ -76,8 +65,6 @@ export function build(spec: SeriesSpec): Candle[] {
       next.h = Math.max(next.h, next.o, next.c);
       next.l = Math.min(next.l, next.o, next.c);
       out[i] = next;
-      // The next bar opens where this one closed, so a forced close doesn't
-      // leave a phantom gap.
       const after = out[i + 1];
       if (after && partial.c !== undefined && !(spec.force[i + 1]?.o !== undefined)) {
         after.o = next.c;

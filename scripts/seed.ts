@@ -1,11 +1,3 @@
-/**
- * Seed the Level-1 curriculum into Firestore. It targets the EMULATOR by
- * default (FIRESTORE_EMULATOR_HOST) and refuses to touch production unless
- * you pass --allow-prod explicitly. That's there to protect the research
- * dataset from me.
- *
- * Run it with the emulator up:  npm run seed
- */
 import { readFileSync } from "node:fs";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";

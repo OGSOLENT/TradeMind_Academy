@@ -1,31 +1,3 @@
-/**
- * Does the routing engine teach faster than a fixed syllabus?
- *
- *   npx tsx scripts/simulate-routing.ts [--seed 7] [--learners 300] [--budget 160]
- *
- * The same synthetic learners are put through three policies over the real
- * curriculum (the sixteen knowledge components, their prerequisite chain,
- * and the real item bank with its difficulties):
- *
- *   adaptive   the engine as shipped: weakest unlocked KC, difficulty from
- *              the estimate, remediation after two wrongs, no repeats in a
- *              session (lib/routing)
- *   fixed      a syllabus: every KC in order, ten items each, medium
- *              difficulty, regardless of how the learner is doing
- *   random     any unlocked KC, any item, as a floor
- *
- * A learner has a hidden true state per KC (known or not), starts with
- * some KCs already known, learns with a per-KC probability on each
- * practice attempt, and reads the lesson before the first attempt on a KC
- * (a learning event all three policies get). Answers come from the true
- * state and the item's difficulty, not from the engine's estimate, so the
- * engine can be wrong. Each policy gets the same item budget (the adaptive
- * one stops early when its estimate says everything is mastered), and I
- * report items used, how much of the curriculum the learner actually knows
- * at the end, how many items went on things they already knew, and how far
- * the estimate is from the truth in both directions. Results go into
- * docs/EVALUATION.md.
- */
 import { readFileSync, writeFileSync } from "node:fs";
 import { DEFAULT_PARAMS, MASTERY_THRESHOLD, updateMastery } from "../lib/bkt";
 import { nextItem, targetKcId, unlockedKcIds, type MasteryMap, type SelectionHistory } from "../lib/routing";
@@ -49,7 +21,6 @@ const content: Level1Content = JSON.parse(readFileSync("content/level1.json", "u
 const kcs: Kc[] = content.kcs;
 const items: Item[] = content.items;
 
-/** P(correct) from the true state and the item's difficulty. Guess and slip both depend on difficulty. */
 const GUESS: Record<Difficulty, number> = { easy: 0.3, med: 0.2, hard: 0.12 };
 const SLIP: Record<Difficulty, number> = { easy: 0.05, med: 0.1, hard: 0.18 };
 const LESSON_LEARN = 0.35;
@@ -64,8 +35,6 @@ function makeLearner(): Learner {
   const known: Record<string, boolean> = {};
   const pT: Record<string, number> = {};
   kcs.forEach((kc, i) => {
-    // Earlier modules are more often already known, as they would be for
-    // someone arriving with a little experience.
     known[kc.id] = rand() < Math.max(0.05, 0.45 - i * 0.03);
     pT[kc.id] = 0.08 + rand() * 0.22;
   });
@@ -220,7 +189,6 @@ function main() {
   console.log(lines.join("\n"));
   console.log("\n" + rows.join("\n"));
 
-  // Write into docs/EVALUATION.md between markers, creating the section if it's missing.
   const path = "docs/EVALUATION.md";
   let doc = readFileSync(path, "utf8");
   const block = `<!-- routing-sim:start -->\n${header}\n\n${rows.join("\n")}\n<!-- routing-sim:end -->`;

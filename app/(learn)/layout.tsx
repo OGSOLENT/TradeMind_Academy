@@ -12,10 +12,6 @@ import { getUserProfile } from "@/lib/firebase/repos";
 import { reconcileMastery } from "@/lib/firebase/mastery";
 import { COURSE_ID } from "@/lib/constants";
 
-/**
- * The learn-area guard. You have to be signed in AND have given consent to
- * get past this, because that's the research ethics gate.
- */
 export default function LearnLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -34,9 +30,6 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
     if (user && !isPending && !profile?.consent) router.replace("/consent");
   }, [loading, user, isPending, profile, router]);
 
-  // Once per visit, check that every finished session made it into the
-  // learner model, and rebuild the model from the response log if one
-  // didn't (lib/firebase/mastery.ts). Almost always a no-op.
   const queryClient = useQueryClient();
   const reconciled = useRef<string | null>(null);
   useEffect(() => {
@@ -55,17 +48,9 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
       .catch((err) => console.warn("[mastery] reconciliation skipped", err));
   }, [user, profile?.consent, queryClient]);
 
-  // I render the children straight away. Every page shows its own skeleton
-  // while auth resolves, so the profile check and the page data load in
-  // PARALLEL instead of one after the other. That change alone halved the
-  // dashboard LCP in the Phase 6 audit. The redirect effect above still
-  // enforces the auth and consent gate, and every data query is keyed on
-  // `user`, so nothing fetches while you're signed out.
   if (focusMode) {
     return (
       <div data-drawer-scale className="min-h-dvh">
-        {/* Focus mode gets a still, half-strength field. Anything drifting
-            next to a question would contaminate the response latency I log. */}
         <AmbientBackground variant="calm" />
         {children}
         <Toaster />

@@ -1,15 +1,5 @@
 import type { Item, Kc } from "./content/types";
 
-/**
- * The two fixed assessments the pilot study uses: placement before the
- * course (form A) and a post-test after it (form B). Both take one
- * pretest-eligible item per knowledge component, in prerequisite order,
- * so the two scores are directly comparable and a normalised gain can be
- * computed (Hake, 1998). Where a KC has more than one eligible item, form
- * B takes a different one, so the post-test isn't a memory test of the
- * placement; a KC with a single eligible item reuses it, which the
- * analysis script flags.
- */
 export type AssessmentForm = "A" | "B";
 
 export function pickAssessment(kcs: Kc[], eligible: Item[], form: AssessmentForm): Item[] {
@@ -22,17 +12,11 @@ export function pickAssessment(kcs: Kc[], eligible: Item[], form: AssessmentForm
   return picked;
 }
 
-/** Hake's normalised gain: the fraction of the available headroom the learner made up. */
 export function normalisedGain(pre: number, post: number, total: number): number | null {
   if (total <= 0 || pre >= total) return null;
   return (post - pre) / (total - pre);
 }
 
-/**
- * The System Usability Scale (Brooke, 1996). Ten statements, odd ones
- * positive, even ones negative, each answered 1 (strongly disagree) to
- * 5 (strongly agree). Score is 0 to 100; 68 is the published average.
- */
 export const SUS_ITEMS: readonly string[] = [
   "I think that I would like to use TMAcademy frequently.",
   "I found TMAcademy unnecessarily complex.",

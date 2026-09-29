@@ -6,16 +6,7 @@ import { toast } from "@/components/ui/toast";
 import { firebaseCode } from "@/lib/firebase/errors";
 import { ResponseLogger, type ResponseEvent } from "./logger";
 
-/**
- * The app-wide logger singleton: the Firestore transport plus toast
- * surfacing. Responses land in users/{uid}/sessions/{sid}/responses, which
- * the security rules make create-only. That's the append-only research log.
- */
-
 async function firestoreSend(event: ResponseEvent): Promise<void> {
-  // Fail fast when offline so that MY queue is the only thing retrying. If I
-  // let the SDK's internal queue hold the write as well, it would deliver
-  // twice on reconnect and fill the research dataset with duplicates.
   if (typeof navigator !== "undefined" && !navigator.onLine) {
     throw new Error("offline — event stays in the local queue");
   }
@@ -35,8 +26,6 @@ export function getLogger(): ResponseLogger {
   if (!singleton) {
     singleton = new ResponseLogger({
       send: firestoreSend,
-      // The rules refused the row. Retrying the same bytes can't change that,
-      // so it's parked (never dropped) and the answers behind it still sync.
       isPermanent: (err) => ["permission-denied", "invalid-argument"].includes(firebaseCode(err)),
       onDeadLetter: (event, err) => {
         console.error("[logger] response refused by the server, parked", event.itemId, err);

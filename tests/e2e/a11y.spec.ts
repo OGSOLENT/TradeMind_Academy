@@ -1,11 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
 
-/**
- * Phase 6: a keyboard-only walkthrough of the quiz and the skill tree, plus
- * a reduced-motion check. Needs the emulators and the seed, and skips
- * itself otherwise.
- */
-
 async function emulatorUp(): Promise<boolean> {
   try {
     const res = await fetch("http://localhost:9099/", { signal: AbortSignal.timeout(1500) });
@@ -39,8 +33,6 @@ test.describe("accessibility", () => {
     await page.waitForURL(/\/quiz\//);
     await expect(page.getByTestId("question-type")).toHaveCount(1);
 
-    // The first question is an MCQ. Select option 2 with the keyboard, submit
-    // with Enter, continue with Enter. No pointer at any step.
     await page.keyboard.press("2");
     // Pressing "2" selects the second option, whatever its text happens to be.
     await expect(page.getByRole("radio").nth(1)).toHaveAttribute("aria-checked", "true");

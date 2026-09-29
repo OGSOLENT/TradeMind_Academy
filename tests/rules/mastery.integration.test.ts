@@ -1,10 +1,3 @@
-/**
- * The learner-model write path, end to end against the Firestore emulator
- * and the real security rules: closing a session, and repairing the model
- * from the response log when a close didn't make it.
- *
- *   npm run test:rules
- */
 import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { initializeTestEnvironment, type RulesTestEnvironment } from "@firebase/rules-unit-testing";
@@ -147,8 +140,6 @@ describe("reconcileMastery", () => {
     });
     const before = (await readMastery())?.kcs["kc-a"].pL as number;
 
-    // A practice session whose answers were logged and which was closed,
-    // but whose mastery write never landed: exactly the old bug.
     await runSession("s2", "topic-test", [
       { kcId: "kc-a", correct: true, ts: 20 },
       { kcId: "kc-a", correct: true, ts: 21 },

@@ -3,15 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-/**
- * A SplitText-style headline built on GSAP core only, because the paid plugin
- * is off limits (guardrail 7.7). My little splitter wraps each word in an
- * overflow-hidden span, and the words rise in on the choreo ease. Under
- * reduced motion it's a plain fade.
- *
- * `accent` is an optional phrase from the text that gets the gradient. I
- * match it by word position so the split stays intact.
- */
 export function SplitHeadline({
   text,
   accent,
@@ -52,7 +43,6 @@ export function SplitHeadline({
 
   const words = text.split(" ");
   const accentWords = accent?.split(" ") ?? [];
-  // Find where the accent phrase starts so I can flag those word indices.
   let accentStart = -1;
   if (accentWords.length > 0) {
     for (let i = 0; i + accentWords.length <= words.length; i++) {
@@ -68,8 +58,6 @@ export function SplitHeadline({
   return (
     <h1 ref={ref} className={className} aria-label={text}>
       {words.map((word, i) => (
-        // The joining space has to live OUTSIDE the overflow-hidden span, or
-        // it collapses and the words run into each other.
         <span key={i} aria-hidden="true">
           <span className="inline-block overflow-hidden pb-1 align-bottom">
             <span

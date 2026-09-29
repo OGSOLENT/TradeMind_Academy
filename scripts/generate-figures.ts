@@ -1,8 +1,3 @@
-/**
- * Generate placeholder figure and poster SVGs for the Level-1 lessons.
- * Simple branded frames with simulated candle glyphs. Real figures replace
- * them as I supply them. Run: npx tsx scripts/generate-figures.ts
- */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import type { Level1Content } from "../lib/content/types";
 
@@ -22,7 +17,6 @@ function candleGlyphs(seed: number): string {
   return out;
 }
 
-/** Titles go into XML text nodes, so the five special characters have to be escaped. */
 function esc(text: string): string {
   return text
     .replaceAll("&", "&amp;")
@@ -32,12 +26,6 @@ function esc(text: string): string {
     .replaceAll("'", "&apos;");
 }
 
-/**
- * The lecture poster: the module title centred over the glyphs, nothing
- * else. The lesson page draws its own play button and label on top, so the
- * poster stays quiet, and it's object-cover'd into a 16:9 frame so the
- * text sits where the crop can't reach it.
- */
 function poster(title: string, seed: number): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
   <defs>

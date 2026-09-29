@@ -5,11 +5,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { SelectionReason } from "@/lib/routing";
 import { spring } from "@/lib/motion";
 
-/**
- * "Why this question?" It shows the routing engine's real decision values.
- * This is the visible mind in practice: nothing here is made up for display.
- * It's the exact SelectionReason the engine acted on.
- */
 export function WhyPopover({ reason }: { reason: SelectionReason }) {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();

@@ -1,9 +1,3 @@
-/**
- * The security-rules tests (BUILD_PROMPT section 4). They run inside the
- * Firestore emulator:
- *   npm run test:rules
- * which wraps: firebase emulators:exec --only firestore "vitest run --config vitest.rules.config.ts"
- */
 import { readFileSync } from "node:fs";
 import { afterAll, beforeAll, beforeEach, describe, it } from "vitest";
 import {

@@ -1,12 +1,6 @@
 import { build, timeLabels } from "./synth";
 import type { Walkthrough } from "./types";
 
-/**
- * Walkthroughs for the recorded lessons in Modules 1 to 8, 12 and 14. The
- * recording stays in the hero slot; these sit after the prose as the
- * precise version of what the video shows.
- */
-
 export const candleAnatomy: Walkthrough = {
   id: "candle-anatomy",
   title: "Reading a single candle",

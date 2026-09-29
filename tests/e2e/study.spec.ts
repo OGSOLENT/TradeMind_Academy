@@ -1,11 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
-/**
- * The study instruments: placement (form A), post-test (form B, different
- * questions, no model update), and the SUS questionnaire. Needs the
- * emulators and the seed, and skips itself otherwise.
- */
 test.describe("study instruments", () => {
   test.beforeEach(async () => {
     test.skip(!(await emulatorUp()), "Firebase emulators not running");
@@ -14,7 +9,6 @@ test.describe("study instruments", () => {
   test("placement → post-test scores against it → survey saves", async ({ page }) => {
     test.setTimeout(240_000);
 
-    // Placement, deliberately half wrong so there's headroom to gain.
     await signUpAndConsent(page, { placement: true });
     await expect(page.getByText("1/16")).toBeVisible();
     const placementItems: string[] = [];

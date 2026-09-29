@@ -2,11 +2,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AmbientBackground } from "@/components/shell/ambient-background";
 
-/**
- * The 404: "this chart pattern doesn't exist", with the candle glyph. The
- * three candles grow up out of their baseline one after another, and the
- * third one is the ghost that never quite forms.
- */
 export default function NotFound() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-6 px-6 text-center">

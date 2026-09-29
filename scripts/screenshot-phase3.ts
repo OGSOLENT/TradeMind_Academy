@@ -1,8 +1,3 @@
-/**
- * The Phase 3 report screenshots: quiz shell, feedback panel, session
- * summary. Needs the dev server, emulators and seed.
- * Run: npx tsx scripts/screenshot-phase3.ts
- */
 import { chromium } from "@playwright/test";
 
 const BASE = "http://localhost:3100";

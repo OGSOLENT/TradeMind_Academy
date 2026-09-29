@@ -6,28 +6,6 @@ import {
   type BktParams,
 } from "@/lib/bkt";
 
-/**
- * The mastery document as a ledger.
- *
- * Every answer a learner gives is written to the append-only response log
- * before anything else happens (lib/logging). The mastery document is the
- * thing the dashboard, the routing and the skill map read, but it is only
- * ever a summary of that log: fold the answers through BKT in the order
- * they were given and you get it back exactly. So the log is the source of
- * truth and the mastery document is a cache of it.
- *
- * That matters because the cache can go wrong in two ways the log cannot. A
- * write at the end of a session can fail (the learner closes the laptop, the
- * connection drops), and before this module that session's learning was
- * simply lost from the model. And the document is writable by its owner, so
- * it can be edited. Both are repaired the same way: rebuild the document
- * from the log.
- *
- * Everything here is pure, so the rebuild can be checked against hand-worked
- * values, and so the live write and the rebuild can share the same code and
- * cannot drift apart (tests/unit/ledger.test.ts proves they agree).
- */
-
 export interface KcRecord {
   pL: number;
   attempts: number;
@@ -75,11 +53,6 @@ export function emptyDoc(): MasteryDoc {
   return { kcs: {}, history: [] };
 }
 
-/**
- * A placement replaces the model outright: every KC gets its initial
- * estimate, attempts restart at the placement's own count, and the history
- * starts again. This is what the placement completion has always written.
- */
 export function applyPlacement(
   kcIds: string[],
   answers: LoggedAnswer[],
@@ -100,12 +73,6 @@ export function applyPlacement(
   return { kcs, history: [] };
 }
 
-/**
- * A practice session merges in: each KC it touched takes its final estimate,
- * adds its attempts, and records a history point. masteredAt is the first
- * time the KC crossed the threshold and is never cleared, matching the
- * mastery ceremony, which only ever fires once.
- */
 export function mergePractice(
   doc: MasteryDoc,
   after: Record<string, number>,
@@ -128,11 +95,6 @@ export function mergePractice(
   return { kcs, history: history.slice(-HISTORY_LIMIT) };
 }
 
-/**
- * Replay one practice session's answers from the model as it stood when the
- * session began, exactly as the live session did: each answer is one BKT
- * step on the running estimate for its KC.
- */
 export function replayPractice(
   doc: MasteryDoc,
   answers: LoggedAnswer[],
@@ -148,11 +110,6 @@ export function replayPractice(
   return { after: running, attempts };
 }
 
-/**
- * Rebuild the mastery document from the whole log. Sessions are applied in
- * the order their first answer was given; sessions with no answers changed
- * nothing when they ran and change nothing here.
- */
 export function rebuildMastery(
   kcIds: string[],
   sessions: LoggedSession[],
@@ -178,11 +135,6 @@ export function rebuildMastery(
   return doc;
 }
 
-/**
- * Whether two mastery maps disagree on anything that matters. Timestamps are
- * left out on purpose: the live write stamps the moment the session closed,
- * the rebuild stamps the last answer, and neither is wrong.
- */
 export function masteryDiffers(
   a: Record<string, Pick<KcRecord, "pL" | "attempts">>,
   b: Record<string, Pick<KcRecord, "pL" | "attempts">>,

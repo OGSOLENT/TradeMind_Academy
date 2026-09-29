@@ -4,11 +4,6 @@ import { AmbientBackground } from "./ambient-background";
 import { PageTransition } from "./page-transition";
 import { Toaster } from "@/components/ui/toast";
 
-/**
- * The app shell: glass nav on desktop, bottom tab bar with the Practice FAB
- * on mobile. The inner wrapper carries data-drawer-scale so an open drawer
- * can push the whole page back to 0.97 and give the sheet some depth.
- */
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div data-drawer-scale className="min-h-dvh origin-center">

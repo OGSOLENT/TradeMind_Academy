@@ -29,12 +29,6 @@ const FAQS = [
   },
 ];
 
-/**
- * The landing FAQ. I swapped the native <details> for a button-driven
- * accordion so the answer can slide open instead of snapping. It keeps the
- * same keyboard behaviour (Enter or Space on the question) and wires
- * aria-expanded and aria-controls so a screen reader knows what's going on.
- */
 export function Faq() {
   const [open, setOpen] = useState<number | null>(null);
   const reduced = useReducedMotion();

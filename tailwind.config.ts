@@ -1,13 +1,5 @@
 import type { Config } from "tailwindcss";
 
-/**
- * Design tokens, pulled out of the Stitch prototype in design/prototype.
- * I read trademind_design_system/DESIGN.md first, then checked the landing and
- * dashboard HTML to see how the values were really used. Any conflicts I
- * resolved in docs/DECISIONS.md. Every colour here goes through a CSS variable
- * in app/globals.css, and that's deliberate: it's what lets colour-blind mode
- * swap --bull and --bear at runtime without touching a single component.
- */
 const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -58,7 +50,6 @@ const config: Config = {
         mono: ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
-        // The type scale, straight from trademind_design_system/DESIGN.md.
         "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }],
         "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
         "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "500" }],

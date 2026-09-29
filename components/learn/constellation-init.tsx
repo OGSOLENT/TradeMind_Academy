@@ -8,7 +8,6 @@ import { ease, stagger } from "@/lib/motion";
 
 interface ConstellationInitProps {
   kcs: Kc[];
-  /** The starting pL per KC, straight out of placement initialisation. */
   mastery: Record<string, number>;
   onContinue(): void;
 }
@@ -16,12 +15,6 @@ interface ConstellationInitProps {
 const R = 22;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 
-/**
- * The model-initialisation moment. The constellation assembles out of
- * particles and each node fills its ring to the starting pL on a 0.06
- * stagger. You can skip it, and under reduced motion it just renders the
- * final frame.
- */
 export function ConstellationInit({ kcs, mastery, onContinue }: ConstellationInitProps) {
   const reduced = useReducedMotion();
   const ordered = orderByChain(kcs);

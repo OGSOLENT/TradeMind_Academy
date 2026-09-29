@@ -1,19 +1,6 @@
 import { test } from "@playwright/test";
 import { answerCurrent, emulatorUp, signUpAndConsent } from "./helpers";
 
-/**
- * Report figure capture. This isn't a test of behaviour. It walks the real
- * adaptive journey and saves the screens the dissertation reproduces as
- * figures, so the figures always match the current artefact rather than
- * some July build.
- *
- *   npm run figures:capture
- *
- * It only runs when asked (CAPTURE_FIGURES=1). It used to run with every
- * browser-test pass, rewriting 24 screenshots of about 7 MB each every
- * time, and each rewrite that got committed added another copy to the git
- * history. That is most of how the repository reached 947 MB.
- */
 const OUT = "docs/report-figures";
 
 test.describe("report figures", () => {
@@ -76,9 +63,6 @@ test.describe("report figures", () => {
     // One wrong answer, to capture the amber feedback state.
     const type = await page.getByTestId("question-type").getAttribute("data-item-id");
     if (type) {
-      // answerCurrent submits AND continues. Capturing the feedback by submitting
-      // manually depends on the renderer, so instead I capture the post-answer
-      // HUD after a wrong answer.
       await answerCurrent(page, false);
       await page.waitForTimeout(600);
       await page.screenshot({ path: `${OUT}/11-after-wrong.png` });

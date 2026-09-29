@@ -4,24 +4,6 @@ import type { Item, Kc, Lesson } from "@/lib/content/types";
 import type { UserProfile } from "./types";
 import type { MasteryDoc } from "@/lib/mastery/ledger";
 
-/**
- * Runtime validation at the Firestore boundary.
- *
- * TypeScript's types vanish at runtime, and Firestore will hand back
- * whatever is in the document. Before this module, 29 reads cast the result
- * straight to a type (`d.data() as Item`), so a malformed document would
- * travel into the quiz or the routing engine and fail somewhere far from
- * the cause, or worse, not fail and quietly grade an answer against a
- * broken key. Now every document is parsed where it is read, and a bad one
- * fails right there with the collection, the id and the field in the
- * message.
- *
- * The schemas mirror lib/content/types.ts field for field, and
- * tests/unit/schemas.test.ts parses the whole shipped bank through them,
- * so a schema that disagreed with real content would fail the build rather
- * than a learner's session.
- */
-
 const Difficulty = z.enum(["easy", "med", "hard"]);
 
 export const KcSchema = z.object({
@@ -83,8 +65,6 @@ export const ItemSchema = z
     explanation: z.string(),
     isPretestEligible: z.boolean(),
   })
-  // The three type fields have to agree, or the grader would compare an
-  // answer against a key of a different shape.
   .refine((it) => it.type === it.payload.type && it.type === it.answerKey.type, {
     message: "type, payload.type and answerKey.type must match",
   });
@@ -121,20 +101,12 @@ export const MasteryDocSchema = z.object({
     .default([]),
 });
 
-// A Firestore Timestamp, checked by behaviour rather than class so the
-// schema works with both the web SDK and a plain test double. Null is
-// allowed because a serverTimestamp() field reads as null locally until
-// the server has confirmed the write, which is exactly when a freshly
-// signed-up learner's profile is first read.
 const TimestampLike = z
   .custom<Timestamp>((v) => typeof (v as { toMillis?: unknown } | null)?.toMillis === "function", {
     message: "expected a Firestore timestamp",
   })
   .nullable();
 
-// Settings added after launch are optional, so a profile written by an
-// older version still parses, and unknown future keys are dropped rather
-// than rejected.
 const SettingsSchema = z.object({
   theme: z.literal("dark").default("dark"),
   reducedMotion: z.boolean().default(false),
@@ -191,7 +163,6 @@ export function parseMasteryDoc(data: unknown): MasteryDoc {
   return parse(MasteryDocSchema, "mastery", data);
 }
 
-/** The learner's mastery document, validated, or an empty one if it doesn't exist yet. */
 export function masteryOf(snap: { exists(): boolean; data(): unknown }): MasteryDoc {
   return snap.exists() ? parseMasteryDoc(snap.data()) : { kcs: {}, history: [] };
 }

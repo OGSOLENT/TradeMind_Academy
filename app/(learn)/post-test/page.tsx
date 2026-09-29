@@ -21,14 +21,6 @@ import { COURSE_ID } from "@/lib/constants";
 import { masteryOf, parseDocs, parseItem, parseKc } from "@/lib/firebase/schemas";
 
 
-/**
- * The post-test. The same shape as placement (one question per module,
- * fixed order) but a different question wherever the module has one, and
- * it never touches the learner model: it's a measurement, taken once
- * you've worked through the course, so the two scores can be compared.
- * The model's current estimate is logged as pLBefore on every answer,
- * which makes the post-test a held-out check of the model as well.
- */
 export default function PostTestPage() {
   useTitle("Post-test");
   const router = useRouter();

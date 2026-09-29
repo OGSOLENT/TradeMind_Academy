@@ -1,9 +1,5 @@
 import type { AnswerKey } from "@/lib/content/types";
 
-/**
- * Learner answers, one shape per question type. Grading is pure, so it's
- * unit-testable and has no UI or Firebase imports.
- */
 export type LearnerAnswer =
   | { type: "mcq"; selected: number }
   | { type: "multi"; selected: number[] }

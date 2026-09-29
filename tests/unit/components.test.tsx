@@ -6,17 +6,6 @@ import { nextItem } from "@/lib/routing";
 import { MASTERY_THRESHOLD, REMEDIATION_THRESHOLD } from "@/lib/bkt";
 import type { Item } from "@/lib/content/types";
 
-/*
- * Two interface claims the report makes, checked in the rendered component
- * rather than taken on trust:
- *
- *   - the mastery ring colours a module by the same bands the routing engine
- *     uses (requirement N2: thresholds defined once), so the ring can never
- *     say "mastered" at a value the engine still treats as practice;
- *   - the "Why this question?" panel shows the engine's actual decision
- *     object, not a reconstruction of it (RQ3, the open learner model).
- */
-
 beforeAll(() => {
   // jsdom has no matchMedia; Framer Motion asks it about reduced motion.
   window.matchMedia ??= ((query: string) => ({

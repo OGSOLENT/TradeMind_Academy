@@ -1,13 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { answerCurrent } from "./helpers";
 
-/**
- * Phase 5: settings (including colour-blind candles, font scale and the
- * delete-then-undo flow), answer review, the mistake bank, the review queue
- * and the profile. Needs the emulators and the seed, and skips itself
- * otherwise.
- */
-
 async function emulatorUp(): Promise<boolean> {
   try {
     const res = await fetch("http://localhost:9099/", { signal: AbortSignal.timeout(1500) });
@@ -46,7 +39,6 @@ test.describe("learner support", () => {
     await signUpSkipPlacement(page);
     await page.goto("/settings");
 
-    // Colour-blind mode flips the CSS vars through a data attribute, which is the live preview.
     await page.getByRole("switch", { name: "Colour-blind candles" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-candles", "colorblind");
 
@@ -58,7 +50,6 @@ test.describe("learner support", () => {
     await page.getByRole("switch", { name: "Reduce motion" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-motion", "reduced");
 
-    // Download my data should produce a CSV download.
     const downloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: "Download my data" }).click();
     const download = await downloadPromise;
@@ -79,7 +70,6 @@ test.describe("learner support", () => {
   test("answer review, mistake bank, review queue, profile badges", async ({ page }) => {
     await signUpSkipPlacement(page);
 
-    // Complete a session, with the numeric question answered wrong on purpose.
     await page.goto("/practice");
     await page.waitForURL(/\/quiz\//);
     for (let i = 0; i < 10; i++) {
@@ -94,7 +84,6 @@ test.describe("learner support", () => {
     await expect(page.getByRole("heading", { name: "Answer review" })).toBeVisible();
     await expect(page.getByText("missed").first()).toBeVisible();
     await expect(page.getByText("correct").first()).toBeVisible();
-    // Each reviewed item carries the explanation I wrote for it.
     await expect(page.getByTestId("review-explanation").first()).toBeVisible();
 
     // The mistake bank groups the missed numeric item under its KC.

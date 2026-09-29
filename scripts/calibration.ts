@@ -1,38 +1,3 @@
-/**
- * The BKT calibration report. "Does the model's number mean what it says?"
- *
- * Every response in the log carries pLBefore, the model's estimate that the
- * learner knew the skill before answering. Through the BKT emission model
- * that becomes a predicted probability of a correct answer. If the model is
- * calibrated, answers the model gave a 70% chance to should come out right
- * about 70% of the time. This script checks exactly that:
- *
- *   1. a reliability table: predictions binned into deciles, with the
- *      observed accuracy in each bin and how many answers landed there
- *   2. the Brier score (mean squared error of the probabilities, lower is
- *      better), against a baseline that always predicts the overall
- *      accuracy, and the skill score that compares the two
- *   3. expected calibration error (ECE), the count-weighted gap between
- *      predicted and observed across the bins
- *   4. a held-out test of fixed priors against per-learner fitted
- *      parameters: fit (pL0, pT) on the first half of each learner's
- *      answers by maximum likelihood, predict the second half, and score
- *      both models the same way
- *
- * It runs on two kinds of data:
- *
- *   npx tsx scripts/calibration.ts --sim [--seed 42]   simulated learners with
- *                                                      known truth, so the
- *                                                      result is reproducible
- *   npx tsx scripts/calibration.ts --csv export/responses.csv
- *                                                      a real export from
- *                                                      scripts/export.ts
- *
- * Both write docs/report/CALIBRATION.md and a reliability diagram to
- * docs/report-figures/17-calibration.svg. The simulated cohort is the one
- * the report quotes, because the live dataset is a handful of people; the
- * CSV path is there for when the pilot has run.
- */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { chromium } from "@playwright/test";
 import { DEFAULT_PARAMS, predictCorrect, updateMastery, type BktParams } from "../lib/bkt";
@@ -54,8 +19,6 @@ interface Scores {
   ece: number;
   bins: { lo: number; hi: number; n: number; predicted: number; observed: number }[];
 }
-
-// ---- Scoring ---------------------------------------------------------------
 
 function score(obs: Obs[]): Scores {
   const n = obs.length;
@@ -92,11 +55,6 @@ function score(obs: Obs[]): Scores {
   }
   return { n, accuracy, brier, brierBase, skill: 1 - brier / brierBase, ece, bins };
 }
-
-// ---- Simulated learners ----------------------------------------------------
-// Same generator as scripts/simulate.ts: the truth is drawn from a range the
-// fixed priors don't sit in the middle of, so the model has to earn its
-// calibration rather than being handed it.
 
 const seedArg = process.argv.indexOf("--seed");
 let seed = seedArg > -1 ? Number(process.argv[seedArg + 1]) : 42;
@@ -166,8 +124,6 @@ function fitParams(responses: boolean[]): BktParams {
   return best;
 }
 
-// ---- The real log ----------------------------------------------------------
-
 function readCsv(path: string): Obs[] {
   const [header, ...lines] = readFileSync(path, "utf8").split("\n").filter(Boolean);
   const cols = header!.split(",");
@@ -194,8 +150,6 @@ function readCsv(path: string): Obs[] {
   }
   return obs;
 }
-
-// ---- Output ----------------------------------------------------------------
 
 function pct(x: number): string {
   return `${(x * 100).toFixed(1)}%`;
@@ -271,7 +225,6 @@ function summary(label: string, s: Scores): string {
   ].join("\n");
 }
 
-/** The report builder embeds PNGs (python-docx can't read SVG), so render one. */
 async function rasterise(svg: string, out: string) {
   try {
     const browser = await chromium.launch();
@@ -377,8 +330,6 @@ async function main() {
   mkdirSync("docs/report", { recursive: true });
   mkdirSync("docs/report-figures", { recursive: true });
   writeFileSync("docs/report/CALIBRATION.md", lines.join("\n"));
-  // Like against like: both lines on the diagram are the held-out half when
-  // there is one, so the two Brier scores in the legend are comparable.
   const svg = diagram(heldFixed ?? fixed, heldFitted);
   writeFileSync("docs/report-figures/17-calibration.svg", svg);
   await rasterise(svg, "docs/report-figures/17-calibration.png");

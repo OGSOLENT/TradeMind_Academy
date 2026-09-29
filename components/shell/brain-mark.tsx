@@ -4,17 +4,6 @@ import { useId } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ease } from "@/lib/motion";
 
-/**
- * The mark. A brain seen from the front, with a candlestick standing in for
- * the fissure between the hemispheres and a few neural links in each lobe.
- * Trading and the mind in one shape, which is the whole idea of the product.
- *
- * On first render the outline draws itself in, the nodes pop on a stagger
- * and the candle body scales up last. Under reduced motion it just appears.
- * The gradient ids are unique per instance so several marks can sit on one
- * page without their defs colliding.
- */
-
 /** The brain silhouette, drawn once here and reused by the favicon. */
 export const BRAIN_PATH =
   "M32 16 C30 12 24 11 21 14 C17 12 12 15 13 20 C9 21 8 27 11 30 C8 34 10 40 15 41 C15 46 21 49 26 46 C28 49 31 49 32 47 C33 49 36 49 38 46 C43 49 49 46 49 41 C54 40 56 34 53 30 C56 27 55 21 51 20 C52 15 47 12 43 14 C40 11 34 12 32 16 Z";
@@ -63,8 +52,6 @@ export function BrainMark({
         </filter>
       </defs>
 
-      {/* A soft halo behind the outline. It brightens on hover through the
-          parent's group class. */}
       <path
         d={BRAIN_PATH}
         stroke={grad}
@@ -110,7 +97,6 @@ export function BrainMark({
         />
       ))}
 
-      {/* The candle. Its wick is the fissure between the hemispheres. */}
       <motion.line
         x1="32"
         y1="16"

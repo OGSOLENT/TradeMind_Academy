@@ -8,16 +8,6 @@ import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 import { WalkthroughChart } from "./walkthrough-chart";
 
-/**
- * The stepped chart. One synthetic series, and a stack of annotations that
- * builds up as you press Next: each step adds its own layer and its caption
- * changes underneath. Earlier layers stay but dim, so the current idea is
- * the bright one. Arrow keys work once the figure has focus, the caption is
- * a live region, and "Describe" lays every step out as text. The drawing
- * itself is in walkthrough-chart.tsx, which has no hooks so the review
- * harness and the report can render it statically.
- */
-
 export function Walkthrough({ spec, anchor = "walkthrough" }: { spec: Spec; anchor?: string }) {
   const reduced = useReducedMotion();
   const [step, setStep] = useState(0);

@@ -10,13 +10,6 @@ import { Counter } from "@/components/ui/counter";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/**
- * The "visible mind" scroll section. The bento grid assembles as the section
- * comes into view, with each card rising on a short stagger, and the heading
- * drifts up a little slower than the grid on the way through, which is what
- * gives the section its depth. Under reduced motion (or on a short viewport)
- * none of that runs and the grid just sits there, fully visible.
- */
 export function VisibleMind() {
   const sectionRef = useRef<HTMLElement>(null);
 

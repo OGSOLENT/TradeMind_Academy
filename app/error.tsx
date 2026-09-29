@@ -6,14 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AmbientBackground } from "@/components/shell/ambient-background";
 
-/**
- * The error boundary for every route. Without this, a thrown render error
- * shows Next's own grey screen, which isn't what a participant should ever
- * see. This one says what happened in plain words, offers a retry (Next
- * re-renders the segment) and a way home, and logs the real error to the
- * console so I can see it. Nothing the learner did is lost: the response
- * log is append-only and already saved by the time anything can render.
- */
 export default function RouteError({ error, reset }: { error: Error & { digest?: string }; reset(): void }) {
   useEffect(() => {
     console.error("[route error]", error);

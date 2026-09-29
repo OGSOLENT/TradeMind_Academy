@@ -10,13 +10,6 @@ export interface InputProps
   error?: string;
 }
 
-/**
- * Text input with a floating label, the way the auth_sign_in prototype does
- * it. The label starts out as placeholder text and rises to a caps micro-label
- * once you focus or type. Inputs are darker than their card (bg-deep) with a
- * hairline that turns accent on focus and picks up a soft halo. Errors switch
- * the hairline to the soft danger tone. Never a harsh red.
- */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { label, hint, error, className, id: idProp, onFocus, onBlur, onChange, defaultValue, value, ...props },
   ref,
@@ -76,7 +69,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {error}
         </p>
       ) : hint ? (
-        // fg-secondary here, not fg-muted. Muted fails WCAG contrast for small text on bg-deep.
         <p id={`${id}-hint`} className="mt-1.5 px-1 text-sm text-fg-secondary">
           {hint}
         </p>

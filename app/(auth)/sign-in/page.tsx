@@ -32,8 +32,6 @@ export default function SignInPage() {
       const profile = await getUserProfile(db, uid);
       router.push(profile?.consent ? "/dashboard" : "/consent");
     } catch (err) {
-      // Auth succeeded and only the profile read failed, so send them on to
-      // the consent screen, which can cope with a missing profile, and say why.
       console.error("[sign-in] profile read failed", err);
       toast({
         title: "Signed in, but your profile didn't load",

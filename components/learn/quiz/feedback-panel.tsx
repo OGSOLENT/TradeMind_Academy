@@ -15,11 +15,6 @@ interface FeedbackPanelProps {
   isLast: boolean;
 }
 
-/**
- * The feedback after an answer. A tick or a cross draws itself in, then a
- * one-line why and a link back to the lesson. Wrong answers are amber and
- * calm. Never red, never shaking (section 3).
- */
 export function FeedbackPanel({ correct, explanation, lessonHref, onContinue, isLast }: FeedbackPanelProps) {
   const reduced = useReducedMotion();
   return (

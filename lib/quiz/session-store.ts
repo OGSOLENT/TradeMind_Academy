@@ -8,17 +8,6 @@ import { nextItem, targetKcId, type SelectionReason } from "@/lib/routing";
 import { grade, type LearnerAnswer } from "./grade";
 import { getLogger } from "@/lib/logging";
 
-/**
- * Quiz-session state. Zustand with localStorage persistence, so a refresh
- * resumes where you were and offline keeps working because the whole item
- * pool is local.
- *
- * Adaptive sessions pick each next item live through /lib/routing: the
- * lowest-mastery unlocked KC, then the difficulty ladder, never repeating,
- * with two wrongs in a row forcing remediation. I keep the reason behind
- * every selection for the "Why this question?" popover.
- */
-
 export interface AnswerRecord {
   itemId: string;
   kcId: string;

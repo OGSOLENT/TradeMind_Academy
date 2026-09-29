@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 
-/** Public pages are fine to index. The signed-in area and my dev pages aren't. */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {

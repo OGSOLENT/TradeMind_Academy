@@ -12,7 +12,6 @@ interface TfProps {
 
 const DETENTS = [50, 60, 70, 80, 90, 100];
 
-/** True or false, with a detented confidence slider. The confidence is logged, not graded. */
 export function TfConfidence({ value, confidence, onChange, disabled }: TfProps) {
   return (
     <div className="space-y-6">

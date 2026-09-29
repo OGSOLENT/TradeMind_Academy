@@ -133,8 +133,6 @@ export default function ProfilePage() {
   return (
     <Stagger className="mx-auto max-w-2xl space-y-6">
       <Card level="elevated" spotlight className="flex items-center gap-5 p-6">
-        {/* The avatar. A slow conic ring turns behind the initial, which is
-            the one bit of colour the profile card gets. */}
         <div aria-hidden="true" className="relative h-16 w-16 shrink-0">
           <span
             className="tm-spin-slow absolute -inset-[3px] rounded-pill"
@@ -211,8 +209,6 @@ export default function ProfilePage() {
               whileHover={badge.earned && !reduced ? { y: -3, scale: 1.02 } : undefined}
               className={cn(
                 "rounded-control p-4 text-center transition-shadow duration-300",
-                // An unearned badge is dimmed through its icon and text tones,
-                // not a whole-tile opacity, so the words stay at AA contrast.
                 badge.earned
                   ? "bg-mastery/5 shadow-hairline hover:shadow-[inset_0_0_0_1px_var(--mastery-glow),0_0_24px_-6px_var(--mastery-glow)]"
                   : "shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]",
@@ -267,7 +263,6 @@ export default function ProfilePage() {
         </div>
       </Card>
 
-      {/* The three doors into settings, each straight to its own section. */}
       <div className="grid gap-3 sm:grid-cols-3">
         {[
           {

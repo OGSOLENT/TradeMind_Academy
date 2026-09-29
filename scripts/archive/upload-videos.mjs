@@ -1,38 +1,8 @@
-/**
- * PARKED, 22 September 2026. The recordings are no longer on Vercel Blob:
- * the store went over the Hobby plan's 1 GB free storage allowance, and a
- * suspended store returns 403 on every public read, which killed every
- * video on the live site at once. They're now static files inside the app
- * (public/videos-web, built by scripts/compress-videos.mjs) and the deploy
- * carries them. See docs/DEPLOY.md.
- *
- * This is kept because it still works, and is the path back to a CDN if
- * bandwidth ever becomes the binding constraint: run it, and the
- * content/video-urls.json it writes overrides the local paths with no code
- * change. Anything it uploads has to stay under the storage allowance.
- *
- * Uploads the lesson recordings to the project's Vercel Blob store and
- * writes content/video-urls.json, which the content generator reads to
- * turn `Video: File.mp4` into the hosted URL.
- *
- *   node scripts/upload-videos.mjs            upload what's missing
- *   node scripts/upload-videos.mjs --force    re-upload everything
- *
- * Needs BLOB_READ_WRITE_TOKEN in .env.local (npx vercel@latest env pull
- * writes it after `vercel blob create-store`). The store is public, so the
- * URLs are plain https links the <video> element can play, and Vercel's
- * CDN caches each file (they're all under the 512 MB cache limit). The
- * Hobby plan includes 5 GB of storage and 100 GB of transfer a month, which
- * covers 1.1 GB of recordings and a few thousand plays.
- *
- * Existing blobs are listed first so a re-run only uploads what's new; the
- * files are ~30 MB each and this machine's uplink is not fast.
- */
 import { createReadStream, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 
-const VIDEO_DIR = "public/videos"; // a symlink to ~/Documents/DIssertation/Lessons
+const VIDEO_DIR = "public/videos";
 const OUT = "content/video-urls.json";
 const force = process.argv.includes("--force");
 

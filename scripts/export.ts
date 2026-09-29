@@ -1,14 +1,3 @@
-/**
- * The research-dataset export. Responses go out as a tidy CSV, one row per
- * response, with columns matching the schema in section 4, ready for the
- * Python evaluation notebook. It's an admin tool and it targets the emulator
- * unless you pass --allow-prod.
- *
- * Usage:
- *   npx tsx scripts/export.ts                 # every user, to export/responses.csv
- *   npx tsx scripts/export.ts --uid <uid>     # one user
- *   npx tsx scripts/export.ts --out my.csv
- */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";

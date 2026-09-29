@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-Build the AE2 dissertation report (.docx) from docs/report/REPORT.md on top of
-the university template, keeping the template's title page, section breaks,
-footers and table-of-contents control.
-
-  python3 scripts/build-report.py
-
-Output: docs/report/TradeMind_Academy_Dissertation.docx (and a copy in the
-Dissertation folder). Open in Word and accept "update fields" so the contents
-page and the figure/table lists pick up page numbers.
-"""
 from __future__ import annotations
 
 import copy
@@ -41,13 +30,7 @@ SUBMISSION = "September 2026"
 W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 TEXT_WIDTH_CM = 15.3
 
-# ----------------------------------------------------------------------------
-# Source parsing
-# ----------------------------------------------------------------------------
-
-
 def parse_blocks(text: str):
-    """Yield (kind, payload) blocks from the report dialect."""
     lines = [l for l in text.split("\n") if not l.startswith("%%")]
     i = 0
     para: list[str] = []
@@ -112,10 +95,6 @@ def parse_blocks(text: str):
         i += 1
     yield from flush()
 
-
-# ----------------------------------------------------------------------------
-# docx helpers
-# ----------------------------------------------------------------------------
 
 INLINE = re.compile(r"(\*\*.+?\*\*|\*.+?\*|https?://\S+)")
 
@@ -208,12 +187,11 @@ class Builder:
         self.lot_anchor = None
         self.toc_entries_anchor = None
 
-    # -- low-level insertion -------------------------------------------------
     def _insert(self, element):
         self.anchor.addprevious(element)
 
     def paragraph(self, style: str | None = None, text: str | None = None, align=None):
-        p = self.doc.add_paragraph()  # appended at end; we move it
+        p = self.doc.add_paragraph()
         self._insert(p._p)
         if style:
             try:
@@ -226,7 +204,6 @@ class Builder:
             p.alignment = align
         return p
 
-    # -- blocks --------------------------------------------------------------
     def heading(self, level: int, text: str):
         style = {1: "Heading 1", 2: "Heading 2", 3: "Heading 3"}[level]
         if level == 1:
@@ -349,11 +326,6 @@ class Builder:
         return p
 
 
-# ----------------------------------------------------------------------------
-# Special content generators
-# ----------------------------------------------------------------------------
-
-
 def curriculum_rows() -> list[list[str]]:
     data = json.loads((ROOT / "content" / "level1.json").read_text())
     kc_title = {k["id"]: k["title"] for k in data["kcs"]}
@@ -395,11 +367,6 @@ def decisions_rows() -> list[list[str]]:
     return rows
 
 
-# ----------------------------------------------------------------------------
-# Main
-# ----------------------------------------------------------------------------
-
-
 def set_textbox_lines(doc, lines: list[str]):
     """Replace the four placeholder lines in both copies of the title text box."""
     body = doc.element.body
@@ -434,7 +401,6 @@ def main():
     body = doc.element.body
     kids = list(body.iterchildren())
 
-    # --- title page -----------------------------------------------------------
     set_textbox_lines(doc, [DEGREE, f"Academic year {YEAR}", f"{AUTHOR} ({STUDENT_ID})", TITLE])
     for p in doc.paragraphs:
         if p.text.startswith("Date of submission"):
@@ -448,7 +414,6 @@ def main():
                 r.text = ""
             wp.runs[0].text = f"Word count\t:\t{body_word_count():,} (main body, Chapters 1 to 8, excluding tables, figures, references and appendices)"
 
-    # --- locate anchors in the template ----------------------------------------
     def para_text(el):
         return "".join(t.text or "" for t in el.iter(f"{{{W}}}t")).strip()
 
@@ -459,7 +424,6 @@ def main():
     idx_sect4 = next(i for i, k in enumerate(kids) if i > idx_sect3 and k.find(f".//{{{W}}}sectPr") is not None)
     final_sectPr = body.find(f"{{{W}}}sectPr")
 
-    # appendices section: reuse section 4's properties as the document's last section
     app_sectPr = copy.deepcopy(kids[idx_sect4].find(f".//{{{W}}}sectPr"))
     body.replace(final_sectPr, app_sectPr)
 
@@ -474,13 +438,11 @@ def main():
 
     sect2 = kids[idx_sect2]; sect3 = kids[idx_sect3]; toc_sdt = kids[idx_toc]
 
-    # --- parse and route blocks ------------------------------------------------
     blocks = list(parse_blocks(SOURCE.read_text()))
     front = Builder(doc, sect2)
     main_b = Builder(doc, sect3)
     app_b = Builder(doc, app_sectPr)
 
-    # front matter: Acknowledgements, Acronyms, Abstract go before sect2; lists + chapters before sect3; appendices before final
     current = front
     lof_marker = lot_marker = None
     for kind, payload in blocks:
@@ -537,7 +499,6 @@ def main():
                 current.table("Decisions log", decisions_rows(), font_pt=8)
             continue
 
-    # --- lists of figures and tables --------------------------------------------
     all_figs = main_b.figures + app_b.figures
     all_tabs = main_b.tables + app_b.tables
     lof = Builder(doc, lof_marker._p)
@@ -549,7 +510,6 @@ def main():
     lof_marker._p.getparent().remove(lof_marker._p)
     lot_marker._p.getparent().remove(lot_marker._p)
 
-    # --- contents: replace the cached TOC entries inside the sdt -----------------
     sdt_content = toc_sdt.find(f"{{{W}}}sdtContent")
     cached = list(sdt_content.iterchildren())
     for c in cached[1:]:  # keep the "Table of Contents" title paragraph only
@@ -571,7 +531,6 @@ def main():
     pend = doc.add_paragraph(); r = OxmlElement("w:r"); f = OxmlElement("w:fldChar"); f.set(qn("w:fldCharType"), "end"); r.append(f); pend._p.append(r)
     sdt_content.append(pend._p)
 
-    # --- ask Word to refresh fields on open ------------------------------------
     settings = doc.settings.element
     uf = OxmlElement("w:updateFields"); uf.set(qn("w:val"), "true")
     after = [c for c in settings if c.tag in (qn("w:hdrShapeDefaults"), qn("w:footnotePr"), qn("w:endnotePr"), qn("w:compat"), qn("w:docVars"), qn("w:rsids"), qn("m:mathPr"), qn("w:themeFontLang"), qn("w:clrSchemeMapping"), qn("w:shapeDefaults"), qn("w:decimalSymbol"), qn("w:listSeparator"))]
@@ -580,7 +539,6 @@ def main():
     else:
         settings.append(uf)
 
-    # --- word count line on the title page -------------------------------------
     doc.save(str(OUT))
     OUT_COPY.write_bytes(OUT.read_bytes())
     print(f"written {OUT}\n copied {OUT_COPY}")

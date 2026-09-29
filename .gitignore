@@ -25,7 +25,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# env — secrets never committed; .env.example IS committed
 .env
 .env.local
 .env.*.local
@@ -48,31 +47,18 @@ emulator-data/
 stitch_trademind_intelligent_tutor.zip
 export/
 
-# service-account credentials — NEVER commit
 serviceAccountKey.json
 *-service-account*.json
 .next-audit/
 .env*
 content/bars/
 
-# build cache: downscaled figures for the dissertation build
 docs/report-figures/.print/
 
-# The web-sized lesson recordings (public/videos-web, ~260 MB, built from
-# the originals by scripts/compress-videos.mjs). They're deployed as static
-# files but kept out of the repo so a clone stays small; re-create them with
-# `npm run videos:compress`.
 /public/videos-web
 
-# The built report. Its source is docs/report/REPORT.md and the submission
-# copy goes to the Dissertation folder; committing a 13 MB .docx on every
-# rebuild is what took this repository to 947 MB.
 /docs/report/*.docx
 
-# Non-participant accounts for scripts/analyse.ts. Holds email addresses, so never committed.
 /.analysis-exclude
 
-# Real pilot results: per-learner rows and participants' own words. The
-# repository is public and the consent promises anonymised use for the
-# dissertation, not publication, so this stays on the researcher's machine.
 /docs/report/PILOT_RESULTS.md

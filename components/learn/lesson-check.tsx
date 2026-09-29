@@ -23,23 +23,6 @@ import { cn } from "@/lib/utils";
 import { COURSE_ID } from "@/lib/constants";
 import { masteryOf, parseItem } from "@/lib/firebase/schemas";
 
-/**
- * The check at the end of every lesson.
- *
- * Three questions from the module's bank, one at a time. Get one right and
- * there's a small burst and a word of encouragement. Get one wrong and it
- * doesn't just say so: it shows the answer, explains the idea in a line,
- * and then hands you a similar question from the same module so you can
- * prove the idea landed. Miss that too and it tells you the answer again
- * and moves on, because practice will bring it back round.
- *
- * None of this is theatre. Every answer, including the retries, goes into
- * the append-only response log with the model's estimate before and after,
- * and the mastery document updates at the end exactly as it would after a
- * practice session. So the numbers on the dashboard move because of what
- * you did here. Wrong answers stay amber and calm, never red.
- */
-
 const QUESTIONS = 3;
 
 const CORRECT = ["Nailed it.", "That's the one.", "Exactly right.", "Clean.", "You've got this."];
@@ -101,7 +84,6 @@ function pickSimilar(pool: Item[], used: Set<string>, like: Item): Item | null {
   );
 }
 
-/** A dozen sparks from the centre of the feedback line. */
 function Burst({ tone }: { tone: "mastery" | "accent" }) {
   return (
     <span aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2">
@@ -283,9 +265,6 @@ export function LessonCheck({
     if (phase !== "done" || !user || !sessionId.current) return;
     const { db } = getFirebase();
     const id = sessionId.current;
-    // Ended and applied in one transaction. If it fails, the session is
-    // left unapplied and rebuilt from the response log on the next visit
-    // (lib/firebase/mastery.ts), so the answers still count.
     void completeSession(db, user.uid, COURSE_ID, {
       sessionId: id,
       type: "lesson-check",
@@ -326,7 +305,6 @@ export function LessonCheck({
     <section id="check" aria-label="Check yourself" className="scroll-mt-32">
       {celebrate && <MasteryCelebration kcTitle={kcTitle} onDone={() => setCelebrate(false)} />}
       <Card level="elevated" spotlight className="p-6 sm:p-7">
-        {/* Header: what this is, and where you are in it. */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Pill tone="accent" dot>
@@ -414,8 +392,6 @@ export function LessonCheck({
                 </div>
               )}
 
-              {/* Feedback. Teal for right, amber for wrong. The wrong path
-                  carries the explanation and the offer of a similar question. */}
               <AnimatePresence>
                 {graded && (
                   <motion.div

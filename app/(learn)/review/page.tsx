@@ -27,11 +27,6 @@ interface FadingKc {
   daysSince: number;
 }
 
-/**
- * The review queue, framed in amber as "fading skills". It's a card stack of
- * topics you haven't touched in a while and haven't mastered yet. Swipe a
- * card away to defer it (it flies off on a spring), or re-drill it now.
- */
 export default function ReviewPage() {
   useTitle("Review");
   const { user } = useAuth();

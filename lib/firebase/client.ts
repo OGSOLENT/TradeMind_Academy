@@ -8,13 +8,6 @@ import {
 } from "firebase/firestore";
 import { connectStorageEmulator, getStorage, type FirebaseStorage } from "firebase/storage";
 
-/**
- * The Firebase client singleton. With NEXT_PUBLIC_USE_FIREBASE_EMULATORS=true
- * the SDK talks to the local Emulator Suite (ports are in firebase.json),
- * and the `demo-` project prefix keeps the emulator completely offline. So
- * there's no way for local testing to touch production.
- */
-
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "demo-api-key",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "localhost",
@@ -35,8 +28,6 @@ let connected = false;
 export function getFirebase(): { app: FirebaseApp; auth: Auth; db: Firestore; storage: FirebaseStorage } {
   const app = createApp();
   const auth = getAuth(app);
-  // Safari and WebKit hang on Firestore's fetch-stream transport against the
-  // emulator once result sets get bigger. Auto-detect falls back to long polling.
   let db: Firestore;
   try {
     db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });

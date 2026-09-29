@@ -24,7 +24,6 @@ import { Stagger } from "@/components/motion/stagger";
 import { Kbd } from "@/components/ui/kbd";
 import { ShortcutsSheet } from "@/components/shell/shortcuts-sheet";
 
-/** A mini candle pair drawn from the live CSS vars. This is the colour-blind preview. */
 function CandlePreview() {
   return (
     <svg width="72" height="44" viewBox="0 0 72 44" aria-hidden="true" className="shrink-0">
@@ -36,7 +35,6 @@ function CandlePreview() {
   );
 }
 
-/** A two-word sample in the readable typeface, so the choice is visible before it's made. */
 function FontPreview() {
   return (
     <span
@@ -87,7 +85,6 @@ function Toggle({
             checked ? "bg-accent shadow-[0_0_14px_var(--accent-glow)]" : "bg-white/10",
           )}
         >
-          {/* The knob springs across instead of sliding on a linear tween. */}
           <motion.span
             layout
             transition={spring.ui}

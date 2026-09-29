@@ -1,9 +1,3 @@
-/**
- * A production build and server pointed at the emulator, for the Lighthouse
- * audit: `node scripts/prod-emulator.mjs build` then `... start`. It builds
- * into .next-emulator and serves on 3100, so it can't collide with the real
- * app or send audit sign-ups into the live database.
- */
 import { spawn } from "node:child_process";
 import { loadEnv } from "./env.mjs";
 

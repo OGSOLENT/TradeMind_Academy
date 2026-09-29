@@ -9,12 +9,6 @@ interface MasteryCelebrationProps {
   onDone(): void;
 }
 
-/**
- * THE one big ceremony (mastery_celebration_review). The background dims by
- * 20%, the ring sweeps to full, about forty particles burst, and it dismisses
- * itself after two seconds. Under reduced motion it's a plain 150ms fade with
- * no particles at all.
- */
 export function MasteryCelebration({ kcTitle, onDone }: MasteryCelebrationProps) {
   const reduced = useReducedMotion();
   const [visible, setVisible] = useState(true);

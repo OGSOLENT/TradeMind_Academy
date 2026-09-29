@@ -5,24 +5,6 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useReducedMotion } from "framer-motion";
 import * as THREE from "three";
 
-/**
- * The particle field, shared by the landing hero and the signed-in surfaces.
- *
- * What's going on in here:
- * - Points spread through a wide, shallow slab in front of the camera.
- * - A custom shader does the work per particle: a slow wave rolls across the
- *   field (it's meant to feel like a price surface breathing), each point
- *   twinkles on its own phase, size and alpha fall off with depth, and the
- *   colour mixes from indigo to mastery teal.
- * - The pointer shifts the field with parallax when `interactive` is on.
- *   Near particles move more than far ones, so the slab has real depth.
- * - Additive blending, no depth write. Overlapping points brighten instead
- *   of occluding, which is what makes it glow.
- *
- * Under reduced motion the frameloop is on demand, so it renders one still
- * frame and then never touches the GPU again.
- */
-
 const VERTEX = /* glsl */ `
   uniform float uTime;
   uniform float uPixelRatio;
@@ -78,13 +60,10 @@ const FRAGMENT = /* glsl */ `
 export interface ParticleFieldProps {
   /** How many points. 2,500 on the landing hero, a few hundred elsewhere. */
   count?: number;
-  /** Pointer parallax. Off for decorative backdrops inside cards. */
   interactive?: boolean;
-  /** 0 to 1. How much the wave displaces the field. */
   wave?: number;
   /** Multiplier on point size. */
   scale?: number;
-  /** Multiplier on alpha. Lower it behind text. */
   intensity?: number;
   /** World-space extent of the slab: width, height, depth. */
   spread?: [number, number, number];
@@ -103,9 +82,6 @@ function Field({
   const pointer = useRef(new THREE.Vector2(0, 0));
   const target = useRef(new THREE.Vector2(0, 0));
 
-  // I read the pointer off the window rather than the canvas, because the
-  // canvas sits behind the copy and never gets the events itself.
-  // Normalised to -1..1 across the viewport, which is all the parallax needs.
   useEffect(() => {
     if (!interactive) return;
     const onMove = (e: PointerEvent) => {
@@ -132,12 +108,7 @@ function Field({
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
       phases[i] = Math.random();
-      // Mostly fine dust, with a few larger "stars" scattered through it.
-      // These are scalars the vertex shader divides by depth, so a 1.0 here
-      // is roughly a 2px point in the middle of the field.
       sizes[i] = Math.random() < 0.07 ? 2.6 + Math.random() * 1.6 : 0.8 + Math.random() * 1.0;
-      // Teal bias grows to the right, so the field reads warm-to-cool the
-      // same way the aurora behind it does.
       mixes[i] = THREE.MathUtils.clamp((x + sx / 2) / sx + (Math.random() - 0.5) * 0.35, 0, 1);
     }
     return { positions, phases, sizes, mixes };

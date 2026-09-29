@@ -102,8 +102,6 @@ describe("ResponseLogger", () => {
   });
 
   it("parks an event the server refuses outright, so it can't block the answers behind it", async () => {
-    // Before the September audit a permanently rejected row stayed at the
-    // head of the queue forever and nothing after it was ever written.
     const sent: string[] = [];
     const parked: string[] = [];
     const logger = new ResponseLogger({

@@ -1,16 +1,3 @@
-/**
- * Renders every walkthrough to a PNG, one per step, plus a contact sheet.
- *
- *   npx tsx --tsconfig tsconfig.scripts.json scripts/render-walkthroughs.tsx            everything
- *   npx tsx --tsconfig tsconfig.scripts.json scripts/render-walkthroughs.tsx breaker-block   one id
- *
- * Output goes to docs/walkthroughs/<id>/step-N.png and
- * docs/walkthroughs/contact-sheet.png. The chart is the same pure component
- * the lesson page uses, rendered to static markup with the app's dark
- * palette inlined, so what's checked here is what a learner sees. I use
- * the sheet to catch label collisions across all 25 without clicking
- * through 100 steps in a browser.
- */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -20,7 +7,6 @@ import { CASE_STUDIES } from "../lib/case-studies";
 import { WalkthroughChart } from "../components/learn/walkthrough-chart";
 
 const only = process.argv[2];
-/** Synthetic walkthroughs and real-chart case studies, one registry for the harness. */
 const EVERYTHING = { ...WALKTHROUGHS, ...CASE_STUDIES };
 
 const CSS = `

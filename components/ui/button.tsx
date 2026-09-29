@@ -14,7 +14,6 @@ export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children">
   size?: ButtonSize;
   /** Shows a spinner and blocks clicks, but without the greyed-out look of disabled. */
   loading?: boolean;
-  /** The "it worked" state, in mastery teal. I use it after a save. */
   success?: boolean;
 }
 
@@ -25,8 +24,6 @@ const base =
   "disabled:opacity-40";
 
 const variants: Record<ButtonVariant, string> = {
-  // The inner top-edge highlight plus a glow on hover, straight from the
-  // landing prototype's .btn-primary. The sheen sweep is layered on top.
   primary:
     "tm-sheen bg-accent text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] " +
     "hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.4),0_0_24px_var(--accent-glow)]",
@@ -62,12 +59,6 @@ function Spinner() {
   );
 }
 
-/**
- * The design-system button. Five variants (primary, secondary, ghost, danger,
- * glass) across seven states: default, hover, active at scale 0.97,
- * focus-visible, disabled, loading and success. Hover also lifts the button by
- * a pixel, which is small enough that you feel it more than you notice it.
- */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { variant = "primary", size = "md", loading = false, success = false, className, children, disabled, ...props },
   ref,

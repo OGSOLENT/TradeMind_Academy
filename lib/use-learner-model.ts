@@ -18,13 +18,6 @@ export interface ModuleView extends Kc {
   lessons: Array<Pick<Lesson, "id" | "title">>;
 }
 
-/**
- * The learner's model as the navigation sees it: every module in teaching
- * order with its estimate, its state and its lessons. The Learn menu and the
- * command palette both read this, so it's one cached query rather than two.
- * The content half (modules and lesson titles) is stable, so it's cached for
- * ten minutes. The mastery half follows the shared one-minute default.
- */
 export function useLearnerModel() {
   const { user } = useAuth();
 

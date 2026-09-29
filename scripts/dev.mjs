@@ -1,17 +1,3 @@
-/**
- * `npm run dev`: THE app. Live Firebase project, real Google sign-in, real
- * database, hot reload, on port 3000 and nowhere else.
- *
- * It loads .env.production.local before Next reads its own env files, so
- * the client connects to trademind-academy instead of the emulator. Every
- * account created here is real. The emulator has its own script now
- * (`npm run dev:emulator`, port 3100) and only the test suite uses it, so
- * there's no longer a second "3000" that looks the same and behaves
- * differently.
- *
- * It refuses to start if 3000 is busy, because two dev servers sharing one
- * .next folder is how the build got corrupted three times in a day.
- */
 import { spawn } from "node:child_process";
 import { guard } from "./port-guard.mjs";
 import { loadEnv } from "./env.mjs";

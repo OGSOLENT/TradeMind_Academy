@@ -4,11 +4,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { BrainMark } from "./brain-mark";
 
-/**
- * The wordmark plus the brain mark. "Mind" carries the gradient so the type
- * and the mark share a palette, and hovering the whole thing wakes the mark
- * up: the halo comes on and the nodes swell slightly.
- */
 export function Logo({
   className,
   animate = true,

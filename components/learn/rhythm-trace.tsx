@@ -9,11 +9,6 @@ const W = 520;
 const H = 150;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-/**
- * Sessions per week for the last eight weeks, drawn as a trace that writes
- * itself in from left to right with a glowing tip on the current week. It's
- * the sign-in panel's animation, except this one is your real rhythm.
- */
 export function RhythmTrace({ sessionStarts }: { sessionStarts: number[] }) {
   const reduced = useReducedMotion();
 

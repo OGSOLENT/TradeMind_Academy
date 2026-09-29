@@ -23,12 +23,6 @@ import { getWalkthrough } from "@/lib/walkthroughs";
 import { getCaseStudy } from "@/lib/case-studies";
 import { Diagram } from "@/components/learn/diagram";
 
-/**
- * Whether the lesson recordings are reachable from this deployment. They
- * live outside the repo (a symlink locally) and aren't part of the Vercel
- * upload, so production sets NEXT_PUBLIC_VIDEOS_AVAILABLE=false until they
- * are hosted somewhere. Anything but "false" means yes.
- */
 const VIDEOS_AVAILABLE = process.env.NEXT_PUBLIC_VIDEOS_AVAILABLE !== "false";
 import {
   CheckQuestionBlock,
@@ -36,24 +30,11 @@ import {
   VideoBlock,
 } from "@/components/learn/lesson-blocks";
 
-/**
- * The lesson view.
- *
- * A reading column with a rail beside it on desktop. The rail carries an
- * outline of the sections (built from the markdown's h2s), which tracks the
- * one you're reading, plus your place in the module and a practise button.
- * The page opens on the module, the title, the reading time and the
- * lesson's own "what you'll learn" list pulled out into a card, then the
- * lecture video in a proper frame, then the prose. It ends on a check ring
- * and a card for the next lesson, so there's always a next step.
- */
-
 interface Section {
   id: string;
   title: string;
 }
 
-/** Pull "## What you'll learn" and its list out of the markdown, if it's there. */
 function splitObjectives(md: string): { objectives: string[]; rest: string } {
   const lines = md.split("\n");
   const start = lines.findIndex((l) => /^## what you.?ll learn/i.test(l.trim()));
@@ -85,8 +66,6 @@ export default function LessonPage() {
   const [pastTitle, setPastTitle] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
-  // The id can be a lesson id or a knowledge-component id. A module link
-  // resolves to the first lesson of that module.
   const { data: lesson, isPending } = useQuery({
     queryKey: ["lesson", id],
     queryFn: async () => {
@@ -124,10 +103,6 @@ export default function LessonPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Recordings only render where the video files are actually hosted. On a
-  // deployment without them the video block is dropped entirely, and the
-  // walkthrough behind it becomes the hero, so the lesson reads like one
-  // that never had a video rather than one with a broken player.
   const videoUrl = VIDEOS_AVAILABLE ? lesson?.videoUrl ?? null : null;
 
   // The prose, with the objectives lifted out of the first markdown block.
@@ -155,8 +130,6 @@ export default function LessonPage() {
     return Math.max(1, Math.round(words / 200));
   }, [lesson]);
 
-  // Which section is on screen. Whichever h2 last crossed the top third
-  // of the viewport wins, which matches how people read.
   useEffect(() => {
     if (sections.length === 0) return;
     const headings = sections
@@ -202,19 +175,14 @@ export default function LessonPage() {
   const index = siblings?.findIndex((s) => s.id === lesson.id) ?? -1;
   const next = index >= 0 ? siblings?.[index + 1] : undefined;
   const moduleProgress = siblings && siblings.length > 0 && index >= 0 ? (index + 1) / siblings.length : 0;
-  // The inline check's item stays out of the end-of-lesson check, so it
-  // never asks the same question twice.
   const inlineCheckId = lesson.blocks.find((b) => b.kind === "checkQuestion")?.itemId ?? null;
 
   return (
     <>
-      {/* The floating 2px reading-progress line (DESIGN.md "Learning Progress") */}
       <div className="fixed inset-x-0 top-0 z-40">
         <ProgressBar value={progress} variant="thin" aria-label="Reading progress" />
       </div>
 
-      {/* A small floating header that appears once the title has scrolled
-          out of view, so you always know where you are and how far in. */}
       <AnimatePresence>
         {pastTitle && (
           <motion.div
@@ -321,9 +289,6 @@ export default function LessonPage() {
             return <Reveal key={i}>{body}</Reveal>;
           })}
 
-          {/* The check at the end of the lesson. It only asks once you press
-              start, so the reading isn't interrupted by a question you didn't
-              ask for. */}
           <Reveal>
             <LessonCheck
               kcId={lesson.kcId}
@@ -336,8 +301,6 @@ export default function LessonPage() {
           </Reveal>
 
           <footer className="space-y-8 border-t border-hair pt-8">
-            {/* The end-of-lesson mark. The ring and the tick draw themselves in
-                as you reach the bottom, once. */}
             <Reveal className="flex flex-col items-center gap-3">
               <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true">
                 <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
@@ -374,7 +337,6 @@ export default function LessonPage() {
               </p>
             </Reveal>
 
-            {/* What's next. The next lesson if there is one, otherwise practice. */}
             <Reveal>
               {next ? (
                 <Link href={`/lesson/${next.id}`} className="block">
@@ -464,7 +426,6 @@ export default function LessonPage() {
           </footer>
         </article>
 
-        {/* The rail. Desktop only, sticky under the nav. */}
         <aside className="hidden w-[250px] shrink-0 lg:block" aria-label="Lesson outline">
           <div className="sticky top-[104px] space-y-5">
             <div className="rounded-card bg-bg-base-veil p-5 shadow-hairline">

@@ -1,8 +1,3 @@
-/**
- * The Level-1 question bank, written from the real curriculum in
- * content/lessons/*.md. Eight items per knowledge component, covering all
- * six question types. Every chart series in here is simulated (guardrail 7.1).
- */
 import type { AnswerKey, Difficulty, ItemPayload, ItemType } from "../lib/content/types";
 
 export interface ItemSeed {
@@ -132,7 +127,6 @@ const annotation = (
 });
 
 export const ITEMS: Record<string, ItemSeed[]> = {
-  // ── Module 1 ────────────────────────────────────────────────────────────
   "kc-candle-anatomy": [
     mcq(
       "easy",
@@ -224,7 +218,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 2 ────────────────────────────────────────────────────────────
   "kc-liquidity": [
     mcq(
       "easy",
@@ -324,7 +317,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
   ],
 
 
-  // ── Module 3: Risk & Position Sizing ────────────────────────────────────
   "kc-risk-sizing": [
     mcq(
       "easy",
@@ -422,7 +414,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 4 ────────────────────────────────────────────────────────────
   "kc-reversal-patterns": [
     mcq(
       "easy",
@@ -519,7 +510,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 4 ────────────────────────────────────────────────────────────
   "kc-cisd-confirmation": [
     mcq(
       "easy",
@@ -611,7 +601,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 5 ────────────────────────────────────────────────────────────
   "kc-daily-bias": [
     mcq(
       "easy",
@@ -708,7 +697,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 6 ────────────────────────────────────────────────────────────
   "kc-fractal-model": [
     mcq(
       "easy",
@@ -794,7 +782,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 7 ────────────────────────────────────────────────────────────
   "kc-smt-divergence": [
     mcq(
       "easy",
@@ -890,7 +877,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 8 ────────────────────────────────────────────────────────────
   "kc-weekly-profiles": [
     mcq(
       "easy",
@@ -977,7 +963,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 6: Market Structure & Delivery ──────────────────────────────
   "kc-market-structure": [
     mcq(
       "easy",
@@ -1037,7 +1022,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 7: PD Arrays ─────────────────────────────────────────────────
   "kc-pd-arrays": [
     mcq(
       "easy",
@@ -1099,7 +1083,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 9: Time & Sessions ───────────────────────────────────────────
   "kc-time-sessions": [
     mcq(
       "easy",
@@ -1154,7 +1137,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 10: Entry Models ─────────────────────────────────────────────
   "kc-entry-models": [
     mcq(
       "easy",
@@ -1216,7 +1198,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 13: Higher-Timeframe Context ─────────────────────────────────
   "kc-htf-context": [
     mcq(
       "easy",
@@ -1272,7 +1253,6 @@ export const ITEMS: Record<string, ItemSeed[]> = {
     ),
   ],
 
-  // ── Module 15: Execution & Review ───────────────────────────────────────
   "kc-execution-review": [
     mcq(
       "easy",

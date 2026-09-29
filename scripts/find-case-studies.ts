@@ -1,22 +1,3 @@
-/**
- * Cuts the real-chart case studies out of the bars scripts/fetch-bars.ts
- * pulled, and writes them as walkthrough specs.
- *
- *   npx tsx scripts/find-case-studies.ts
- *
- * Each detector below encodes one concept from the lessons as a rule over
- * real bars (a Candle 2 closure is "the low trades below the previous bar's
- * low and the close is back above it", and so on), scores every instance
- * it finds, and keeps the cleanest one. The annotations and the captions
- * are then generated from the bars the rule matched, with the real dates
- * and prices, so the caption can't say something the chart doesn't show.
- * Everything is marked with the symbol, interval, dates and source.
- *
- * The output is lib/case-studies/data/<id>.json plus an index that the
- * lesson page imports. The walkthrough renderer draws them exactly as it
- * draws the synthetic ones; the "Real chart" pill and the source line are
- * the only differences.
- */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import type { Candle, Step, Walkthrough } from "../lib/walkthroughs/types";
 
@@ -39,8 +20,6 @@ interface Raw {
   source: string;
   bars: Bar[];
 }
-
-// ---- Time in New York ----------------------------------------------------
 
 const fmt = new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
@@ -96,14 +75,10 @@ function sessionKey(b: Bar): string {
   return e.key;
 }
 
-// ---- Loading and cleaning ------------------------------------------------
-
 function load(file: string): Raw {
   const raw = JSON.parse(readFileSync(`content/bars/${file}.json`, "utf8")) as Raw;
   const ranges = raw.bars.map((b) => b.h - b.l).sort((a, b) => a - b);
   const median = ranges[Math.floor(ranges.length / 2)] ?? 1;
-  // Bad ticks show up as absurd ranges; drop them rather than let a detector
-  // mistake one for a sweep.
   raw.bars = raw.bars.filter((b) => b.h - b.l <= median * 25 && b.h >= b.l && b.h >= Math.max(b.o, b.c) && b.l <= Math.min(b.o, b.c));
   return raw;
 }
@@ -116,12 +91,6 @@ function avgRange(bars: Bar[], i: number, n = 20): number {
   }
   return k ? s / k : 1;
 }
-/**
- * A window is usable when its bars are consecutive (no weekend or holiday
- * gap inside it, other than the daily maintenance break) and nothing in it
- * is a freak bar that would squash the rest of the chart. The NWOG detector
- * is the one that wants a gap, and it doesn't use this.
- */
 function cleanWindow(bars: Bar[], a: number, b: number, interval: string): boolean {
   const maxGap = interval === "1h" ? 2.5 * 3600 : interval === "5m" ? 70 * 60 : 4 * 86400;
   let sum = 0;
@@ -177,8 +146,6 @@ function aggregate(bars: Bar[], n: number): Bar[] {
   return out;
 }
 
-// ---- Building a spec from a window ---------------------------------------
-
 interface Found {
   id: string;
   score: number;
@@ -225,9 +192,6 @@ function spec(
   };
 }
 
-// ---- Detectors -----------------------------------------------------------
-
-/** Lesson 5. The low trades below the previous bar's low and closes back above it, after a decline, with follow-through. */
 function findCandle2(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -339,7 +303,6 @@ function findCandle3(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 7. A run of down-close bars; the level is the first bar's open; a close above it is the CISD. */
 function findCisd(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -480,7 +443,6 @@ function findFvg(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 11. The last down-close bar before a displacement leg, later returned to and held. */
 function findOrderBlock(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -555,7 +517,6 @@ function findOrderBlock(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 3. Equal highs, then a bar that trades through them and closes back below, then a decline. */
 function findEqualHighs(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -619,7 +580,6 @@ function findEqualHighs(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 26. Two higher highs and higher lows, a BOS, then a displaced close below the last higher low. */
 function findBosChoch(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -847,7 +807,6 @@ function findJudas(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 38. In the 10:00 to 11:00 window: a sweep of the 09:30 to 10:00 low, displacement leaving a gap, the AM high reached. */
 function findSilverBullet(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -928,7 +887,6 @@ function findSilverBullet(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 12. A day that runs the previous day's low before the open and reaches the previous day's high later. Drawn on 15-minute bars. */
 function findPdhPdl(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -998,7 +956,6 @@ function findPdhPdl(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 34. The 00:00 open, a low below it before New York, the high after, a close near the high. */
 function findPowerOfThree(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -1069,7 +1026,6 @@ function findPowerOfThree(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 22. Weekly candles from daily bars: a week whose low forms on Monday or Tuesday under the prior week's low, closing near its high. */
 function findExpansionWeek(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -1144,7 +1100,6 @@ function findExpansionWeek(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 49. C1 low, C2 sweeps and closes back above, C3 closes above C2's high, C4 opens in C3's upper half and expands. */
 function findCandleCount(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -1202,7 +1157,6 @@ function findCandleCount(raw: Raw): Found[] {
   return out;
 }
 
-/** Lesson 20. ES makes a lower low while NQ makes a higher low (or the reverse), then both rally. */
 function findSmt(es: Raw, nq: Raw): Found[] {
   const a = es.bars;
   const byT = new Map(nq.bars.map((bar) => [bar.t, bar]));
@@ -1281,7 +1235,6 @@ function findSmt(es: Raw, nq: Raw): Found[] {
   return out;
 }
 
-/** Lesson 28. A leg from a swing low to a swing high, a retrace into the 62 to 79% band that holds, then a new high. */
 function findOte(raw: Raw): Found[] {
   const b = raw.bars;
   const out: Found[] = [];
@@ -1360,8 +1313,6 @@ function findOte(raw: Raw): Found[] {
   }
   return out;
 }
-
-// ---- Run --------------------------------------------------------------------
 
 function best(found: Found[]): Walkthrough | null {
   if (!found.length) return null;

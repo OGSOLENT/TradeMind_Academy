@@ -14,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { spring } from "@/lib/motion";
 
-/** A figure with the "Describe this chart" text alternative. Every figure gets one, no exceptions. */
 export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "figure" }> }) {
   const [describe, setDescribe] = useState(false);
   return (
@@ -53,19 +52,6 @@ export function FigureBlock({ block }: { block: Extract<LessonBlock, { kind: "fi
   );
 }
 
-/**
- * The lecture video. A framed player with the poster showing first and a
- * single play control over it, so the block reads as a piece of the lesson
- * rather than a bare <video> dropped into the column. Press play and the
- * native controls take over. With no video yet, the poster stands in.
- *
- * The recordings live outside the repo (public/videos is a symlink) and
- * aren't part of the Vercel deployment. The page already drops the block
- * where recordings aren't hosted; if a file still fails to load, the block
- * removes itself rather than showing a dead player, and the walkthrough
- * behind it takes the top of the page. NEXT_PUBLIC_VIDEO_BASE, when set,
- * points /videos/... at wherever the recordings are hosted.
- */
 const VIDEO_BASE = process.env.NEXT_PUBLIC_VIDEO_BASE?.replace(/\/$/, "");
 
 function resolveVideo(url: string | null): string | null {
@@ -87,16 +73,12 @@ export function VideoBlock({
   const reduced = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  // A load error keeps the frame and offers a retry. Dropping the block on
-  // a flaky connection would make the lecture look like it never existed.
   const [failed, setFailed] = useState(false);
   const src = resolveVideo(videoUrl);
   if (!src) return null;
 
   const play = () => {
     setPlaying(true);
-    // The element is already mounted underneath the poster, so this is
-    // immediate and counts as a user gesture for autoplay policies.
     void videoRef.current?.play();
   };
 
@@ -108,7 +90,6 @@ export function VideoBlock({
   return (
     <figure id="lecture" className="scroll-mt-32">
       <div className="relative isolate overflow-hidden rounded-card bg-bg-elevated shadow-lift">
-        {/* A soft wash behind the frame so it sits in light. */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -inset-px -z-10 rounded-card bg-[radial-gradient(80%_60%_at_50%_0%,rgba(94,106,210,0.22),transparent_70%)]"
@@ -126,8 +107,6 @@ export function VideoBlock({
           }}
         />
 
-        {/* The poster sits on its own layer so it can fill the frame while
-            the video underneath keeps its true aspect once it plays. */}
         <AnimatePresence>
           {!playing && (
             <motion.div
@@ -204,7 +183,6 @@ export function VideoBlock({
   );
 }
 
-/** An inline knowledge check. Once you get it right it collapses down to a tick chip. */
 export function CheckQuestionBlock({ itemId }: { itemId: string }) {
   const reduced = useReducedMotion();
   const [selected, setSelected] = useState<number | null>(null);
@@ -247,8 +225,6 @@ export function CheckQuestionBlock({ itemId }: { itemId: string }) {
       className="space-y-4"
       role="group"
       aria-label="Knowledge check"
-      // Which item this is, so a browser test can look up the real answer
-      // instead of hard-coding one and breaking whenever the bank changes.
       data-check-item-id={itemId}
     >
       <Pill tone="mastery">Knowledge check</Pill>

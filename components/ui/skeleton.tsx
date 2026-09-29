@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 
-/** A loading placeholder with a quiet shimmer sweeping across it. */
 export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div

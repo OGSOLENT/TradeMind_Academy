@@ -1,13 +1,3 @@
-/**
- * `npm run dev:emulator`: the app against the local Firebase Emulator
- * Suite, on port 3100, building into its own .next-emulator folder so it can
- * run beside the real app without the two corrupting each other.
- *
- * Nothing here touches the cloud. Google sign-in shows the emulator's plain
- * "Sign-in with Google.com" page, which is the emulator doing its job. The
- * e2e suite runs against this server, and it's the one to use for
- * throwaway accounts. Needs `npm run emulators` and `npm run seed` first.
- */
 import { spawn } from "node:child_process";
 import { guard } from "./port-guard.mjs";
 import { loadEnv } from "./env.mjs";
