@@ -170,7 +170,7 @@ Screenshots: `docs/screenshots/placement-intro.png`, `init-moment.png`,
 
 ### Simulated-learner harness (BKT validation)
 
-Generated 2026-09-24 by `scripts/simulate.ts` (seeded, reproducible).
+Generated 2026-09-29 by `scripts/simulate.ts` (seeded, reproducible).
 
 | Metric | Value |
 | --- | --- |
@@ -197,9 +197,9 @@ Routing policy simulation: 300 learners, 160 items each, seed 7. Learners start 
 
 | Policy | Items used (of 160) | KCs actually known at the end (of 16) | Items spent on KCs the learner already knew | Estimated mastered but not known | Known but not yet estimated mastered |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Adaptive (the engine) | 73.6 | 14.97 (sd 0.97) | 32.6 (44%) | 1.03 | 0.00 |
-| Fixed syllabus | 160.0 | 14.77 (sd 1.00) | 121.4 (76%) | 0.05 | 0.77 |
-| Random unlocked | 160.0 | 8.50 (sd 1.58) | 142.3 (89%) | 0.03 | 1.28 |
+| Adaptive (the engine) | 104.3 | 15.87 (sd 0.37) | 57.6 (55%) | 0.12 | 0.01 |
+| Fixed syllabus | 160.0 | 14.71 (sd 1.05) | 122.0 (76%) | 0.02 | 1.24 |
+| Random unlocked | 160.0 | 7.96 (sd 1.44) | 144.4 (90%) | 0.00 | 1.58 |
 <!-- routing-sim:end -->
 
 

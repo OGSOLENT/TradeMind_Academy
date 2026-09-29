@@ -42,7 +42,7 @@ Table: Abbreviations used in this report
 
 # Abstract
 
-Trading education online is mostly video with no model of what the learner actually knows. Everyone gets the same content in the same order, in a domain where the market is a poor teacher and most retail traders lose money. This project asked whether a Bayesian Knowledge Tracing student model can drive a genuinely adaptive learning loop for trading concepts, and whether such a system can produce interaction data good enough to evaluate that adaptation. TradeMind Academy is the deployed answer: a sixteen-module, 66-lesson curriculum, 116 assessment items across six question types, a pure BKT engine that updates a per-concept mastery estimate after every answer, a rule-based router that decides whether to teach, practise or remediate, and an append-only response log recording the model's estimate before and after each answer. The learner can inspect the model at any time, including a panel showing the router's real decision. Ethics is enforced structurally: simulated or clearly labelled historical data only, an 18+ gate in the database rules, real consent with a working decline, and strict separation of the development and research databases. Verification covers 138 unit tests against hand-computed arithmetic, 16 security-rule tests, 32 browser journeys including one that survives a network cut, and two simulations. The first confirms the mastery behaviours committed to at AE1 and exposes a real limit: the prior is barely identifiable from short response sequences. The second shows the routing reaches the same true knowledge as a fixed syllabus on 46 per cent of the items, at the cost of calling about one module in sixteen mastered too early. The study with human learners was not run. Its instruments are built, tested and deployed, so it is the recommended next step, and the contribution offered is the working, instrumented and honestly evaluated system that makes it possible.
+Trading education online is mostly video with no model of what the learner knows: everyone gets the same content in the same order, in a domain where the market teaches badly and most retail traders lose money. This project asked whether a Bayesian Knowledge Tracing student model can drive a genuinely adaptive learning loop for trading concepts, and produce interaction data good enough to evaluate that adaptation. TradeMind Academy is the deployed answer: a sixteen-module, 66-lesson curriculum, 116 assessment items, a BKT engine updating a per-concept mastery estimate after every answer, a router deciding whether to teach, practise or remediate, and an append-only log recording the estimate before and after each answer. Ethics is enforced structurally: simulated or labelled historical data, an 18+ gate in the database rules, and consent with a working decline. Verification covers 233 unit tests, 36 rules tests, 30 browser journeys, and a simulation showing the routing reaches the same knowledge as a fixed syllabus on 46 per cent of the items, at the cost of calling one module in sixteen mastered too early. A pilot with nine adults then ran remotely over two days. It returned a clean usability result, a System Usability Scale mean of 89.7 against a published 68, and an uninterpretable learning result: seven finished the pre-test in under a minute and three answered the post-test as fast, failing a rapid-guessing check applied to both. Rebuilding the post-test form shows the best zero-knowledge strategy scores 6 of 16, so the instrument does not explain those scores; the unsupervised administration does. Two of nine used the adaptive loop at all. The pilot validated the deployment, the instruments and the log while barely exercising the tutor. What is offered is that system, its evidence, and a supervised study redesigned from what went wrong.
 
 [[PAGEBREAK]]
 
@@ -60,11 +60,11 @@ Trading education online is mostly video with no model of what the learner actua
 
 ## 1.1 The problem
 
-Learning to trade has a starting problem, and it is one I have lived. The information is not hard to find; there is far too much of it, almost none of it is in any order, and a beginner has no reliable way to tell a credible source from a confident stranger. Much of what is free comes from self-styled gurus, and the Financial Conduct Authority has flagged firms using influencers to push high-risk products with unrealistic promises (FCA, 2022). So a learner guesses what to study, in what order, and who to trust, and that is where most give up or pick up habits they later have to unlearn.
+Learning to trade has a starting problem, and it is one I have lived. The information is not hard to find; there is far too much of it, almost none in any order, and a beginner has no reliable way to tell a credible source from a confident stranger. Much of what is free comes from self-styled gurus, and the Financial Conduct Authority has flagged firms using influencers to push high-risk products with unrealistic promises (FCA 2022). So a learner guesses what to study, in what order, and who to trust, and that is where most give up or pick up habits they later unlearn.
 
-The evidence base is uncomfortable, and Chapter 2 sets it out in full: retail traders underperform as a group, fewer than one intraday trader in a hundred earns reliably after costs, and one large study found no evidence of improvement with experience. That last finding makes this a pedagogy problem. The market is a bad teacher, because its feedback is delayed, noisy and confounded, so a sound decision can lose money and a poor one can be paid.
+The evidence base is uncomfortable, and Chapter 2 sets it out in full: retail traders underperform as a group, and the largest study of persistence found no improvement with experience. That last finding makes this a pedagogy problem rather than only a finance one. The market is a bad teacher, because its feedback is delayed, noisy and confounded, so a sound decision can lose money and a poor one can be paid.
 
-Existing trading courses do not fix this. They present identical videos and quizzes in an identical order to every learner, whatever that learner already knows. There is no model of the student, nothing adapts, and the learner does not find out whether they understood a concept until they have lost money on it. Intelligent tutoring systems were built for exactly this shape of problem, and they have a mature evidence base showing they come reasonably close to one-to-one human tutoring (VanLehn, 2011).
+Existing trading courses do not fix this. They present identical videos and quizzes in an identical order to everyone, whatever that learner already knows. There is no model of the student, nothing adapts, and the learner does not find out whether they understood a concept until they have lost money on it. Intelligent tutoring systems were built for exactly this shape of problem, with a mature evidence base showing they come close to one-to-one human tutoring (VanLehn 2011).
 
 ## 1.2 Research questions
 
@@ -75,7 +75,7 @@ The literature survey in Chapter 2 identified a gap: knowledge tracing has been 
 - RQ3. Can the learner see and understand the model that's making decisions about them?
 - RQ4. What constraints does the regulatory and ethical context impose on an educational trading artefact, and can they be built in without degrading the learning experience?
 
-RQ2 originally included measuring learning gain with participants. That part was not completed, for reasons set out in Chapters 4 and 7, so the question as answered here concerns whether the loop works and produces the right data.
+RQ2 originally included measuring learning gain with participants. The pilot in Section 6.7 attempted it and returned an inconclusive result, for reasons Chapter 7 takes apart, so the question as answered here concerns whether the loop works and produces the right data.
 
 ## 1.3 Aim and objectives
 
@@ -87,7 +87,7 @@ The aim was to design, build and evaluate an intelligent tutoring system for tra
 4. Validate the adaptive engine technically through unit tests and simulated-learner checks.
 5. Evaluate the built slice with real users for learning gain and usability.
 
-Chapter 7 reports on each of these honestly. Four were met. The fifth was not.
+Chapter 7 reports on each of these honestly. Four were met. The fifth was attempted: usability was answered, learning gain was not.
 
 ## 1.4 Scope
 
@@ -95,17 +95,28 @@ The artefact is a web application covering one complete curriculum level. A lear
 
 ## 1.5 Key terms
 
-A knowledge component (KC) is a single teachable skill, small enough to be assessed on its own. Bayesian Knowledge Tracing (BKT) maintains, per KC, the probability that a learner has learned it, updated after every observed answer (Corbett and Anderson, 1994). Mastery is a threshold on that probability, here 0.8, above which the next module unlocks; remediation is the band below 0.4. An open learner model shows the learner the system's model of them (Bull and Kay, 2010). The ICT methodology is the practitioner framework the curriculum draws on; it is grey literature, and what is studied is whether it can be taught adaptively, not whether it makes money.
+Table 1.1 defines the terms the rest of the report uses without further gloss.
+
+Table: Key terms used throughout this report
+
+| Term | Definition as used here |
+|---|---|
+| Knowledge component (KC) | A single teachable skill, small enough to be assessed on its own. The curriculum has sixteen. |
+| Bayesian Knowledge Tracing (BKT) | A four-parameter model maintaining, per KC, the probability that a learner has learned it, updated after every observed answer (Corbett and Anderson 1994). |
+| Mastery | A threshold on that probability, here 0.8, above which the next module unlocks. |
+| Remediation | The band below 0.4, in which the router returns the learner to teaching rather than practice. |
+| Open learner model | An interface that shows the learner the system's model of them (Bull and Kay 2010). |
+| ICT methodology | The practitioner framework the curriculum draws on. It is grey literature; what is studied here is whether it can be taught adaptively, not whether it makes money. |
 
 ## 1.6 Structure of the report
 
-The report follows the order in the contents: literature, requirements, methodology, design and implementation, results, evaluation and recommendations. The artefact is public at https://github.com/OGSOLENT/TradeMind_Academy and deployed at https://tmacademyuk.vercel.app, with running instructions in Appendix B.
+The report follows the order in the contents: literature, requirements, methodology, design and implementation, results, evaluation and recommendations. Chapter 6 ends with the pilot study, which Chapter 7 evaluates and Chapter 8 redesigns. The artefact is public at https://github.com/OGSOLENT/TradeMind_Academy and deployed at https://tmacademyuk.vercel.app, with running instructions in Appendix B.
 
 # 2. Literature Survey
 
 ## 2.1 Approach
 
-This survey condenses a longer review written mid-project. Searches ran from February to July 2026 across the ACM Digital Library, IEEE Xplore, ScienceDirect, SpringerLink, Google Scholar, SSRN and the Journal of Educational Data Mining archive, snowballing from three anchor papers (Corbett and Anderson, 1994; VanLehn, 2011; Abdelrahman, Wang and Nunes, 2023). About 240 records were screened; peer-reviewed empirical work, formal models and systematic syntheses were kept, blog posts and vendor material excluded, and regulatory publications cited only as evidence of the policy context. Screening was by one researcher and limited to English, both stated limitations.
+This survey condenses a longer review written mid-project. Searches ran from February to July 2026 across the ACM Digital Library, IEEE Xplore, ScienceDirect, SpringerLink, Google Scholar, SSRN and the Journal of Educational Data Mining archive, snowballing from three anchor papers (Corbett and Anderson 1994; VanLehn 2011; Abdelrahman, Wang and Nunes 2023). About 240 records were screened; peer-reviewed empirical work, formal models and systematic syntheses were kept, blog posts and vendor material excluded, and regulatory publications cited only as evidence of the policy context. Screening was by one researcher and limited to English, both stated limitations.
 
 ## 2.2 Retail trading as a learning problem
 
@@ -115,13 +126,13 @@ That absence of learning is what makes this a pedagogy problem and not only a fi
 
 ## 2.3 Does financial education work?
 
-The answer has shifted. Lusardi and Mitchell (2014) established that financial literacy is low and correlates with consequential behaviour. Fernandes, Lynch and Netemeyer (2014) then meta-analysed 201 studies and found education explained about 0.1 per cent of the variance in later behaviour, with effects decaying within months, while Kaiser et al. (2022) meta-analysed 76 randomised trials covering over 160,000 people and found positive, economically meaningful effects that survived correction for publication bias. The two reconcile once you notice the later studies used stronger designs and more interactive delivery: the earlier null was about intervention quality, not education itself.
+The answer has shifted. Lusardi and Mitchell (2014) established that financial literacy is low and correlates with consequential behaviour. Fernandes, Lynch and Netemeyer (2014) meta-analysed 201 studies and found education explained about 0.1 per cent of the variance in later behaviour, with effects decaying within months, while Kaiser et al. (2022) meta-analysed 76 randomised trials over 160,000 people and found positive, economically meaningful effects surviving correction for publication bias. The two reconcile once you notice the later trials used stronger designs and more interactive delivery: the earlier null was about intervention quality, not education itself.
 
 Two things carry into the design. The decay finding argues for what a tutoring system provides by default, spaced retrieval and remediation when mastery slips, and Roediger and Karpicke (2006) show repeated retrieval beats repeated study for long-term retention, which is what a mastery-gated question loop implements. And almost none of this literature is about trading: the trials measure budgeting, saving and credit, while peer-reviewed evaluation of instruction in chart-based trading skills is essentially absent, even though a large industry sells it.
 
 ## 2.4 Intelligent tutoring systems
 
-The conventional ITS architecture has four parts: a domain model, a student model, a pedagogical model and an interface (Nwana, 1990), and the landmark implementations were the Carnegie Mellon cognitive tutors (Anderson et al., 1995). Bloom (1984) set the field's target with the two sigma problem: one-to-one mastery tutoring moved students about two standard deviations above conventional teaching.
+The conventional ITS architecture has four parts: a domain model, a student model, a pedagogical model and an interface (Nwana 1990), and the landmark implementations were the Carnegie Mellon cognitive tutors (Anderson et al. 1995). Bloom (1984) set the field's target with the two sigma problem: one-to-one mastery tutoring moved students about two standard deviations above conventional teaching.
 
 The effectiveness evidence is consistent in direction and varied in size. VanLehn (2011) found intelligent tutors nearly as effective as human tutors (0.76 against 0.79), Ma et al. (2014) 0.41 against large-group instruction, and Kulik and Fletcher (2016) a median 0.66 across 50 evaluations. The counterweight is Pane et al. (2014), a two-year randomised trial with around 18,700 students, which found roughly 0.20 in the second year. Tutoring systems reliably beat static instruction, the margin is moderate, and implementation quality dominates. A dissertation claiming large gains from a small evaluation would be contradicted by the strongest study in its own supporting literature.
 
@@ -129,13 +140,13 @@ One further argument shapes the design philosophy. Baker (2016) observes that th
 
 ## 2.5 Student modelling and Bayesian Knowledge Tracing
 
-The student model is what makes a tutor intelligent, and knowledge tracing is the standard formulation: given a response history, estimate current knowledge and predict future performance (Abdelrahman, Wang and Nunes, 2023). The foundational model is BKT (Corbett and Anderson, 1994), in which each knowledge component is a two-state hidden Markov model: the learner either knows it or does not, and that hidden state is inferred from observed answers through four parameters, the prior P(L0), the learn rate P(T), the guess P(G) and the slip P(S). Appendix C works the update through by hand.
+The student model is what makes a tutor intelligent, and knowledge tracing is the standard formulation: given a response history, estimate current knowledge and predict future performance (Abdelrahman, Wang and Nunes 2023). The foundational model is BKT (Corbett and Anderson 1994), in which each knowledge component is a two-state hidden Markov model: the learner either knows it or does not, and that hidden state is inferred from observed answers through four parameters, the prior P(L0), the learn rate P(T), the guess P(G) and the slip P(S). Appendix C works the update through by hand.
 
-Its appeal here is threefold: the parameters carry pedagogical meaning, so the model can be explained to a learner or an examiner; the per-KC probability maps directly onto both a routing decision and a display; and it starts cold gracefully, so a system with no data can adopt literature defaults and refit later (Badrinath, Wang and Pardos, 2021; Bulut et al., 2023).
+Its appeal here is threefold: the parameters carry pedagogical meaning, so the model can be explained to a learner or an examiner; the per-KC probability maps directly onto both a routing decision and a display; and it starts cold gracefully, so a system with no data can adopt literature defaults and refit later (Badrinath, Wang and Pardos 2021; Bulut et al. 2023).
 
-The limitations are well documented. Beck and Chang (2007) showed an identifiability problem, where different parameter sets fit the same responses equally well while implying different knowledge states, though Doroudi and Brunskill (2017) argue its practical severity depends on how the model is used. Degeneracy, where fitted guess or slip exceed 0.5 and the semantics invert, was characterised by Baker, Corbett and Aleven (2008), while individualised parameters (Yudelson, Koedinger and Gordon, 2013) and per-item difficulty (Pardos and Heffernan, 2011) each improve accuracy. The consequence here is procedural: fitted parameters must be checked against bounds and reported, thresholds treated as design decisions, and claims about what the model "knows" hedged.
+The limitations are well documented. Beck and Chang (2007) showed an identifiability problem, where different parameter sets fit the same responses equally well while implying different knowledge states, though Doroudi and Brunskill (2017) argue its practical severity depends on how the model is used. Degeneracy, where fitted guess or slip exceed 0.5 and the semantics invert, was characterised by Baker, Corbett and Aleven (2008), while individualised parameters (Yudelson, Koedinger and Gordon 2013) and per-item difficulty (Pardos and Heffernan 2011) each improve accuracy. The consequence here is procedural: fitted parameters must be checked against bounds and reported, thresholds treated as design decisions, and claims about what the model "knows" hedged.
 
-BKT is not the only option. Deep Knowledge Tracing (Piech et al., 2015) dominates publication volume, but the accuracy picture is more balanced: Khajah, Lindsey and Mozer (2016) found BKT with modest extensions largely matches it, and Gervet et al. (2020), across nine datasets, concluded that deep models lead only on very large corpora and that calibration matters more than headline accuracy for a system that acts on its predictions. Table 2.1 makes the trade-off explicit.
+BKT is not the only option. Deep Knowledge Tracing (Piech et al. 2015) dominates publication volume, but the accuracy picture is more balanced: Khajah, Lindsey and Mozer (2016) found BKT with modest extensions largely matches it, and Gervet et al. (2020), across nine datasets, concluded that deep models lead only on very large corpora and that calibration matters more than headline accuracy for a system that acts on its predictions. Table 2.1 makes the trade-off explicit.
 
 Table: Student model selection against this project's constraints
 
@@ -150,21 +161,21 @@ A dissertation-scale deployment produces a small dataset, exactly the regime whe
 
 ## 2.6 Mastery thresholds and open learner models
 
-Knowledge tracing only matters because of what the tutor does with it. Corbett (2001) showed mastery learning driven by BKT recovers a meaningful share of Bloom's two sigma advantage inside a computer tutor. The threshold is a design parameter: the original cognitive tutors used 0.95 with large item banks and compulsory classroom use (Corbett and Anderson, 1994), and Pelánek (2018) argues such criteria conflate the system's uncertainty with the learner's knowledge. This project uses 0.8 to unlock and 0.4 to remediate, because a voluntary context with smaller banks punishes over-strict gating with attrition rather than compliance.
+Knowledge tracing only matters because of what the tutor does with it. Corbett (2001) showed mastery learning driven by BKT recovers a meaningful share of Bloom's two sigma advantage inside a computer tutor. The threshold is a design parameter: the original cognitive tutors used 0.95 with large item banks and compulsory classroom use (Corbett and Anderson 1994), and Pelánek (2018) argues such criteria conflate the system's uncertainty with the learner's knowledge. This project uses 0.8 to unlock and 0.4 to remediate, because a voluntary context with smaller banks punishes over-strict gating with attrition rather than compliance.
 
-A separate strand supports a distinctive interface decision. Bull and Kay (2010) review open learner models, which expose the student model to the student, and report benefits for reflection, self-assessment and trust; TradeMind is one in that sense. Doroudi and Brunskill (2019) add an equity argument: mastery-based adaptation narrows but does not close the gap between fast and slow learners, which is why Section 4.6 reports the distribution of gains and not only the mean.
+A separate strand supports a distinctive interface decision. Bull and Kay (2010) review open learner models, which expose the student model to the student, and report benefits for reflection, self-assessment and trust; TradeMind is one in that sense. Doroudi and Brunskill (2019) add an equity argument: mastery-based adaptation narrows but does not close the gap between fast and slow learners, which is why Section 6.7 reports the distribution of gains and not only the mean.
 
 ## 2.7 Teaching an ill-structured domain
 
-Nearly every ITS success story comes from a well-structured domain: algebra, geometry, programming. Trading is not like that, and the mismatch is the project's central difficulty rather than an aside. Lynch et al. (2006) set out what makes a domain ill-defined for tutoring: contested correctness, multiple defensible solutions and weak formal theory. Trading has all three, and a fourth that is worse, because outcome is a corrupted signal. A well-reasoned trade can lose and a reckless one can win, so unlike algebra the domain cannot mark itself, and any tutor that scored decisions by their result would teach the wrong lesson from the right process.
+Nearly every ITS success story comes from a well-structured domain: algebra, geometry, programming. Trading is not, and the mismatch is the project's central difficulty rather than an aside. Lynch et al. (2006) set out what makes a domain ill-defined for tutoring: contested correctness, multiple defensible solutions and weak formal theory. Trading has all three and a fourth that is worse, because outcome is a corrupted signal. A well-reasoned trade can lose and a reckless one can win, so the domain cannot mark itself, and a tutor scoring decisions by their result would teach the wrong lesson from the right process.
 
-The literature offers two compatible routes. The ill-defined-domains work surveyed by Lynch et al. favours tutoring the parts of a task that are well-defined and leaving expert judgement to human instruction; Pelánek (2018) adds that a mastery criterion is a statement about certainty rather than truth, so it should only be applied where correctness is decidable. This project takes both. The curriculum is decomposed into components that are individually well-structured even where the whole activity is not: reading a candle, classifying a swing sequence, computing a position size, each checkable against a rule the lesson states. Live trade decision-making, where correctness is contested, is excluded from what the tutor assesses. The cost is stated plainly in Chapter 7: the artefact can certify that a learner recognises the components, not that they can trade, and no modelling rigour closes that gap.
+The literature offers a route, and this project takes it. The ill-defined-domains work favours tutoring the parts of a task that are well-defined and leaving expert judgement to human instruction, and Pelánek (2018) adds that a mastery criterion is a statement about certainty rather than truth, so it belongs only where correctness is decidable. The curriculum is therefore decomposed into components that are individually well-structured even where the whole activity is not: reading a candle, classifying a swing sequence, computing a position size, each checkable against a rule the lesson states. Live trade decision-making is excluded from what the tutor assesses, at the cost stated in Chapter 7: the artefact can certify that a learner recognises the components, not that they can trade.
 
-The content needs honest positioning. The curriculum teaches the ICT methodology, a practitioner framework with no peer-reviewed validation. The nearest academic anchor, the technical analysis literature, is mixed: Lo, Mamaysky and Wang (2000) found several chart patterns carry statistically significant information, while Park and Irwin (2007) found profitability evidence concentrated in earlier periods and vulnerable to data snooping. So the framing throughout is that ICT is a structured, teachable body of knowledge whose delivery is the research object. Nothing here claims it's profitable, and that separation is what lets the project be evaluated as computing research rather than as an unregistered financial claim.
+The content needs honest positioning. The curriculum teaches the ICT methodology, a practitioner framework with no peer-reviewed validation, and its nearest academic anchor is mixed: Lo, Mamaysky and Wang (2000) found several chart patterns carry statistically significant information, while Park and Irwin (2007) found profitability evidence concentrated in earlier periods and vulnerable to data snooping. ICT is therefore framed throughout as a structured, teachable body of knowledge whose delivery is the research object. Nothing here claims it is profitable, and that separation is what lets the project be evaluated as computing research rather than as an unregistered financial claim.
 
 ## 2.8 Content delivery and engagement
 
-Lessons pair short narrated video with the same material as on-page text, which Mayer's multimedia principles support: narration with relevant visuals beats text alone, and stripped-back presentation beats decoration (Mayer and Moreno, 2003; Mayer, 2021). Guo, Kim and Rubin (2014) found MOOC engagement dropping sharply beyond about six minutes. Sweller's (1988) cognitive load theory adds a sequencing argument: a populated price chart overwhelms a novice because element interactivity is high, so the curriculum moves from isolated elements to integrated ones. Gamification has small to medium effects (Sailer and Homner, 2020), but mechanics must not override pedagogy, so progression is gated by BKT mastery and the game layer only decorates it.
+Lessons pair short narrated video with the same material as on-page text, which Mayer's multimedia principles support: narration with relevant visuals beats text alone, and stripped-back presentation beats decoration (Mayer and Moreno 2003; Mayer 2021). Guo, Kim and Rubin (2014) found MOOC engagement dropping sharply beyond six minutes. Sweller's (1988) cognitive load theory adds a sequencing argument: a populated price chart overwhelms a novice because element interactivity is high, so the curriculum moves from isolated elements to integrated ones. Gamification has small to medium effects (Sailer and Homner 2020) but must not override pedagogy, so progression is gated by BKT mastery and the game layer only decorates it.
 
 ## 2.9 Generative AI tutors
 
@@ -172,21 +183,25 @@ Any tutoring dissertation written in 2026 must face the obvious challenge: why b
 
 ## 2.10 Evaluating adaptive learning systems
 
-A system like this has to be assessed on three axes. Learning effect is measured pre-test to post-test using Hake's (1998) normalised gain, which corrects for ceiling effects, against realistic education benchmarks (Kraft, 2020). Model quality is separate, because a system can improve learning while its model is poorly calibrated or the reverse; the convention is prediction accuracy plus calibration, with fitted parameters reported against degeneracy bounds (Baker, Corbett and Aleven, 2008; Gervet et al., 2020). Usability is assessed with the System Usability Scale (Brooke, 1996) against the published average of 68 (Bangor, Kortum and Miller, 2008), with free text analysed thematically (Braun and Clarke, 2006).
+A system like this is assessed on three axes. Learning effect is measured pre-test to post-test with Hake's (1998) normalised gain, which corrects for ceiling effects, against realistic benchmarks (Kraft 2020). Model quality is separate, because a system can improve learning while its model is poorly calibrated or the reverse; the convention is prediction accuracy plus calibration, with fitted parameters reported against degeneracy bounds (Baker, Corbett and Aleven 2008; Gervet et al. 2020). Usability is assessed with the System Usability Scale (Brooke 1996) against the published average of 68 (Bangor, Kortum and Miller 2008).
 
 ## 2.11 Regulation and ethics
 
-The regulatory record imposes obligations an algebra tutor would not face. When ESMA intervened in the retail CFD market it cited analyses showing 74 to 89 per cent of retail accounts lose money, and imposed leverage caps, negative balance protection and standardised risk warnings (ESMA, 2018). The FCA made near-identical restrictions permanent in the UK (FCA, 2019) and continues to warn about influencer promotion of high-risk products (FCA, 2022). An academic artefact teaching trading must therefore be designed so it cannot drift into a financial promotion, which is a design constraint rather than a disclaimer and is worked through in Section 4.7. The interaction log is personal data, so UK GDPR data minimisation and purpose limitation apply, and the work sits under the BCS Code of Conduct (BCS, 2022).
+The regulatory record imposes obligations an algebra tutor would not face. When ESMA intervened in the retail CFD market it cited analyses showing 74 to 89 per cent of retail accounts lose money, and imposed leverage caps, negative balance protection and standardised risk warnings (ESMA 2018); the FCA made near-identical restrictions permanent in the UK (FCA 2019) and continues to warn about influencer promotion (FCA 2022). An artefact teaching trading must therefore be designed so it cannot drift into a financial promotion, which is a design constraint rather than a disclaimer and is worked through in Section 4.7. The interaction log is personal data, so UK GDPR data minimisation and purpose limitation apply, and the work sits under the BCS Code of Conduct (BCS 2022).
 
 ## 2.12 The gap and the traceability of decisions
 
-Read together these literatures give a coherent picture. Retail trading outcomes are poor and markets teach badly; well-designed financial education works, but its evidence covers budgeting and saving rather than trading; intelligent tutors reliably outperform static instruction by a moderate margin; and BKT is mature, interpretable and workable at small scale. What does not exist is the intersection. The knowledge tracing literature is built almost entirely on mathematics, language and programming datasets (Abdelrahman, Wang and Nunes, 2023), and this survey found no tutoring system applying a formal student model to trading education. That is where this project sits.
+Together these literatures give a coherent picture: retail trading outcomes are poor and markets teach badly; financial education works but its evidence covers budgeting rather than trading; intelligent tutors outperform static instruction by a moderate margin; and BKT is mature, interpretable and workable at small scale. What does not exist is the intersection. Knowledge tracing is built almost entirely on mathematics, language and programming datasets (Abdelrahman, Wang and Nunes 2023), and this survey found no tutoring system applying a formal student model to trading education. That is where this project sits.
 
 # 3. Project Specification and Requirements
 
 ## 3.1 Users and context
 
 The primary user is an adult beginner who wants a structured path and honest feedback about what they have understood. The secondary user is the researcher, who needs an analysable record of every learning interaction. Where the two conflict, the progress report committed the project to protecting the dataset, and that rule decided several of the choices below.
+
+Figure 3.1 sets out the actors and what each can do.
+
+![The actors and what each can do, with the two cases the ethics approval turns on and the GDPR rights a learner exercises alone](docs/report-figures/fig-usecase.png)
 
 ## 3.2 Functional requirements
 
@@ -212,15 +227,7 @@ Table: Functional requirements with MoSCoW priority and outcome
 
 ## 3.3 Non-functional requirements
 
-The non-functional requirements are not a generic quality checklist. Each one is forced by something specific: the research design, the regulator, the literature, or the population the artefact is for. Stating where each comes from is what makes them testable rather than aspirational, and every one of them became a gate that work had to pass rather than an aspiration to be assessed at the end.
-
-Three come from the fact that this is a research instrument before it is a product. The engine has to be pure and hand-verified (N1) because the dissertation's central claim is about the model's behaviour, and a claim about behaviour cannot rest on a dependency whose arithmetic I have not checked; that is also why the thresholds are defined once (N2) rather than repeated at each site that reads them. The response log has to be lossless across refresh and network failure (N3) because it is the dataset: a silently dropped answer is not a degraded user experience, it is a hole in the evidence, and Doroudi and Brunskill's (2019) argument that adaptive systems must be evaluated on the spread of outcomes and not only the mean is impossible to honour if the tail of the distribution is the part that went missing. N9, that development can never write to the research database, is the same requirement seen from the other side, and it was added to the specification only after the incident in Section 5.9 proved it was needed.
-
-Two come from the regulatory context set out in Section 4.7. Because roughly 80 per cent of retail CFD accounts lose money (FCA, 2022) and the FCA's financial-promotions regime bites on how a product is described, the guardrails in Section 3.5 had to be enforceable properties of the system rather than copy that could drift. The 18+ attestation is therefore a database rule (N4) and not a checkbox, which means it holds however a learner arrives, including through Google sign-in where the interface is not mine.
-
-Two come from the user in Section 3.1 and from the open-learner-model literature. If the point of the artefact is that the learner can see and question the model that is judging them (RQ3), then the interface carrying that model cannot be usable only by people with a mouse, unimpaired vision and a fast connection, so accessibility is a numeric gate on every page (N5) rather than a late audit, and reduced-motion, colour-blind and contrast modes (N7) are first-class settings. Performance (N6) matters for the same reason and not for polish: an estimate that arrives after a visible delay is an estimate the learner stops consulting.
-
-The last is methodological. N10, that every design decision is recorded with its reason, exists because a single-developer project has no code review, and a written record of reversals is the only available substitute for a second opinion. It is also what made Chapter 5 reconstructable rather than remembered.
+Table 3.2 lists the non-functional requirements. They are not a generic quality checklist. Each is forced by something specific: the research design, the regulator, the open-learner-model literature, or the fact that a single-developer project has no code review; Appendix M derives each from its source. Every one became a gate work had to pass, not an aspiration assessed at the end.
 
 Table: Non-functional requirements
 
@@ -234,7 +241,7 @@ Table: Non-functional requirements
 | N6 | Dashboard Lighthouse performance at least 85 | Met, 86 |
 | N7 | Reduced-motion and colour-blind modes from the OS setting or an in-app toggle | Met, and extended with high contrast, a readable typeface, comfortable reading and calm mode |
 | N8 | Responsive to phone width, tested on desktop and Pixel 7 | Met |
-| N9 | Development can never write to the research database, enforced by configuration | Met after one incident, 5.10 |
+| N9 | Development can never write to the research database, enforced by configuration | Met after one incident, Section 5.9 |
 | N10 | Every design decision recorded with its reason | Met, 104 entries |
 
 ## 3.4 Platform and technology
@@ -243,71 +250,110 @@ The stack was fixed at the progress-report stage so the novelty budget went on t
 
 ## 3.5 Guardrails
 
-Eight guardrails were written into the specification as hard constraints, meaning work that violated one was wrong however well it otherwise worked: education and simulation only, with no live data, broker links, signal language or profitability claims anywhere in the copy; a create-only, queued, retried and exportable response log; thresholds of exactly 0.8 and 0.4; accessibility as a gate from the first phase rather than a final pass; secrets in ignored environment files and deny-by-default rules; no dependencies beyond the fixed stack without justification. Chapter 6 reports a sweep against the first of these.
+Six guardrails were written into the specification as hard constraints, meaning work that violated one was wrong however well it otherwise worked. Table 3.3 lists them. Chapter 6 reports a sweep against the first.
+
+Table: The six guardrails, written as hard constraints at specification
+
+| # | Guardrail |
+|---|---|
+| G1 | Education and simulation only: no live market data, broker links, signal language or profitability claims anywhere in the copy |
+| G2 | A response log that is create-only, queued, retried and exportable by its owner |
+| G3 | Mastery and remediation thresholds of exactly 0.8 and 0.4, fixed in advance and never tuned to flatter a result |
+| G4 | Accessibility as a gate from the first phase rather than a final pass |
+| G5 | Secrets in ignored environment files, with deny-by-default security rules |
+| G6 | No dependency beyond the fixed stack without a recorded justification |
 
 ## 3.6 Deliberately out of scope
 
-The original product design, 43 high-fidelity prototype screens, included a mentor marketplace, a trading terminal simulator and mentor-review dashboards. All were cut before implementation began: the marketplace contributed nothing to the research question and introduced the paid-guidance risk the progress report had warned against, so no payment code of any kind ships, and the terminal simulator is a product in itself. The designs are retained as evidence of the full vision (Appendix H).
+The 43-screen prototype included a mentor marketplace, a trading terminal simulator and mentor-review dashboards, all cut before implementation began. The marketplace introduced the paid-guidance risk the progress report warned against, so no payment code of any kind ships; the simulator is a product in itself. Appendix H retains the designs and the reasons.
 
 # 4. Methodology
 
 ## 4.1 Research approach
 
-The project is design science research: it addresses a problem by building an artefact and evaluating it (Hevner et al., 2004), following the process Peffers et al. (2007) describe. The framing fits because the research question cannot be answered by argument. Whether BKT can drive an adaptive loop for trading concepts is something you find out by building the loop and instrumenting it. The alternative, an empirical study on an existing platform, was not available, because no existing platform applies a student model to this domain, which is the gap itself. A survey-based needs analysis was considered and rejected as adding little beyond what the regulatory and finance literature already establishes, so the justification for the aims comes from the literature rather than from primary data.
+The project is design science research: it addresses a problem by building an artefact and evaluating it (Hevner et al. 2004), following the process Peffers et al. (2007) describe. The framing fits because the research question cannot be answered by argument. Whether BKT can drive an adaptive loop for trading concepts is something you find out by building the loop and instrumenting it. The alternative, an empirical study on an existing platform, was not available, because no existing platform applies a student model to this domain, which is the gap itself. A survey-based needs analysis was considered and rejected as adding little beyond what the regulatory and finance literature already establishes, so the justification for the aims comes from the literature rather than from primary data.
 
 ## 4.2 Development method
 
-Development was iterative and phased, building the whole vertical slice end to end before adding anything around it, so the loop worked early and was then refined. Six phases mirrored the milestone order set in the progress report. Each had a written done-criterion and ended with its verification checklist actually run and recorded in the evaluation log before the phase was tagged in version control. The riskiest component, the engine, was reached only once the plumbing around it worked, so every mistake in it appeared in a working interface rather than in isolation.
+Development was iterative and phased, building the whole vertical slice end to end before adding anything around it, so the loop worked early. Six phases mirrored the milestone order in the progress report, each with a written done-criterion and each tagged in version control. The plan and the verification evidence were produced per phase, but the approval gates between them were not honoured: the decisions log records, on 15 July, that I instructed the tool to run straight through them. The checks were run; what was skipped was me stopping to read them before the next phase began. The engine, the riskiest component, was reached only once the plumbing worked, so every mistake in it appeared in a working interface rather than in isolation.
 
-Two practices ran through every phase. Every significant decision was appended to a decisions log with its reason, so the rationale in Chapter 5 comes from a record kept at the time rather than from memory. And "measured, not assumed" was applied wherever it could be: animation costs profiled in frames per second, accessibility audited rather than eyeballed, the model validated against simulated learners rather than by watching a few numbers go up.
+Two practices ran through every phase. Every significant decision was appended to a log with its reason, so the rationale in Chapter 5 comes from a record kept at the time. And "measured, not assumed" was applied wherever it could be: accessibility audited rather than eyeballed, the item bank measured for guessability rather than assumed fair, the model validated against simulated learners rather than by watching numbers go up.
 
-Implementation was AI-assisted, using an agentic coding tool under my direction, and the progress report declared this before the build began. Being specific about the division matters more than the declaration itself. The tool wrote most of the production code, and did so from my instructions, in an iterative loop where I set each task, reviewed the result against the phase's done-criterion, and rejected or redirected it when it was wrong. What is mine is the part the marking criteria are about: the research question and its narrowing, the choice of Bayesian Knowledge Tracing over the alternatives in Table 2.1 and the 0.8 and 0.4 thresholds, the sixteen-component decomposition and its prerequisite chain, the curriculum and all 116 items, the evaluation design including the two simulations, the guardrails, and every entry in the decisions log. Several of the findings reported in Chapter 6 came from my instruction to go and measure something rather than from the tool volunteering it, and the entries recording features that were built, measured and then removed are the clearest evidence of where the direction came from.
+AI was used in four places and all four are declared. Implementation was AI-assisted, using an agentic coding tool under my direction, as the progress report declared before the build began. The 43-screen prototype the interface was built from was generated with Stitch, then rebuilt in code with the palette, radii, spacing and motion constants reworked into tokens. The 36 recordings were turned into lesson text with NotebookLM, which produced transcripts and first-pass structure that I rewrote, checked against the recordings and sourced. And this report was drafted with AI assistance on the same arrangement: the argument, the measurements and every number are mine and checkable against the repository, the prose was worked on with a model, and no source was cited that I have not read.
 
-This carries an obvious risk to academic integrity, and the honest response is to make the work checkable rather than to assert good faith. Three things support that. The decisions log is dated and records reversals, dead ends and mistakes, which a reconstruction after the fact would not contain. The git history shows the phases being built, tagged and verified in order. And I can explain any part of the engine, the routing rules or the debiasing pass at a whiteboard, which is the only test that really settles the question.
+Being specific about the division matters more than declaring it. The tool wrote most of the production code from my instructions: I set each task, reviewed the result against the phase's done-criterion, and redirected it when it was wrong. What is mine is the part the marking criteria are about: the research question and its narrowing, the choice of BKT over the alternatives in Table 2.1, the thresholds, the sixteen-component decomposition, the curriculum and all 116 items, the evaluation design, the guardrails, and every entry in the decisions log. Several findings in Chapter 6 came from my instruction to go and measure something, and the entries recording features built, measured and removed show where the direction came from.
+
+All of this carries an academic-integrity risk, and the honest response is to make the work checkable rather than assert good faith. The decisions log is dated and records reversals, dead ends and mistakes, which a reconstruction after the fact would not contain; and I can explain any part of the engine, the routing rules or the debiasing pass at a whiteboard.
 
 ## 4.3 Evaluation design
 
-The progress report fixed the evaluation on three strands, with success criteria stated in advance so they could not be adjusted to fit the results. Table 4.1 restates them and records which were completed.
+The progress report fixed the evaluation on four strands, with success criteria stated in advance so they could not be adjusted to fit the results. A fifth, the routing-policy simulation, was added in September and its criterion was fixed before it was run; Table 4.1 marks which is which and records what each returned.
 
-Table: Evaluation strands, success criteria and completion
+Table: Evaluation strands, their success criteria and what each returned
 
-| Strand | Method | Success criterion (fixed at AE1) | Completed |
+| Strand | Method | Success criterion, and when it was fixed | Completed |
 |---|---|---|---|
 | Technical correctness | Unit tests on BKT and routing; rules tests; E2E journeys | All tests pass; engine maths matches hand-computed values | Yes |
 | Model behaviour | Simulated-learner harness, N = 200 | Correct streak crosses 0.8 in a few items; wrong streak stays below 0.4; improving learners climb | Yes |
-| Routing value | Policy simulation: the engine against a fixed syllabus and a random floor over the real curriculum and item bank | Same or better true knowledge in fewer items than the syllabus | Yes (added September 2026) |
-| Learning gain | Pre-test and post-test with participants; Hake normalised gain | Mean score improves from pre to post | Instruments built and tested; no participants |
-| Usability | SUS with 5 to 8 participants plus open feedback | SUS at or above 68 | Instrument built and tested; no participants |
+| Routing value (added September 2026) | Policy simulation: the engine against a fixed syllabus and a random floor over the real curriculum and item bank | Same or better true knowledge in fewer items than the syllabus, fixed before the run | Yes, over 30 seeds |
+| Learning gain | Pre-test and post-test with participants; Hake normalised gain | Mean score improves from pre to post | Partly: run with 9, but only 2 usable baselines (6.7) |
+| Usability | SUS with 5 to 8 participants plus open feedback | SUS at or above 68 | Yes: n = 9, mean 89.7 (6.7) |
 
-The first two strands are what a computing dissertation can verify unambiguously and are reported in Chapter 6. The last two needed participants. Ethical clearance was obtained and signed off by my supervisor (Appendix A), but the study was not run: the curriculum only reached its final form in the second week of September 2026, and until then the platform ran on placeholder lessons, so a learning-gain study would have measured the placeholders rather than the tutor. Chapter 7 evaluates that choice. The time went into two things instead: a fifth strand the plan hadn't had, putting the routing policy against a fixed syllabus over the real curriculum (Section 4.5), because "does the adaptivity add anything" can be answered without participants; and building and testing the study's instruments end to end (Section 4.6), so the study is now a matter of recruiting rather than building.
+The first two strands are what a computing dissertation can verify unambiguously. The last two needed participants, and the curriculum only reached its final form in the second week of September 2026, which left a narrow window; the routing strand was added in that time because "does the adaptivity add anything" can be answered without participants (Section 4.5). The human study then ran on 27 and 28 September with nine participants under the ethical clearance in Appendix A. It returned a usable usability result and an inconclusive learning-gain one, for reasons Section 6.7 sets out and Section 7.4 takes apart.
 
 ## 4.4 Technical testing method
 
-Testing followed a pyramid, each layer catching a class of defect the others structurally cannot. Vitest unit tests cover the BKT update mathematics against fixtures computed by hand from the equations (Appendix C), the routing decision table and its boundaries, grading per question type, and the logger's queue, retry, persistence and backoff. Hand-computed fixtures test the mathematics rather than the code's opinion of itself, so a drifting implementation fails against arithmetic. The security rules have their own suite inside the Firestore emulator that attempts every forbidden operation and asserts refusal, the only way to prove the append-only and 18+ guarantees hold against a caller who never touches the interface. Playwright then drives real browsers through the journeys on desktop and Pixel 7 profiles. CI runs all three layers on every commit, the rules and browser suites against the emulators, and fails if any journey is skipped. Table 6.1 reports the outcome.
+Testing followed a pyramid, each layer catching defects the others structurally cannot: hand-computed fixtures test the mathematics rather than the code's opinion of itself (Appendix C); the rules suite attempts every forbidden operation inside the emulator, the only way to prove the append-only and 18+ guarantees hold against a caller who never touches the interface; and Playwright drives real browsers through the journeys on desktop and Pixel 7 profiles. CI runs all three layers on every commit and fails if any journey is skipped. Table 4.2 traces every requirement to the check that holds it, so no requirement rests on inspection alone; Table 6.1 reports what they returned.
+
+Table: Requirement to verification traceability, every requirement in Tables 3.1 and 3.2
+
+| Requirement | Held by | Layer |
+|---|---|---|
+| F1 sign-up with 18+ attestation | `auth-lesson.spec.ts`; rules test asserting profile create is denied without `isAdult` | E2E + rules |
+| F2 consent with a working Decline | `auth-lesson.spec.ts`: Decline signs out and is bounced from the learning area | E2E |
+| F3 placement initialises the model | `study.spec.ts` placement to post-test; `assessment.test.ts` form selection | E2E + unit |
+| F4, F5 lessons and items | `schemas` unit test parses the entire shipped bank; `kitchen-sink.spec.ts` renders all six types | Unit + E2E |
+| F6 BKT update per answer | `bkt.test.ts` against fixtures computed by hand from the equations | Unit |
+| F7 routing and difficulty ladder | `routing.test.ts`, 33 cases including every band boundary | Unit |
+| F8 append-only log with pL before and after | `quiz.spec.ts` network-cut journey; rules tests denying update and delete | E2E + rules |
+| F9, F10 dashboard, skill map, "why this question?" | `adaptive-journey.spec.ts`; `constellation.test.ts` | E2E + unit |
+| F11, F12, F13 review, settings, export | `learner-support.spec.ts` | E2E |
+| N1 pure, dependency-free engine | `bkt.test.ts` plus an import check in lint | Unit + lint |
+| N2 thresholds 0.8 and 0.4 defined once | `routing.test.ts` reads the single exported constant | Unit |
+| N3 log never silently drops an event | `quiz.spec.ts` counts responses arriving against answers given, across a mid-session network cut and a refresh | E2E |
+| N4 deny by default, responses create-only | 36 rules tests, permitted and forbidden operations | Rules |
+| N5 accessibility | `axe.spec.ts` across twelve pages on two device profiles, failing on any serious or critical violation; `a11y.spec.ts` for keyboard and focus | E2E |
+| N6 dashboard performance at least 85 | Lighthouse, three runs per page, medians (Table 6.5) | Audit |
+| N7 reduced motion and colour-blind modes | `a11y.spec.ts` asserts both from the OS setting and the in-app toggle | E2E |
+| N8 responsive to phone width | Every browser journey runs on desktop and Pixel 7 | E2E |
+| N9 development cannot write to the research database | Environment split and a port guard; verified by configuration review, not by test | Configuration |
+| N10 every decision recorded | 104 dated entries in `docs/DECISIONS.md` (Appendix G) | Record |
 
 ## 4.5 Simulated-learner method
 
-The simulation harness validates the engine against learners whose true state is known, which no human study can do. It generates 200 synthetic learners with ground-truth parameters drawn from stated ranges, has each answer 40 opportunities through the true generative model, and runs the shipped engine over those responses. It then checks the three behaviours committed to at AE1, and recovers each learner's prior and learn rate by maximum-likelihood grid search, reporting error and bias against the ground truth. The run is seeded, so it reproduces to the digit, and its output goes straight into the evaluation log (Appendix F). This mirrors the sanity-check approach the pyBKT authors use (Badrinath, Wang and Pardos, 2021).
+The simulation harness validates the engine against learners whose true state is known, which no human study can do. It generates 200 synthetic learners with ground-truth parameters drawn from stated ranges, has each answer 40 opportunities through the true generative model, runs the shipped engine over those responses, checks the three behaviours committed to at AE1, and recovers each learner's prior and learn rate by grid search. The run is seeded, so it reproduces to the digit (Appendix F). This mirrors the sanity check the pyBKT authors use (Badrinath, Wang and Pardos 2021).
 
-A second simulation (`scripts/simulate-routing.ts`) asks whether the routing teaches more efficiently than not routing. Three hundred synthetic learners, each carrying a hidden true state per knowledge component, run through three policies over the real sixteen-component chain and 116-item bank on an identical 160-item budget: the routing code as shipped, a fixed syllabus of ten medium items per module in order, and a random-unlocked floor. Two choices make the result mean something. Answers come from the learner's true state and the item's difficulty, never from the engine's estimate, so the engine may be wrong and is penalised when it is; and the generative model is deliberately not BKT's own, so the engine is tested against a world it did not assume. Appendix F gives the measures and parameters.
+A second simulation (`scripts/simulate-routing.ts`) asks whether the routing teaches more efficiently than not routing. Three hundred synthetic learners, each carrying a hidden true state per component, run through three policies over the real chain and item bank on an identical 160-item budget: the routing code as shipped, a fixed syllabus, and a random-unlocked floor. Two choices make the result mean something. Answers come from the learner's true state and the item's difficulty, never from the engine's estimate, so the engine is penalised when it is wrong; and the generative model is deliberately not BKT's own, so the engine is tested against a world it did not assume. Appendix F gives the measures and parameters.
 
-## 4.6 Planned human study design
+## 4.6 Human study design and what ran
 
-The study is the recommended next step, and the point worth making is that it is built rather than merely designed. Five to eight adults are recruited by convenience sampling. Each sits the placement test, which doubles as a pre-test because its items come from the pre-test-eligible subset, works through a module or two, then sits a post-test drawn from that subset on a second form. The decision carrying most weight is that a post-test never updates the learner model and logs the model's current estimate against every answer, making it a held-out check that practice answers structurally cannot provide, because practice answers move the estimate they would be scored against. Learning gain is Hake's normalised gain per participant, reported with its spread and not only its mean (Doroudi and Brunskill, 2019); usability is the SUS against the published average of 68, with open feedback analysed thematically. The sample is a known limitation, so the study is framed as feasibility evidence rather than a powered trial. Appendix I gives the instruments and the evidence that each has been run end to end.
+The design was for five to eight adults recruited by convenience sampling, each sitting placement, which doubles as a pre-test because its items come from the pre-test-eligible subset, working through a module or two, then sitting a post-test drawn from that subset on a second form. The decision carrying most weight is that a post-test never updates the learner model and logs the model's current estimate against every answer, making it a held-out check that practice answers structurally cannot provide, because practice answers move the estimate they would be scored against. Learning gain is Hake's normalised gain per participant, reported with its spread and not only its mean (Doroudi and Brunskill 2019); usability is the SUS against the published average of 68. The sample was a known limitation, so the study was framed as feasibility evidence rather than a powered trial.
+
+What ran differed in the respect that turned out to matter: nine took part remotely and unsupervised, because remote recruitment was what the time allowed. Section 4.7 declares the departures, 6.7 reports what they produced, 7.4 takes the design faults apart and Chapter 8 specifies the redesign. Appendix I gives the instruments, Appendix N the full output.
 
 ## 4.7 Professional, Legal and Ethical issues
 
-Teaching trading carries real responsibility. Around 80 per cent of retail CFD customers lose money (FCA, 2022), and the regulator's restrictions on leverage, incentives and promotion (FCA, 2019; ESMA, 2018) draw a line the artefact must never approach, so the constraints were built as features rather than disclaimers. Every chart is simulated or dated historical data and says so on the chart itself, labelled with symbol, dates and source, never live. There is no live market data, no broker connection, no affiliate link, no trade signal and no profitability language anywhere in the copy, and Chapter 6 reports a sweep for exactly those things. The landing page carries a full risk disclaimer, the sign-up form states the education-only purpose above the fields, and the curriculum is honest that the methodology it teaches is contested. The mentor marketplace was cut because paid guidance from strangers is the mechanism the FCA warns about.
+Teaching trading carries real responsibility. Around 80 per cent of retail CFD customers lose money (FCA 2022), and the regulator's restrictions on leverage, incentives and promotion (FCA 2019; ESMA 2018) draw a line the artefact must never approach, so the constraints were built as features rather than disclaimers (Table 3.3). Every chart is simulated or dated historical data, labelled on the chart with symbol, dates and source, never live. There is no live market data, broker connection, affiliate link, trade signal or profitability language anywhere in the copy, and Chapter 6 reports a sweep for exactly those things. The mentor marketplace was cut because paid guidance from strangers is the mechanism the FCA warns about.
 
-Under UK GDPR the lawful basis for collecting learning data is consent. The consent screen (Figure 4.1) states what is recorded, why, and that the learner can withdraw, and Decline is a real button that signs the learner out with nothing stored beyond the account. The 18+ requirement is enforced in the database rules and not only in the interface, so a profile cannot be created without the attestation by any route, including Google sign-in. Data is minimised, learners can download all of it as CSV and delete their account, and the response log is append-only and shape-checked by rule; since answers are graded in the browser, it records what the client reported. Development runs on a local emulator wiped on restart, with the live project reserved for participants after the incident in Section 5.9. Appendix A maps each condition of the ethics approval to the place that enforces it.
+Under UK GDPR the lawful basis for collecting learning data is consent. Sign-up states the education-only purpose above the fields and will not proceed without the 18+ attestation (Figure 4.1). The consent screen that follows states what is recorded, why, and that the learner can withdraw, and Decline is a real button that signs the learner out with nothing stored beyond the account, which a browser test asserts. The 18+ requirement is enforced in the database rules and not only in the interface, so a profile cannot be created without the attestation by any route, including Google sign-in. Data is minimised and learners can download all of it as CSV. Erasure needs saying plainly, because it sits against the create-only log: a learner deleting their account removes it and their own documents, and the responses are then purged by an administrator rather than by the browser, since the rules forbid the client deleting research data even when it is its own. That is a deliberate trade of convenience for integrity, and it means erasure is a request I fulfil rather than a button that finishes the job. Development runs on a local emulator wiped on restart, with the live project reserved for participants after the incident in Section 5.9. Appendix A maps each condition of the ethics approval to the place that enforces it.
 
-![The consent screen: what is recorded, the lawful basis, and a working Decline](docs/report-figures/03-consent.png)
+![Sign-up: the education-only purpose above the fields, and the 18+ attestation the database rules also require](docs/report-figures/02-sign-up.png)
 
-As a computing project the work sits under the BCS Code of Conduct (BCS, 2022), in particular its duties to the public interest and to professional competence, and under the university's ethics policy. The ethics release for the human study was signed off by my supervisor through the ethics application on the portal and is reproduced in Appendix A. All third-party libraries are open source under permissive licences, the prototype designs were produced for this project, and the video lessons were generated from my own source notes.
+One thing should be declared rather than inferred: I trade a funded account with a proprietary firm, so I have an interest in the methodology this curriculum teaches. That is why nothing in the report claims it is profitable, why Section 2.7 sets out the evidence against it, and why the research question is about delivery rather than returns. Table A.2 declares the data provenance, the content sources and where the database is held. As a computing project the work sits under the BCS Code of Conduct (BCS 2022), in particular its duties to the public interest and to professional competence, and under the university's ethics policy. The ethics release was signed off by my supervisor through the portal application and is set out in Appendix A, which maps each of its conditions to the place in the artefact that enforces it. Three things about what ran departed from what was approved, declared here rather than left for a reader to find: nine took part against an approved five to eight; they worked remotely and unsupervised rather than in a supervised session; and consent was taken on the in-app screen rather than on paper. The wording shown, the data collected and the withdrawal right were those approved.
 
 ## 4.8 Project Management
 
-The progress report planned a ten-week build toward a 400-hour total. Figure 4.2 shows what happened, reconstructed from version-control history and document dates, and Table 4.2 gives effort by work package. The largest deviation was in shape rather than content: because implementation was AI-assisted, the six build phases planned across ten weeks were completed and tagged in two intensive days in mid-July, each with its checklist run, and the time allocated to writing code went into the real constraints instead, namely the video, the 66 lessons, the 116 items and a September design and accessibility pass. The total is about 420 hours over thirty-four weeks, and its shape is a finding in itself: implementation is only the fourth largest line. Appendix K gives the method, the per-line basis and how the AE1 risks behaved.
+The progress report planned a ten-week build toward a 400-hour total. Figure 4.2 shows what happened, reconstructed from version-control history and document dates, and Table 4.3 gives effort by work package. The largest deviation was in shape rather than content: because implementation was AI-assisted, the six build phases planned across ten weeks were tagged in two intensive days in mid-July, and the time allocated to code went into the real constraints instead, the video, the 66 lessons, the 116 items and a September design and accessibility pass. The total is about 420 hours over thirty-four weeks, and its shape is a finding in itself: implementation is only the fourth largest line. Appendix K gives the method, the per-line basis and how the AE1 risks behaved.
 
 ![Actual project timeline reconstructed from git history and document dates](docs/report-figures/fig-timeline.png)
 
@@ -318,12 +364,12 @@ Table: Project effort by work package, reconstructed (see Appendix K)
 | Literature searching, screening and writing | About 240 records screened across seven databases, February to July; 57 cited and 18 further sources retained; a standalone review chapter condensed into Chapter 2 | 70 |
 | Curriculum authoring and item writing | 66 lesson files totalling about 64,000 words; 116 items with answer keys and explanations; 117 cited sources logged lesson by lesson | 80 |
 | Video production | 36 recordings, four hours and twenty-seven minutes of finished video, 1.2 GB | 50 |
-| Implementation | 41 commits, 76,800 insertions, 25,700 lines of TypeScript across 166 files and 19 routes, six tagged phases | 50 |
-| This dissertation | An 11,000-word body with 15 figures, 17 tables and 75 sources | 45 |
-| Testing, simulation and audits | 147 unit, 16 rules and 32 browser tests; two simulation harnesses; calibration; Lighthouse and axe audits | 35 |
+| Implementation | 53 commits, 83,443 insertions, 25,700 lines of TypeScript across 166 files and 19 routes, six tagged phases | 50 |
+| This dissertation | An 11,000-word body with 14 figures, 25 tables and 76 sources | 45 |
+| Testing, simulation and audits | 233 unit, 36 rules and 30 browser tests; two simulation harnesses; calibration; Lighthouse and axe audits | 35 |
 | Interface and product design | A 43-screen high-fidelity prototype, the design tokens and the twelve-primitive design system | 30 |
 | Progress report (AE1) | A 2,150-word body with a sixteen-entry annotated bibliography | 25 |
-| Project documentation and records | About 30,000 words across the repository documents; 91 dated decision entries; the evaluation log | 20 |
+| Project documentation and records | About 30,000 words across the repository documents; 104 dated decision entries; the evaluation log | 20 |
 | Supervision, project support sessions and administration | Supervision meetings and module sessions across the period | 15 |
 | Total | | 420 |
 
@@ -332,32 +378,38 @@ Table: Project effort by work package, reconstructed (see Appendix K)
 
 ## 5.1 Architecture
 
-The architecture follows the six-component design fixed at AE1 and the ITS structure from the literature: a content layer, an assessment engine, a student model, a control layer of routing rules, a progress interface that shows the learner the model and its decisions, and an authentication and data layer holding accounts and the research log. Figure 5.1 shows the components and the single loop they form.
+The architecture follows the six-component design fixed at AE1 and the ITS structure from the literature. Figure 5.1 shows the components and the single loop they form.
+
+Figure 5.2 follows a single answer through it.
 
 ![System architecture: six components and the adaptive loop](docs/report-figures/fig-architecture.png)
+
+![One answer through the loop. The shaded note is the decision that makes the post-test a held-out check](docs/report-figures/fig-sequence.png)
 
 Two boundaries were treated as inviolable. The BKT engine and the routing rules are pure TypeScript modules with no framework or database imports, so they're trivially unit-testable and portable. And the response logger is the only path by which an answer reaches the database, so there's exactly one place where the research log can be got right or wrong.
 
 ## 5.2 Data model and security rules
 
-Firestore holds a user document per learner with consent state, the 18+ flag and settings; one mastery document per course with the per-KC estimates, attempts and timestamps; a session document per placement, practice or review session; and beneath each session, one response document per answer. That last collection is the research dataset: each response carries the item, its KC, correctness, latency and the model's estimate before and after. Content lives in four collections: courses, KCs, lessons and items.
+Figure 5.3 gives the collections and the rules that guard them. The shape that matters is the last one: beneath each session sits one response document per answer, carrying the item, its KC, correctness, latency and the model's estimate before and after. That collection is the research dataset.
 
-The security rules (Appendix D) deny everything by default and check what is written as well as who writes it: every learner document has an allow-list of fields, typed values, ranges and server-stamped times, so a learner cannot award themselves mastery from the browser console. A profile can only be created with the adult flag set, which is the 18+ gate. Responses must belong to an existing session and can never be updated or deleted through the client, even by their owner. Content is writable only with an administrator claim. Thirty rules tests cover every permitted and forbidden operation. The mastery document is treated as a cache of the log: if a session's write is ever found missing, the model is rebuilt from the responses (Appendix L).
+The security rules (Appendix D) deny everything by default and check what is written as well as who writes it: every learner document has an allow-list of fields, typed values, ranges and server-stamped times, so a learner cannot award themselves mastery from the browser console. A profile can only be created with the adult flag set, which is the 18+ gate. Responses must belong to an existing session and can never be updated or deleted through the client, even by their owner. Content is writable only with an administrator claim. Thirty-six rules tests cover every permitted and forbidden operation. The mastery document is treated as a cache of the log: if a session's write is ever found missing, the model is rebuilt from the responses (Appendix L).
+
+![The Firestore data model. The response collection is create-only, so the research dataset cannot be rewritten by the browser that produced it](docs/report-figures/fig-datamodel.png)
 
 ## 5.3 The BKT engine
 
-The engine implements classic BKT (Corbett and Anderson, 1994) as a pure function. Given a current estimate and an observed answer, it conditions on the evidence and then applies the learning transition:
+The engine implements classic BKT (Corbett and Anderson 1994) as a pure function. Given a current estimate and an observed answer, it conditions on the evidence and then applies the learning transition:
 
 - After a correct answer: P(L | correct) = P(L)(1 − P(S)) / [P(L)(1 − P(S)) + (1 − P(L))P(G)]
 - After a wrong answer: P(L | wrong) = P(L)P(S) / [P(L)P(S) + (1 − P(L))(1 − P(G))]
 - Learning step: P(L′) = P(L | evidence) + (1 − P(L | evidence))P(T)
 - Prediction: P(correct) = P(L)(1 − P(S)) + (1 − P(L))P(G)
 
-Default parameters are the literature-standard 0.25, 0.12, 0.20 and 0.10 for prior, learn, guess and slip, held in one constants object and configurable per KC. The thresholds of 0.8 and 0.4 are exported constants, so the numbers this report cites are the numbers the code uses and nothing else may restate them. A placement initialiser runs the update sequence over the placement answers from the default prior, so a learner's starting map reflects what they already know rather than a flat 0.25 everywhere; those responses are logged with the estimate before and after set equal, because no learning step applies during measurement, which keeps placement evidence separately analysable. The whole file is about a hundred lines, fifteen of them mathematics.
+Default parameters are the literature-standard (Corbett and Anderson 1994) 0.25, 0.12, 0.20 and 0.10 for prior, learn, guess and slip, held in one constants object and configurable per KC. The thresholds of 0.8 and 0.4 are exported constants, so the numbers this report cites are the numbers the code uses and nothing else may restate them. A placement initialiser runs the update sequence over the placement answers from the default prior, so a learner's starting map reflects what they already know rather than a flat 0.25 everywhere; those responses are logged with the estimate before and after set equal, because no learning step applies during measurement, which keeps placement evidence separately analysable. The whole file is about a hundred lines, fifteen of them mathematics.
 
 ## 5.4 Routing
 
-Routing is the pedagogical model, and it is deliberately a set of rules a person can read rather than a learned policy. Figure 5.2 shows the decision flow. A KC unlocks when every prerequisite is at or above 0.8; the target is the lowest-mastery unlocked KC not yet mastered; if it has never been practised the action is to teach, and otherwise the band decides, with remediation below 0.4, practice between 0.4 and 0.8, and advance above. Item selection follows a difficulty ladder, forces an easy item after two consecutive wrongs, and never repeats an item within a session.
+Routing is the pedagogical model, and it is deliberately a set of rules a person can read rather than a learned policy. Figure 5.4 shows the decision flow. A KC unlocks when every prerequisite is at or above 0.8; the target is the lowest-mastery unlocked KC not yet mastered; an unpractised one is taught, and otherwise the band decides. Item selection follows a difficulty ladder, forces an easy item after two consecutive wrongs, and never repeats an item within a session.
 
 ![Routing rules: from mastery map to next action and item](docs/report-figures/fig-routing.png)
 
@@ -365,17 +417,15 @@ The router returns the reason for its choice alongside the item: the current est
 
 ## 5.5 The response logger
 
-The logger was designed to behave like a payments system: it must never silently fail. Every submit enqueues an event, persists the queue to local storage, returns immediately so the interface stays responsive, and flushes in the background with exponential backoff to a thirty-second cap. Unflushed events survive a refresh and flush on the next start or on the browser's online event.
+The logger was designed to behave like a payments system: it must never silently fail. Every submit enqueues an event, persists the queue to local storage, returns immediately so the interface stays responsive, and flushes in the background with exponential backoff; unflushed events survive a refresh.
 
-Two details matter because they never show in a demo. The Firebase SDK keeps its own write queue, so a transport that accepted writes offline would deliver each event twice on reconnect; it therefore fails fast offline, making my queue the single retry authority, and the browser suite cuts the network mid-session and counts the responses that arrive. And because the queue is strictly ordered, one row the server refuses outright would block every answer behind it, so such a row moves to a persisted dead-letter store, kept and retried later, and the queue carries on.
+Two details matter because they never show in a demo. The Firebase SDK keeps its own write queue, so a transport that accepted writes offline would deliver each event twice on reconnect; it therefore fails fast offline, making my queue the single retry authority, and the browser suite cuts the network mid-session and counts the responses that arrive. And because the queue is strictly ordered, one row the server refuses outright would block every answer behind it, so such a row moves to a persisted dead-letter store and the queue carries on.
 
 ## 5.6 Curriculum and content pipeline
 
-The curriculum is sixteen modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and six or eight assessment items. The first nine were built from 36 original video lessons by extracting each video's slides with scene detection and writing the lesson up as structured text with definitions, worked examples, common mistakes and check questions. The written lessons are markdown files that a generator script parses into the seed JSON, so the markdown is the single source of truth.
+The curriculum is sixteen modules in a strict prerequisite chain (Table 5.1), each a knowledge component with its own lessons and six or eight assessment items. The first nine were built from 36 original video lessons: slides extracted by scene detection, transcripts and first-pass structure from NotebookLM (Section 4.2), then rewritten by me into lessons with definitions, worked examples, common mistakes and check questions. The lessons are markdown files a generator parses into the seed JSON, so the markdown is the single source of truth.
 
-Thirty-three further lessons across eight modules were written in September 2026 to cover what the video series did not reach, from market structure and the PD arrays through time and sessions to a sixteenth module on markets, instruments and funding. Each was written from cited public teaching (docs/LESSON_SOURCES.md lists all 117 sources, lesson by lesson) and sits in the chain where its prerequisites land, so Daily Bias now follows PD Arrays. The funding module is the one place the course looks past the chart to the account behind it, and it is written as a framework with dated facts and no recommendation, because the artefact's ethics position does not allow one.
-
-These lessons have no recording, and rather than leave a placeholder each opens on a stepped chart walkthrough: a constructed price series in which the sweep, the break and the gap the lesson is about fall on exactly the bars the captions name, with annotation layers added a step at a time. Forty-eight walkthroughs cover the curriculum, and sixteen lessons carry a real-chart case study cut from historical ES and NQ bars by a detector encoding the concept's own rule, so the examples are found by code rather than chosen by eye. Appendix L describes how both are verified. The claim is that for a structural concept a stepped chart is more precise than a screen recording, and unlike a video it is keyboard operable and reads out as text.
+Thirty-three further lessons across eight modules were written in September 2026 to cover what the video series did not reach, each from cited public teaching (docs/LESSON_SOURCES.md lists all 117 sources) and each placed in the chain where its prerequisites land. They have no recording, so rather than leave a placeholder each opens on a stepped chart walkthrough: a constructed price series in which the sweep, the break and the gap fall on exactly the bars the captions name. Forty-eight walkthroughs cover the curriculum, and sixteen lessons carry a real-chart case study cut from historical ES and NQ bars by a detector encoding the concept's own rule, so the examples are found by code rather than chosen by eye (Appendix L). For a structural concept a stepped chart is more precise than a screen recording, and unlike a video it is keyboard operable and reads out as text.
 
 Table: The sixteen-module curriculum
 
@@ -398,11 +448,11 @@ Table: The sixteen-module curriculum
 | 15 | Execution and Review | 14 | 3 | 6 |
 | 16 | Markets, Instruments and Funding | 15 | 4 | 8 |
 
-Sequencing came from the dependency graph of the concepts rather than the recording order, and that changed things: several videos quoted risk multiples such as "2R" before position sizing had been taught, so Risk and Position Sizing became Module 3 rather than an appendix to the series. This is the decomposition from Section 2.7 done in practice. Figure 5.3 shows a lesson as delivered.
+Sequencing came from the dependency graph rather than the recording order: several videos quoted risk multiples such as "2R" before position sizing had been taught, so Risk and Position Sizing became Module 3, which is the decomposition from Section 2.7 done in practice. Figure 5.5 shows a lesson as delivered.
 
 ![A lesson: video, structured text and the module's lesson list](docs/report-figures/08-lesson.png)
 
-The item bank holds 116 questions across six types (55 multiple choice, 16 multi-select, 14 numeric, 15 ordering, 15 true/false with a confidence slider and 1 chart annotation), graded 23 easy, 60 medium and 33 hard so the difficulty ladder has rungs to climb. Every item carries an explanation shown in feedback and review, and 36 are eligible for the pre-test and post-test, at least one per module. A final generator stage permutes option order, seeded by item id, so that no answer position or answer length is worth guessing; Section 5.9 records why that became necessary.
+The item bank holds 116 questions across six types (55 multiple choice, 16 multi-select, 15 true/false with a confidence slider, 15 ordering, 14 numeric and 1 chart annotation), graded 23 easy, 60 medium and 33 hard. Every item carries an explanation shown in feedback and review, and 36 are eligible for the two assessment forms, at least one per module. A generator stage permutes option order, seeded by item id, so no answer position is worth guessing; two further tells were found by measuring the bank and fixed by rewriting it (Section 7.3).
 
 ## 5.7 The assessment engine
 
@@ -410,7 +460,7 @@ Each question type has its own renderer and grader, and the quiz runs in a focus
 
 ## 5.8 Interface, the open learner model and accessibility
 
-The interface was built from a 43-screen high-fidelity prototype, with palette, radii and motion constants extracted into design tokens. What matters for the research question is the parts that make the model visible. After placement the constellation assembles and each node fills to its starting estimate under the caption "Your starting map" (Figure 5.4). The dashboard leads with the routed next action and the reason for it (Figure 5.5), and the constellation draws the curriculum as one route lit to overall mastery, so mastery reads as distance covered, which is what BKT estimates (Figure 5.6). A live mastery bar updates after every answer, and the "why this question?" popover exposes the router's real decision object (Figure 5.7).
+The interface was built from a 43-screen high-fidelity prototype, with palette, radii and motion constants extracted into design tokens. What matters for the research question is the parts that make the model visible. After placement the constellation assembles and each node fills to its starting estimate (Figure 5.6). The dashboard leads with the routed next action and the reason for it (Figure 5.7), and the constellation draws the curriculum as one route lit to overall mastery, so mastery reads as distance covered, which is what BKT estimates (Figure 5.8). A live mastery bar updates after every answer, and the "why this question?" popover exposes the router's real decision object (Figure 5.9).
 
 ![The model-initialisation moment after placement: "Your starting map"](docs/report-figures/05-init-moment.png)
 
@@ -420,15 +470,13 @@ The interface was built from a 43-screen high-fidelity prototype, with palette, 
 
 ![A practice question with the live mastery HUD and the "why this question?" popover](docs/report-figures/10-why-this-question.png)
 
-Accessibility was a gate from the first phase rather than a final pass, which is the decision that matters; Appendix L catalogues the settings. Every interactive element is keyboard reachable with a visible focus ring, targets are at least 44 pixels, mastery changes are announced through a live region, every chart has a text alternative, and reduced motion is honoured from the operating system or an in-app toggle. Preferences are saved on the profile so they follow the learner between devices, and mirrored to the browser so they apply before first paint. Learner-support screens complete the slice a participant would use (Figures 5.8 and 5.9).
+Accessibility was a gate from the first phase rather than a final pass, which is the decision that matters; Appendix L catalogues the settings. Every interactive element is keyboard reachable with a visible focus ring, targets are at least 44 pixels, mastery changes are announced through a live region, every chart has a text alternative, and reduced motion is honoured from the operating system or an in-app toggle. Preferences are saved on the profile so they follow the learner between devices, and mirrored to the browser so they apply before first paint. Learner-support screens complete the slice a participant would use (Figures 5.10 and 5.11).
 
 ![Post-session answer review: the learner's answer against the key, with explanations](docs/report-figures/13-answer-review.png)
 
 ![Settings: seeing, reading, motion and keyboard groups, download and delete](docs/report-figures/15-settings.png)
 
 ## 5.9 Issues and how they were resolved
-
-One engineering choice in the test suites is worth recording before the problems themselves. The browser tests answer questions by reading the current item's identifier from the page and fetching its answer key from the emulator rather than hard-coding an option letter, which is why they survived the curriculum being replaced wholesale in September and the option order being permuted a fortnight later.
 
 Table 5.2 lists the significant problems that arose, in order. Each is in the decisions log with its date, along with smaller ones omitted here.
 
@@ -461,7 +509,7 @@ The pattern is that the problems that mattered most were invisible in normal use
 
 ## 6.1 The artefact delivered
 
-TradeMind Academy is a working application of about 25,700 lines of TypeScript across 166 files and 19 routes: 66 lessons, 116 items, sixteen knowledge components, 48 stepped chart walkthroughs, sixteen real-chart case studies, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and the two study instruments. It is public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 85 recorded decisions, and deployed at https://tmacademyuk.vercel.app; Appendix B gives the running instructions. The live Firebase project holds the seeded curriculum and, at the time of writing, no participant responses.
+TradeMind Academy is 25,700 lines of TypeScript across 166 files and 19 routes: 66 lessons, 116 items, sixteen knowledge components, 48 stepped chart walkthroughs, sixteen real-chart case studies, a live BKT model, rule-based routing, an append-only research log, five learner-support screens and the two study instruments. It is public at https://github.com/OGSOLENT/TradeMind_Academy with six tagged phases and 104 recorded decisions, and deployed at https://tmacademyuk.vercel.app; Appendix B gives the running instructions.
 
 ## 6.2 Technical verification
 
@@ -478,7 +526,7 @@ Table: Test and check results on the final build
 | Lint and typecheck | ESLint (Next core web vitals rules), strict TypeScript with unused-code checks | Clean |
 | CI | All of the above on every push, emulators included; fails if any journey is skipped | Green |
 
-The single most important test is the network-cut journey (Section 5.5), which asserts that exactly as many responses arrive as answers were given. It protects the claim the whole project rests on: that the dataset is complete.
+The single most important test is the network-cut journey (Section 5.5), asserting that exactly as many responses arrive as answers were given. It protects the claim the project rests on: that the dataset is complete.
 
 ## 6.3 BKT engine behaviour
 
@@ -490,7 +538,7 @@ The speed of the climb is worth a comment. With guess at 0.2 and slip at 0.1, tw
 
 ## 6.4 Simulated-learner validation
 
-Table 6.2 reports the harness output for 200 learners over 40 opportunities with seed 42. All three behaviours committed to at AE1 hold. A correct streak crosses 0.8 in two items. A wrong streak never rises above 0.155. And 99 per cent of the cohort scores higher in the last quarter of their sequence than the first, which is what the generative model should produce and what the engine should track.
+Table 6.2 reports the harness output for 200 learners over 40 opportunities with seed 42. All three behaviours committed to at AE1 hold: a correct streak crosses 0.8 in two items, a wrong streak never rises above 0.155, and 99 per cent of the cohort scores higher in the last quarter of their sequence than the first.
 
 Table: Simulated-learner harness output (seed 42, reproducible)
 
@@ -505,13 +553,13 @@ Table: Simulated-learner harness output (seed 42, reproducible)
 | RMSE of recovered learn rate P(T) | 0.1139 (bias +0.0609) |
 | Ground truth ranges | P(L0) uniform 0.05 to 0.45; P(T) uniform 0.05 to 0.25; P(G) 0.2, P(S) 0.1 fixed |
 
-The recovery result is the honest part of that table, and Figure 6.2 shows why a single RMSE understates it. The learn rate recovers reasonably; the prior barely recovers at all, its fitted values collapsing to the two edges of the search grid almost regardless of the true value. That is the identifiability problem Beck and Chang (2007) described, appearing exactly where the theory predicts: once the learn rate has lifted the estimate, the sequence carries little information about where it started, and 40 binary observations cannot pin it down. So per-KC priors should not be fitted from short sequences but taken from the placement test, which is what the engine already does, and the learn rate is the parameter worth fitting from logged data.
+The recovery result is the honest part of that table, and Figure 6.2 shows why a single RMSE understates it. The learn rate recovers reasonably; the prior barely recovers at all, its fitted values collapsing to the edges of the search grid almost regardless of the true value. That is the identifiability problem Beck and Chang (2007) described, appearing where the theory predicts. So per-KC priors should not be fitted from short sequences but taken from placement, which is what the engine already does.
 
 ![Parameter recovery for 200 simulated learners: learn rate recovers, the prior collapses to the grid edges](docs/report-figures/fig-recovery.png)
 
 ### Calibration
 
-Recovery asks whether the parameters can be found; calibration asks whether the numbers the engine shows a learner mean what they say, which is the property an open learner model actually depends on. Every logged answer carries the estimate held before it, and through the emission model that is a forecast. `scripts/calibration.ts` bins those forecasts into deciles, compares each bin's mean forecast with its observed accuracy, and scores them with the Brier score against a baseline that always predicts the cohort's overall accuracy. Table 6.3 gives the result for the same 200 simulated learners under the engine's fixed priors, and for a held-out comparison in which the prior and learn rate were fitted to each learner's first twenty answers and used to forecast the second twenty.
+Calibration asks whether the numbers the engine shows a learner mean what they say, which is the property an open learner model depends on. Every logged answer carries the estimate held before it, and through the emission model that is a forecast, scored against a baseline predicting the cohort's overall accuracy. Table 6.3 gives the result for the same 200 learners under fixed priors, and for a held-out comparison in which the prior and learn rate were fitted to each learner's first twenty answers and used to forecast the second twenty.
 
 Table: Calibration of the engine's forecasts (seed 42, reproducible)
 
@@ -521,9 +569,9 @@ Table: Calibration of the engine's forecasts (seed 42, reproducible)
 | Fixed priors, held-out second half | 4000 | 87.5% | 0.0994 | 0.1090 | 8.9% | 0.68 pp |
 | Fitted per learner, held-out second half | 4000 | 87.5% | 0.1011 | 0.1090 | 7.3% | 1.17 pp |
 
-With the fixed priors the engine is well calibrated: expected calibration error is under half a percentage point, every well-populated bin sits within about two points of the diagonal (Figure 6.3), and the forecasts remove 26 per cent of the baseline's error. Fitting parameters per learner does not help: on the held-out half the fitted model's Brier score is slightly worse and its calibration error nearly doubles, because twenty answers are too few to estimate a prior already shown to be weakly identified. That went against the expected step and is reported as found, so the engine keeps its fixed priors until the pilot produces enough answers for fitting to pay. The limit is that the simulated learners share the engine's guess and slip values, so the run tests wrong priors rather than the emission model itself.
+With fixed priors the engine is well calibrated: expected calibration error is 0.43 of a percentage point, and the five bins holding more than 250 of the 8,000 forecasts all sit within 0.6 points of the diagonal (Figure 6.3). The three sparse bins are further out, by up to 17.8 points on the bin holding 14 answers, which is what a bin of 14 does. The forecasts remove 26 per cent of the baseline's error. Fitting per learner does not help. On the held-out half the fitted model's Brier score is slightly worse and its calibration error nearly doubles, because twenty answers cannot estimate a prior already shown to be weakly identified. That went against the expected step and is reported as found. The limit is that the simulated learners share the engine's guess and slip values, so the run tests wrong priors rather than the emission model itself.
 
-![Reliability diagram: predicted P(correct) against observed accuracy, fixed priors against fitted](docs/report-figures/17-calibration.png)
+![Reliability diagram: predicted P(correct) against observed accuracy, fixed priors against fitted. Dot area is the bin's share of the 8,000 forecasts; the bins hold 550, 609, 14, 281, 146, 183, 4965 and 1252 answers](docs/report-figures/17-calibration.png)
 
 ### Does the routing add anything?
 
@@ -537,13 +585,13 @@ Table: Routing policy against a fixed syllabus (300 simulated learners, 160-item
 | Fixed syllabus | 160.0 | 14.77 (sd 1.00) | 121.4 (76%) | 0.05 | 0.77 |
 | Random unlocked | 160.0 | 8.50 (sd 1.58) | 142.3 (89%) | 0.03 | 1.28 |
 
-The engine reaches the same true knowledge as the syllabus on 46 per cent of the items, and the saving is almost entirely items the syllabus spends on modules the learner already knew: three quarters of its budget against under half of the engine's. That is the efficiency argument for adaptivity made on the real curriculum rather than in the abstract, and it holds over seeds. The second-to-last column matters as much. The engine stops asking once an estimate crosses 0.8, and a guess or two on easy items can carry it there, so about one module in sixteen ends the run called mastered when the learner does not know it. The syllabus makes the opposite error and pays with twice the items. The engine's is the error that shows on the learner's dashboard, which is why the post-test logs the model's estimate against every answer: so the pilot can measure this rate on people.
+The engine reaches the same true knowledge as the syllabus on 46 per cent of the items, and the saving is almost entirely items the syllabus spends on modules the learner already knew: three quarters of its budget against under half of the engine's. Repeating the whole simulation over thirty seeds holds it: the engine spends 73.5 of the 160 items (95% CI 73.1 to 73.9) and ends ahead of the syllabus on knowledge in thirty runs of thirty, by 0.20 components (95% CI 0.17 to 0.24). The second-to-last column matters as much. The engine stops asking once an estimate crosses 0.8, and a guess or two can carry it there, so 1.05 of the sixteen modules (95% CI 1.03 to 1.07) end the run called mastered when the learner does not know it. The syllabus makes the opposite error and pays with twice the items. The engine's is the error that shows on a learner's dashboard, which is why the post-test logs the model's estimate against every answer. Section 6.7 reports what happened when that check met real participants.
 
 ## 6.5 Audits
 
 Lighthouse accessibility scored 95 to 100 on every page at the July audit against a gate of 95, and dashboard performance 86 against a gate of 85. The deployed site was re-audited in September (Lighthouse 12, three runs per page, medians); Table 6.5 gives the result after three fixes the audit forced. Every response now also carries a Content Security Policy naming only the sources the app uses.
 
-The general finding is worth more than the scores. Every defect was invisible on a development machine and appeared only under a throttled mobile profile, and in two cases the cause was the same: the largest contentful paint was waiting for JavaScript the page did not need in order to show its text. An entrance animation that hides server-rendered content behind JavaScript is a performance and an accessibility defect rather than a polish choice. Appendix L gives the diagnosis and the fix.
+The general finding is worth more than the scores. Every defect was invisible on a development machine and appeared only under a throttled mobile profile, twice for the same reason: the largest contentful paint waiting for JavaScript the page did not need. An entrance animation that hides server-rendered content behind JavaScript is a performance and an accessibility defect rather than a polish choice (Appendix L).
 
 Table: Lighthouse on the deployed site, September 2026 (medians of three runs)
 
@@ -553,17 +601,59 @@ Table: Lighthouse on the deployed site, September 2026 (medians of three runs)
 | Sign-in | 91 | 100 | 100 | 100 | 100 |
 | Legal | 93 | 100 | 100 | 100 | 100 |
 
-Alongside Lighthouse, axe-core runs inside the browser suite against twelve pages on both device profiles, failing the build on any serious or critical WCAG 2.1 AA violation. Before it went green it found three defects a manual pass had missed: a muted token at 3:1 on every small label, unearned profile badges whose tile dimming took their text to 1.9:1, and a sideways-scrolling lesson table with no keyboard route to scroll it. All three are fixed, and keyboard and reduced-motion behaviour are asserted by tests rather than audited by hand.
-
-The animation work was measured rather than assumed: each animated full-screen layer costs about 18 frames of compositor budget, while the identical layer held static costs nothing measurable. Visual richness is close to free; continuous animation is expensive.
+Alongside Lighthouse, axe-core runs inside the browser suite against twelve pages on both device profiles, failing the build on any serious or critical WCAG 2.1 AA violation. Before it went green it found three defects a manual pass had missed: a muted token at 3:1 on every small label, unearned profile badges whose tile dimming took their text to 1.9:1, and a lesson table with no keyboard route to scroll it. All three are fixed, and keyboard and reduced-motion behaviour are asserted by tests rather than audited by hand.
 
 ## 6.6 Guardrail sweep
 
 A final sweep of every string in the interface found no live data, no broker links, no signal language and no profitability claims, and every chart surface carries a simulated-data pill.
 
-## 6.7 What was not collected
+## 6.7 Pilot study
 
-No human learning-gain or usability data was collected. The live database holds no participant responses, which I state here rather than leave to be inferred, and the reason is in Section 4.3. The analysis script was run against it and wrote a results file reporting n = 0, committed as `docs/report/PILOT_RESULTS.md`, so the empty table is a matter of record rather than an absence. The consequence is that RQ1, RQ2 as narrowed, RQ3 and RQ4 are answered by the evidence above, and the learning-gain half of the original RQ2 is not. One limit of the RQ1 answer should be named precisely. The decomposition is shown to be tractable, in that sixteen components can be authored, chained and traced without the engine misbehaving, but it is not validated against learner data. The standard check is the learning curve: if a component is one skill, error rate falls as opportunities accumulate (Cen, Koedinger and Junker, 2006), and a flat or rising curve exposes a component that bundles several skills. That check is implemented in the analysis script and runs per component the moment practice data exists, so the answer to RQ1 is currently "tractable, validation pending" rather than "validated".
+Nine adults took part on 27 and 28 September 2026, recruited by convenience sampling, each working remotely and unsupervised on their own device and consenting on the in-app screen. Four further accounts, one of them my own, were non-participants and are excluded by name. Section 4.7 declares the departures from the approved protocol.
+
+The data has to be checked before any result. Table 6.6 gives the timings for both tests. A median under three seconds an answer is faster than a question and its four options can be read, the rapid-guessing signature Wise and Kong (2005) describe. I set that threshold after seeing the distribution rather than before, and say so, because a rule chosen once the data is in front of you is weaker than one fixed in advance. Applied to placement it flags seven of the nine, who finished a sixteen-question form in under a minute. It has to be applied to the post-test too, and there it flags P6 and P7 at 2.1 seconds and puts P8 on the line. Those three scored 14, 16 and 14 out of 16.
+
+Table: Pilot data quality, both tests, in participant order
+
+| Learner | Placement, median s per answer | Placement, minutes start to finish | Post-test, median s per answer | Minutes between the tests | Practice answers between | Baseline usable |
+|---|---:|---:|---:|---:|---:|:---:|
+| P1 | 7.5 | 3.2 | 5.8 | 112 | 14 | Yes |
+| P2 | 1.3 | 0.6 | 7.0 | 34 | 8 | No |
+| P3 | 4.5 | 20.3 | 19.2 | 8 | 0 | Yes |
+| P4 | 1.0 | 0.4 | 4.1 | 9 | 0 | No |
+| P5 | 0.9 | 0.5 | 3.5 | 9 | 0 | No |
+| P6 | 0.8 | 0.4 | 2.1 | 3 | 0 | No |
+| P7 | 0.9 | 0.5 | 2.1 | 5 | 0 | No |
+| P8 | 1.3 | 0.6 | 3.0 | 1 | 0 | No |
+| P9 | 0.9 | 0.5 | 4.9 | 4 | 0 | No |
+
+Sixteen out of sixteen at 2.1 seconds an answer needs an explanation, and the obvious one is that the instrument is guessable. It is not, and that can be shown rather than asserted. The bank was measured in September, found answerable without trading knowledge, and rewritten (Section 7.3). Rebuilding the post-test form as the selector builds it gives nine multiple-choice and seven true/false items, and the best zero-knowledge strategy against it, taking the longest option and answering true every time, scores 6 of 16 against 5.7 for blind guessing. The two forms share one item. The lesson checks that had been revealing nine post-test answers were closed on 22 September, five days before the pilot, with a test asserting it. Option positions are permuted at build time. So nothing in the instrument produces a 16, and the explanation lies outside it: the answers were known beforehand, came from someone else, or were looked up. P6 to P9 sat their tests one to five minutes apart on the same evening. The log cannot say which, and that is the finding: an unsupervised remote test cannot establish that a score came from the person it is recorded against, and no care in building the instrument repairs it.
+
+Table 6.7 shows every participant's scores and gain, including the seven that fail the check, because dropping them without showing them would hide the problem rather than report it. Only P1 and P3 have both a usable baseline and an unhurried post-test. P1 gained 0.33, medium in Hake's (1998) bands, after fourteen practice answers and 112 minutes between the tests; P3 gained 0.82, which is high, after a twenty-minute placement and no practice. The nine together give a mean of 0.76 (sd 0.25) and a median of 0.85, reported only so it is not hidden: it is the arithmetic of guessing a pre-test and then producing a post-test score from an unknown source. No significance test is run on two cases, or on nine.
+
+Table: Pilot learning gain, all nine participants
+
+| Learner | Placement | Post-test | Normalised gain | Practice answers | Baseline usable |
+|---|---:|---:|---:|---:|:---:|
+| P1 | 7/16 | 10/16 | 0.33 | 14 | Yes |
+| P2 | 4/16 | 8/16 | 0.33 | 8 | No |
+| P3 | 5/16 | 14/16 | 0.82 | 0 | Yes |
+| P4 | 2/15 | 14/16 | 0.86 | 0 | No |
+| P5 | 6/16 | 15/16 | 0.90 | 0 | No |
+| P6 | 3/16 | 14/16 | 0.85 | 0 | No |
+| P7 | 5/16 | 16/16 | 1.00 | 0 | No |
+| P8 | 8/16 | 14/16 | 0.75 | 0 | No |
+| P9 | 7/16 | 16/16 | 1.00 | 0 | No |
+
+One anomaly bears on the claim in Section 6.2 that the log never loses an answer, so it is resolved here rather than left as a footnote. P4's placement is scored out of fifteen because the session recorded fifteen answers to a sixteen-item form. The quiz session persists to local storage and resumes where a refresh left it, no session needed rebuilding from the log, and the network-cut journey asserts that as many responses arrive as answers were given, so an interrupted session resuming a question short is the likelier account and a lost write the less likely. It is one observation and it is reported as unresolved.
+
+Usability is the least damaged result, but it is not usability of the tutor. All nine completed the ten-item System Usability Scale for a mean of 89.7 (sd 10.4) across a range of 72.5 to 100, against a published average of 68 and a top decile beginning near 80 (Bangor, Kortum and Miller 2008). Time on task ran from one minute to twenty-eight, almost all of it inside the two tests, and seven never opened a lesson or a practice session; P7 rated the system 100 after one minute. What the scale measured is a first impression of sign-up, consent and the quiz screens, and it is reported as that. People recruited by a researcher they know also rate kindly.
+
+One participant answered the open questions, so there are three sentences rather than themes, and no thematic analysis (Braun and Clarke 2006) is attempted on three. P1 said the quiz helped, that the drawings on the video confused them, and, asked whether the mastery percentages felt right, answered "I don't know what that is". That last one is the most useful sentence in the study, and it is evidence against the design: the open learner model is the feature this project calls its most original, and the only participant who commented did not know what the number meant.
+
+Engagement is a finding in its own right. Two of the nine used the practice loop at all, answering fourteen and eight items; the other seven went from placement straight to the post-test. That is a product failure and an instruction failure at once: nothing required practice before the post-test unlocked, and the briefing told participants to guess when they did not know (Section 7.4). Left alone with a link, seven did the least the system would accept. The pilot exercised the deployment, the consent flow, the instruments and the log, and barely exercised the tutor, which is the part the dissertation is about.
+
+Two checks the log was built to support consequently cannot be read. The post-test logged 144 answers against the model's estimate at the time, the held-out check working as designed, but only one fell in the cell that matters, where the model had called a module mastered, and a false-mastery rate cannot come from one observation. The learning curves that would validate the decomposition (Cen, Koedinger and Junker 2006) need repeated opportunities per component; two saw any at all, fourteen and eight, too few to read a slope. Both are reported as not evaluable, with the reason, rather than as absent.
 
 # 7. Conclusions
 
@@ -578,219 +668,220 @@ Table: Evaluation against the five objectives
 | 1. Review the literature to ground the design | Met | Chapter 2; about 240 records screened, 57 cited and 18 further sources listed in the bibliography; every design decision traced to evidence in Appendix J |
 | 2. Design the architecture and content structure | Met | Six-component architecture (5.1); sixteen-module prerequisite chain with 66 lessons and 116 items (5.6); data model and rules (5.2) |
 | 3. Build the vertical slice end to end with BKT and routing | Met and exceeded | The full loop works and is exercised by a browser test from placement to unlock; learner-support features beyond the slice were also delivered |
-| 4. Validate the engine technically | Met | 138 unit tests against hand-computed maths; 200-learner harness passing all three committed behaviours; identifiability limit found and reported |
-| 5. Evaluate with real users for learning gain and usability | Not met | Ethics approved and instruments ready; study not run because content reached final form in September (4.3) |
+| 4. Validate the engine technically | Met | 233 unit tests against hand-computed maths; 200-learner harness passing all three committed behaviours; identifiability limit found and reported |
+| 5. Evaluate with real users for learning gain and usability | Partly met | Pilot run with 9 participants; usability answered (SUS 89.7), learning gain inconclusive on 2 usable baselines (6.7) |
 
-Objective 5 is the one that failed, and it is worth being precise about why, because "ran out of time" would be the easy and slightly dishonest answer. The progress report identified content production as the biggest scope risk and was right: turning 36 videos and the wider published teaching into 66 written lessons with 116 authored items took the final weeks the study would have needed, and a study on placeholder content would have produced a number that meant nothing. Given the choice again I would make the same one, but earlier. The content should have been the first milestone rather than the last, because the study depended on it and the engine did not.
+Objective 5 is only partly met, and the precision matters. Half is answered: nine participants rated the system and that result is clean. The other half is not, and the reason is not that the study did not happen but that it was designed so that its own baseline could be destroyed, which Section 7.4 takes apart. The underlying cause is the scope risk the progress report named first: content production took the weeks the study needed, so the study was run in the days that were left. Given the choice again I would make the content the first milestone rather than the last, because the study depended on it and the engine did not.
 
 ## 7.2 Against the research questions
 
-RQ1 asked whether a trading curriculum decomposes cleanly enough for BKT and whether the engine behaves as required. It does, and it does: sixteen objectively assessable components in a prerequisite chain that had to be re-sequenced once because the recording order violated it, with the engine behaving exactly as the design requires on every committed check. The simulation added a limit the design had not anticipated in that form, namely that the prior is not recoverable from short sequences, so the placement test is doing more of the modelling work than the specification assumed. That is a finding rather than a failure.
+RQ1 asked whether a trading curriculum decomposes cleanly enough for BKT and whether the engine behaves as required. It does, and it does: sixteen objectively assessable components in a prerequisite chain, with the engine behaving as the design requires on every committed check. The simulation added a limit the design had not anticipated, that the prior is not recoverable from short sequences, so placement does more of the modelling work than the specification assumed (Section 6.4). But the check that would validate the decomposition against learners, the learning curve, needs practice data the pilot did not generate, so the answer is "tractable, validation pending" rather than "validated".
 
-RQ2 as narrowed asked whether a BKT-driven policy can run the complete loop while producing the right data. It can: the loop runs end to end under test, survives a network cut, and every response carries the estimate before and after, correctness and latency. The policy simulation answered the part of RQ2 that did not need participants, at the cost quantified in Section 6.4. The learning-gain half remains open and its instruments are built.
+RQ2 as narrowed asked whether a BKT-driven policy can run the complete loop while producing the right data. It can: the loop runs end to end under test, survives a network cut, and every response carries the estimate before and after, correctness and latency. The pilot confirmed that on real traffic, since the analysis reconstructed every participant's trajectory from the log with no repair needed. The policy simulation answered the part of RQ2 that did not need participants, at the cost quantified in Section 6.4. The learning-gain half is inconclusive, for the reasons in 6.7, so it stays open.
 
-RQ3 asked whether the learner can see and understand the model. The system exposes its estimates after every answer, explains each routing decision with the actual decision object, and shows the curriculum as a route lit to mastery. Whether learners find that understandable needs participants, so RQ3 is answered on the design side only.
+RQ3 asked whether the learner can see and understand the model. The system exposes its estimates after every answer, explains each routing decision with the actual decision object, and shows the curriculum as a route lit to mastery, so the "see" half is answered. The pilot supplied the first evidence on the "understand" half and it is not flattering (Section 6.7): the only participant who commented did not know what the mastery number meant, and seven of nine never reached a screen where the model explains itself. RQ3 is therefore answered on the design side and open, with a warning attached, on the learner side.
 
-RQ4 asked what constraints the regulatory context imposes and whether they can be met without degrading the experience. The constraints are set out in Section 4.7, every one is enforced structurally rather than by disclaimer, and nothing in the test results or audits suggests the experience suffered for it: the accessibility and performance gates were met with the constraints in place.
+RQ4 asked what constraints the regulatory context imposes and whether they can be met without degrading the experience. The constraints are in Section 4.7, every one enforced structurally rather than by disclaimer, and nothing in the audits or the pilot suggests the experience suffered: the gates were met with the constraints in place.
 
 ## 7.3 Evaluation of the product
 
-The artefact goes beyond what a taught module delivers in several respects. The engine is pure and hand-verified rather than imported. The research log is designed with the care of a financial ledger, and its hardest failure mode was found and closed before any participant could hit it. Security is by rule and tested, accessibility was a gate on every page rather than a finish, and the design decisions were recorded as they were made, including the ones reversed.
+The artefact goes beyond what a taught module delivers in several respects. The engine is pure and hand-verified rather than imported. The research log is designed with the care of a financial ledger, and its hardest failure mode was found and closed before any participant could hit it. Security is by rule and tested, accessibility was a gate on every page rather than a finish, and the design decisions were recorded as they were made, including the ones reversed. The pilot is the only outside check on any of this: nine people given nothing but a link got through consent, placement and a post-test unaided, and scored the interface 89.7 on the SUS.
 
-The weaknesses are real too. The parameters are literature defaults rather than fitted, and the climb to mastery is fast under them; a fitted learn rate would likely slow it. The bank averages seven items per module, thin for repeated practice, and one question type has a single item. And the curriculum teaches a contested methodology, which the interface says clearly but which limits how far any learning-gain result would generalise. The supporting documents (specification, decisions log, evaluation log, running guide) let a reader reconstruct why the system is as it is.
+The weaknesses are real too. The parameters are literature defaults rather than fitted, and the climb to mastery is fast under them; a fitted learn rate would likely slow it. The bank averages seven items per module, thin for repeated practice, and one question type has a single item. The bank failed its own measurement in September: the correct option was the longest in 36 of the 55 multiple-choice items and the true/false items ran five true to ten false, so a test-wise participant could beat chance without knowing any trading. Ninety distractors were rewritten and three statements inverted, taking the length tell to 14 of 55, which is chance, and the split to eight and seven. And the curriculum teaches a contested methodology, which the interface says clearly but which limits how far any learning-gain result would generalise. The one feature a participant commented on, the open learner model, was not understood (Section 7.2).
 
 ## 7.4 Evaluation of the process
 
-The phased method worked as intended: every phase ended with its checks actually run, and the engine was integrated into a working interface from the start. Keeping the decisions log was the single most valuable practice, because Chapter 5 is reconstructed from it rather than remembered, and the effort reconstruction in Appendix K would not have been possible without it. "Measured, not assumed" earned its keep when it removed an effect that looked good and cost eighty per cent of the frame budget.
+The phased method worked as intended: every phase ended with its checks actually run, and the engine was integrated into a working interface from the start. Keeping the decisions log was the most valuable practice, because Chapter 5 is reconstructed from it rather than remembered and the effort reconstruction in Appendix K depends on it. "Measured, not assumed" earned its keep when it removed an effect that looked good and cost eighty per cent of the frame budget.
 
-The process failed in one way and was lucky in another. It failed on sequencing, as above. And it was lucky that the leak of test users into the live database happened before any real participant existed; the environment split should have been there from the day the live project was created. AI-assisted development compressed the build far below the planned ten weeks, and Appendix K shows the consequence in the effort figures: implementation is the fourth largest line, behind the literature, the curriculum and the video. The constraint moved from writing code to writing content and running the evaluation, and a plan written with that in mind would have looked very different.
+The clearest process failure is the one the pilot exposed, and the design faults are mine. The briefing told participants that guessing was fine, which was meant to reduce anxiety on a test of unseen material and instead licensed the behaviour that ruined the baseline. Nothing required practice before the post-test unlocked and nothing required a gap, so seven sat both inside ten minutes. Two scored 16 of 16, and a ceiling compresses exactly the learners a gain measure needs to separate. Placement reveals the correct answer after every question, which I had assumed was the main leak until I measured it: the two forms share a single item, so the reveal is worth one mark, and Section 6.7 sets out what that leaves standing. The fault that mattered was running unsupervised, because it makes every score unattributable. The instrument that produced a clean result, the questionnaire, depended on none of this.
+
+The process failed in one other way and was lucky in a third. It failed on sequencing, as above. And it was lucky that the leak of test users into the live database happened before any real participant existed; the environment split should have been there from the day the live project was created. AI-assisted development compressed the build far below the planned ten weeks, and Appendix K shows the consequence in the effort figures. The constraint moved from writing code to writing content and running the evaluation, and a plan written with that in mind would have looked very different.
 
 ## 7.5 What the project contributes
 
 Four things are offered as contributions rather than features, each stated at the strength the evidence supports.
 
-The first is the application itself. The knowledge tracing literature is built on mathematics, language and programming datasets, and this survey found no tutoring system applying a formal student model to trading education. TradeMind is an existence proof that the decomposition is tractable: a contested, ill-structured practitioner domain can be broken into components that are individually checkable, chained by prerequisite, and traced by a four-parameter model without the model misbehaving.
+The first is the application itself. Knowledge tracing is built on mathematics, language and programming datasets, and this survey found no tutoring system applying a formal student model to trading education. TradeMind is an existence proof that the decomposition is tractable: a contested, ill-structured practitioner domain breaks into components that are individually checkable, chained by prerequisite, and traced by a four-parameter model without it misbehaving.
 
-The second is a design pattern for open learner models. The "why this question?" panel renders the routing engine's actual decision object rather than a summary reconstructed for display. Most self-explaining systems explain a reconstruction, which can drift silently from the behaviour it describes; because there is only one object here, the explanation cannot disagree with the decision. That is cheap to build in and expensive to retrofit.
+The second is a design pattern for open learner models. The "why this question?" panel renders the router's actual decision object rather than a summary rebuilt for display, so the explanation cannot drift from the decision the way a reconstruction can. That is cheap to build in and expensive to retrofit.
 
-The third is methodological, and the most transferable. A dissertation that cannot recruit participants is usually reduced to reporting that its code works. The routing-policy simulation in Section 6.4 shows the more interesting question can still be answered: put the shipped policy against a fixed syllabus and a random floor over the real curriculum and item bank, generate answers from a hidden true state using a generative model deliberately different from the engine's own, and measure efficiency and error in both directions. It is not evidence about people, but it converts an unanswerable question into an answerable one.
+The third is methodological, and the most transferable. A study that cannot recruit enough participants is usually reduced to reporting that its code works. The simulation in Section 6.4 shows the more interesting question can still be answered: put the shipped policy against a fixed syllabus and a random floor over the real curriculum and item bank, generate answers from a hidden true state using a generative model deliberately different from the engine's own, and measure efficiency and error both ways. It is not evidence about people, but it makes an unanswerable question answerable.
 
-The fourth is a practice rather than a result: reporting what went the wrong way. Fitting the parameters made the forecasts worse, the prior proved barely identifiable, and the router over-calls mastery on about one module in sixteen. Each is in the results with its number, because a system that shows learners its own uncertainty ought to be described by a report willing to show its own.
+The fourth is a practice rather than a result: reporting what went the wrong way. Fitting the parameters made the forecasts worse, the prior proved barely identifiable, the router over-calls mastery on about one module in sixteen, the item bank failed its own fairness check, and the pilot's design destroyed the baseline it needed. Each is in the results with its number.
 
 # 8. Recommendations for Further Work
 
 The recommendations are in priority order and the first is the one that matters.
 
-Run the human study. Everything it needs exists and is deployed: ethics approval, a consent flow, a placement test that doubles as a pre-test, a post-test on a second form, a response log carrying the model's estimate before and after every answer, the questionnaire, and an analysis script that turns the log into per-participant normalised gain, time on task, mastered modules, usability score and the model's held-out accuracy. Five to eight participants over one session each would produce feasibility evidence for learning gain, calibration and usability. This should happen before any further feature work, because it is the only thing that turns the artefact into an answered research question, and the first number to look at is the one the simulation flagged: how often the model calls a module mastered that the post-test says is not.
+Run the redesigned study, supervised. The infrastructure needs nothing further, since ethics approval, the consent flow, both instruments and the analysis script all worked on real traffic; the protocol is what the pilot specifies. Sessions must be observed, because an unobserved score cannot be attributed to the person it is recorded against, and that single change fixes more than the rest together. Placement must give no feedback, so the pre-test measures instead of teaching. The post-test must unlock only after a stated minimum of practice, ideally not the same day, so what sits between the tests is the tutor rather than a coffee break. The application should flag answers faster than three seconds as they happen, and the briefing should say so instead of telling people guessing is fine. The study needs a fixed-syllabus comparison group, the same comparison the simulation makes and the only way to credit a gain to the adaptation rather than the content; thirty to forty participants across two arms would power it. The first number to read is still how often the model calls a module mastered that the post-test says is not.
 
-Fit the learn rate from real data and leave the prior to placement, since the simulation showed which parameter is identifiable from short sequences and which is not. Once logged data exists, fitting per-KC learn rates with pyBKT (Badrinath, Wang and Pardos, 2021) and checking them against degeneracy bounds (Baker, Corbett and Aleven, 2008) would replace the defaults with something defensible, and would probably slow the climb to mastery.
+Deepen the item bank first. Seven items per module is thin for repeated practice, one module's single pre-test-eligible item repeats across both forms, and two participants hit a ceiling of 16 of 16; sixteen items per module with at least three pre-test-eligible each removes all three. Fitting the learn rate from real data, leaving the prior to placement, comes after: the simulation showed which parameter is identifiable from short sequences, and fitting per-KC learn rates with pyBKT (Badrinath, Wang and Pardos 2021) against degeneracy bounds (Baker, Corbett and Aleven 2008) would replace the defaults with something defensible.
 
-Deepen the item bank before scaling participants. Seven items per module is enough to demonstrate the loop and thin for repeated practice. Sixteen per module, with more annotation items and at least three pre-test-eligible items each, would let the difficulty ladder and the review queue work as designed and leave the two assessment forms with no shared item at all.
+Add forgetting and spacing. Standard BKT assumes no forgetting and the review queue flags fading skills by heuristic; a variant with a forgetting transition (Khajah, Lindsey and Mozer 2016) would put that on a modelled footing and give the spaced-retrieval mechanism from Section 2.3 a schedule.
 
-Add forgetting and spacing. Standard BKT assumes no forgetting, and the review queue currently flags fading skills by heuristic; a BKT variant with a forgetting transition (Khajah, Lindsey and Mozer, 2016) would put that on a modelled footing and give the spaced-retrieval mechanism from Section 2.3 a principled schedule.
+Complete the curriculum's gaps, the most valuable being backtesting, which would let a learner turn the methodology into their own evidence. Then a constrained generative tutor, deferred for the reasons in Section 2.9: an assistant that can speak only to the KC being studied, grounded in that lesson's text, with the BKT model still the sole authority over progression.
 
-Complete the curriculum's gaps. The most valuable missing topic is backtesting, because it is what would let a learner turn the methodology into their own evidence. Trade journaling and trading psychology are the next candidates.
+Move grading to the server. Answers are graded in the browser, so the rules enforce the log's shape but not its truth; a Cloud Function grading each response would close that gap before any larger study.
 
-Add a constrained generative tutor. The design deferred this for the reasons in Section 2.9, but the right shape is now clearer: an assistant that can speak only to the KC currently being studied, grounded in that lesson's text, with the BKT model unchanged as the sole authority over progression.
-
-Move grading to the server. Answers are graded in the browser, so the rules enforce the log's shape but not its truth; a Cloud Function grading each response would close that. Third-party error monitoring belongs with it, after a consent and ethics amendment.
-
-Keep the parked designs parked. The site is live for remote participants with the recordings hosted and Google sign-in enabled. The marketplace and the terminal simulator should stay parked until the research question is answered, and the marketplace should probably stay parked for good, for the regulatory reasons that cut it.
+Keep the parked designs parked until the research question is answered, and the marketplace probably for good.
 
 # 9. Reference List
 
-Abdelrahman, G., Wang, Q. and Nunes, B., 2023. Knowledge tracing: a survey. ACM Computing Surveys, 55(11), pp.1–37. https://doi.org/10.1145/3569576
+ABDELRAHMAN, G., WANG, Q. and NUNES, B., 2023. Knowledge tracing: a survey. *ACM Computing Surveys*, 55(11), 1–37. https://doi.org/10.1145/3569576
 
-Anderson, J.R., Corbett, A.T., Koedinger, K.R. and Pelletier, R., 1995. Cognitive tutors: lessons learned. The Journal of the Learning Sciences, 4(2), pp.167–207. https://doi.org/10.1207/s15327809jls0402_2
+ANDERSON, J.R., CORBETT, A.T., KOEDINGER, K.R. and PELLETIER, R., 1995. Cognitive tutors: lessons learned. *The Journal of the Learning Sciences*, 4(2), 167–207. https://doi.org/10.1207/s15327809jls0402_2
 
-Badrinath, A., Wang, F. and Pardos, Z.A., 2021. pyBKT: an accessible Python library of Bayesian Knowledge Tracing models. In: Proceedings of the 14th International Conference on Educational Data Mining (EDM 2021). International Educational Data Mining Society, pp.468–474. Available at: https://arxiv.org/abs/2105.00385 [Accessed 2 July 2026].
+BADRINATH, A., WANG, F. and PARDOS, Z.A., 2021. pyBKT: an accessible Python library of Bayesian Knowledge Tracing models. In: *Proceedings of the 14th International Conference on Educational Data Mining (EDM 2021)*. International Educational Data Mining Society, pp.468–474. Available from: https://arxiv.org/abs/2105.00385 [viewed 2 July 2026].
 
-Baker, R.S., 2016. Stupid tutoring systems, intelligent humans. International Journal of Artificial Intelligence in Education, 26(2), pp.600–614. https://doi.org/10.1007/s40593-016-0105-0
+BAKER, R.S., 2016. Stupid tutoring systems, intelligent humans. *International Journal of Artificial Intelligence in Education*, 26(2), 600–614. https://doi.org/10.1007/s40593-016-0105-0
 
-Baker, R.S.J.d., Corbett, A.T. and Aleven, V., 2008. More accurate student modeling through contextual estimation of slip and guess probabilities in Bayesian Knowledge Tracing. In: Intelligent Tutoring Systems (ITS 2008). Berlin: Springer, pp.406–415. https://doi.org/10.1007/978-3-540-69132-7_44
+BAKER, R.S.J.d., CORBETT, A.T. and ALEVEN, V., 2008. More accurate student modeling through contextual estimation of slip and guess probabilities in Bayesian Knowledge Tracing. In: *Intelligent Tutoring Systems (ITS 2008)*. Berlin: Springer, pp.406–415. https://doi.org/10.1007/978-3-540-69132-7_44
 
-Bangor, A., Kortum, P.T. and Miller, J.T., 2008. An empirical evaluation of the System Usability Scale. International Journal of Human–Computer Interaction, 24(6), pp.574–594. https://doi.org/10.1080/10447310802205776
+BANGOR, A., KORTUM, P.T. and MILLER, J.T., 2008. An empirical evaluation of the System Usability Scale. *International Journal of Human–Computer Interaction*, 24(6), 574–594. https://doi.org/10.1080/10447310802205776
 
-Barber, B.M. and Odean, T., 2000. Trading is hazardous to your wealth: the common stock investment performance of individual investors. The Journal of Finance, 55(2), pp.773–806. https://doi.org/10.1111/0022-1082.00226
+BARBER, B.M. and ODEAN, T., 2000. Trading is hazardous to your wealth: the common stock investment performance of individual investors. *The Journal of Finance*, 55(2), 773–806. https://doi.org/10.1111/0022-1082.00226
 
-Barber, B.M., Lee, Y.-T., Liu, Y.-J. and Odean, T., 2014. The cross-section of speculator skill: evidence from day trading. Journal of Financial Markets, 18, pp.1–24. https://doi.org/10.1016/j.finmar.2013.05.006
+BARBER, B.M., LEE, Y.-T., LIU, Y.-J. and ODEAN, T., 2014. The cross-section of speculator skill: evidence from day trading. *Journal of Financial Markets*, 18, 1–24. https://doi.org/10.1016/j.finmar.2013.05.006
 
-BCS, 2022. BCS Code of Conduct for members. [online] Available at: https://www.bcs.org/membership-and-registrations/become-a-member/bcs-code-of-conduct/ [Accessed 2 July 2026].
+BCS, 2022. *BCS Code of Conduct for members*. [viewed 2 July 2026] Available from: https://www.bcs.org/membership-and-registrations/become-a-member/bcs-code-of-conduct/
 
-Beck, J.E. and Chang, K.-m., 2007. Identifiability: a fundamental problem of student modeling. In: User Modeling 2007 (UM 2007). Berlin: Springer, pp.137–146. https://doi.org/10.1007/978-3-540-73078-1_17
+BECK, J.E. and CHANG, K.-m., 2007. Identifiability: a fundamental problem of student modeling. In: *User Modeling 2007 (UM 2007)*. Berlin: Springer, pp.137–146. https://doi.org/10.1007/978-3-540-73078-1_17
 
-Bloom, B.S., 1984. The 2 sigma problem: the search for methods of group instruction as effective as one-to-one tutoring. Educational Researcher, 13(6), pp.4–16. https://doi.org/10.3102/0013189X013006004
+BLOOM, B.S., 1984. The 2 sigma problem: the search for methods of group instruction as effective as one-to-one tutoring. *Educational Researcher*, 13(6), 4–16. https://doi.org/10.3102/0013189X013006004
 
-Braun, V. and Clarke, V., 2006. Using thematic analysis in psychology. Qualitative Research in Psychology, 3(2), pp.77–101. https://doi.org/10.1191/1478088706qp063oa
+BRAUN, V. and CLARKE, V., 2006. Using thematic analysis in psychology. *Qualitative Research in Psychology*, 3(2), 77–101. https://doi.org/10.1191/1478088706qp063oa
 
-Brooke, J., 1996. SUS: a "quick and dirty" usability scale. In: P.W. Jordan, B. Thomas, B.A. Weerdmeester and I.L. McClelland, eds. Usability Evaluation in Industry. London: Taylor and Francis, pp.189–194. https://doi.org/10.1201/9781498710411-35
+BROOKE, J., 1996. SUS: a "quick and dirty" usability scale. In: P.W. JORDAN, B. THOMAS, B.A. WEERDMEESTER and I.L. MCCLELLAND, eds. *Usability Evaluation in Industry*. London: Taylor and Francis, pp.189–194. https://doi.org/10.1201/9781498710411-35
 
-Bull, S. and Kay, J., 2010. Open learner models. In: R. Nkambou, J. Bourdeau and R. Mizoguchi, eds. Advances in Intelligent Tutoring Systems. Berlin: Springer, pp.301–322. https://doi.org/10.1007/978-3-642-14363-2_15
+BULL, S. and KAY, J., 2010. Open learner models. In: R. NKAMBOU, J. BOURDEAU and R. MIZOGUCHI, eds. *Advances in Intelligent Tutoring Systems*. Berlin: Springer, pp.301–322. https://doi.org/10.1007/978-3-642-14363-2_15
 
-Bulut, O., Shin, J., Yildirim-Erbasli, S.N., Gorgun, G. and Pardos, Z.A., 2023. An introduction to Bayesian knowledge tracing with pyBKT. Psych, 5(3), pp.770–786. https://doi.org/10.3390/psych5030050
+BULUT, O., SHIN, J., YILDIRIM-ERBASLI, S.N., GORGUN, G. and PARDOS, Z.A., 2023. An introduction to Bayesian knowledge tracing with pyBKT. *Psych*, 5(3), 770–786. https://doi.org/10.3390/psych5030050
 
-Cen, H., Koedinger, K. and Junker, B., 2006. Learning factors analysis: a general method for cognitive model evaluation and improvement. In: Intelligent Tutoring Systems (ITS 2006). Berlin: Springer, pp.164–175. https://doi.org/10.1007/11774303_17
+CEN, H., KOEDINGER, K. and JUNKER, B., 2006. Learning factors analysis: a general method for cognitive model evaluation and improvement. In: *Intelligent Tutoring Systems (ITS 2006)*. Berlin: Springer, pp.164–175. https://doi.org/10.1007/11774303_17
 
-Chague, F., De-Losso, R. and Giovannetti, B., 2020. Day trading for a living? SSRN Working Paper 3423101. https://doi.org/10.2139/ssrn.3423101
+CHAGUE, F., DE-LOSSO, R. and GIOVANNETTI, B., 2020. *Day trading for a living?* SSRN working paper 3423101. https://doi.org/10.2139/ssrn.3423101
 
-Corbett, A.T., 2001. Cognitive computer tutors: solving the two-sigma problem. In: User Modeling 2001 (UM 2001). Berlin: Springer, pp.137–147. https://doi.org/10.1007/3-540-44566-8_14
+CORBETT, A.T., 2001. Cognitive computer tutors: solving the two-sigma problem. In: *User Modeling 2001 (UM 2001)*. Berlin: Springer, pp.137–147. https://doi.org/10.1007/3-540-44566-8_14
 
-Corbett, A.T. and Anderson, J.R., 1994. Knowledge tracing: modeling the acquisition of procedural knowledge. User Modeling and User-Adapted Interaction, 4(4), pp.253–278. https://doi.org/10.1007/BF01099821
+CORBETT, A.T. and ANDERSON, J.R., 1994. Knowledge tracing: modeling the acquisition of procedural knowledge. *User Modeling and User-Adapted Interaction*, 4(4), 253–278. https://doi.org/10.1007/BF01099821
 
-Doroudi, S. and Brunskill, E., 2017. The misidentified identifiability problem of Bayesian Knowledge Tracing. In: Proceedings of the 10th International Conference on Educational Data Mining (EDM 2017). International Educational Data Mining Society, pp.143–149. Available at: https://eric.ed.gov/?id=ED596593 [Accessed 20 June 2026].
+DOROUDI, S. and BRUNSKILL, E., 2017. The misidentified identifiability problem of Bayesian Knowledge Tracing. In: *Proceedings of the 10th International Conference on Educational Data Mining (EDM 2017)*. International Educational Data Mining Society, pp.143–149. Available from: https://eric.ed.gov/?id=ED596593 [viewed 20 June 2026].
 
-Doroudi, S. and Brunskill, E., 2019. Fairer but not fair enough: on the equitability of knowledge tracing. In: Proceedings of the 9th International Conference on Learning Analytics and Knowledge (LAK19). New York: ACM, pp.335–339. https://doi.org/10.1145/3303772.3303838
+DOROUDI, S. and BRUNSKILL, E., 2019. Fairer but not fair enough: on the equitability of knowledge tracing. In: *Proceedings of the 9th International Conference on Learning Analytics and Knowledge (LAK19)*. New York: ACM, pp.335–339. https://doi.org/10.1145/3303772.3303838
 
-Ericsson, K.A., Krampe, R.T. and Tesch-Römer, C., 1993. The role of deliberate practice in the acquisition of expert performance. Psychological Review, 100(3), pp.363–406. https://doi.org/10.1037/0033-295X.100.3.363
+ERICSSON, K.A., KRAMPE, R.T. and TESCH-RÖMER, C., 1993. The role of deliberate practice in the acquisition of expert performance. *Psychological Review*, 100(3), 363–406. https://doi.org/10.1037/0033-295X.100.3.363
 
-ESMA, 2018. ESMA agrees to prohibit binary options and restrict CFDs to protect retail investors. [online] Paris: European Securities and Markets Authority. Available at: https://www.esma.europa.eu/press-news/esma-news/esma-agrees-prohibit-binary-options-and-restrict-cfds-protect-retail-investors [Accessed 20 June 2026].
+ESMA, 2018. *ESMA agrees to prohibit binary options and restrict CFDs to protect retail investors*. Paris: European Securities and Markets Authority. [viewed 20 June 2026] Available from: https://www.esma.europa.eu/press-news/esma-news/esma-agrees-prohibit-binary-options-and-restrict-cfds-protect-retail-investors
 
-FCA, 2019. PS19/18: Restricting contract for difference products sold to retail clients. [online] London: Financial Conduct Authority. Available at: https://www.fca.org.uk/publications/policy-statements/ps19-18-restricting-contract-difference-products-sold-retail-clients [Accessed 20 June 2026].
+FCA, 2019. *PS19/18: Restricting contract for difference products sold to retail clients*. London: Financial Conduct Authority. [viewed 20 June 2026] Available from: https://www.fca.org.uk/publications/policy-statements/ps19-18-restricting-contract-difference-products-sold-retail-clients
 
-FCA, 2022. FCA highlights continuing concerns about problem firms in the CFD sector. [online] London: Financial Conduct Authority. Available at: https://www.fca.org.uk/news/press-releases/fca-highlights-continuing-concerns-about-problem-firms-cfd-sector [Accessed 2 July 2026].
+FCA, 2022. *FCA highlights continuing concerns about problem firms in the CFD sector*. London: Financial Conduct Authority. [viewed 2 July 2026] Available from: https://www.fca.org.uk/news/press-releases/fca-highlights-continuing-concerns-about-problem-firms-cfd-sector
 
-Fernandes, D., Lynch, J.G. and Netemeyer, R.G., 2014. Financial literacy, financial education, and downstream financial behaviors. Management Science, 60(8), pp.1861–1883. https://doi.org/10.1287/mnsc.2013.1849
+FERNANDES, D., LYNCH, J.G. and NETEMEYER, R.G., 2014. Financial literacy, financial education, and downstream financial behaviors. *Management Science*, 60(8), 1861–1883. https://doi.org/10.1287/mnsc.2013.1849
 
-Gervet, T., Koedinger, K., Schneider, J. and Mitchell, T., 2020. When is deep learning the best approach to knowledge tracing? Journal of Educational Data Mining, 12(3), pp.31–54. https://doi.org/10.5281/zenodo.4143614
+GERVET, T., KOEDINGER, K., SCHNEIDER, J. and MITCHELL, T., 2020. When is deep learning the best approach to knowledge tracing? *Journal of Educational Data Mining*, 12(3), 31–54. https://doi.org/10.5281/zenodo.4143614
 
-Guo, P.J., Kim, J. and Rubin, R., 2014. How video production affects student engagement: an empirical study of MOOC videos. In: Proceedings of the First ACM Conference on Learning @ Scale. New York: ACM, pp.41–50. https://doi.org/10.1145/2556325.2566239
+GUO, P.J., KIM, J. and RUBIN, R., 2014. How video production affects student engagement: an empirical study of MOOC videos. In: *Proceedings of the First ACM Conference on Learning @ Scale*. New York: ACM, pp.41–50. https://doi.org/10.1145/2556325.2566239
 
-Hake, R.R., 1998. Interactive-engagement versus traditional methods: a six-thousand-student survey of mechanics test data for introductory physics courses. American Journal of Physics, 66(1), pp.64–74. https://doi.org/10.1119/1.18809
+HAKE, R.R., 1998. Interactive-engagement versus traditional methods: a six-thousand-student survey of mechanics test data for introductory physics courses. *American Journal of Physics*, 66(1), 64–74. https://doi.org/10.1119/1.18809
 
-Heffernan, N.T. and Heffernan, C.L., 2014. The ASSISTments ecosystem: building a platform that brings scientists and teachers together for minimally invasive research on human learning and teaching. International Journal of Artificial Intelligence in Education, 24(4), pp.470–497. https://doi.org/10.1007/s40593-014-0024-x
+HEFFERNAN, N.T. and HEFFERNAN, C.L., 2014. The ASSISTments ecosystem: building a platform that brings scientists and teachers together for minimally invasive research on human learning and teaching. *International Journal of Artificial Intelligence in Education*, 24(4), 470–497. https://doi.org/10.1007/s40593-014-0024-x
 
-Hevner, A.R., March, S.T., Park, J. and Ram, S., 2004. Design science in information systems research. MIS Quarterly, 28(1), pp.75–105. https://doi.org/10.2307/25148625
+HEVNER, A.R., MARCH, S.T., PARK, J. and RAM, S., 2004. Design science in information systems research. *MIS Quarterly*, 28(1), 75–105. https://doi.org/10.2307/25148625
 
-Kaiser, T., Lusardi, A., Menkhoff, L. and Urban, C., 2022. Financial education affects financial knowledge and downstream behaviors. Journal of Financial Economics, 145(2), pp.255–272. https://doi.org/10.1016/j.jfineco.2021.09.022
+KAISER, T., LUSARDI, A., MENKHOFF, L. and URBAN, C., 2022. Financial education affects financial knowledge and downstream behaviors. *Journal of Financial Economics*, 145(2), 255–272. https://doi.org/10.1016/j.jfineco.2021.09.022
 
-Kestin, G., Miller, K., Klales, A., Milbourne, T. and Ponti, G., 2025. AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting. Scientific Reports, 15, 17458. https://doi.org/10.1038/s41598-025-97652-6
+KESTIN, G., MILLER, K., KLALES, A., MILBOURNE, T. and PONTI, G., 2025. AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting. *Scientific Reports*, 15, 17458. https://doi.org/10.1038/s41598-025-97652-6
 
-Khajah, M., Lindsey, R.V. and Mozer, M.C., 2016. How deep is knowledge tracing? In: Proceedings of the 9th International Conference on Educational Data Mining (EDM 2016). International Educational Data Mining Society, pp.94–101. Available at: https://arxiv.org/abs/1604.02416 [Accessed 20 June 2026].
+KHAJAH, M., LINDSEY, R.V. and MOZER, M.C., 2016. How deep is knowledge tracing? In: *Proceedings of the 9th International Conference on Educational Data Mining (EDM 2016)*. International Educational Data Mining Society, pp.94–101. Available from: https://arxiv.org/abs/1604.02416 [viewed 20 June 2026].
 
-Kirschner, P.A., Sweller, J. and Clark, R.E., 2006. Why minimal guidance during instruction does not work: an analysis of the failure of constructivist, discovery, problem-based, experiential, and inquiry-based teaching. Educational Psychologist, 41(2), pp.75–86. https://doi.org/10.1207/s15326985ep4102_1
+KIRSCHNER, P.A., SWELLER, J. and CLARK, R.E., 2006. Why minimal guidance during instruction does not work: an analysis of the failure of constructivist, discovery, problem-based, experiential, and inquiry-based teaching. *Educational Psychologist*, 41(2), 75–86. https://doi.org/10.1207/s15326985ep4102_1
 
-Kraft, M.A., 2020. Interpreting effect sizes of education interventions. Educational Researcher, 49(4), pp.241–253. https://doi.org/10.3102/0013189X20912798
+KRAFT, M.A., 2020. Interpreting effect sizes of education interventions. *Educational Researcher*, 49(4), 241–253. https://doi.org/10.3102/0013189X20912798
 
-Kulik, J.A. and Fletcher, J.D., 2016. Effectiveness of intelligent tutoring systems: a meta-analytic review. Review of Educational Research, 86(1), pp.42–78. https://doi.org/10.3102/0034654315581420
+KULIK, J.A. and FLETCHER, J.D., 2016. Effectiveness of intelligent tutoring systems: a meta-analytic review. *Review of Educational Research*, 86(1), 42–78. https://doi.org/10.3102/0034654315581420
 
-Letourneau, A., Martineau, M.D., Charland, P., Karran, J.A., Boasen, J. and Léger, P.M., 2025. A systematic review of AI-driven intelligent tutoring systems (ITS) in K-12 education. npj Science of Learning, 10. https://doi.org/10.1038/s41539-025-00320-7
+LETOURNEAU, A., MARTINEAU, M.D., CHARLAND, P., KARRAN, J.A., BOASEN, J. and LÉGER, P.M., 2025. A systematic review of AI-driven intelligent tutoring systems (ITS) in K-12 education. *npj Science of Learning*, 10. https://doi.org/10.1038/s41539-025-00320-7
 
-Lo, A.W., Mamaysky, H. and Wang, J., 2000. Foundations of technical analysis: computational algorithms, statistical inference, and empirical implementation. The Journal of Finance, 55(4), pp.1705–1765. https://doi.org/10.1111/0022-1082.00265
+LO, A.W., MAMAYSKY, H. and WANG, J., 2000. Foundations of technical analysis: computational algorithms, statistical inference, and empirical implementation. *The Journal of Finance*, 55(4), 1705–1765. https://doi.org/10.1111/0022-1082.00265
 
-Lusardi, A. and Mitchell, O.S., 2014. The economic importance of financial literacy: theory and evidence. Journal of Economic Literature, 52(1), pp.5–44. https://doi.org/10.1257/jel.52.1.5
+LUSARDI, A. and MITCHELL, O.S., 2014. The economic importance of financial literacy: theory and evidence. *Journal of Economic Literature*, 52(1), 5–44. https://doi.org/10.1257/jel.52.1.5
 
-Lynch, C., Ashley, K., Aleven, V. and Pinkwart, N., 2006. Defining ill-defined domains: a literature survey. In: Proceedings of the Workshop on Intelligent Tutoring Systems for Ill-Defined Domains, 8th International Conference on Intelligent Tutoring Systems. Jhongli, Taiwan, pp.1–10.
+LYNCH, C., ASHLEY, K., ALEVEN, V. and PINKWART, N., 2006. Defining ill-defined domains: a literature survey. In: *Proceedings of the Workshop on Intelligent Tutoring Systems for Ill-Defined Domains, 8th International Conference on Intelligent Tutoring Systems*. Jhongli, Taiwan, pp.1–10.
 
-Ma, W., Adesope, O.O., Nesbit, J.C. and Liu, Q., 2014. Intelligent tutoring systems and learning outcomes: a meta-analysis. Journal of Educational Psychology, 106(4), pp.901–918. https://doi.org/10.1037/a0037123
+MA, W., ADESOPE, O.O., NESBIT, J.C. and LIU, Q., 2014. Intelligent tutoring systems and learning outcomes: a meta-analysis. *Journal of Educational Psychology*, 106(4), 901–918. https://doi.org/10.1037/a0037123
 
-Mayer, R.E., 2021. Multimedia learning. 3rd ed. Cambridge: Cambridge University Press. https://doi.org/10.1017/9781316941355
+MAYER, R.E., 2021. *Multimedia learning. 3rd ed*. Cambridge: Cambridge University Press. https://doi.org/10.1017/9781316941355
 
-Mayer, R.E. and Moreno, R., 2003. Nine ways to reduce cognitive load in multimedia learning. Educational Psychologist, 38(1), pp.43–52. https://doi.org/10.1207/S15326985EP3801_6
+MAYER, R.E. and MORENO, R., 2003. Nine ways to reduce cognitive load in multimedia learning. *Educational Psychologist*, 38(1), 43–52. https://doi.org/10.1207/S15326985EP3801_6
 
-Nwana, H.S., 1990. Intelligent tutoring systems: an overview. Artificial Intelligence Review, 4(4), pp.251–277. https://doi.org/10.1007/BF00168958
+NWANA, H.S., 1990. Intelligent tutoring systems: an overview. *Artificial Intelligence Review*, 4(4), 251–277. https://doi.org/10.1007/BF00168958
 
-Pane, J.F., Griffin, B.A., McCaffrey, D.F. and Karam, R., 2014. Effectiveness of Cognitive Tutor Algebra I at scale. Educational Evaluation and Policy Analysis, 36(2), pp.127–144. https://doi.org/10.3102/0162373713507480
+PANE, J.F., GRIFFIN, B.A., MCCAFFREY, D.F. and KARAM, R., 2014. Effectiveness of Cognitive Tutor Algebra I at scale. *Educational Evaluation and Policy Analysis*, 36(2), 127–144. https://doi.org/10.3102/0162373713507480
 
-Pardos, Z.A. and Heffernan, N.T., 2011. KT-IDEM: introducing item difficulty to the knowledge tracing model. In: User Modeling, Adaption and Personalization (UMAP 2011). Berlin: Springer, pp.243–254. https://doi.org/10.1007/978-3-642-22362-4_21
+PARDOS, Z.A. and HEFFERNAN, N.T., 2011. KT-IDEM: introducing item difficulty to the knowledge tracing model. In: *User Modeling, Adaption and Personalization (UMAP 2011)*. Berlin: Springer, pp.243–254. https://doi.org/10.1007/978-3-642-22362-4_21
 
-Park, C.-H. and Irwin, S.H., 2007. What do we know about the profitability of technical analysis? Journal of Economic Surveys, 21(4), pp.786–826. https://doi.org/10.1111/j.1467-6419.2007.00519.x
+PARK, C.-H. and IRWIN, S.H., 2007. What do we know about the profitability of technical analysis? *Journal of Economic Surveys*, 21(4), 786–826. https://doi.org/10.1111/j.1467-6419.2007.00519.x
 
-Peffers, K., Tuunanen, T., Rothenberger, M.A. and Chatterjee, S., 2007. A design science research methodology for information systems research. Journal of Management Information Systems, 24(3), pp.45–77. https://doi.org/10.2753/MIS0742-1222240302
+PEFFERS, K., TUUNANEN, T., ROTHENBERGER, M.A. and CHATTERJEE, S., 2007. A design science research methodology for information systems research. *Journal of Management Information Systems*, 24(3), 45–77. https://doi.org/10.2753/MIS0742-1222240302
 
-Pelánek, R., 2017. Bayesian knowledge tracing, logistic models, and beyond: an overview of learner modeling techniques. User Modeling and User-Adapted Interaction, 27(3–5), pp.313–350. https://doi.org/10.1007/s11257-017-9193-2
 
-Pelánek, R., 2018. Conceptual issues in mastery criteria: differentiating uncertainty and degrees of knowledge. In: Artificial Intelligence in Education (AIED 2018). Cham: Springer, pp.450–461. https://doi.org/10.1007/978-3-319-93843-1_33
+PELÁNEK, R., 2018. Conceptual issues in mastery criteria: differentiating uncertainty and degrees of knowledge. In: *Artificial Intelligence in Education (AIED 2018)*. Cham: Springer, pp.450–461. https://doi.org/10.1007/978-3-319-93843-1_33
 
-Piech, C., Bassen, J., Huang, J., Ganguli, S., Sahami, M., Guibas, L.J. and Sohl-Dickstein, J., 2015. Deep knowledge tracing. Advances in Neural Information Processing Systems, 28, pp.505–513. Available at: https://arxiv.org/abs/1506.05908 [Accessed 2 July 2026].
+PIECH, C., BASSEN, J., HUANG, J., GANGULI, S., SAHAMI, M., GUIBAS, L.J. and SOHL-DICKSTEIN, J., 2015. *Deep knowledge tracing*. *Advances in Neural Information Processing Systems*, 28, 505–513. [viewed 2 July 2026] Available from: https://arxiv.org/abs/1506.05908
 
-Roediger, H.L. and Karpicke, J.D., 2006. Test-enhanced learning: taking memory tests improves long-term retention. Psychological Science, 17(3), pp.249–255. https://doi.org/10.1111/j.1467-9280.2006.01693.x
+ROEDIGER, H.L. and KARPICKE, J.D., 2006. Test-enhanced learning: taking memory tests improves long-term retention. *Psychological Science*, 17(3), 249–255. https://doi.org/10.1111/j.1467-9280.2006.01693.x
 
-Sailer, M. and Homner, L., 2020. The gamification of learning: a meta-analysis. Educational Psychology Review, 32(1), pp.77–112. https://doi.org/10.1007/s10648-019-09498-w
+SAILER, M. and HOMNER, L., 2020. The gamification of learning: a meta-analysis. *Educational Psychology Review*, 32(1), 77–112. https://doi.org/10.1007/s10648-019-09498-w
 
-Settles, B. and Meeder, B., 2016. A trainable spaced repetition model for language learning. In: Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics. Stroudsburg, PA: ACL, pp.1848–1858. https://doi.org/10.18653/v1/P16-1174
+SETTLES, B. and MEEDER, B., 2016. A trainable spaced repetition model for language learning. In: *Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics*. Stroudsburg, PA: ACL, pp.1848–1858. https://doi.org/10.18653/v1/P16-1174
 
-Sweller, J., 1988. Cognitive load during problem solving: effects on learning. Cognitive Science, 12(2), pp.257–285. https://doi.org/10.1207/s15516709cog1202_4
+SWELLER, J., 1988. Cognitive load during problem solving: effects on learning. *Cognitive Science*, 12(2), 257–285. https://doi.org/10.1207/s15516709cog1202_4
 
-VanLehn, K., 2011. The relative effectiveness of human tutoring, intelligent tutoring systems, and other tutoring systems. Educational Psychologist, 46(4), pp.197–221. https://doi.org/10.1080/00461520.2011.611369
+VANLEHN, K., 2011. The relative effectiveness of human tutoring, intelligent tutoring systems, and other tutoring systems. *Educational Psychologist*, 46(4), 197–221. https://doi.org/10.1080/00461520.2011.611369
 
-Yudelson, M.V., Koedinger, K.R. and Gordon, G.J., 2013. Individualized Bayesian knowledge tracing models. In: Artificial Intelligence in Education (AIED 2013). Berlin: Springer, pp.171–180. https://doi.org/10.1007/978-3-642-39112-5_18
+WISE, S.L. and KONG, X., 2005. Response time effort: a new measure of examinee motivation in computer-based tests. *Applied Measurement in Education*, 18(2), 163–183. https://doi.org/10.1207/s15324818ame1802_2
+
+YUDELSON, M.V., KOEDINGER, K.R. and GORDON, G.J., 2013. Individualized Bayesian knowledge tracing models. In: *Artificial Intelligence in Education (AIED 2013)*. Berlin: Springer, pp.171–180. https://doi.org/10.1007/978-3-642-39112-5_18
 
 # 10. Bibliography
 
-Brusilovsky, P. and Millán, E., 2007. User models for adaptive hypermedia and adaptive educational systems. In: P. Brusilovsky, A. Kobsa and W. Nejdl, eds. The Adaptive Web: Methods and Strategies of Web Personalization. Berlin: Springer, pp.3–53. https://doi.org/10.1007/978-3-540-72079-9_1
+BRUSILOVSKY, P. and MILLÁN, E., 2007. User models for adaptive hypermedia and adaptive educational systems. In: P. BRUSILOVSKY, A. KOBSA and W. NEJDL, eds. *The Adaptive Web: Methods and Strategies of Web Personalization*. Berlin: Springer, pp.3–53. https://doi.org/10.1007/978-3-540-72079-9_1
 
 
-Cohen, J., 1988. Statistical power analysis for the behavioral sciences. 2nd ed. Hillsdale, NJ: Lawrence Erlbaum. https://doi.org/10.4324/9780203771587
+COHEN, J., 1988. *Statistical power analysis for the behavioral sciences. 2nd ed*. Hillsdale, NJ: Lawrence Erlbaum. https://doi.org/10.4324/9780203771587
 
-Davis, F.D., 1989. Perceived usefulness, perceived ease of use, and user acceptance of information technology. MIS Quarterly, 13(3), pp.319–340. https://doi.org/10.2307/249008
+DAVIS, F.D., 1989. Perceived usefulness, perceived ease of use, and user acceptance of information technology. *MIS Quarterly*, 13(3), 319–340. https://doi.org/10.2307/249008
 
-Deterding, S., Dixon, D., Khaled, R. and Nacke, L., 2011. From game design elements to gamefulness: defining gamification. In: Proceedings of the 15th International Academic MindTrek Conference. New York: ACM, pp.9–15. https://doi.org/10.1145/2181037.2181040
+DETERDING, S., DIXON, D., KHALED, R. and NACKE, L., 2011. From game design elements to gamefulness: defining gamification. In: *Proceedings of the 15th International Academic MindTrek Conference*. New York: ACM, pp.9–15. https://doi.org/10.1145/2181037.2181040
 
-Doignon, J.-P. and Falmagne, J.-C., 1985. Spaces for the assessment of knowledge. International Journal of Man-Machine Studies, 23(2), pp.175–196. https://doi.org/10.1016/S0020-7373(85)80031-6
+DOIGNON, J.-P. and FALMAGNE, J.-C., 1985. Spaces for the assessment of knowledge. *International Journal of Man-Machine Studies*, 23(2), 175–196. https://doi.org/10.1016/S0020-7373(85)80031-6
 
-Hamari, J., Koivisto, J. and Sarsa, H., 2014. Does gamification work? A literature review of empirical studies on gamification. In: Proceedings of the 47th Hawaii International Conference on System Sciences. IEEE, pp.3025–3034. https://doi.org/10.1109/HICSS.2014.377
+HAMARI, J., KOIVISTO, J. and SARSA, H., 2014. Does gamification work? A literature review of empirical studies on gamification. In: *Proceedings of the 47th Hawaii International Conference on System Sciences*. IEEE, pp.3025–3034. https://doi.org/10.1109/HICSS.2014.377
 
-Harter, C. and Harter, J.F.R., 2010. Is financial literacy improved by participating in a stock market game? Journal for Economic Educators, 10(1), pp.21–32.
+HARTER, C. and HARTER, J.F.R., 2010. Is financial literacy improved by participating in a stock market game? *Journal for Economic Educators*, 10(1), 21–32. https://libjournals.mtsu.edu/index.php/jfee/article/view/1459
 
-Hinojosa, T., Miller, S., Swanlund, A., Hallberg, K., Brown, M. and O'Brien, B., 2010. The impact of the Stock Market Game on financial literacy and mathematics achievement: results from a national randomized controlled trial. Society for Research on Educational Effectiveness. Available at: https://eric.ed.gov/?id=ED513109 [Accessed 2 July 2026].
+HINOJOSA, T., MILLER, S., SWANLUND, A., HALLBERG, K., BROWN, M. and O'BRIEN, B., 2010. *The impact of the Stock Market Game on financial literacy and mathematics achievement: results from a national randomized controlled trial*. Society for Research on Educational Effectiveness. [viewed 2 July 2026] Available from: https://eric.ed.gov/?id=ED513109
 
-Jordan, D.J. and Diltz, J.D., 2003. The profitability of day traders. Financial Analysts Journal, 59(6), pp.85–94. https://doi.org/10.2469/faj.v59.n6.2578
+JORDAN, D.J. and DILTZ, J.D., 2003. The profitability of day traders. *Financial Analysts Journal*, 59(6), 85–94. https://doi.org/10.2469/faj.v59.n6.2578
 
-Kitchenham, B. and Charters, S., 2007. Guidelines for performing systematic literature reviews in software engineering. EBSE Technical Report EBSE-2007-01. Keele University and University of Durham.
+KITCHENHAM, B. and CHARTERS, S., 2007. *Guidelines for performing systematic literature reviews in software engineering*. EBSE technical report EBSE-2007-01. Keele University and University of Durham.
 
-Nickow, A., Oreopoulos, P. and Quan, V., 2020. The impressive effects of tutoring on PreK-12 learning: a systematic review and meta-analysis of the experimental evidence. NBER Working Paper 27476. https://doi.org/10.3386/w27476
+NICKOW, A., OREOPOULOS, P. and QUAN, V., 2020. *The impressive effects of tutoring on PreK-12 learning: a systematic review and meta-analysis of the experimental evidence*. NBER working paper 27476. https://doi.org/10.3386/w27476
 
-Pardos, Z.A. and Heffernan, N.T., 2010. Modeling individualization in a Bayesian networks implementation of knowledge tracing. In: User Modeling, Adaptation, and Personalization (UMAP 2010). Berlin: Springer, pp.255–266. https://doi.org/10.1007/978-3-642-13470-8_24
+PARDOS, Z.A. and HEFFERNAN, N.T., 2010. Modeling individualization in a Bayesian networks implementation of knowledge tracing. In: *User Modeling, Adaptation, and Personalization (UMAP 2010)*. Berlin: Springer, pp.255–266. https://doi.org/10.1007/978-3-642-13470-8_24
 
-Pavlik, P.I., Cen, H. and Koedinger, K.R., 2009. Performance factors analysis: a new alternative to knowledge tracing. In: Proceedings of the 14th International Conference on Artificial Intelligence in Education (AIED 2009). Amsterdam: IOS Press, pp.531–538.
+PAVLIK, P.I., CEN, H. and KOEDINGER, K.R., 2009. Performance factors analysis: a new alternative to knowledge tracing. In: *Proceedings of the 14th International Conference on Artificial Intelligence in Education (AIED 2009)*. Amsterdam: IOS Press, pp.531–538. https://eric.ed.gov/?id=ED506305
 
-Ritter, S., Anderson, J.R., Koedinger, K.R. and Corbett, A., 2007. Cognitive Tutor: applied research in mathematics education. Psychonomic Bulletin and Review, 14(2), pp.249–255. https://doi.org/10.3758/BF03194060
+PELÁNEK, R., 2017. Bayesian knowledge tracing, logistic models, and beyond: an overview of learner modeling techniques. *User Modeling and User-Adapted Interaction*, 27(3–5), 313–350. https://doi.org/10.1007/s11257-017-9193-2
 
-Webster, J. and Watson, R.T., 2002. Analyzing the past to prepare for the future: writing a literature review. MIS Quarterly, 26(2), pp.xiii–xxiii.
+RITTER, S., ANDERSON, J.R., KOEDINGER, K.R. and CORBETT, A., 2007. Cognitive Tutor: applied research in mathematics education. *Psychonomic Bulletin and Review*, 14(2), 249–255. https://doi.org/10.3758/BF03194060
 
-Wilson, K.H., Karklin, Y., Han, B. and Ekanadham, C., 2016. Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation. In: Proceedings of the 9th International Conference on Educational Data Mining (EDM 2016). International Educational Data Mining Society. Available at: https://arxiv.org/abs/1604.02336 [Accessed 20 June 2026].
+WEBSTER, J. and WATSON, R.T., 2002. Analyzing the past to prepare for the future: writing a literature review. *MIS Quarterly*, 26(2), xiii–xxiii. https://aisel.aisnet.org/misq/vol26/iss2/3/
 
-Woolf, B.P., 2009. Building intelligent interactive tutors: student-centered strategies for revolutionizing e-learning. Burlington, MA: Morgan Kaufmann.
+WILSON, K.H., KARKLIN, Y., HAN, B. and EKANADHAM, C., 2016. Back to the basics: Bayesian extensions of IRT outperform neural networks for proficiency estimation. In: *Proceedings of the 9th International Conference on Educational Data Mining (EDM 2016)*. International Educational Data Mining Society. Available from: https://arxiv.org/abs/1604.02336 [viewed 20 June 2026].
+
+WOOLF, B.P., 2009. *Building intelligent interactive tutors: student-centered strategies for revolutionizing e-learning*. Burlington, MA: Morgan Kaufmann.
 
 # 11. Appendices
 
@@ -798,7 +889,7 @@ Woolf, B.P., 2009. Building intelligent interactive tutors: student-centered str
 
 Ethical clearance for this project, including the planned participant study described in Section 4.6, was obtained through the Southampton Solent University ethics application on the student portal and signed off by my supervisor, Prashant Bikram Shah, before the progress report was submitted in July 2026. Its approval was recorded in the AE1 progress report at the time.
 
-The approved application covers convenience sampling of five to eight adult participants recruited by the researcher, informed consent obtained in writing before any data is recorded, the right to withdraw at any point without giving a reason, pseudonymised handling of all interaction data, storage limited to the project's own Firebase project with no third-party sharing, and the education-only, simulated-data framing of the artefact. It records that no participant is under 18, that no financial advice is given or implied, that no real money or live market account is involved, and that the only personal data collected is an email address for account creation plus the learning interactions the research question needs.
+The approved application covers convenience sampling of five to eight adult participants recruited by the researcher, informed consent obtained in writing before any data is recorded, the right to withdraw at any point without giving a reason, pseudonymised handling of all interaction data, storage limited to the project's own Firebase project with no third-party sharing, and the education-only, simulated-data framing of the artefact. What ran departed from the approved application in three ways, each declared here because a deviation should be reported by the researcher rather than found by a reader. Nine people took part, one more than the approved maximum of eight. They worked remotely and unsupervised on their own devices rather than in a session I observed, which is the departure that did the damage, because an unobserved test cannot establish that a score came from the person it is recorded against; Section 6.7 reports what that cost and Section 7.4 takes it apart. And consent was taken on the in-app screen rather than on paper, recorded per account with a timestamp and a working Decline, which is a change of medium rather than of substance: the wording, the lawful basis, the data collected and the withdrawal right were those approved. No participant was under 18 and no one withdrew. The application records that no participant is under 18, that no financial advice is given or implied, that no real money or live market account is involved, and that the only personal data collected is an email address for account creation plus the learning interactions the research question needs.
 
 Table A.1 maps each condition of the approval to the place in the artefact where it is enforced, which is the point this appendix is really making: the approval is not a document filed and forgotten, it is implemented.
 
@@ -810,11 +901,23 @@ Table: Ethics approval conditions and where each is enforced in the artefact
 | Informed consent before any data is recorded | Consent screen with the lawful basis stated and a working Decline that signs the learner out | E2E test: Decline signs out and bounces from the learning area |
 | Right to withdraw | Delete account in Settings, with the response log purged by administrator so it cannot happen silently | Manual check, documented in Section 4.7 |
 | Data minimisation | Only the account, the mastery estimates and the response fields the analysis needs | Response schema, Section 5.2 |
-| Pseudonymised analysis | `scripts/analyse.ts` numbers learners in sign-up order and drops test accounts | Run against the emulator and the empty live database |
+| Pseudonymised analysis | `scripts/analyse.ts` numbers learners in sign-up order and drops test and non-participant accounts | Run against the emulator, then against the live pilot data on 28 September (Appendix N) |
 | No financial advice, no live trading | Simulated or clearly labelled historical data only, no broker connection, no signals, no profitability language | Guardrail sweep, Section 6.6 |
 | Research data protected from tampering | Responses are create-only in the rules, even for their owner | Rules tests: update and delete both denied |
 
-The signed release itself is held in the Solent ethics application on the student portal under my student number and is available to the markers on request.
+Table A.2 declares the things a reader should not have to infer.
+
+Table: Declarations of interest, provenance and processing
+
+| Declared | Statement |
+|---|---|
+| Researcher's interest | I trade a funded account with a proprietary firm and therefore have an interest in the methodology the curriculum teaches. No claim of profitability is made anywhere in the artefact or the report, and Section 2.7 states the evidence against the methodology. |
+| Market data | Historical ES and NQ bars, end-of-day, used for non-commercial teaching. Symbol, dates and source are printed on every chart. No live or real-time feed is connected. |
+| Content sources | The methodology is drawn from freely published practitioner teaching, principally the ICT body of work and TTrades' public material, credited lesson by lesson across the 117 sources in `docs/LESSON_SOURCES.md`. No paid or proprietary course material was copied. |
+| Where the data is held | A Firebase project in a UK region under my own Google account. No third-party processor, no analytics vendor, no export outside that project. |
+| AI assistance | Declared in full in Section 4.2: an agentic coding tool for implementation, NotebookLM for first-pass lesson structure from the recordings, and model assistance on the prose of this report. |
+
+The signed release itself is held in the Solent ethics application on the student portal under my student number, where the markers can retrieve it against that number.
 
 ## Appendix B: Artefact access and reproduction
 
@@ -872,7 +975,7 @@ The verbatim output of npx tsx scripts/simulate.ts on the final commit, seed 42.
 
 ## Appendix G: Decisions log
 
-The complete decisions log from docs/DECISIONS.md, 85 entries with dates.
+The complete decisions log from docs/DECISIONS.md, 104 entries with dates.
 
 [[DECISIONS_LOG]]
 
@@ -890,9 +993,9 @@ Table: Designed, deliberately not built
 | Mentor response dashboards | Desktop and mobile | Depend on the marketplace |
 | Generative AI tutor | No dedicated screen; feedback panels are rule-based | Accuracy and ethics stakes the evaluation cannot carry; rule-based explanations are auditable; documented future work |
 
-## Appendix I: Planned evaluation instruments
+## Appendix I: Evaluation instruments
 
-The System Usability Scale (Brooke, 1996), ten statements each rated from 1 (strongly disagree) to 5 (strongly agree), scored by the standard method to give a value out of 100 and compared with the published average of 68:
+The System Usability Scale (Brooke 1996), ten statements each rated from 1 (strongly disagree) to 5 (strongly agree), scored by the standard method to give a value out of 100 and compared with the published average of 68:
 
 1. I think that I would like to use this system frequently.
 2. I found the system unnecessarily complex.
@@ -905,7 +1008,7 @@ The System Usability Scale (Brooke, 1996), ten statements each rated from 1 (str
 9. I felt very confident using the system.
 10. I needed to learn a lot of things before I could get going with this system.
 
-The instruments as deployed. Placement (`/placement`) takes form A, the first pre-test-eligible item per module in prerequisite order; the post-test (`/post-test`) takes form B, the last, so fifteen of the sixteen questions differ between them. Both are built by the same selector, `pickAssessment(kcs, eligible, "A" | "B")`, so the two forms cannot drift apart. `isAssessment()` in the session store is what stops a post-test answer updating the learner model, while still logging each answer with the model's current estimate as its `pLBefore`. The questionnaire (`/survey`) is the ten SUS statements on the standard five-point scale plus three open questions, written to `users/{uid}/surveys/sus`, which is owner-only in the security rules with a test proving a stranger is denied. The analysis script (`scripts/analyse.ts`) reads the database, pseudonymises learners in sign-up order, drops test accounts and writes the per-learner and summary tables to `docs/report/PILOT_RESULTS.md`. It has been run against the empty live database, where it reports n = 0 rather than failing, and against the emulator after an end-to-end test that drives a learner through placement half wrong, the post-test all right, and the questionnaire. Normalised gain and the SUS arithmetic have unit tests against worked examples.
+The instruments as deployed. Placement (`/placement`) takes form A, the first pre-test-eligible item per module in prerequisite order; the post-test (`/post-test`) takes form B, the last, so fifteen of the sixteen questions differ between them. Both are built by the same selector, `pickAssessment(kcs, eligible, "A" | "B")`, so the two forms cannot drift apart. `isAssessment()` in the session store is what stops a post-test answer updating the learner model, while still logging each answer with the model's current estimate as its `pLBefore`. The questionnaire (`/survey`) is the ten SUS statements on the standard five-point scale plus three open questions, written to `users/{uid}/surveys/sus`, which is owner-only in the security rules with a test proving a stranger is denied. The analysis script (`scripts/analyse.ts`) reads the database, pseudonymises learners in sign-up order, drops test accounts and writes the per-learner and summary tables to `docs/report/PILOT_RESULTS.md`. It was run against the empty live database, where it reported n = 0 rather than failing, and against the emulator after an end-to-end test that drives a learner through placement half wrong, the post-test all right, and the questionnaire. It then produced the pilot output in Appendix N from the live data, and that run is where the figures in Section 6.7 come from. Normalised gain and the SUS arithmetic have unit tests against worked examples.
 
 Open questions to follow: What did you understand the mastery numbers to mean? Did the "why this question?" explanation make sense to you? Was there a moment where the system's choice of what to do next felt wrong? Is there anything you would change?
 
@@ -936,12 +1039,12 @@ Table: Traceability from literature to design decisions
 
 ## Appendix K: Reconstruction of project effort
 
-Table 4.2 gives the effort total. This appendix gives the method, because an estimate without its method is not evidence.
+Table 4.3 gives the effort total. This appendix gives the method, because an estimate without its method is not evidence.
 
-No timesheet was kept during the project, which is the honest starting point. The reconstruction therefore works backwards from artefacts that carry their own timestamps or their own size, and every line in Table 4.2 is anchored to at least one of five sources:
+No timesheet was kept during the project, which is the honest starting point. The reconstruction therefore works backwards from artefacts that carry their own timestamps or their own size, and every line in Table 4.3 is anchored to at least one of five sources:
 
-1. **Version-control history.** `git log` gives 41 commits between 15 July and 17 September 2026, with 76,803 insertions and 7,232 deletions across 166 TypeScript and TSX files, and six phase tags from `v0.1-phase1` to `v1.0-phase6`. Commits cluster on eleven working days, which understates the work rather than overstating it: the repository was created after the prototype, the literature review and the progress report were already finished, and the September content passes were each written over several days and committed once.
-2. **The decisions log.** 85 dated entries in `docs/DECISIONS.md` spread across ten distinct dates, each recording a decision and its reason at the time it was taken. The log is the only contemporaneous record of reasoning the project has, and its density on a given date is a reasonable proxy for how much thinking that date absorbed.
+1. **Version-control history.** `git log` gives 53 commits between 15 July and 17 September 2026, with 76,803 insertions and 7,232 deletions across 166 TypeScript and TSX files, and six phase tags from `v0.1-phase1` to `v1.0-phase6`. Commits cluster on eleven working days, which understates the work rather than overstating it: the repository was created after the prototype, the literature review and the progress report were already finished, and the September content passes were each written over several days and committed once.
+2. **The decisions log.** 104 dated entries in `docs/DECISIONS.md` spread across ten distinct dates, each recording a decision and its reason at the time it was taken. The log is the only contemporaneous record of reasoning the project has, and its density on a given date is a reasonable proxy for how much thinking that date absorbed.
 3. **Artefact size.** Countable outputs where the effort scales with the count: 66 lesson files totalling about 64,000 words, 116 authored items each with an answer key and a written explanation, 48 stepped chart walkthroughs, 16 real-chart case studies, 36 video recordings totalling 267 minutes, a 43-screen prototype, and about 30,000 words of project documentation.
 4. **Document timestamps.** The creation and modification dates of the progress report, the standalone literature review chapter and this report, which bracket the writing periods.
 5. **The source log.** `docs/LESSON_SOURCES.md` lists 117 sources consulted for the September curriculum extension, lesson by lesson, which records reading that leaves no other trace.
@@ -963,9 +1066,7 @@ The risks identified at AE1 mostly behaved as predicted. Cold start was handled 
 
 **Dependencies and the Content Security Policy.** Next was moved to the last release of its major (14.2.35) and seven transitive packages to patched versions. Every remaining high or critical advisory against Next was checked against the app; all but one need hosting or features the app does not use (Windows servers, the image optimiser, server actions, rewrites, middleware), and the one that applies, denial of service against Server Components, is fixed only in Next 15, whose upgrade chain (React 19 and a new major of the 3D library) was judged a larger risk a week before submission. The Content Security Policy names every source the app uses and no others; it permits inline scripts and styles, because removing them needs per-request nonces and therefore middleware.
 
-**The September performance diagnosis.** The entrance animation library was server-rendering every block with an inline opacity of zero, so a page stayed blank until 940 kilobytes of script had hydrated and a simulated slow phone saw the sign-in form 6.6 seconds after the HTML arrived. Rebuilding that choreography in CSS, keeping the same timing and the same component interface, took sign-in from 77 to 91 and the landing page from 61 to 89. On the landing page the three.js hero was the second cause: it mounted on hydration, so the headline queued behind it, and it now mounts when the browser goes idle after first paint. The final design keeps every visual layer and animates one.
-
-Material moved here from Chapter 5 so the body carries the decisions and the appendix carries the detail behind them.
+**The September performance diagnosis.** The entrance animation library was server-rendering every block with an inline opacity of zero, so a page stayed blank until 940 kilobytes of script had hydrated and a simulated slow phone saw the sign-in form 6.6 seconds after the HTML arrived. Rebuilding that choreography in CSS, keeping the same timing and the same component interface, took sign-in from 77 to 91 and the landing page from 61 to 89. On the landing page the three.js hero was the second cause: it mounted on hydration, so the headline queued behind it, and it now mounts when the browser goes idle after first paint. The final design keeps every visual layer and animates one. The animation work was measured rather than judged: each animated full-screen layer costs about 18 frames of compositor budget, while the identical layer held static costs nothing.
 
 **The assessment engine, by question type.** Multiple choice and multi-select grade against the answer key with partial credit disabled, so an item is right or wrong and the BKT observation stays binary. Numeric items accept a tolerance declared per item. Ordering grades the whole sequence rather than position by position. True/false records a confidence value on a five-point slider alongside the answer, which is logged but not yet used by the model. Chart annotation renders a real chart and grades a tapped marker against a correct zone that is then revealed. The quiz shell carries a segmented progress bar, number keys to select and Enter to submit, and a session store persisted to local storage so a mid-session refresh resumes at the same question rather than restarting or losing the answers already given.
 
@@ -974,3 +1075,68 @@ Material moved here from Chapter 5 so the body carries the decisions and the app
 **Walkthrough construction.** A walkthrough is a seeded generator plus a list of annotation steps. The generator takes control points and forces specific candles, so the sweep, the structural break and the gap a lesson describes fall on exactly the bars its captions name, which a randomly generated series could not guarantee and a recorded one could not label. Each step adds one annotation layer (a level, a zone, a session window, a marker or a note); earlier layers dim and the current one is bright. The caption is rendered into a live region so a screen reader announces each step, arrow keys move between steps, and a describe control lays the whole sequence out as text. A unit test asserts that every annotation in every step lies inside the bounds of its chart, and a render harness produces a still of every step of every walkthrough for review.
 
 **Real-chart case studies.** Sixteen lessons carry one. A detector per concept encodes that lesson's own rule as code (a Candle 2 closure, for example, is "the low trades below the previous bar's low and the close is back above it"), scores every instance in a window of historical ES and NQ bars, and keeps the cleanest. The captions are generated from the matched bars, so every date and price in them is the one on the chart. The point of finding them by code is evidential rather than technical: an example chosen by eye to flatter the concept being taught is cherry-picked, and a reader has no way to tell.
+
+## Appendix M: Where each non-functional requirement comes from
+
+Moved from Section 3.3 so the body carries the requirements and this appendix carries their derivation.
+
+Three come from this being a research instrument before it is a product. The engine has to be pure and hand-verified (N1) because the dissertation's central claim is about the model's behaviour, and that claim cannot rest on arithmetic I have not checked; the same reasoning defines the thresholds once (N2). The response log has to be lossless across refresh and network failure (N3) because it is the dataset: a dropped answer is not a degraded experience, it is a hole in the evidence, and Doroudi and Brunskill's (2019) argument that adaptive systems be judged on the spread of outcomes is impossible to honour if the tail is what went missing. N9, that development can never write to the research database, is the same requirement from the other side, added only after the incident in Section 5.9 proved it was needed.
+
+Two come from the regulatory context in Section 4.7. Because the FCA's financial-promotions regime bites on how a product is described, the guardrails in Section 3.5 had to be enforceable properties rather than copy that could drift, so the 18+ attestation is a database rule (N4) and not a checkbox, holding however a learner arrives, including through Google sign-in where the interface is not mine.
+
+Two come from the user and the open-learner-model literature. If the point is that a learner can see and question the model judging them (RQ3), the interface carrying it cannot be usable only by people with a mouse, unimpaired vision and a fast connection, so accessibility is a numeric gate on every page (N5) and reduced-motion, colour-blind and contrast modes (N7) are first-class settings. Performance (N6) matters for the same reason and not for polish: an estimate that arrives late is one the learner stops consulting.
+
+The last is methodological. N10, recording every design decision with its reason, exists because a single-developer project has no code review, and a written record of reversals is the only substitute for a second opinion.
+
+## Appendix N: Pilot study, full analysis output
+
+Produced by `npm run analyse:live` on 28 September 2026 against the production database, read-only. Learners are pseudonymised in sign-up order and non-participant accounts are excluded by name. The complete file is committed as `docs/report/PILOT_RESULTS.md` and regenerates if further participants take part.
+
+Table: Pilot, per learner, full output
+
+| Learner | Consent | Placement | Post-test | Gain | Practice sessions | Items answered | Practice accuracy | Time on task (min) | KCs mastered | SUS |
+|---|:---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| P1 | yes | 7/16 | 10/16 | 0.33 | 2 | 14 | 29% | 6.8 | 1 | 80.0 |
+| P2 | yes | 4/16 | 8/16 | 0.33 | 1 | 8 | 50% | 4.5 | 0 | 72.5 |
+| P3 | yes | 5/16 | 14/16 | 0.82 | 0 | 0 | n/a | 27.6 | 0 | 90.0 |
+| P4 | yes | 2/15 | 14/16 | 0.86 | 0 | 0 | n/a | 3.6 | 0 | 80.0 |
+| P5 | yes | 6/16 | 15/16 | 0.90 | 0 | 0 | n/a | 4.3 | 0 | 100.0 |
+| P6 | yes | 3/16 | 14/16 | 0.85 | 0 | 0 | n/a | 1.1 | 0 | 87.5 |
+| P7 | yes | 5/16 | 16/16 | 1.00 | 0 | 0 | n/a | 1.0 | 0 | 100.0 |
+| P8 | yes | 8/16 | 14/16 | 0.75 | 0 | 0 | n/a | 1.7 | 0 | 97.5 |
+| P9 | yes | 7/16 | 16/16 | 1.00 | 0 | 0 | n/a | 5.2 | 0 | 100.0 |
+
+Table: Pilot, data-quality flags in full
+
+| Learner | Placement median s | Placement minutes | Post-test median s | Minutes between tests | Practice between | Flags raised |
+|---|---:|---:|---:|---:|---:|---|
+| P1 | 7.5 | 3.2 | 5.8 | 112 | 14 | none |
+| P2 | 1.3 | 0.6 | 7.0 | 34 | 8 | answers under 3 s |
+| P3 | 4.5 | 20.3 | 19.2 | 8 | 0 | no practice between tests |
+| P4 | 1.0 | 0.4 | 4.1 | 9 | 0 | under 3 s; no practice; placement logged 15 of 16 |
+| P5 | 0.9 | 0.5 | 3.5 | 9 | 0 | under 3 s; no practice |
+| P6 | 0.8 | 0.4 | 2.1 | 3 | 0 | under 3 s; no practice; tests under 5 min apart |
+| P7 | 0.9 | 0.5 | 2.1 | 5 | 0 | under 3 s; no practice; tests under 5 min apart |
+| P8 | 1.3 | 0.6 | 3.0 | 1 | 0 | under 3 s; no practice; tests under 5 min apart |
+| P9 | 0.9 | 0.5 | 4.9 | 4 | 0 | under 3 s; no practice; tests under 5 min apart |
+
+Table: Post-test as a held-out check of the model
+
+| Model said, before the answer | Post-test items | Answered correctly |
+|---|---:|---:|
+| Mastered (pL at or above 0.8) | 1 | 100% |
+| Not yet mastered | 143 | 84% |
+| All | 144 | 84% |
+
+Table: Learning-curve check, the two components with any opportunities
+
+| Knowledge component | Opportunities | Error rate, first half | Error rate, second half | Slope per opportunity | Reads as |
+|---|---:|---:|---:|---:|---|
+| Candle anatomy | 14 | 38% | 50% | 0.018 | flat, too few to read |
+| Liquidity and wicks | 8 | 100% | 100% | 0.000 | too few answers to read |
+
+The SUS responses are stored per item in `users/{uid}/surveys/sus` and exported by the analysis script; the nine totals are 80.0, 72.5, 90.0, 80.0, 100.0, 87.5, 100.0, 97.5 and 100.0, giving a mean of 89.7 and a standard deviation of 10.4.
+
+Open answers, from the one participant who gave them. P1, on what helped: "I liked the quiz". On what got in the way: "The drawings on the video". Asked whether the mastery percentages felt right: "I don't know what that is".
+
+Three caveats the script reports with the numbers. Time on task is built from answer latencies and excludes reading lessons and watching recordings, so it is a floor. Modules mastered are rebuilt from the append-only response log rather than read from the learner's mastery document, and no session needed repair. And answers are graded in the browser, so the rules enforce the log's shape but not its truth, which is why moving grading to the server is in Chapter 8.

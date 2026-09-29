@@ -432,7 +432,7 @@ async function main() {
   lines.push(`- There's no control group. Gains are pre/post on one group and can't separate the routing from the content. The routing question is addressed by simulation in EVALUATION.md.`);
   lines.push(`- Only the first completed post-test per learner counts.`);
   lines.push(`- Modules mastered are rebuilt from the append-only response log, not read from the learner's mastery document, which the browser writes. The log's shape and ranges are enforced by the security rules, but answers are graded in the browser, so the log records what the learner's client reported (see the report's limitations).`);
-  lines.push(`- Option positions are evened out at build time (lib/content/debias.ts), so no answer position is worth guessing. Two authoring tells remain and are not corrected: the correct option is the longest in 37 of 55 multiple-choice items (42 characters against 26 for the distractors), and the true/false items run 5 true to 10 false. Both would inflate scores slightly for a test-wise participant.`);
+  lines.push(`- Option positions are evened out at build time (lib/content/debias.ts), so no answer position is worth guessing. The two authoring tells found in September were fixed by rewriting the bank on 22 September: the correct option is now the longest in 14 of 55 multiple-choice items (mean 42.5 characters against 39.6 for the distractors) and the true/false items run 8 true to 7 false. Measured against the post-test form, the best zero-knowledge strategy scores 6 of 16 against 5.7 for blind guessing.`);
   lines.push("");
 
   writeFileSync(OUT, lines.join("\n"));
